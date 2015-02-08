@@ -1,3 +1,12 @@
 /UML/model.png
 /src/view/#AvatarCreationView.java#
 /src/view/.#AvatarCreationView.java
+/.classpath
+/.project
+/build.xml
+/src/.classpath
+/src/.gitignore
+/src/.project
+/src/controller/.gitignore
+/src/model/.gitignore
+/src/view/.gitignore

@@ -19,11 +19,12 @@ final class AvatarCreationView extends Viewport
 	
 
     private final Avatar avatar_reference_;
-
+    private char[][] view_contents_;
     /*
      * Generates a new ChaAvatarCreationViewses avatar_reference_ to modify the avatar.
      */
     public AvatarCreationView(Avatar my_avatar) {
     	avatar_reference_ = my_avatar;
+    	view_contents_=new char[length_][width_];
     }
 }

@@ -21,6 +21,7 @@ final class MapView extends Viewport {
     // map_relationship_ is used in place of a map_referance_
     private final MapDisplay_Relation map_relationship_;
     private final int xPos_;
+    private char[][] view_contents_;
     private final int yPos_;
     /*
      * Generates a new MapView from the map using coordinates x and y.
@@ -29,5 +30,6 @@ final class MapView extends Viewport {
         map_relationship_ = map_relationship;
         xPos_ = x;
         yPos_ = y;
+    	view_contents_=new char[length_][width_];
     }
 }

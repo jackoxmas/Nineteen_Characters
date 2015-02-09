@@ -20,7 +20,9 @@ final class StatsView extends Viewport
 	
     private char[][] view_contents_;
     private final Avatar avatar_reference_;
-
+    private void renderStats(){
+    	//code to get stats from avatar
+    }
     /**
      * Generates a new StatsView using the avatar_reference.
      */

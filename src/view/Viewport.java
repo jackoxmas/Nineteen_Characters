@@ -21,4 +21,15 @@ abstract class Viewport implements Serializable {
 	public char[][] getContents() {
 	return this.view_contents_;	
 	}
+	protected boolean writeStringToContents(int x, int y, String in) {
+		if(x+in.length()>= length_){return false;}
+		if(y>=width_) {return false;}
+		for(int i = 0; i!=in.length();++i){view_contents_[x+i][y] = in.charAt(i);}
+		return true;
+	}
+	/**
+	 * Writes the string given into view from the given starting coords. 
+	 * @returns false if not enough room
+	*/
+	
 }

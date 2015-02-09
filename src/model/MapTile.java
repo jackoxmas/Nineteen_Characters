@@ -16,7 +16,7 @@ import src.controller.Terrain;
  *
  * @author JohnReedLOL
  */
-final class MapTile implements Serializable {
+public final class MapTile implements Serializable {
 
     // Converts the class name into a base 35 number
     private static final long serialVersionUID = Long.parseLong("MapTile", 35);
@@ -38,10 +38,12 @@ final class MapTile implements Serializable {
 
     /**
      * Returns 0 on success, returns -1 if terrain is already set.
+     *
      * @param terrain - terrain to be added to the tile
      */
     public int initializeTerrain(Terrain terrain) {
-        if (this.terrain_ == null) {
+        if (this.terrain_ == null && terrain != null) {
+            terrain.setMapTile(this);
             this.terrain_ = terrain;
             return 0;
         } else {
@@ -50,11 +52,14 @@ final class MapTile implements Serializable {
     }
 
     /**
-     * Returns 0 on success, returns -1 if an entity is already there.
+     * Only works if there in no entity there already.
+     *
      * @param entity - entity to be added to the tile
+     * @return Returns 0 on success, non-zero if an entity is already there.
      */
-    public int setEntity(Entity entity) {
-        if (this.entity_ == null) {
+    public int addEntity(Entity entity) {
+        if (this.entity_ == null && entity != null) {
+            entity.setMapTile(this);
             this.entity_ = entity;
             return 0;
         } else {
@@ -63,22 +68,42 @@ final class MapTile implements Serializable {
     }
 
     /**
-     * Returns 0 on success, returns -1 if a blocking item is already there.
-     * @param item - item to be added to the tile
+     * Will return -1 if entity already equals null
+     *
+     * @return 0 on success, non-zero on error
      */
-    public int addItem(Item item) {
-        if (this.items_.isEmpty()) {
-            this.items_.add(item);
-            return 0;
+    public int removeEntity() {
+        if (this.entity_ == null) {
+            return -1;
         } else {
-            ListIterator<Item> listIterator = items_.listIterator();
-            while (listIterator.hasNext()) {
-                if (! listIterator.next().isPassable()) {
-                    return -1;
-                }
-            }
+            this.entity_ = null;
+            this.entity_.setMapTile(null);
             return 0;
         }
+    }
+
+    /**
+     * Returns 0 on success, -1 when blocking item is already there, -2 when
+     * item is null
+     *
+     * @param item - item to be added to the tile
+     * @return -
+     */
+    public int addItem(Item item) {
+        if (item == null) {
+            return -2;
+        }
+        // Make sure there are no impassible items on this tile
+        ListIterator<Item> listIterator = items_.listIterator();
+        while (listIterator.hasNext()) {
+            if (!listIterator.next().isPassable()) {
+                return -1;
+            }
+        }
+        // Add the item.
+        item.setMapTile(this);
+        this.items_.add(item);
+        return 0;
     }
 
     public Terrain getTerrain() {
@@ -106,3 +131,4 @@ final class MapTile implements Serializable {
         return 0;
     }
 }
+

@@ -85,7 +85,7 @@ final class Map implements Serializable {
      * @return -1 on fail, 0 on success
      */
     public int addAvatar(Avatar a, int x, int y) {
-        int error_code = this.map_grid_[y][x].setEntity(a);
+        int error_code = this.map_grid_[y][x].addEntity(a);
         if (error_code == 0) {
             this.avatar_list_.put(a.name_, a);
             return 0;
@@ -95,7 +95,7 @@ final class Map implements Serializable {
     }
 
     public int addEntity(Entity e, int x, int y) {
-        int error_code = this.map_grid_[y][x].setEntity(e);
+        int error_code = this.map_grid_[y][x].addEntity(e);
         if (error_code == 0) {
             this.entity_list_.put(e.name_, e);
             return 0;
@@ -133,7 +133,7 @@ final class Map implements Serializable {
     public int removeAvatar(Avatar a) {
         this.avatar_list_.remove(a.name_);
         if (this.map_grid_[a.getMyXCordinate()][a.getMyYCordinate()].getEntity() == a) {
-            this.map_grid_[a.getMyXCordinate()][a.getMyYCordinate()].setEntity(null);
+            this.map_grid_[a.getMyXCordinate()][a.getMyYCordinate()].removeEntity();
             return 0;
         } else {
             return -1;
@@ -149,7 +149,7 @@ final class Map implements Serializable {
     public int removeEntity(Entity e) {
         this.avatar_list_.remove(e.name_);
         if (this.map_grid_[e.getMyXCordinate()][e.getMyYCordinate()].getEntity() == e) {
-            this.map_grid_[e.getMyXCordinate()][e.getMyYCordinate()].setEntity(null);
+            this.map_grid_[e.getMyXCordinate()][e.getMyYCordinate()].removeEntity();
             return 0;
         }
         return -1;

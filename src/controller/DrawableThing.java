@@ -2,6 +2,7 @@ package src.controller;
 
 import java.io.Serializable;
 import src.model.MapDrawableThing_Association;
+import src.model.MapTile;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -25,6 +26,11 @@ abstract public class DrawableThing implements Serializable {
     private final char single_character_representation_;
     
     private final MapDrawableThing_Association map_relationship_;
+    
+    private MapTile current_tile_ = null;
+    public void setMapTile(MapTile map_tile) {
+        current_tile_ = map_tile;
+    }
     
     protected DrawableThing(String name, char representation) {
         name_ = name;

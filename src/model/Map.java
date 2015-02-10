@@ -155,18 +155,6 @@ final class Map implements Serializable {
         return -1;
     }
 
-    /**
-     *
-     * @param item - item to be added
-     * @param x - x position of item
-     * @param y - y position of item
-     * @return 0 if success, -1 if fail
-     */
-    public int addItemAtPosition(Item item, int x, int y) {
-        int error_code = this.map_grid_[y][x].addItem(item);
-        return error_code;
-    }
-
     public Avatar getAvatarByName(String name) {
         return this.avatar_list_.get(name);
     }

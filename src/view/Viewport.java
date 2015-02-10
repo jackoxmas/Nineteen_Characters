@@ -1,5 +1,15 @@
 package src.view;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 
 /**
  * Abstract view class that the views inherit from.
@@ -9,8 +19,8 @@ abstract class Viewport implements Serializable {
 
     // Converts the class name into a base 35 number
     private static final long serialVersionUID = Long.parseLong("View", 35);
-    public static final int length_=40;
-    public static final int width_=20;
+    public static final int length_=80;
+    public static final int width_=40;
 	
 	private char[][] view_contents_;
 	
@@ -22,19 +32,50 @@ abstract class Viewport implements Serializable {
 	initGuard();
 	return this.view_contents_;	
 	}
+	/**
+	 * Load in ascii art from file
+	 * @return Array list of the strings of the ascci art
+	 * @param file path
+	 * @example getAsciiArtFromFile("src/view/ASCIIART/stats.txt");
+	 * @exception Prints to error line and returns empty ArrayList in event of failure.
+	 */
+	public ArrayList<String> getAsciiArtFromFile(String input){
+		Path path = Paths.get(input);
+		path = path.toAbsolutePath();
+		ArrayList<String> art = new ArrayList<String>();
+		try (InputStream in = Files.newInputStream(path);
+		    BufferedReader reader =
+		      new BufferedReader(new InputStreamReader(in))) {
+		    String line = null;
+		    while ((line = reader.readLine()) != null) {
+		        art.add(line);
+		    }
+		} catch (IOException x) {
+		    System.err.println(x); //Sure, that works. 
+		}
+		
+		return art;
+
+	
+	}
+	public void clear(){
+		if(view_contents_==null){return;}//Avoid doing this on null array.
+		for(int j = 0; j!=width_;++j){
+			for(int i = 0; i!=length_;++i){
+				{view_contents_[i][j]=' ';}
+			}	
+		}
+	}
 	private void initGuard(){
 		if(view_contents_ == null){view_contents_=new char[length_][width_];
-			for(int j = 0; j!=width_;++j){
-				for(int i = 0; i!=length_;++i){
-					{view_contents_[i][j]=' ';}
-				}	
-			}
+			clear();
 		}
 	}
 	/**
 	 * Writes the string given into view from the given starting coords. 
 	 * @returns false if not enough room/invalidposition
 	 * @param int x, int y, String in. Starting coords, and string to write.
+	 * 
 	*/
 	protected boolean writeStringToContents(int x, int y, String in) {
 		initGuard();

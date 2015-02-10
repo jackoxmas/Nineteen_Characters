@@ -27,7 +27,6 @@ public class MapEntity_Association extends MapDrawableThing_Association {
     }
     private final int x_respawn_point_;
     private final int y_respawn_point_;
-    private Occupation occupation_ = null;
     
     public void spawn(Entity toSpawn, int time_until_spawn) {
 

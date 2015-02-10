@@ -54,4 +54,8 @@ abstract public class Entity extends DrawableThing {
     public void moveBy(int x, int y) {
         //map_relationship_.moveInDirection(this, x, y);
     }
+    
+    public void addToInventory(Item item){
+        
+    }
 }

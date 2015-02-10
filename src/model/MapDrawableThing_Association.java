@@ -36,7 +36,11 @@ public class MapDrawableThing_Association {
     public void setMyTile(MapTile new_tile) {
         my_tile_ = new_tile;
     }
+    
+    public void pushEntityInDirection(Entity entity, int x, int y) {
 
+    }
+    
     //area effects
     public void hurtWithinRadius(int damage, int radius) {
 

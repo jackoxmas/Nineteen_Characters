@@ -44,10 +44,6 @@ public class MapEntity_Association extends MapDrawableThing_Association {
 
     }
 
-    public void pushEntityInDirection(Entity entity, int x, int y) {
-
-    }
-
     public void levelUpEntity(Entity entity, StatsPack stats_pack) {
 
     }

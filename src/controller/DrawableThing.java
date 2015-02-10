@@ -72,6 +72,10 @@ abstract public class DrawableThing implements Serializable {
         return this.is_viewable_;
     }
 
+    public void pushEntityInDirection(Entity entity, int x, int y) {
+        map_relationship_.pushEntityInDirection(entity, x, y);
+    }
+
     //area effects
     public void hurtWithinRadius(int damage, int radius) {
         map_relationship_.hurtWithinRadius(damage, radius);

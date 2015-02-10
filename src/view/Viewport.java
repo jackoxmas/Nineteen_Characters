@@ -23,7 +23,12 @@ abstract class Viewport implements Serializable {
     public static final int width_=40;
 	
 	private char[][] view_contents_;
-	
+	private Display display_;
+	/**
+	 * Tells the view to tell display to print it's contents, and update it's own array if
+	 * needed
+	 */
+	public abstract void renderToDisplay();
 	/**
 	 * returns the contents of a view as a 2D array
 	 * @return the 2D array of characters that represents the view

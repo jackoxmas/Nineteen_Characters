@@ -28,6 +28,6 @@ final class StatsView extends Viewport
      */
     public StatsView(Avatar my_avatar) {
     	avatar_reference_ = my_avatar;
-    	view_contents_=new char[length_][width_];
+    	view_contents_=getContents();
 	    }
 }

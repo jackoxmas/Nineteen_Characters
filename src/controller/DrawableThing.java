@@ -27,9 +27,12 @@ abstract public class DrawableThing implements Serializable {
     
     private final MapDrawableThing_Association map_relationship_;
     
-    private MapTile current_tile_ = null;
     public void setMapTile(MapTile map_tile) {
-        current_tile_ = map_tile;
+        map_relationship_.setMapTile(map_tile);
+    }
+    
+    public MapTile getMapTile() {
+        map_relationship_.getMapTile();
     }
     
     protected DrawableThing(String name, char representation) {

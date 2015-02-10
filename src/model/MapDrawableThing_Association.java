@@ -29,11 +29,11 @@ public class MapDrawableThing_Association {
         return my_tile_.y_;
     }
 
-    public MapTile getMyTile() {
+    public MapTile getMapTile() {
         return my_tile_;
     }
 
-    public void setMyTile(MapTile new_tile) {
+    public void setMapTile(MapTile new_tile) {
         my_tile_ = new_tile;
     }
     

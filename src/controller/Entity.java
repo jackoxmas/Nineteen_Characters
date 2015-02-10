@@ -24,6 +24,8 @@ abstract public class Entity extends DrawableThing {
         map_relationship_ = new MapEntity_Association( this, x_respawn_point, y_respawn_point );
     }
 
+    private Occupation occupation_ = null;
+
     Item inventory_[];
 
     // Only 1 equipped item in iteration 1
@@ -40,6 +42,15 @@ abstract public class Entity extends DrawableThing {
     public void levelUp() {
 
     }
+    
+    public void setOccupation(Occupation occupation) {
+        occupation_ = occupation;
+    }
+    
+    public Occupation getOccupation(){
+        return occupation_;
+    }
+    
     public void moveBy(int x, int y) {
         //map_relationship_.moveInDirection(this, x, y);
     }

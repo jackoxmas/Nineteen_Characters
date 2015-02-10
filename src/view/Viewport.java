@@ -12,7 +12,7 @@ abstract class Viewport implements Serializable {
     public static final int length_=20;
     public static final int width_=20;
 	
-	public char[][] view_contents_;
+	private char[][] view_contents_;
 	
 	/**
 	 * returns the contents of a view as a 2D array

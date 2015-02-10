@@ -9,7 +9,7 @@ abstract class Viewport implements Serializable {
 
     // Converts the class name into a base 35 number
     private static final long serialVersionUID = Long.parseLong("View", 35);
-    public static final int length_=20;
+    public static final int length_=40;
     public static final int width_=20;
 	
 	private char[][] view_contents_;

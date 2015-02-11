@@ -30,4 +30,9 @@ final class StatsView extends Viewport
     	avatar_reference_ = my_avatar;
     	view_contents_=getContents();
 	    }
+	@Override
+	public void renderToDisplay() {
+		// TODO Auto-generated method stub
+		
+	}
 }

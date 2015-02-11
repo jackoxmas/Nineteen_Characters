@@ -20,10 +20,11 @@ abstract class Viewport implements Serializable {
     // Converts the class name into a base 35 number
     private static final long serialVersionUID = Long.parseLong("View", 35);
     public static final int length_=80;
-    public static final int width_=40;
+    public static final int height_=40;
 	
 	private char[][] view_contents_;
 	private Display display_;
+
 	/**
 	 * Tells the view to tell display to print it's contents, and update it's own array if
 	 * needed
@@ -65,14 +66,14 @@ abstract class Viewport implements Serializable {
 	}
 	public void clear(){
 		if(view_contents_==null){return;}//Avoid doing this on null array.
-		for(int j = 0; j!=width_;++j){
+		for(int j = 0; j!=height_;++j){
 			for(int i = 0; i!=length_;++i){
 				{view_contents_[i][j]=' ';}
 			}	
 		}
 	}
 	private void initGuard(){
-		if(view_contents_ == null){view_contents_=new char[length_][width_];
+		if(view_contents_ == null){view_contents_=new char[length_][height_];
 			clear();
 		}
 	}
@@ -85,7 +86,7 @@ abstract class Viewport implements Serializable {
 	protected boolean writeStringToContents(int x, int y, String in) {
 		initGuard();
 		if(x+in.length()>= length_){return false;}
-		if(y>=width_) {return false;}
+		if(y>=height_) {return false;}
 		if(x<0 || y < 0){return false;}
 		for(int i = 0; i!=in.length();++i){view_contents_[x+i][y] = in.charAt(i);}
 		return true;
@@ -99,7 +100,7 @@ abstract class Viewport implements Serializable {
     	initGuard();
     	//Bounds checking
     	if(x+length >= length_) {return false;}
-    	if(y+width >= width_){return false;}
+    	if(y+width >= height_){return false;}
     	if(x<0 || y < 0){return false;}
     	//Begin filling the square
     	for(int i = x+1; i<x+length;++i){//offset by one to handle corners

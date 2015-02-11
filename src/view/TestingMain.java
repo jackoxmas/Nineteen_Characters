@@ -13,7 +13,7 @@ public class TestingMain {
 	 */
 	public static void printArray(Viewport view){
 		char[][] in = view.getContents();
-		for(int j = 0; j!=view.width_;++j){
+		for(int j = 0; j!=view.height_;++j){
 			for(int i = 0; i!=view.length_;++i){
 				{System.out.print(in[i][j]);}
 			}

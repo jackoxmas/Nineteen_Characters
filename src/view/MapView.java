@@ -30,6 +30,11 @@ final class MapView extends Viewport {
         map_relationship_ = map_relationship;
         xPos_ = x;
         yPos_ = y;
-    	view_contents_=new char[length_][width_];
+    	view_contents_=new char[length_][height_];
     }
+	@Override
+	public void renderToDisplay() {
+		// TODO Auto-generated method stub
+		
+	}
 }

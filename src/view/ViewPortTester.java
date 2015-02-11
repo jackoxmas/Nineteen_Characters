@@ -17,4 +17,10 @@ public class ViewPortTester extends Viewport{
 			writeStringToContents(1,i+1,temp.get(i));
 		}
 	}
+
+	@Override
+	public void renderToDisplay() {
+		// TODO Auto-generated method stub
+		
+	}
 }

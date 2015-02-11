@@ -12,11 +12,11 @@ import src.controller.Occupation;
  *
  * @author JohnMichaelReed
  */
-public class MapAvatar_Association extends MapEntity_Association {
+public class MapAvatar_Relation extends MapEntity_Relation {
 
     private final Avatar avatar_;
 
-    public MapAvatar_Association(Avatar avatar,
+    public MapAvatar_Relation(Avatar avatar,
             int x_respawn_point, int y_respawn_point) {
         super(avatar, x_respawn_point, y_respawn_point);
         avatar_ = avatar;

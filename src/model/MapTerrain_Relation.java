@@ -11,11 +11,11 @@ import src.controller.Terrain;
  *
  * @author JohnMichaelReed
  */
-public class MapTerrain_Association extends MapDrawableThing_Association {
+public class MapTerrain_Relation extends MapDrawableThing_Relation {
 
     private final Terrain terrain_;
 
-    public MapTerrain_Association(Terrain terrain) {
+    public MapTerrain_Relation(Terrain terrain) {
         super(terrain);
         terrain_ = terrain;
     }

@@ -43,7 +43,7 @@ public final class MapTile implements Serializable {
      */
     public int initializeTerrain(Terrain terrain) {
         if (this.terrain_ == null && terrain != null) {
-            terrain.setMapTile(this);
+            terrain.getMapRelation().setMapTile(this);
             this.terrain_ = terrain;
             return 0;
         } else {
@@ -59,7 +59,7 @@ public final class MapTile implements Serializable {
      */
     public int addEntity(Entity entity) {
         if (this.entity_ == null && entity != null) {
-            entity.setMapTile(this);
+            entity.getMapRelation().setMapTile(this);
             this.entity_ = entity;
             return 0;
         } else {
@@ -77,7 +77,7 @@ public final class MapTile implements Serializable {
             return -1;
         } else {
             this.entity_ = null;
-            this.entity_.setMapTile(null);
+            this.entity_.getMapRelation().setMapTile(null);
             return 0;
         }
     }
@@ -101,7 +101,7 @@ public final class MapTile implements Serializable {
             }
         }
         // Add the item.
-        item.setMapTile(this);
+        item.getMapRelation().setMapTile(this);
         this.items_.add(item);
         return 0;
     }

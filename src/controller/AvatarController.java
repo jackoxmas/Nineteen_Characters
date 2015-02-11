@@ -5,7 +5,7 @@
  */
 
 package src.controller;
-import src.model.MapAvatar_Association;
+import src.model.MapAvatar_Relation;
 /**
  * Uses keyboard input to control the avatar
  * @author JohnReedLOL

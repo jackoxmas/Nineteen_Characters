@@ -5,7 +5,7 @@
  */
 package src.view;
 
-import src.model.MapDisplay_Association;
+import src.model.MapDisplay_Relation;
 
 /**
  * Players see the MapView while they are interacting with the map
@@ -19,13 +19,13 @@ final class MapView extends Viewport {
     private static final long serialVersionUID = Long.parseLong("MapView", 35);
     
     // map_relationship_ is used in place of a map_referance_
-    private final MapDisplay_Association map_relationship_;
+    private final MapDisplay_Relation map_relationship_;
     private final int xPos_;
     private final int yPos_;
     /*
      * Generates a new MapView from the map using coordinates x and y.
      */
-    public MapView(MapDisplay_Association map_relationship, int x, int y) {
+    public MapView(MapDisplay_Relation map_relationship, int x, int y) {
         map_relationship_ = map_relationship;
         xPos_ = x;
         yPos_ = y;

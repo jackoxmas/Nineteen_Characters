@@ -15,7 +15,7 @@ import src.controller.Terrain;
  *
  * @author JohnMichaelReed
  */
-public class MapMain_Association {
+public class MapMain_Relation {
 
     private final Map map_reference_ = Map.getMyReferanceToTheMap(this);
 

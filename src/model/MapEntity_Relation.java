@@ -14,11 +14,11 @@ import src.controller.StatsPack;
  *
  * @author JohnReedLOL
  */
-public class MapEntity_Association extends MapDrawableThing_Association {
+public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     private final Entity entity_;
 
-    public MapEntity_Association(Entity entity,
+    public MapEntity_Relation(Entity entity,
             int x_respawn_point, int y_respawn_point) {
         super(entity);
         entity_ = entity;

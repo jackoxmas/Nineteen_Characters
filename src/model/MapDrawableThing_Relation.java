@@ -6,18 +6,19 @@
 package src.model;
 
 import src.controller.DrawableThing;
+import src.controller.Entity;
 
 /**
  *
  * @author JohnMichaelReed
  */
-public class MapDrawableThing_Association {
+public class MapDrawableThing_Relation {
 
     protected final Map map_reference_ = Map.getMyReferanceToTheMap(this);
     private MapTile my_tile_ = null;
     private final DrawableThing drawable_thing_;
 
-    public MapDrawableThing_Association(DrawableThing drawable_thing) {
+    public MapDrawableThing_Relation(DrawableThing drawable_thing) {
         drawable_thing_ = drawable_thing;
     }
 

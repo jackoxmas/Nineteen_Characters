@@ -55,15 +55,15 @@ final class Map implements Serializable {
     // MapModel.map_model_ is static because there is only one map_model_  
     private static final Map the_map_ = new Map();
 
-    public static MapTile[][] getMyReferanceToTheMapGrid(MapDisplay_Association m) {
+    public static MapTile[][] getMyReferanceToTheMapGrid(MapDisplay_Relation m) {
         return Map.the_map_.map_grid_;
     }
 
-    public static Map getMyReferanceToTheMap(MapDrawableThing_Association d) {
+    public static Map getMyReferanceToTheMap(MapDrawableThing_Relation d) {
         return Map.the_map_;
     }
 
-    public static Map getMyReferanceToTheMap(MapMain_Association m) {
+    public static Map getMyReferanceToTheMap(MapMain_Relation m) {
         return Map.the_map_;
     }
 
@@ -132,8 +132,8 @@ final class Map implements Serializable {
      */
     public int removeAvatar(Avatar a) {
         this.avatar_list_.remove(a.name_);
-        if (this.map_grid_[a.getMyXCordinate()][a.getMyYCordinate()].getEntity() == a) {
-            this.map_grid_[a.getMyXCordinate()][a.getMyYCordinate()].removeEntity();
+        if (this.map_grid_[a.getMapRelation().getMyXCordinate()][a.getMapRelation().getMyYCordinate()].getEntity() == a) {
+            this.map_grid_[a.getMapRelation().getMyXCordinate()][a.getMapRelation().getMyYCordinate()].removeEntity();
             return 0;
         } else {
             return -1;
@@ -148,8 +148,8 @@ final class Map implements Serializable {
      */
     public int removeEntity(Entity e) {
         this.avatar_list_.remove(e.name_);
-        if (this.map_grid_[e.getMyXCordinate()][e.getMyYCordinate()].getEntity() == e) {
-            this.map_grid_[e.getMyXCordinate()][e.getMyYCordinate()].removeEntity();
+        if (this.map_grid_[e.getMapRelation().getMyXCordinate()][e.getMapRelation().getMyYCordinate()].getEntity() == e) {
+            this.map_grid_[e.getMapRelation().getMyXCordinate()][e.getMapRelation().getMyYCordinate()].removeEntity();
             return 0;
         }
         return -1;

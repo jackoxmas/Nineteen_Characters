@@ -5,7 +5,7 @@
  */
 package src.controller;
 
-import src.model.MapEntity_Association;
+import src.model.MapEntity_Relation;
 /**
  *
  * @author JohnReedLOL
@@ -16,12 +16,23 @@ abstract public class Entity extends DrawableThing {
     private static final long serialVersionUID = Long.parseLong("Entity", 35);
 
     // map_relationship_ is used in place of a map_referance_
-    private final MapEntity_Association map_relationship_;
+    private final MapEntity_Relation map_relationship_;
+    
+
+    /**
+     * Use this to call functions contained within the MapEntity relationship
+     * @return map_relationship_
+     * @author Reed, John
+     */
+    @Override
+    public MapEntity_Relation getMapRelation() {
+        return map_relationship_;
+    }
     
     public Entity(String name, char representation, 
             int x_respawn_point, int y_respawn_point) {
         super(name, representation);
-        map_relationship_ = new MapEntity_Association( this, x_respawn_point, y_respawn_point );
+        map_relationship_ = new MapEntity_Relation( this, x_respawn_point, y_respawn_point );
     }
 
     private Occupation occupation_ = null;
@@ -49,10 +60,6 @@ abstract public class Entity extends DrawableThing {
     
     public Occupation getOccupation(){
         return occupation_;
-    }
-    
-    public void moveBy(int x, int y) {
-        //map_relationship_.moveInDirection(this, x, y);
     }
     
     public void addToInventory(Item item){

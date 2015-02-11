@@ -11,10 +11,10 @@ import src.view.Display;
  *
  * @author JohnMichaelReed
  */
-public class MapDisplay_Association {
+public class MapDisplay_Relation {
     private final MapTile[][] tiles_ = Map.getMyReferanceToTheMapGrid(this);
     private final Display display_;
-    public MapDisplay_Association(Display display) {
+    public MapDisplay_Relation(Display display) {
         display_ = display;
     }
 }

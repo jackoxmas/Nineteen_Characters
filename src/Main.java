@@ -1,7 +1,7 @@
 package src;
 
 import src.controller.Avatar;
-import src.model.MapMain_Association;
+import src.model.MapMain_Relation;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,7 +15,7 @@ import src.model.MapMain_Association;
  */
 public class Main
 {
-    MapMain_Association m = new MapMain_Association();
+    MapMain_Relation m = new MapMain_Relation();
     /**
      * @param args the command line arguments
      */

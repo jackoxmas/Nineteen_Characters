@@ -11,11 +11,11 @@ import src.controller.Item;
  *
  * @author JohnReedLOL
  */
-public class MapItem_Association extends MapDrawableThing_Association {
+public class MapItem_Relation extends MapDrawableThing_Relation {
 
     private final Item item_;
 
-    public MapItem_Association(Item item,
+    public MapItem_Relation(Item item,
             boolean goes_in_inventory, boolean is_one_shot) {
         super(item);
         item_ = item;

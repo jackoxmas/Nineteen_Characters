@@ -34,6 +34,9 @@ public class MapMain_Relation {
     public int addEntity(Entity e, int x, int y) {
         return map_reference_.addEntity(e, x, y);
     }
+    
+    public int deserializeMap(java.io.ObjectInputStream inputStream) {
+    }
 
     public int removeAvatar(Avatar a) {
         return map_reference_.removeAvatar(a);

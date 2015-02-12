@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package src.model;
 
 import java.util.LinkedHashMap;
@@ -19,17 +14,34 @@ import src.controller.Terrain;
  *
  * @author John-Michael Reed
  */
-final class Map implements Serializable {
+final class Map {
 
     // Set this to false if not debugging.
     public static boolean NDEBUG_ = true;
+    
+    // The map has a clock
+    private int time_measured_in_turns;
 
-    // MAP MUST BE SQUARE
+    /* MAP DIMENSIONS */
+    // DEBUG MAP MUST BE A SQUARE
     public static final int debug_map_height_ = 3;
     public static final int debug_map_width_ = 3;
-
-    public static final int map_height_ = 10;
-    public static final int map_width_ = 20;
+    private int map_height_ = 10;
+    private int map_width_ = 20;
+    
+    /* MAP DATA OBJECTS */
+    // 2d array of tiles.
+    private MapTile map_grid_[][];
+    // String is the avatar's name. The avatar name must be unqiue or else bugs will occur.
+    private LinkedHashMap<String, Avatar> avatar_list_;
+    // String is the entity's name. The entity name must be unqiue or else bugs will occur.
+    private LinkedHashMap<String, Entity> entity_list_;
+    // Item is the address of an item in memory. Location is its xy coordinates on the grid.
+    private LinkedList<Item> items_list_;
+    
+    /* MAP OBJECT */
+    // MapModel.map_model_ is static because there is only one map_model_  
+    private static final Map the_map_ = new Map();
 
     private Map() {
         if (NDEBUG_) {
@@ -49,11 +61,9 @@ final class Map implements Serializable {
         }
         avatar_list_ = new LinkedHashMap();
         entity_list_ = new LinkedHashMap();
+        items_list_ = new LinkedList<Item>();
         time_measured_in_turns = 0;
     }
-
-    // MapModel.map_model_ is static because there is only one map_model_  
-    private static final Map the_map_ = new Map();
 
     public static MapTile[][] getMyReferanceToTheMapGrid(MapDisplay_Relation m) {
         return Map.the_map_.map_grid_;
@@ -66,15 +76,6 @@ final class Map implements Serializable {
     public static Map getMyReferanceToTheMap(MapMain_Relation m) {
         return Map.the_map_;
     }
-
-    // Converts the class name into a base 35 number
-    private static final long serialVersionUID = Long.parseLong("MapModel", 35);
-
-    // 2d array of tiles.
-    private MapTile map_grid_[][];
-
-    // String is the avatar's name. The avatar name must be unqiue or else bugs will occur.
-    private LinkedHashMap<String, Avatar> avatar_list_;
 
     /**
      * Adds an avatar to the map
@@ -166,13 +167,113 @@ final class Map implements Serializable {
     public MapTile getTile(int x_pos, int y_pos) {
         return map_grid_[x_pos][y_pos];
     }
-    // String is the entity's name. The entity name must be unqiue or else bugs will occur.
-    private LinkedHashMap<String, Entity> entity_list_;
+    
 
-    // Item is the address of an item in memory. Location is its xy coordinates on the grid.
-    private LinkedList<Item> items_list_;
+    
 
-    // The map has a clock
-    private int time_measured_in_turns;
-
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private static int MAP_DATA_VERSION = 0;
+    /**
+     * MAP_DATA_VERSION #0
+     * ===================
+     * int              VERSION NUMBER
+     * int      m.w     Map Width
+     * int      m.h     Map Height
+     * MapTile          Map Tiles[m.w][m.h]
+     * LinkedHashMap    Avatar List
+     * LinkedHashMap    Entity List
+     * LinkedList       Items List
+     */
+    
+    /**
+     * Populates this Map object with data extracted from the provided 
+     * ObjectInputStream. The expected data format is defined in Map.java. If 
+     * the data is corrupt or out-of-date, IOExceptions will be thrown.
+     * <p>Use this function to initialize Map objects from saved game streams.
+     * </p>
+     * @param in The java.io.ObjectInputStream to pull data from
+     * @throws java.io.IOException
+     * @throws ClassNotFoundException 
+     */
+    private void deserializeData(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+        try {
+            /**
+             * Check Versioning: If the version of the stored data doesn't match
+             * the version given by this.MAP_DATA_VERSION, the format is
+             * undefined and therefore cannot be read.
+             */
+            int v = -1;
+            v = in.readInt();
+            if (v == -1 || v != MAP_DATA_VERSION)
+            {
+                throw new java.io.IOException("Invalid map file version");
+            }
+            
+            // Map Tile Grid
+            int w = in.readInt();
+            int h = in.readInt();
+            map_grid_ = new MapTile[w][h];
+            for (int j = 0; j < h; j++) {
+                for (int i = 0; i < w; i++) {
+                    map_grid_[i][j] = (MapTile)in.readObject();
+                }
+            }
+            // Update local map height and width
+            map_width_ = w;
+            map_height_ = h;
+                
+            // Avatar List
+            avatar_list_ = (LinkedHashMap<String, Avatar>)in.readObject();
+            
+            // Entity List
+            entity_list_ = (LinkedHashMap<String, Entity>)in.readObject();
+            
+            // Item List
+            items_list_ = (LinkedList<Item>)in.readObject();
+        }
+        catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    /**
+     * Serializes data from this Map object to the provided output stream using 
+     * the data format as defined in the Map.java file. This method may throw 
+     * errors if this Map object is not fully initialized or if the stream 
+     * cannot be written to.
+     * <p>Use this method to write data to a saved game stream to be pushed to 
+     * disk.</p>
+     * @param out The java.io.ObjectOutputStream to write data to
+     * @throws java.io.IOException 
+     */
+    private void serializeData(java.io.ObjectOutputStream out) throws java.io.IOException {
+        if (NDEBUG_)
+            throw new java.io.IOException("Will not save map with \"DEBUG_\" enabled");
+        try {
+            // MAP VERSION
+            out.writeInt(MAP_DATA_VERSION);
+            // MAP GRID
+            if (map_grid_ == null) throw new java.io.IOException("Map grid not initialized");
+            out.writeInt(map_width_);
+            out.writeInt(map_height_);
+            for (int j = 0; j < map_height_; j++) {
+                for (int i = 0; i < map_width_; i++) {
+                    out.writeObject(map_grid_[i][j]);
+                }
+            }
+            // AVATAR LIST
+            if (avatar_list_ == null) throw new java.io.IOException("Avatar list not initialized");
+            out.writeObject(avatar_list_);
+            // ENTITY LIST
+            if (entity_list_ == null) throw new java.io.IOException("Entity list not initialized");
+            out.writeObject(entity_list_);
+            // ITEMS LIST
+            if (items_list_ == null) throw new java.io.IOException("Items list not initialized");
+            out.writeObject(items_list_);
+        }
+        catch (Exception e) {
+            throw e;
+        }
+    }
+    // </editor-fold>
 }

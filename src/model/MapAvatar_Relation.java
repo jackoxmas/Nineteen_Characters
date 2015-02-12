@@ -32,7 +32,7 @@ public class MapAvatar_Relation extends MapEntity_Relation {
 	 */
 	@Override
 	public void spawn(Entity toSpawn, int time_until_spawn) {
-		toSpawn.getMapRelation().map_reference_.addAvatar((Avatar)toSpawn, this.getRespawnPointX(), this.getRespawnPointY());
+		toSpawn.getMapRelation().map_reference_.addAvatar((Avatar)toSpawn, toSpawn.getMapRelation().getRespawnPointX(), toSpawn.getMapRelation().getRespawnPointY());
 	}
 	
 	/**

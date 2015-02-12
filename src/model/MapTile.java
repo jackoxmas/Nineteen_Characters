@@ -36,8 +36,6 @@ public final class MapTile implements Serializable {
     private Entity entity_;
     private LinkedList<Item> items_;
     
-    private boolean isPassable;
-
     /**
      * Returns 0 on success, returns -1 if terrain is already set.
      *
@@ -132,13 +130,5 @@ public final class MapTile implements Serializable {
     public char getTopCharacter() {
         return 0;
     }
-    
-    public boolean isPassable() {
-		return isPassable;
-	}
-
-	public void setPassable(boolean isPassable) {
-		this.isPassable = isPassable;
-	}
 }
 

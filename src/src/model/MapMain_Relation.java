@@ -12,7 +12,6 @@ import src.controller.Terrain;
 
 /**
  * Allows for the initialization of the map.
- *
  * @author JohnMichaelReed
  */
 public class MapMain_Relation {

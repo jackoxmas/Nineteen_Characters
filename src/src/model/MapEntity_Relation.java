@@ -32,10 +32,14 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     }
     /**
-     * Moves an entity in a direction
+     * Moves the entity that this relation refers to over x and up y
+     * @param x x displacement
+     * @param y y displacement
+     * @return error codes: see function pushEntityInDirection() in MapDrawableThing_Relation
+     * @author John-Michael Reed
      */
-    public void moveInDirection(Entity toMove, int DeltaX, int DeltaY) {
-
+    public int moveInDirection(int x, int y) {
+        return super.pushEntityInDirection(entity_, x, y);
     }
 
     public void sendAttack(Entity attacker, int x, int y) {

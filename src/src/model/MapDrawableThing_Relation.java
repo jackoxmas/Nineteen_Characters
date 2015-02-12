@@ -38,8 +38,26 @@ public class MapDrawableThing_Relation {
         my_tile_ = new_tile;
     }
     
-    public void pushEntityInDirection(Entity entity, int x, int y) {
-
+    /**
+     * Moves an entity without removing it from the list of entities
+     * @param entity The entity to be moved
+     * @param x - distance to push in the x direction
+     * @param y  - distance to push in the y direction
+     * @return error codes: -1 if tile is taken, -2 if entity is null, -3 if entity cannot be found
+     * @author John-Michael Reed
+     */
+    public int pushEntityInDirection(Entity e, int delta_x, int delta_y) {
+        if(e == null) {
+            return -2;
+        }
+        int old_x = e.getMapRelation().getMyXCordinate();
+        int old_y = e.getMapRelation().getMyYCordinate();
+        Entity toMove = map_reference_.getTile(old_x, old_y).getEntity();
+        if (toMove == e) {
+            map_reference_.getTile(old_x, old_y).removeEntity();
+            return map_reference_.getTile(old_x + delta_x, old_y + delta_y).addEntity(e);
+        }
+        return -3;
     }
     
     //area effects

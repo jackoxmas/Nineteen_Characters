@@ -34,7 +34,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
 	 * @author reidholsen
 	 */
 	public void spawn(Entity toSpawn, int time_until_spawn) {
-		map_reference_.addEntity(toSpawn, x_respawn_point_, y_respawn_point_);
+		toSpawn.getMapRelation().map_reference_.addEntity(toSpawn, x_respawn_point_, y_respawn_point_);
 	}
 
 	/**
@@ -50,8 +50,8 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
 		int currentX = this.getMyXCordinate();
 		int currentY = this.getMyYCordinate();
 
-		map_reference_.removeEntity(toMove);
-		map_reference_.addEntity(toMove, currentX + DeltaX, currentY + DeltaY);
+		toMove.getMapRelation().map_reference_.removeEntity(toMove);
+		toMove.getMapRelation().map_reference_.addEntity(toMove, currentX + DeltaX, currentY + DeltaY);
 	}
 
     /**

@@ -44,10 +44,12 @@ public class MapAvatar_Relation extends MapEntity_Relation {
      */
 	@Override
     public void moveInDirection(Entity toMove, int DeltaX, int DeltaY) {
-    	int currentX = this.getMyXCordinate();
-    	int currentY = this.getMyYCordinate();
+    	int currentX = toMove.getMapRelation().getMyXCordinate();
+	int currentY = toMove.getMapRelation().getMyYCordinate();
     	
-    	toMove.getMapRelation().map_reference_.removeAvatar((Avatar)toMove);
-    	toMove.getMapRelation().map_reference_.addAvatar((Avatar)toMove, currentX + DeltaX, currentY + DeltaY);
+    	if(map_reference_.getTile(currentX + DeltaX,currentY + DeltaY).isPassable()){
+		toMove.getMapRelation().map_reference_.removeAvatar(toMove);
+		toMove.getMapRelation().map_reference_.addAvatar(toMove, currentX + DeltaX, currentY + DeltaY);
+	}
     }
 }

@@ -70,7 +70,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     	int attack_receiver_y  = attacker.getMapRelation().getMyYCordinate() + y;
     	
     	try{
-    		Entity attack_receiver = map_reference_.getTile(attack_receiver_x, attack_receiver_y).getEntity();
+    		Entity attack_receiver = attacker.getMapRelation().map_reference_.getTile(attack_receiver_x, attack_receiver_y).getEntity();
     		attack_receiver.getMapRelation().receiveAttack(attack_receiver, 666);
     	} catch (NullPointerException e){
     		

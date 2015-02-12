@@ -47,7 +47,8 @@ public class MapAvatar_Relation extends MapEntity_Relation {
     	int currentX = toMove.getMapRelation().getMyXCordinate();
 	int currentY = toMove.getMapRelation().getMyYCordinate();
     	
-    	if(map_reference_.getTile(currentX + DeltaX,currentY + DeltaY).isPassable()){
+    	if(map_reference_.getTile(currentX + DeltaX,currentY + DeltaY).isPassable() &&
+				(map_reference_.getTile(currentX + DeltaX,currentY + DeltaY).getEntity() == null)){
 		toMove.getMapRelation().map_reference_.removeAvatar((Avatar)toMove);
 		toMove.getMapRelation().map_reference_.addAvatar((Avatar)toMove, currentX + DeltaX, currentY + DeltaY);
 	}

@@ -48,8 +48,8 @@ public class MapAvatar_Relation extends MapEntity_Relation {
 	int currentY = toMove.getMapRelation().getMyYCordinate();
     	
     	if(map_reference_.getTile(currentX + DeltaX,currentY + DeltaY).isPassable()){
-		toMove.getMapRelation().map_reference_.removeAvatar(toMove);
-		toMove.getMapRelation().map_reference_.addAvatar(toMove, currentX + DeltaX, currentY + DeltaY);
+		toMove.getMapRelation().map_reference_.removeAvatar((Avatar)toMove);
+		toMove.getMapRelation().map_reference_.addAvatar((Avatar)toMove, currentX + DeltaX, currentY + DeltaY);
 	}
     }
 }

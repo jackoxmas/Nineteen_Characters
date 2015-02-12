@@ -32,7 +32,7 @@ public class MapAvatar_Relation extends MapEntity_Relation {
 	 */
 	@Override
 	public void spawn(Entity toSpawn, int time_until_spawn) {
-		map_reference_.addAvatar((Avatar)toSpawn, this.getRespawnPointX(), this.getRespawnPointY());
+		toSpawn.getMapRelation().map_reference_.addAvatar((Avatar)toSpawn, this.getRespawnPointX(), this.getRespawnPointY());
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class MapAvatar_Relation extends MapEntity_Relation {
     	int currentX = this.getMyXCordinate();
     	int currentY = this.getMyYCordinate();
     	
-    	map_reference_.removeAvatar((Avatar)toMove);
-    	map_reference_.addAvatar((Avatar)toMove, currentX + DeltaX, currentY + DeltaY);
+    	toMove.getMapRelation().map_reference_.removeAvatar((Avatar)toMove);
+    	toMove.getMapRelation().map_reference_.addAvatar((Avatar)toMove, currentX + DeltaX, currentY + DeltaY);
     }
 }

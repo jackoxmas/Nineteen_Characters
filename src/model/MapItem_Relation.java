@@ -24,4 +24,8 @@ public class MapItem_Relation extends MapDrawableThing_Relation {
     }
     private final boolean goes_in_inventory_;
     private final boolean is_one_shot_;
+    
+    public void removeItem(Item item){
+    	
+    }
 }

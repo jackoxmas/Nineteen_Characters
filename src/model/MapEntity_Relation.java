@@ -31,7 +31,9 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     public void spawn(Entity toSpawn, int time_until_spawn) {
 
     }
-
+    /**
+     * Moves an entity in a direction
+     */
     public void moveInDirection(Entity toMove, int DeltaX, int DeltaY) {
 
     }

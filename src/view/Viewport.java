@@ -11,6 +11,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import src.Vector2;
+
 /**
  * Abstract view class that the views inherit from.
  * @author Matthew B, JohnReedLOL
@@ -91,6 +93,15 @@ abstract class Viewport implements Serializable {
 		for(int i = 0; i!=in.length();++i){view_contents_[x+i][y] = in.charAt(i);}
 		return true;
 	}
+	/**
+	 * Writes the string given into view from the given starting coords. 
+	 * @returns false if not enough room/invalidposition
+	 * @param Vector2 coord, String in. Starting coords, and string to write.
+	 * 
+	*/
+	protected boolean writeStringToContents(Vector2 coord, String in){
+		return writeStringToContents(coord.x(),coord.y(),in);
+	}
 	  /**
      * @returns false if not enough room /invalid position
      * @param int x, int y, int length, int width. Starting position + size.
@@ -119,7 +130,14 @@ abstract class Viewport implements Serializable {
     	return true;
     	
     }
-  
+	  /**
+     * @returns false if not enough room /invalid position
+     * @param Vector2 coord, int length, int width. Starting position + size.
+     *
+     */
+  protected boolean makeSquare(Vector2 coord, Vector2 size){
+	  return makeSquare(coord.x(),coord.y(),size.x(),size.y());
+  }
 
 	
 }

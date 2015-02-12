@@ -45,3 +45,11 @@
 /src/view/#Viewport.java#
 /src/view/ASCIIART/smasher.txt~
 /src/view/ASCIIART/sneaker.txt~
+/src/Vector2.class
+/src/model/MapAvatar_Relation.class
+/src/model/MapDisplay_Relation.class
+/src/model/MapDrawableThing_Relation.class
+/src/model/MapEntity_Relation.class
+/src/model/MapItem_Relation.class
+/src/model/MapMain_Relation.class
+/src/model/MapTerrain_Relation.class

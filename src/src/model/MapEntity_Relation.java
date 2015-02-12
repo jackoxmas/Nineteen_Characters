@@ -39,7 +39,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      * @author John-Michael Reed
      */
     public int moveInDirection(int x, int y) {
-        return entity_.getMapRelation().pushEntityInDirection(entity_, x, y);
+        return super.pushEntityInDirection(entity_, x, y);
     }
 
     public void sendAttack(Entity attacker, int x, int y) {

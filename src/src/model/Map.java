@@ -163,8 +163,17 @@ final class Map implements Serializable {
         return this.entity_list_.get(name);
     }
 
+    /**
+     * Returns null if tile is outside the map
+     * @param x_pos
+     * @param y_pos
+     * @return 
+     */
     public MapTile getTile(int x_pos, int y_pos) {
-        return map_grid_[x_pos][y_pos];
+        if(x_pos < 0 || y_pos < 0 || x_pos >= map_grid_[0].length || y_pos >= map_grid_.length) {
+            return null;
+        }
+        return map_grid_[y_pos][x_pos];
     }
     // String is the entity's name. The entity name must be unqiue or else bugs will occur.
     private LinkedHashMap<String, Entity> entity_list_;

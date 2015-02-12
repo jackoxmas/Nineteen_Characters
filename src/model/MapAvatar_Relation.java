@@ -25,4 +25,29 @@ public class MapAvatar_Relation extends MapEntity_Relation {
     public Avatar getAvatar() {
         return avatar_;
     }
+
+	/**
+	 * This function Spawns an Avatar at the specified Location
+	 * @author reidholsen
+	 */
+	@Override
+	public void spawn(Entity toSpawn, int time_until_spawn) {
+		map_reference_.addAvatar((Avatar)toSpawn, this.getRespawnPointX(), this.getRespawnPointY());
+	}
+	
+	/**
+     * This function will move an Entity in the specified direction with the specified amount.
+     * @param toMove
+     * @param DeltaX
+     * @param DeltaY
+     * @author reidholsen
+     */
+	@Override
+    public void moveInDirection(Entity toMove, int DeltaX, int DeltaY) {
+    	int currentX = this.getMyXCordinate();
+    	int currentY = this.getMyYCordinate();
+    	
+    	map_reference_.removeAvatar((Avatar)toMove);
+    	map_reference_.addAvatar((Avatar)toMove, currentX + DeltaX, currentY + DeltaY);
+    }
 }

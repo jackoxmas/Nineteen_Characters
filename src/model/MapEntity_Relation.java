@@ -50,7 +50,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
 		int currentX = toMove.getMapRelation().getMyXCordinate();
 		int currentY = toMove.getMapRelation().getMyYCordinate();
 
-		if(map_reference_.getTile(currentX + DeltaX,currentY + DeltaY).isPassable() &&
+		if(map_reference_.getTile(currentX + DeltaX,currentY + DeltaY).isPassable(toMove) &&
 				(map_reference_.getTile(currentX + DeltaX,currentY + DeltaY).getEntity() == null)){
 			toMove.getMapRelation().map_reference_.removeEntity(toMove);
 			toMove.getMapRelation().map_reference_.addEntity(toMove, currentX + DeltaX, currentY + DeltaY);

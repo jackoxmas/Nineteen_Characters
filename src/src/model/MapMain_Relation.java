@@ -16,8 +16,8 @@ import src.controller.Terrain;
  */
 public class MapMain_Relation {
 
-    private final Map map_reference_ = Map.getMyReferanceToTheMap(this);
-
+    //private final Map map_reference_ = Map.getMyReferanceToTheMap(this);
+    // private final Map map_reference_ = Map.getMyReferanceToTheMap(this);
     /**
      * Adds an avatar to the map
      *

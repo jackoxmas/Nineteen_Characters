@@ -22,24 +22,24 @@ import src.controller.Terrain;
 final class Map implements Serializable {
 
     // Set this to false if not debugging.
-    public static boolean NDEBUG_ = true;
+    //public static boolean NDEBUG_ = true;
 
     // MAP MUST BE SQUARE
     public static final int debug_map_height_ = 3;
     public static final int debug_map_width_ = 3;
 
-    public static final int map_height_ = 10;
-    public static final int map_width_ = 20;
+    //public static final int map_height_ = 10;
+    //public static final int map_width_ = 20;
 
     private Map() {
-        if (NDEBUG_) {
+        //if (NDEBUG_) {
             map_grid_ = new MapTile[debug_map_height_][debug_map_width_];
             for (int i = 0; i < debug_map_height_; ++i) {
                 for (int j = 0; j < debug_map_width_; ++j) {
                     map_grid_[i][j] = new MapTile(j, i); //switch rows and columns
                 }
             }
-        } else {
+        /*} else {
             map_grid_ = new MapTile[map_height_][map_width_];
             for (int i = 0; i < map_height_; ++i) {
                 for (int j = 0; j < map_width_; ++j) {
@@ -47,14 +47,16 @@ final class Map implements Serializable {
                 }
             }
         }
+        */
         avatar_list_ = new LinkedHashMap();
         entity_list_ = new LinkedHashMap();
         time_measured_in_turns = 0;
     }
 
     // MapModel.map_model_ is static because there is only one map_model_  
-    private static final Map the_map_ = new Map();
+    //private static final Map the_map_ = new Map();
 
+    /*
     public static Map getMyReferanceToTheMapGrid(MapDisplay_Relation m) {
         return Map.the_map_;
     }
@@ -66,7 +68,7 @@ final class Map implements Serializable {
     public static Map getMyReferanceToTheMap(MapMain_Relation m) {
         return Map.the_map_;
     }
-
+    */
     // Converts the class name into a base 35 number
     private static final long serialVersionUID = Long.parseLong("MapModel", 35);
 

@@ -40,3 +40,4 @@ final class StatsView extends Viewport
     }
 
 }
+

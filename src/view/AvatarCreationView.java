@@ -57,6 +57,7 @@ final class AvatarCreationView extends Viewport
     		writeStringToContents(midpoint,heightFromBottom+i,summonerArt_.get(i));
     	}
     }
+=======
     /*
      * Generates a new ChaAvatarCreationViewses avatar_reference_ to modify the avatar.
      */

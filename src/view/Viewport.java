@@ -21,7 +21,6 @@ abstract class Viewport implements Serializable {
     private static final long serialVersionUID = Long.parseLong("View", 35);
     public static final int height_=40;
     public static final int length_=80;
-	
 	private char[][] view_contents_;
 	private Display display_;
 

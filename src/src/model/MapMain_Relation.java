@@ -50,17 +50,11 @@ public class MapMain_Relation {
      */
     public int addAvatar(Avatar a, int x, int y) {
         int error_code = current_map_reference_.addAvatar(a, x, y);
-        if (error_code == 0) {
-            a.getMapRelation().associateWithMap(current_map_reference_);
-        }
         return error_code;
     }
 
     public int addEntity(Entity e, int x, int y) {
         int error_code = current_map_reference_.addEntity(e, x, y);
-        if (error_code == 0) {
-            e.getMapRelation().associateWithMap(current_map_reference_);
-        }
         return error_code;
     }
 
@@ -76,9 +70,6 @@ public class MapMain_Relation {
 
     public int addItem(Item i, int x, int y) {
         int error_code = current_map_reference_.addItem(i, x, y);
-        if (error_code == 0) {
-            i.getMapRelation().associateWithMap(current_map_reference_);
-        }
         return error_code;
     }
 

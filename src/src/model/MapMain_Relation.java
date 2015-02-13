@@ -16,8 +16,28 @@ import src.controller.Terrain;
  */
 public class MapMain_Relation {
 
-    private final Map map_reference_ = Map.getMyReferanceToTheMap(this);
-
+    //private final Map map_reference_ = Map.getMyReferanceToTheMap(this);
+    private Map current_map_reference_;
+    
+    /**
+     * Creates a new map and associates this maprelation with that map.
+     * This is the first function that a new MapMain_Relation must call.
+     * @author John-Michael Reed
+     * @param x - width of the map
+     * @param y - height of the map
+     */
+    public void createNewMap(int x, int y) {
+        current_map_reference_ = new Map(x,y);
+    }
+    
+    public MapMain_Relation() {
+        current_map_reference_ = null;
+    }
+    
+    public Map getMyMap() {
+        return current_map_reference_;
+    }
+    
     /**
      * Adds an avatar to the map
      *
@@ -27,31 +47,31 @@ public class MapMain_Relation {
      * @return -1 on fail, 0 on success
      */
     public int addAvatar(Avatar a, int x, int y) {
-        return map_reference_.addAvatar(a, x, y);
+        return current_map_reference_.addAvatar(a, x, y);
     }
 
     public int addEntity(Entity e, int x, int y) {
-        return map_reference_.addEntity(e, x, y);
+        return current_map_reference_.addEntity(e, x, y);
     }
 
     public int removeAvatar(Avatar a) {
-        return map_reference_.removeAvatar(a);
+        return current_map_reference_.removeAvatar(a);
     }
 
     public int removeEntity(Entity e) {
-        return map_reference_.removeEntity(e);
+        return current_map_reference_.removeEntity(e);
     }
 
     public int addItem(Item i, int x, int y) {
-        return map_reference_.addItem(i, x, y);
+        return current_map_reference_.addItem(i, x, y);
     }
 
     public Item removeTopItem(Item i, int x, int y) {
-        return map_reference_.removeTopItem(i, x, y);
+        return current_map_reference_.removeTopItem(i, x, y);
     }
     
     public MapTile getTile(int x, int y) {
-        return map_reference_.getTile(x, y);
+        return current_map_reference_.getTile(x, y);
     }
 
     /**
@@ -62,6 +82,6 @@ public class MapMain_Relation {
      * @return error code
      */
     public int initializeTerrain(Terrain t, int x, int y) {
-        return map_reference_.initializeTerrain(t, x, y);
+        return current_map_reference_.initializeTerrain(t, x, y);
     }
 }

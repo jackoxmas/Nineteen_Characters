@@ -13,7 +13,7 @@ import src.view.Display;
  */
 public class MapDisplay_Relation {
 
-    private final Map map_reference_ = Map.getMyReferanceToTheMapGrid(this);
+    private Map current_map_reference_;
     private final Display display_;
 
     public MapDisplay_Relation(Display display) {
@@ -21,18 +21,26 @@ public class MapDisplay_Relation {
     }
 
     /**
+     * This function must be called to associate a map_relation with a map.
+     */
+    public void associateWithMap(Map m) {
+        current_map_reference_ = m;
+    }
+
+    /**
      * Gets the character representation of a tile
+     *
      * @author John-Michael Reed
      * @param x
      * @param y
      * @return error code: returns empty space if the tile is off the map
      */
     public char getTileRepresentation(int x, int y) {
-        MapTile tile_at_x_y = map_reference_.getTile(x, y);
+        MapTile tile_at_x_y = current_map_reference_.getTile(x, y);
         if (tile_at_x_y == null) {
             return ' ';
         } else {
-        return tile_at_x_y.getTopCharacter();
+            return tile_at_x_y.getTopCharacter();
         }
     }
 }

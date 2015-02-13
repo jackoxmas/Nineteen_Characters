@@ -37,17 +37,19 @@ public class MapDrawableThing_Relation {
     public void setMapTile(MapTile new_tile) {
         my_tile_ = new_tile;
     }
-    
+
     /**
      * Moves an entity without removing it from the list of entities
+     *
      * @param entity The entity to be moved
      * @param x - distance to push in the x direction
-     * @param y  - distance to push in the y direction
-     * @return error codes: -1 if tile is taken, -2 if entity is null, -3 if entity cannot be found, -4 if tile is off the map
+     * @param y - distance to push in the y direction
+     * @return error codes: -1 if tile is taken, -2 if entity is null, -3 if
+     * entity cannot be found, -4 if tile is off the map
      * @author John-Michael Reed
      */
     public int pushEntityInDirection(Entity e, int delta_x, int delta_y) {
-        if(e == null) {
+        if (e == null) {
             return -2;
         }
         int old_x = e.getMapRelation().getMyXCordinate();
@@ -62,10 +64,11 @@ public class MapDrawableThing_Relation {
             } else { // move the entity
                 return move_tile.addEntity(e);
             }
+        } else {
+            return -3;
         }
-        return -3;
     }
-    
+
     //area effects
     public void hurtWithinRadius(int damage, int radius) {
 

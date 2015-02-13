@@ -62,7 +62,7 @@ abstract public class Entity extends DrawableThing {
         return occupation_;
     }
     
-    public void addToInventory(Item item){
+    public void addItemToInventory(Item item) {
         
     }
 }

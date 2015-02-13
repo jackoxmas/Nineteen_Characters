@@ -61,8 +61,14 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     public void subtractStatsPack(StatsPack stats_pack) {
 
     }
-    
-    public void pickUpItem(Item item) {
-        
+    /**
+     * An item underneath you can be picked up using the parameters 0,0
+     * @param x
+     * @param y 
+     * @return error_code:
+     */
+    public int pickUpItemInDirection(int x, int y) {
+        int error_code = 0;
+        return error_code;
     }
 }

@@ -40,6 +40,23 @@ public class Main {
         } catch(Exception e) {
             System.out.println("success - avatar walked off map");
         }
+        
+        //a.getMapRelation().addStatsPack(stats_pack);
+        System.out.println(a == a.getMapRelation().getAvatar());
+        System.out.println(
+        m.getTile(a.getMapRelation().getMyXCordinate(), 
+                a.getMapRelation().getMyYCordinate()) 
+                == a.getMapRelation().getMapTile()
+        );
+        a.getMapRelation().addStatsPack(null);
+        a.getMapRelation().subtractStatsPack(null);
+        a.getMapRelation().hurtWithinRadius(10, 5);
+        a.getMapRelation().healWithinRadius(10, 1);
+        a.getMapRelation().killWithinRadius(true, false, 1); 
+        a.getMapRelation().levelUpWithinRadius(true, false, 1);
+        a.getMapRelation().pickUpItemInDirection(0, 0);
+        a.addItemToInventory(null);
+        a.get_my_display();
     }
 
     public static void testMoveAvatar(Avatar a, int x, int y) {

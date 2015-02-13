@@ -12,7 +12,7 @@ import src.controller.Terrain;
 
 /**
  * Allows for the initialization of the map.
- * @author JohnMichaelReed
+ * @author JohnMichaelReed (includes inner functions)
  */
 public class MapMain_Relation {
 
@@ -48,6 +48,10 @@ public class MapMain_Relation {
 
     public Item removeTopItem(Item i, int x, int y) {
         return map_reference_.removeTopItem(i, x, y);
+    }
+    
+    public MapTile getTile(int x, int y) {
+        return map_reference_.getTile(x, y);
     }
 
     /**

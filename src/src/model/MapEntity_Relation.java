@@ -42,27 +42,27 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         return super.pushEntityInDirection(entity_, x, y);
     }
 
-    public void sendAttack(Entity attacker, int x, int y) {
+    public void sendAttack(int x, int y) {
 
     }
 
-    public void recieveAttack(Entity attack_reciever, int damage) {
+    public void recieveAttack(int damage) {
 
     }
 
-    public void levelUpEntity(Entity entity, StatsPack stats_pack) {
+    public void levelUp(StatsPack stats_pack) {
 
     }
 
-    public void addStatsPackToEntity(Entity entity, StatsPack stats_pack) {
+    public void addStatsPack(StatsPack stats_pack) {
 
     }
 
-    public void subtractStatsPackFromEntity(Entity entity, StatsPack stats_pack) {
+    public void subtractStatsPack(StatsPack stats_pack) {
 
     }
     
-    public void entityPickUpItem(Entity entity, Item item) {
+    public void pickUpItem(Item item) {
         
     }
 }

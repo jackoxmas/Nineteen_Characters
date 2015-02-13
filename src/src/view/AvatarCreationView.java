@@ -14,7 +14,7 @@ import src.controller.Entity;
  * Players see the AvatarCreationView when they chose their occupation.
  * @author Matthew B, Jessan, JohnReedLOL
  */
-final class AvatarCreationView extends Viewport
+public final class AvatarCreationView extends Viewport
 {
     // Converts the class name into a base 35 number
     private static final long serialVersionUID = Long.parseLong("CCView", 35);
@@ -106,7 +106,7 @@ final class AvatarCreationView extends Viewport
     }
 	@Override
 	public void renderToDisplay() {
-		// TODO Auto-generated method stub
+		// Nothing to do here, this view is static. 
 		
 	}
 }

@@ -123,12 +123,22 @@ final class MapTile implements Serializable {
     }
 
     /**
-     * Checks the tile to find its character representation
-     *
+     * Checks the tile to gets its character representation
+     * Returns empty space when tile is empty 
      * @return the character that will represent this tile on the map
+     * @author Reed, John
      */
     public char getTopCharacter() {
-        return 0;
+        if (!items_.isEmpty()) {
+            return items_.peekLast().getRepresentation();
+        }
+        else if (entity_ != null) {
+            return entity_.getRepresentation();
+        }
+        else if (terrain_ != null) {
+            return terrain_.getRepresentation();
+        } else {
+            return ' ';
+        }
     }
 }
-

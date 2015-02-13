@@ -2,6 +2,7 @@ package src;
 
 import src.controller.Avatar;
 import src.controller.Entity;
+import src.model.MapDisplay_Relation;
 import src.model.MapMain_Relation;
 
 /*
@@ -27,9 +28,13 @@ public class Main {
     }
 
     public static void testEverything() {
-        MapMain_Relation m = new MapMain_Relation();
+        MapMain_Relation map_main = new MapMain_Relation();
         Avatar a = new Avatar("a", 'x', 0, 0);
-        System.out.println("Adding avatar. Error code: " + m.addAvatar(a, 0, 0));
+        System.out.println("Adding avatar. Error code: " + map_main.addAvatar(a, 0, 0));
+        MapDisplay_Relation map_display = new MapDisplay_Relation(null);
+        System.out.println( "representation of avatar: " + map_display.getTileRepresentation(0, 0) );
+        System.out.println( "representation of empty space: " + map_display.getTileRepresentation(1, 0) );
+        //a.getMapRelation().getMapTile().getTopCharacter();
         System.out.println("x cordinate: " + a.getMapRelation().getMyXCordinate());
         System.out.println("y cordinate: " + a.getMapRelation().getMyYCordinate());
 
@@ -44,7 +49,7 @@ public class Main {
         //a.getMapRelation().addStatsPack(stats_pack);
         System.out.println(a == a.getMapRelation().getAvatar());
         System.out.println(
-        m.getTile(a.getMapRelation().getMyXCordinate(), 
+        map_main.getTile(a.getMapRelation().getMyXCordinate(), 
                 a.getMapRelation().getMyYCordinate()) 
                 == a.getMapRelation().getMapTile()
         );

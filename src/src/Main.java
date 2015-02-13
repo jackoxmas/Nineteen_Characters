@@ -29,9 +29,12 @@ public class Main {
 
     public static void testEverything() {
         MapMain_Relation map_main = new MapMain_Relation();
+        map_main.createNewMap(3, 3);
         Avatar a = new Avatar("a", 'x', 0, 0);
+        a.getMapRelation().associateWithMap(map_main.getMyMap());
         System.out.println("Adding avatar. Error code: " + map_main.addAvatar(a, 0, 0));
         MapDisplay_Relation map_display = new MapDisplay_Relation(null);
+        map_display.associateWithMap(map_main.getMyMap());
         System.out.println( "representation of avatar: " + map_display.getTileRepresentation(0, 0) );
         System.out.println( "representation of empty space: " + map_display.getTileRepresentation(1, 0) );
         //a.getMapRelation().getMapTile().getTopCharacter();

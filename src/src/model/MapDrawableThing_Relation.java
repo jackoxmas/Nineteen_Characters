@@ -14,7 +14,7 @@ import src.controller.Entity;
  */
 public class MapDrawableThing_Relation {
 
-    protected final Map map_reference_ = Map.getMyReferanceToTheMap(this);
+    protected Map current_map_reference_ = null;
     private MapTile my_tile_ = null;
     private final DrawableThing drawable_thing_;
 
@@ -24,6 +24,13 @@ public class MapDrawableThing_Relation {
 
     public int getMyXCordinate() {
         return my_tile_.x_;
+    }
+    
+    /**
+     * This function must be called to associate a map_relation with a map.
+     */
+    public void associateWithMap(Map m) {
+        current_map_reference_ = m;
     }
 
     public int getMyYCordinate() {
@@ -54,12 +61,12 @@ public class MapDrawableThing_Relation {
         }
         int old_x = e.getMapRelation().getMyXCordinate();
         int old_y = e.getMapRelation().getMyYCordinate();
-        Entity toMove = map_reference_.getTile(old_x, old_y).getEntity();
+        Entity toMove = current_map_reference_.getTile(old_x, old_y).getEntity();
         if (toMove == e) {
-            map_reference_.getTile(old_x, old_y).removeEntity();
-            MapTile move_tile = map_reference_.getTile(old_x + delta_x, old_y + delta_y);
+            current_map_reference_.getTile(old_x, old_y).removeEntity();
+            MapTile move_tile = current_map_reference_.getTile(old_x + delta_x, old_y + delta_y);
             if (move_tile == null) { // put the entity back in its place
-                map_reference_.getTile(old_x, old_y).addEntity(e);
+                current_map_reference_.getTile(old_x, old_y).addEntity(e);
                 return -4;
             } else { // move the entity
                 return move_tile.addEntity(e);

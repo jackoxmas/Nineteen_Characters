@@ -23,52 +23,65 @@ final class Map implements Serializable {
 
     // Set this to false if not debugging.
     //public static boolean NDEBUG_ = true;
-
     // MAP MUST BE SQUARE
-    public static final int debug_map_height_ = 3;
-    public static final int debug_map_width_ = 3;
+    public final int height_;
+    public final int width_;
+
+    // This should never get called
+    private Map() throws Exception {
+        height_ = 0;
+        width_ = 0;
+        Exception e = new Exception("Do not use this constructor");
+        throw e;
+    }
 
     //public static final int map_height_ = 10;
     //public static final int map_width_ = 20;
-
-    private Map() {
+    public Map(int x, int y) {
         //if (NDEBUG_) {
-            map_grid_ = new MapTile[debug_map_height_][debug_map_width_];
-            for (int i = 0; i < debug_map_height_; ++i) {
-                for (int j = 0; j < debug_map_width_; ++j) {
-                    map_grid_[i][j] = new MapTile(j, i); //switch rows and columns
-                }
-            }
-        /*} else {
-            map_grid_ = new MapTile[map_height_][map_width_];
-            for (int i = 0; i < map_height_; ++i) {
-                for (int j = 0; j < map_width_; ++j) {
-                    map_grid_[i][j] = new MapTile(j, i); //switch rows and columns
-                }
+        height_ = y;
+        width_ = x;
+
+        map_grid_ = new MapTile[height_][width_];
+        for (int i = 0; i < height_; ++i) {
+            for (int j = 0; j < width_; ++j) {
+                map_grid_[i][j] = new MapTile(j, i); //switch rows and columns
             }
         }
-        */
+        /*} else {
+         map_grid_ = new MapTile[map_height_][map_width_];
+         for (int i = 0; i < map_height_; ++i) {
+         for (int j = 0; j < map_width_; ++j) {
+         map_grid_[i][j] = new MapTile(j, i); //switch rows and columns
+         }
+         }
+         }
+         */
         avatar_list_ = new LinkedHashMap();
         entity_list_ = new LinkedHashMap();
         time_measured_in_turns = 0;
+    }
+    
+    private void initializeGrid(int x, int y) {
+        
     }
 
     // MapModel.map_model_ is static because there is only one map_model_  
     //private static final Map the_map_ = new Map();
 
     /*
-    public static Map getMyReferanceToTheMapGrid(MapDisplay_Relation m) {
-        return Map.the_map_;
-    }
+     public static Map getMyReferanceToTheMapGrid(MapDisplay_Relation m) {
+     return Map.the_map_;
+     }
 
-    public static Map getMyReferanceToTheMap(MapDrawableThing_Relation d) {
-        return Map.the_map_;
-    }
+     public static Map getMyReferanceToTheMap(MapDrawableThing_Relation d) {
+     return Map.the_map_;
+     }
 
-    public static Map getMyReferanceToTheMap(MapMain_Relation m) {
-        return Map.the_map_;
-    }
-    */
+     public static Map getMyReferanceToTheMap(MapMain_Relation m) {
+     return Map.the_map_;
+     }
+     */
     // Converts the class name into a base 35 number
     private static final long serialVersionUID = Long.parseLong("MapModel", 35);
 
@@ -110,16 +123,18 @@ final class Map implements Serializable {
         int error_code = this.map_grid_[y][x].addItem(i);
         return error_code;
     }
+
     public Item removeTopItem(Item i, int x, int y) {
         return this.map_grid_[y][x].removeTopItem();
     }
 
     /**
      * Once a tile has terrain, that terrain is constant.
+     *
      * @param t
      * @param x
      * @param y
-     * @return error code 
+     * @return error code
      */
     public int initializeTerrain(Terrain t, int x, int y) {
         int error_code = this.map_grid_[y][x].initializeTerrain(t);
@@ -167,12 +182,13 @@ final class Map implements Serializable {
 
     /**
      * Returns null if tile is outside the map
+     *
      * @param x_pos
      * @param y_pos
-     * @return 
+     * @return
      */
     public MapTile getTile(int x_pos, int y_pos) {
-        if(x_pos < 0 || y_pos < 0 || x_pos >= map_grid_[0].length || y_pos >= map_grid_.length) {
+        if (x_pos < 0 || y_pos < 0 || x_pos >= map_grid_[0].length || y_pos >= map_grid_.length) {
             return null;
         }
         return map_grid_[y_pos][x_pos];

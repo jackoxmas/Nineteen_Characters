@@ -103,6 +103,7 @@ final class Map implements Serializable {
         int error_code = this.map_grid_[y][x].addEntity(a);
         if (error_code == 0) {
             this.avatar_list_.put(a.name_, a);
+            a.getMapRelation().associateWithMap(this);
             return 0;
         } else {
             return error_code;
@@ -113,6 +114,7 @@ final class Map implements Serializable {
         int error_code = this.map_grid_[y][x].addEntity(e);
         if (error_code == 0) {
             this.entity_list_.put(e.name_, e);
+            e.getMapRelation().associateWithMap(this);
             return 0;
         } else {
             return error_code;
@@ -121,6 +123,9 @@ final class Map implements Serializable {
 
     public int addItem(Item i, int x, int y) {
         int error_code = this.map_grid_[y][x].addItem(i);
+        if (error_code == 0) {
+            i.getMapRelation().associateWithMap(this);
+        }
         return error_code;
     }
 

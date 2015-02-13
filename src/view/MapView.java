@@ -23,6 +23,8 @@ final class MapView extends Viewport {
     private final int xPos_;
     private char[][] view_contents_;
     private final int yPos_;
+    private int x_;
+    private int y_;//Set these to center via avatar later.
     /*
      * Generates a new MapView from the map using coordinates x and y.
      */
@@ -36,5 +38,12 @@ final class MapView extends Viewport {
 	public void renderToDisplay() {
 		// TODO Auto-generated method stub
 		
+	}
+	private void render(){
+		for(int i = x_;i!=x_+length_;++i){
+			for(int j = y_;j!=y_+height_;++j){
+				view_contents_[i][j] = map_relationship_.getTileRepresentation(i,j);
+			}
+		}
 	}
 }

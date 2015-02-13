@@ -1,4 +1,4 @@
-package src;
+package src.src;
 
 import src.controller.Avatar;
 import src.controller.Entity;

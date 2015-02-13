@@ -19,6 +19,7 @@ final class StatsView extends Viewport
     private static final long serialVersionUID = Long.parseLong("StatsView", 35);
 	
     private char[][] view_contents_;
+    private ArrayList< ArrayList<Character>> render;
     private final Avatar avatar_reference_;
     private void renderStats(){
     	//code to get stats from avatar
@@ -32,7 +33,10 @@ final class StatsView extends Viewport
 	    }
 	@Override
 	public void renderToDisplay() {
-		// TODO Auto-generated method stub
-		
+	render = new ArrayList< ArrayList<Character>>(length);
+	for(ArrayList<Character> i : render){
+	    i = new ArrayList<Character>(width);
 	}
+    }
+
 }

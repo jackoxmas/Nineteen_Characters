@@ -10,6 +10,7 @@
 /src/controller/.gitignore
 /src/model/.gitignore
 /src/view/.gitignore
+<<<<<<< HEAD
 /.metadata/
 /src/.metadata/
 /src/Main.class
@@ -45,3 +46,13 @@
 /src/view/#Viewport.java#
 /src/view/ASCIIART/smasher.txt~
 /src/view/ASCIIART/sneaker.txt~
+=======
+>>>>>>> Began building the stats view
+/src/Vector2.class
+/src/model/MapAvatar_Relation.class
+/src/model/MapDisplay_Relation.class
+/src/model/MapDrawableThing_Relation.class
+/src/model/MapEntity_Relation.class
+/src/model/MapItem_Relation.class
+/src/model/MapMain_Relation.class
+/src/model/MapTerrain_Relation.class

@@ -22,6 +22,7 @@ final class AvatarCreationView extends Viewport
 
     private final Avatar avatar_reference_;
     private char[][] view_contents_;
+
     private ArrayList<String> title_;
     private ArrayList<String> smasherArt_;
     private ArrayList<String> sneakerArt_;
@@ -33,6 +34,7 @@ final class AvatarCreationView extends Viewport
     	for(int i = 0; i!=title_.size();++i){
     		writeStringToContents(5,1+i,title_.get(i));
     	}
+
     	int heightFromBottom = height_-sneakerArt_.size()-1;
     	for(int i = 0; i!=sneakerArt_.size();++i){
     		int offCenteredLength = length_/2-sneakerArt_.get(0).length()/2;
@@ -56,12 +58,16 @@ final class AvatarCreationView extends Viewport
     	for(int i = 0; i!=summonerArt_.size();++i){
     		writeStringToContents(midpoint,heightFromBottom+i,summonerArt_.get(i));
     	}
+
+
     }
+
     /*
      * Generates a new ChaAvatarCreationViewses avatar_reference_ to modify the avatar.
      */
     public AvatarCreationView(Avatar my_avatar) {
     	avatar_reference_ = my_avatar;
+
     	view_contents_=new char[length_][height_];
     	makeSquare(0,0,length_-1,height_-1);//This is a static view, no need to dynamically render it each turn.
 		title_ = getAsciiArtFromFile("src/view/ASCIIART/class.txt");
@@ -69,6 +75,34 @@ final class AvatarCreationView extends Viewport
 		sneakerArt_ = getAsciiArtFromFile("src/view/ASCIIART/sneaker.txt");
 		summonerArt_ = getAsciiArtFromFile("src/view/ASCIIART/summoner.txt");
 		renderArray();
+
+    	makeSquare(0,0,length_-1,height_-1);//This is a static view, no need to dynamically render it each turn.
+
+    	view_contents_=new char[length_][height_];
+    	makeSquare(0,0,length_-1,height_-1);//This is a static view, no need to dynamically render it each turn.
+
+		title_ = getAsciiArtFromFile("src/view/ASCIIART/class.txt");
+		smasherArt_ = getAsciiArtFromFile("src/view/ASCIIART/smasher.txt");
+		sneakerArt_ = getAsciiArtFromFile("src/view/ASCIIART/sneaker.txt");
+		summonerArt_ = getAsciiArtFromFile("src/view/ASCIIART/summoner.txt");
+		renderArray();
+
+
+    	view_contents_=new char[length_][height_];
+
+
+
+    	makeSquare(0,0,length_-1,height_-1);//This is a static view, no need to dynamically render it each turn.
+
+    	view_contents_=new char[length_][height_];
+    	makeSquare(0,0,length_-1,height_-1);//This is a static view, no need to dynamically render it each turn.
+
+		title_ = getAsciiArtFromFile("src/view/ASCIIART/class.txt");
+		smasherArt_ = getAsciiArtFromFile("src/view/ASCIIART/smasher.txt");
+		sneakerArt_ = getAsciiArtFromFile("src/view/ASCIIART/sneaker.txt");
+		summonerArt_ = getAsciiArtFromFile("src/view/ASCIIART/summoner.txt");
+		renderArray();
+
     }
 	@Override
 	public void renderToDisplay() {

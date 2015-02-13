@@ -2,6 +2,7 @@
 /src/view/#AvatarCreationView.java#
 /src/view/.#AvatarCreationView.java
 /.classpath
+<<<<<<< HEAD
 /.project
 /build.xml
 /src/.classpath
@@ -56,6 +57,15 @@
 /src/model/MapTerrain_Relation.class
 /src/src/Main.class
 /.gitignore
+=======
+/.metadata/
+/.project
+/.settings/
+/src/.classpath
+/src/.project
+/src/.settings/
+/src/src/Main.class
+>>>>>>> master
 /src/src/Vector2.class
 /src/src/controller/Avatar.class
 /src/src/controller/AvatarController.class

@@ -16,7 +16,7 @@ import src.controller.Terrain;
  *
  * @author JohnReedLOL
  */
-public final class MapTile implements Serializable {
+final class MapTile implements Serializable {
 
     // Converts the class name into a base 35 number
     private static final long serialVersionUID = Long.parseLong("MapTile", 35);
@@ -55,7 +55,7 @@ public final class MapTile implements Serializable {
      * Only works if there in no entity there already.
      *
      * @param entity - entity to be added to the tile
-     * @return Returns 0 on success, non-zero if an entity is already there.
+     * @return error codes: -1 if an entity is already there.
      */
     public int addEntity(Entity entity) {
         if (this.entity_ == null && entity != null) {
@@ -76,8 +76,8 @@ public final class MapTile implements Serializable {
         if (this.entity_ == null) {
             return -1;
         } else {
-            this.entity_ = null;
             this.entity_.getMapRelation().setMapTile(null);
+            this.entity_ = null;
             return 0;
         }
     }

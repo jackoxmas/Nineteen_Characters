@@ -32,33 +32,43 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     }
     /**
-     * Moves an entity in a direction
+     * Moves the entity that this relation refers to over x and up y
+     * @param x x displacement
+     * @param y y displacement
+     * @return error codes: see function pushEntityInDirection() in MapDrawableThing_Relation
+     * @author John-Michael Reed
      */
-    public void moveInDirection(Entity toMove, int DeltaX, int DeltaY) {
+    public int moveInDirection(int x, int y) {
+        return super.pushEntityInDirection(entity_, x, y);
+    }
+
+    public void sendAttack(int x, int y) {
 
     }
 
-    public void sendAttack(Entity attacker, int x, int y) {
+    public void recieveAttack(int damage) {
 
     }
 
-    public void recieveAttack(Entity attack_reciever, int damage) {
+    public void levelUp(StatsPack stats_pack) {
 
     }
 
-    public void levelUpEntity(Entity entity, StatsPack stats_pack) {
+    public void addStatsPack(StatsPack stats_pack) {
 
     }
 
-    public void addStatsPackToEntity(Entity entity, StatsPack stats_pack) {
+    public void subtractStatsPack(StatsPack stats_pack) {
 
     }
-
-    public void subtractStatsPackFromEntity(Entity entity, StatsPack stats_pack) {
-
-    }
-    
-    public void entityPickUpItem(Entity entity, Item item) {
-        
+    /**
+     * An item underneath you can be picked up using the parameters 0,0
+     * @param x
+     * @param y 
+     * @return error_code:
+     */
+    public int pickUpItemInDirection(int x, int y) {
+        int error_code = 0;
+        return error_code;
     }
 }

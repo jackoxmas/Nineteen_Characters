@@ -40,6 +40,14 @@ public class Main {
         } catch(Exception e) {
             System.out.println("success - avatar walked off map");
         }
+        
+        //a.getMapRelation().addStatsPack(stats_pack);
+        System.out.println(a == a.getMapRelation().getAvatar());
+        System.out.println(
+        m.getTile(a.getMapRelation().getMyXCordinate(), 
+                a.getMapRelation().getMyYCordinate()) 
+                == a.getMapRelation().getMapTile()
+        );
     }
 
     public static void testMoveAvatar(Avatar a, int x, int y) {

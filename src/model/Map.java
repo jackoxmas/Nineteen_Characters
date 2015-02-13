@@ -55,8 +55,8 @@ final class Map implements Serializable {
     // MapModel.map_model_ is static because there is only one map_model_  
     private static final Map the_map_ = new Map();
 
-    public static MapTile[][] getMyReferanceToTheMapGrid(MapDisplay_Relation m) {
-        return Map.the_map_.map_grid_;
+    public static Map getMyReferanceToTheMapGrid(MapDisplay_Relation m) {
+        return Map.the_map_;
     }
 
     public static Map getMyReferanceToTheMap(MapDrawableThing_Relation d) {

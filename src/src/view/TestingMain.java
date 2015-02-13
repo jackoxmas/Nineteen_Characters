@@ -26,8 +26,8 @@ public class TestingMain {
 		ViewPortTester Tester = new ViewPortTester();
 		printArray(Tester);
 		System.out.println("Done with viewportTester, ccviewtime!");
-		AvatarCreationView ccview = new AvatarCreationView(avatar);
-		printArray(ccview);
+		Display _display = new Display(new AvatarCreationView(avatar));
+		_display.printView();
 
 	}
 

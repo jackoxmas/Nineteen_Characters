@@ -17,7 +17,7 @@ import src.Vector2;
  * Abstract view class that the views inherit from.
  * @author Matthew B, JohnReedLOL
  */
-abstract class Viewport implements Serializable {
+public abstract class Viewport implements Serializable {
 
     // Converts the class name into a base 35 number
     private static final long serialVersionUID = Long.parseLong("View", 35);

@@ -33,9 +33,9 @@ final class StatsView extends Viewport
 	    }
 	@Override
 	public void renderToDisplay() {
-	render = new ArrayList< ArrayList<Character>>(length);
+	render = new ArrayList< ArrayList<Character>>(length_);
 	for(ArrayList<Character> i : render){
-	    i = new ArrayList<Character>(width);
+	    i = new ArrayList<Character>(height_);
 	}
     }
 

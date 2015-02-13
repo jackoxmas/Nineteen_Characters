@@ -1,6 +1,6 @@
 /**
  * Implementor: Alex Stewart
- * Last Access: 15-02-10
+ * Last Access: 15-02-13
  */
 package src;
 import java.io.*;
@@ -15,7 +15,7 @@ import java.io.*;
  */
 public class Vector2 implements Comparable, Serializable {
     
-    // Class priate values
+    // Class private values
     private Integer x_, y_;
     
     // <editor-fold desc="CONSTRUCTORS" defaultstate="collapsed">
@@ -267,7 +267,7 @@ public class Vector2 implements Comparable, Serializable {
     
     /* SERIALIZABLE */
     // Serialization version ID
-    private static final long serialVersionUID = Long.parseLong("COPVECTOR2", 35);
+    private static final long serialVersionUID = Long.parseLong("VECTOR2", 35);
     
     /**
      * Reads byte data from an ObjectInputStream and uses it to populate this 

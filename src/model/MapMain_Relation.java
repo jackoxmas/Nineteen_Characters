@@ -17,7 +17,15 @@ import src.controller.Terrain;
  */
 public class MapMain_Relation {
 
-    private final Map map_reference_ = Map.getMyReferanceToTheMap(this);
+    private Map map_reference_;
+
+    public MapMain_Relation(){
+        map_reference_ = Map.getMyReferanceToTheMap(this);
+    }
+
+    private MapMain_Relation(Map map) {
+        map_reference_ = map;
+    }
 
     /**
      * Adds an avatar to the map
@@ -33,9 +41,6 @@ public class MapMain_Relation {
 
     public int addEntity(Entity e, int x, int y) {
         return map_reference_.addEntity(e, x, y);
-    }
-    
-    public int deserializeMap(java.io.ObjectInputStream inputStream) {
     }
 
     public int removeAvatar(Avatar a) {
@@ -64,4 +69,33 @@ public class MapMain_Relation {
     public int initializeTerrain(Terrain t, int x, int y) {
         return map_reference_.initializeTerrain(t, x, y);
     }
+    
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    /**
+     * Build a Map and MapMain_Relation from the serialization stream.
+     * @param inStream The java.io.ObjectInputStream to pull data from
+     * @throws Exception 
+     */
+    public static MapMain_Relation deserializeMap(java.io.ObjectInputStream inStream) throws Exception {
+        try {
+            MapMain_Relation mmr = new MapMain_Relation((Map)inStream.readObject());
+            return mmr;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    /**
+     * Write the Map to the serialization stream
+     * @param outStream The java.io.ObjectOutputStream to push data to
+     * @throws Exception 
+     */
+    public void serializeMap(java.io.ObjectOutputStream outStream) throws Exception {
+        try {
+            outStream.writeObject(map_reference_);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    // </editor-fold>
 }

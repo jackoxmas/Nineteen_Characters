@@ -1,5 +1,6 @@
 package src.model;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.io.Serializable;
@@ -14,10 +15,10 @@ import src.controller.Terrain;
  *
  * @author John-Michael Reed
  */
-final class Map {
+final class Map implements Serializable {
 
     // Set this to false if not debugging.
-    public static boolean NDEBUG_ = true;
+    public static boolean NDEBUG_ = false;
     
     // The map has a clock
     private int time_measured_in_turns;
@@ -167,24 +168,10 @@ final class Map {
     public MapTile getTile(int x_pos, int y_pos) {
         return map_grid_[x_pos][y_pos];
     }
-    
-
-    
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static int MAP_DATA_VERSION = 0;
-    /**
-     * MAP_DATA_VERSION #0
-     * ===================
-     * int              VERSION NUMBER
-     * int      m.w     Map Width
-     * int      m.h     Map Height
-     * MapTile          Map Tiles[m.w][m.h]
-     * LinkedHashMap    Avatar List
-     * LinkedHashMap    Entity List
-     * LinkedList       Items List
-     */
-    
+    private static final long serialVersionUID = Long.parseLong("MAP", 35);
+
     /**
      * Populates this Map object with data extracted from the provided 
      * ObjectInputStream. The expected data format is defined in Map.java. If 
@@ -195,20 +182,10 @@ final class Map {
      * @throws java.io.IOException
      * @throws ClassNotFoundException 
      */
-    private void deserializeData(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+    private void readObjectData(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        /*
         try {
-            /**
-             * Check Versioning: If the version of the stored data doesn't match
-             * the version given by this.MAP_DATA_VERSION, the format is
-             * undefined and therefore cannot be read.
-             */
-            int v = -1;
-            v = in.readInt();
-            if (v == -1 || v != MAP_DATA_VERSION)
-            {
-                throw new java.io.IOException("Invalid map file version");
-            }
-            
             // Map Tile Grid
             int w = in.readInt();
             int h = in.readInt();
@@ -231,9 +208,9 @@ final class Map {
             // Item List
             items_list_ = (LinkedList<Item>)in.readObject();
         }
-        catch (Exception e) {
+        catch (IOException e) {
             throw e;
-        }
+        }*/
     }
     
     /**
@@ -246,12 +223,12 @@ final class Map {
      * @param out The java.io.ObjectOutputStream to write data to
      * @throws java.io.IOException 
      */
-    private void serializeData(java.io.ObjectOutputStream out) throws java.io.IOException {
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        /*
         if (NDEBUG_)
             throw new java.io.IOException("Will not save map with \"DEBUG_\" enabled");
         try {
-            // MAP VERSION
-            out.writeInt(MAP_DATA_VERSION);
             // MAP GRID
             if (map_grid_ == null) throw new java.io.IOException("Map grid not initialized");
             out.writeInt(map_width_);
@@ -271,9 +248,10 @@ final class Map {
             if (items_list_ == null) throw new java.io.IOException("Items list not initialized");
             out.writeObject(items_list_);
         }
-        catch (Exception e) {
+        catch (IOException e) {
             throw e;
         }
+        */
     }
     // </editor-fold>
 }

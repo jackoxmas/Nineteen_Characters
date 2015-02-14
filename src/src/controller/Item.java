@@ -75,4 +75,19 @@ public class Item extends DrawableThing {
             return true;
         }
     }
+    
+    public String toString(){
+    	String s = "Item name: " + name_;
+    	s += "\n is_passable_: " + is_passable_;
+    	
+    	s+="\n map_relationship_: ";
+    	if(map_relationship_ == null)
+    		s += "null";
+    	else 
+    		s += "Not null" ;
+    	
+   		s += "\n associated with map: " + map_relationship_.isAssociatedWithMap();
+
+    	return s;
+    }
 }

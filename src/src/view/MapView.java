@@ -36,6 +36,7 @@ public final class MapView extends Viewport {
 		view_contents_ = getContents();
 	}
 	private void render(){
+		clear();
 		x_=AvatarRef_.getMapRelation().getMyXCordinate();
 		y_=AvatarRef_.getMapRelation().getMyYCordinate();
 		int midpointx_ = x_/2;

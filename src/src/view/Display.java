@@ -37,6 +37,7 @@ public class Display implements Serializable {
      */
     public void printView() {
     	current_view_.renderToDisplay();
+    	current_view_.renderMessageBox();
     	this.clearScreen();
         char[][] in = current_view_.getContents();
         // Use this to print a 2D array

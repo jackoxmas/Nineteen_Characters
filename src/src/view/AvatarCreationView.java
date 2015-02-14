@@ -35,6 +35,7 @@ public final class AvatarCreationView extends Viewport
     private String summonerString_ = "W to Select a Summoner:";
     private String smasherString_ = "S to Select a Smasher:";
     private void renderArray(){
+    	makeSquare(0,0,width_-1,height_-1);
     	for(int i = 0; i!=title_.size();++i){
     		writeStringToContents(5,1+i,title_.get(i));
     	}
@@ -74,7 +75,6 @@ public final class AvatarCreationView extends Viewport
     	avatar_reference_ = my_avatar;
 
     	view_contents_=new char[width_][height_];
-    	makeSquare(0,0,width_-1,height_-1);//This is a static view, no need to dynamically render it each turn.
 		title_ = getAsciiArtFromFile("src/view/ASCIIART/class.txt");
 		smasherArt_ = getAsciiArtFromFile("src/view/ASCIIART/smasher.txt");
 		sneakerArt_ = getAsciiArtFromFile("src/view/ASCIIART/sneaker.txt");
@@ -100,7 +100,8 @@ public final class AvatarCreationView extends Viewport
     }
 	@Override
 	public void renderToDisplay() {
-		// Nothing to do here, this view is static. 
+		clear();
+		renderArray();
 		
 	}
 

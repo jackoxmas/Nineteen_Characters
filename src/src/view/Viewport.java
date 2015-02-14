@@ -26,7 +26,8 @@ public abstract class Viewport implements Serializable {
     public static final int height_=40;
     public static final int width_=80;
 	private char[][] view_contents_;
-	private Display display_;
+	private int message_persistance_counter_ = 0;
+	private String message_string_ = "";
 	public abstract boolean getInput(char c);
 	public Viewport(){
 		map_relationship_ = new MapDisplay_Relation(this);
@@ -54,6 +55,28 @@ public abstract class Viewport implements Serializable {
 	return this.view_contents_;	
 	}
 	/**
+	 * Renders the message box in the view, to be called by display during print loop.
+	 */
+	public void renderMessageBox(){
+		initGuard();
+		if(message_persistance_counter_ == 0){return;}
+		message_persistance_counter_--;
+		writeStringToContents(0,height_-1,message_string_);
+	}
+	/** Print at the bottom of the view, a message. 
+	 * 
+	 * @param message The string to be displayed
+	 * @param count The number of 'frames' to display it for. 
+	 * @return Returns false is message is too long, else true.
+	 */
+	public boolean messageBox(String message, int count){
+		initGuard();
+		message_string_ = message;
+		message_persistance_counter_ = count;
+		if(!writeStringToContents(0, height_-1, message)){message_persistance_counter_=0; return false;}
+		else{return true;}
+	}
+	/**
 	 * Load in ascii art from file
 	 * @return Array list of the strings of the ascci art
 	 * @param file path
@@ -79,7 +102,7 @@ public abstract class Viewport implements Serializable {
 
 	
 	}
-	public void clear(){
+	protected void clear(){
 		if(view_contents_==null){return;}//Avoid doing this on null array.
 		for(int j = 0; j!=height_;++j){
 			for(int i = 0; i!=width_;++i){

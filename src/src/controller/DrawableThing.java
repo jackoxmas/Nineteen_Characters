@@ -76,6 +76,6 @@ abstract public class DrawableThing implements Serializable {
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("DRAWABLETHING", 35);
+    private static final long serialVersionUID = Long.parseLong("Drawable", 35);
     // </editor-fold>
 }

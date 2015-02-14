@@ -27,7 +27,7 @@ public abstract class Viewport implements Serializable {
     public static final int width_=80;
 	private char[][] view_contents_;
 	private Display display_;
-	
+	public abstract boolean getInput(char c);
 	public Viewport(){
 		map_relationship_ = new MapDisplay_Relation(this);
 	}

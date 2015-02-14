@@ -46,4 +46,9 @@ public final class MapView extends Viewport {
 			}
 		}
 	}
+	@Override
+	public boolean getInput(char c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

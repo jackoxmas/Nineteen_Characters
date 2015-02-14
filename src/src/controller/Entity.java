@@ -61,15 +61,9 @@ abstract public class Entity extends DrawableThing {
             StatsPack new_stats = new StatsPack(0,1,1,1,1,1,1,1,1);
             set_default_stats_pack(get_default_stats_pack_().add(new_stats));
         }
-        else if(occupation_ instanceof Smasher){
+
             set_default_stats_pack(occupation_.change_stats(get_default_stats_pack_()));
-        }
-        else if (occupation_ instanceof Summoner){
-            set_default_stats_pack(occupation_.change_stats(get_default_stats_pack_()));
-        }
-        else {
-            set_default_stats_pack(occupation_.change_stats(get_default_stats_pack_()));
-        }
+
 
     }
     

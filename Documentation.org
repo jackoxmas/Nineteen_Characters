@@ -54,6 +54,8 @@ After having saved a game, to load it back in, simply start the game, supplying 
 #+END_SRC
 
 ** While the map is visible
+*** View Switching
+Hit I to open the stats and inventory screen
 *** Movement
 #+BEGIN_SRC 
 NW   N   NE
@@ -72,3 +74,5 @@ SW   S   SE
 - Hit D to toggle the drop option on
 - Proceed to hit the number of the item you wish to apply the action to
 - Finally, select a direction
+*** View Switching
+Hit M to return to the map

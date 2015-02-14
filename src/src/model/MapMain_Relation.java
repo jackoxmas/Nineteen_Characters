@@ -32,7 +32,7 @@ public class MapMain_Relation {
      * @param x - width of the map
      * @param y - height of the map
      */
-    public void createNewMap(int x, int y) {
+    public void bindToNewMap(int x, int y) {
         current_map_reference_ = new Map(x, y);
     }
 

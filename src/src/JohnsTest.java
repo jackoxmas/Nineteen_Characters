@@ -26,7 +26,7 @@ initializeEverything();
 }
 public static void testEverything() {
 MapMain_Relation map_main = new MapMain_Relation();
-map_main.createNewMap(3, 3);
+map_main.bindToNewMap(3, 3);
 Avatar a = new Avatar("a", '~', 0, 0);
 MapView map_view = new MapView(a);
 map_main.addViewToMap(map_view);

@@ -20,6 +20,7 @@ import java.util.Date;
  */
 public class Main
 {
+    
     private static ProgramOpts pOpts_ = null;
     private static SavedGame saveGame_;
 
@@ -27,9 +28,6 @@ public class Main
 
 
     public static void main(String[] args) {
-        
-        // Commenting out errors
-        /*
         parseArgs(args); // Parse command line arguments
         initialize(); // Initialize any data we need to before loading
         handleArgs(args);
@@ -39,7 +37,6 @@ public class Main
 
         exitGame();
         //initializeEverything();
-        */
     }
 
 
@@ -52,7 +49,7 @@ public class Main
         saveGame_ = null;
         mmr_ = new MapMain_Relation(); // Initialize the Map Object
         MapMain_Relation newmmr_ = new MapMain_Relation();
-        newmmr_.createNewMap(5, 5); // Each MapMain Relation creates a map and binds itself to that map.
+        newmmr_.bindToNewMap(5, 5); // Each MapMain Relation creates a map and binds itself to that map.
         newmmr_.addEntity(new src.controller.Avatar("test", 'x', 0, 0), 0, 0);
     }
 

@@ -138,7 +138,7 @@ final class MapTile implements Serializable {
         else if (terrain_ != null) {
             return terrain_.getRepresentation();
         } else {
-            return ' ';
+            return 'M';
         }
     }
 }

@@ -13,7 +13,7 @@ import java.lang.Character;
  * Players see the StatsView when they are checking their stats
  * @author Matthew B, Jessan, Jack C,JohnReedLOL
  */
-final class StatsView extends Viewport
+public final class StatsView extends Viewport
 {
     // Converts the class name into a base 35 number
     private static final long serialVersionUID = Long.parseLong("StatsView", 35);
@@ -28,16 +28,17 @@ final class StatsView extends Viewport
      * Generates a new StatsView using the avatar_reference.
      */
     public StatsView(Avatar my_avatar) {
+    	super();
     	avatar_reference_ = my_avatar;
     	view_contents_=getContents();
 	    }
 	@Override
 	public void renderToDisplay() {
-	render = new ArrayList< ArrayList<Character>>(length_);
-	for(ArrayList<Character> i : render){
-	    i = new ArrayList<Character>(height_);
+		render = new ArrayList< ArrayList<Character>>(width_);
+		for(ArrayList<Character> i : render){
+			i = new ArrayList<Character>(height_);
+		}
 	}
-    }
 
 
 		

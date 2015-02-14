@@ -23,9 +23,24 @@ public class MapDrawableThing_Relation implements Serializable {
     protected Map current_map_reference_ = null;
     private MapTile my_tile_ = null;
     private final DrawableThing drawable_thing_;
+    public boolean isAlwaysImpassable_;
 
     public MapDrawableThing_Relation(DrawableThing drawable_thing) {
         drawable_thing_ = drawable_thing;
+        isAlwaysImpassable_ = false;
+    }
+
+    public MapDrawableThing_Relation(DrawableThing drawable_thing, boolean passable) {
+        drawable_thing_ = drawable_thing;
+        isAlwaysImpassable_ = passable;
+    }
+    
+    public boolean getIsAlwaysImpassable() {
+        return isAlwaysImpassable_;
+    }
+    
+    public void setIsAlwaysImpassable(boolean isAlwaysImpassable) {
+        isAlwaysImpassable_ = isAlwaysImpassable;
     }
 
     public int getMyXCordinate() {
@@ -71,7 +86,7 @@ public class MapDrawableThing_Relation implements Serializable {
         if (toMove == e) {
             current_map_reference_.getTile(old_x, old_y).removeEntity();
             MapTile move_tile = current_map_reference_.getTile(old_x + delta_x, old_y + delta_y);
-            if (move_tile == null) { // put the entity back in its place
+            if (move_tile == null || move_tile.isPassable() == false) { // put the entity back in its place
                 current_map_reference_.getTile(old_x, old_y).addEntity(e);
                 return -4;
             } else { // move the entity
@@ -177,12 +192,12 @@ public class MapDrawableThing_Relation implements Serializable {
         a.effectArea(this.getMyXCordinate(), this.getMyYCordinate(), radius, heal_quantity);
     }
 
-    public void killWithinRadius(/*boolean will_kill_players, boolean will_kill_npcs, */ int radius) {
+    public void killWithinRadius(/*boolean will_kill_players, boolean will_kill_npcs, */int radius) {
         AreaKiller a = new AreaKiller();
         a.effectArea(this.getMyXCordinate(), this.getMyYCordinate(), radius, 1);
     }
 
-    public void levelUpWithinRadius(/*boolean will_level_up_players, boolean will_level_up_npcs, */ int radius) {
+    public void levelUpWithinRadius(/*boolean will_level_up_players, boolean will_level_up_npcs, */int radius) {
         AreaLeveler a = new AreaLeveler();
         a.effectArea(this.getMyXCordinate(), this.getMyYCordinate(), radius, 1);
     }

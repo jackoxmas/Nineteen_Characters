@@ -19,4 +19,9 @@ public class MapTerrain_Relation extends MapDrawableThing_Relation {
         super(terrain);
         terrain_ = terrain;
     }
+
+    public MapTerrain_Relation(Terrain terrain, boolean isAlwaysImpassible) {
+        super(terrain, isAlwaysImpassible);
+        terrain_ = terrain;
+    }
 }

@@ -49,7 +49,7 @@ public class Main
         saveGame_ = null;
         mmr_ = new MapMain_Relation(); // Initialize the Map Object
         MapMain_Relation newmmr_ = new MapMain_Relation();
-        newmmr_.bindToNewMap(5, 5); // Each MapMain Relation creates a map and binds itself to that map.
+        newmmr_.bindToNewMapOfSize(5, 5); // Each MapMain Relation creates a map and binds itself to that map.
         newmmr_.addEntity(new src.controller.Avatar("test", 'x', 0, 0), 0, 0);
     }
 

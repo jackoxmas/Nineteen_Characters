@@ -7,6 +7,7 @@ import java.io.Serializable;
  *
  */
 public final class StatsPack implements Serializable {
+
     private static final long serialVersionUID = Long.parseLong("STATSPACK", 35);
 
     // Primary stats
@@ -21,7 +22,7 @@ public final class StatsPack implements Serializable {
 
     // Gets decremented every time an entity moves
     private int moves_left_in_turn_;
-    
+
     // Constant Secondary Stats
     private final int cached_current_level_;
     private final int max_life_at_current_level_;
@@ -29,7 +30,7 @@ public final class StatsPack implements Serializable {
     private final int max_offensive_rating_at_current_level_;
     private final int max_defensive_rating_at_current_level_;
     private final int max_armor_rating_at_current_level_;
-    
+
     // Modifiable Secondary Stats
     // These secondary stats can be modified without leveling up
     private int current_life_;
@@ -39,8 +40,18 @@ public final class StatsPack implements Serializable {
     private int current_armor_rating_;
 
     /**
+     * Intended only for debugging\
+     * @return
+     */
+    @Override
+    public String toString() {
+        return super.toString() + 
+        "current_life_: " + current_life_;
+    }
+
+    /**
      * Constructs new StatsPack with all stats variables = 0
-     * 
+     *
      * @author Jack Christmas
      */
     StatsPack() {
@@ -67,7 +78,7 @@ public final class StatsPack implements Serializable {
 
     /**
      * Constructs new StatsPack with only primary stats
-     * 
+     *
      * @param lives_left
      * @param strength_level
      * @param agility_level
@@ -77,7 +88,7 @@ public final class StatsPack implements Serializable {
      * @param movement_level
      * @param moves_left_in_turn
      * @param cached_current_level
-     * 
+     *
      * @author Jack Christmas
      */
     StatsPack(
@@ -100,21 +111,21 @@ public final class StatsPack implements Serializable {
         movement_level_ = movement_level;
         moves_left_in_turn_ = moves_left_in_turn;
         cached_current_level_ = cached_current_level;
-        max_life_at_current_level_ = hardiness_level_*10;
-        max_mana_at_current_level_ = intellect_level_*10;
-        max_offensive_rating_at_current_level_ = strength_level_+agility_level_;
-        max_defensive_rating_at_current_level_ = agility_level_+intellect_level_;
-        max_armor_rating_at_current_level_ = strength_level_+intellect_level_;
-        current_life_ =  max_life_at_current_level_;
+        max_life_at_current_level_ = hardiness_level_ * 10;
+        max_mana_at_current_level_ = intellect_level_ * 10;
+        max_offensive_rating_at_current_level_ = strength_level_ + agility_level_;
+        max_defensive_rating_at_current_level_ = agility_level_ + intellect_level_;
+        max_armor_rating_at_current_level_ = strength_level_ + intellect_level_;
+        current_life_ = max_life_at_current_level_;
         current_mana_ = max_mana_at_current_level_;
-        current_offensive_rating_ =  max_offensive_rating_at_current_level_;
+        current_offensive_rating_ = max_offensive_rating_at_current_level_;
         current_defensive_rating_ = max_defensive_rating_at_current_level_;
         current_armor_rating_ = max_armor_rating_at_current_level_;
     }
 
     /**
      * Constructs StatsPack with all stats variables
-     * 
+     *
      * @param lives_left
      * @param strength_level
      * @param agility_level
@@ -134,7 +145,7 @@ public final class StatsPack implements Serializable {
      * @param current_offensive_rating
      * @param current_defensive_rating
      * @param current_armor_rating
-     * 
+     *
      * @author Jack Christmas
      */
     StatsPack(
@@ -178,38 +189,38 @@ public final class StatsPack implements Serializable {
         current_defensive_rating_ = current_defensive_rating;
         current_armor_rating_ = current_armor_rating;
     }
-    
+
     /**
-     * Adding StatsPack of one DrawableThing to another:
-     * Adds stats in modifier to stats in StatsPack
-     * 
-     * @param modifier		StatsPack to be added
-     * @return StatsPack 	StatsPack + modifier
+     * Adding StatsPack of one DrawableThing to another: Adds stats in modifier
+     * to stats in StatsPack
+     *
+     * @param modifier	StatsPack to be added
+     * @return StatsPack StatsPack + modifier
      * @author Jack Christmas
      */
     public StatsPack add(final StatsPack modifier) {
-    	return new StatsPack(
-	    	lives_left_ + modifier.getLivesLeft(),
-	        strength_level_ + modifier.getStrengthLevel(),
-	        agility_level_ + modifier.getAgilityLevel(),
-	        intellect_level_ + modifier.getIntellectLevel(),
-	        hardiness_level_ + modifier.getHardinessLevel(),
-	        quantity_of_experience_ + modifier.getQuantityOfExperience(),
-	        movement_level_ + modifier.getMovementLevel(),
-	        moves_left_in_turn_ + modifier.getMovesLeftInTurn(),
-	        cached_current_level_ + modifier.getCachedCurrentLevel(),
-	        max_life_at_current_level_ + modifier.getMaxLifeAtCurrentLevel(),
-	        max_mana_at_current_level_ + modifier.getMaxManaAtCurrentLevel(),
-	        max_offensive_rating_at_current_level_ + modifier.getMaxOffensiveRatingAtCurrentLevel(),
-	        max_defensive_rating_at_current_level_ + modifier.getMaxDefensiveRatingAtCurrentLevel(),
-	        max_armor_rating_at_current_level_ + modifier.getMaxArmorRatingAtCurrentLevel(),
-	        current_life_ + modifier.getCurrentLife(),
-	        current_mana_ + modifier.getCurrentMana(),
-	        current_offensive_rating_ + modifier.getCurrentOffensiveRating(),
-	        current_defensive_rating_ + modifier.getCurrentDefensiveRating(),
-	        current_armor_rating_ + modifier.getCurrentArmorRating()
+        return new StatsPack(
+                lives_left_ + modifier.getLivesLeft(),
+                strength_level_ + modifier.getStrengthLevel(),
+                agility_level_ + modifier.getAgilityLevel(),
+                intellect_level_ + modifier.getIntellectLevel(),
+                hardiness_level_ + modifier.getHardinessLevel(),
+                quantity_of_experience_ + modifier.getQuantityOfExperience(),
+                movement_level_ + modifier.getMovementLevel(),
+                moves_left_in_turn_ + modifier.getMovesLeftInTurn(),
+                cached_current_level_ + modifier.getCachedCurrentLevel(),
+                max_life_at_current_level_ + modifier.getMaxLifeAtCurrentLevel(),
+                max_mana_at_current_level_ + modifier.getMaxManaAtCurrentLevel(),
+                max_offensive_rating_at_current_level_ + modifier.getMaxOffensiveRatingAtCurrentLevel(),
+                max_defensive_rating_at_current_level_ + modifier.getMaxDefensiveRatingAtCurrentLevel(),
+                max_armor_rating_at_current_level_ + modifier.getMaxArmorRatingAtCurrentLevel(),
+                current_life_ + modifier.getCurrentLife(),
+                current_mana_ + modifier.getCurrentMana(),
+                current_offensive_rating_ + modifier.getCurrentOffensiveRating(),
+                current_defensive_rating_ + modifier.getCurrentDefensiveRating(),
+                current_armor_rating_ + modifier.getCurrentArmorRating()
         );
-	}
+    }
 
     /**
      * This function is for when one DrawableThing modifies [decreases] the
@@ -219,184 +230,181 @@ public final class StatsPack implements Serializable {
      * @return modified StatsPack
      * @author John-Michael Reed
      */
-
     public StatsPack subtract(final StatsPack modifier) {
-		return new StatsPack(
-	    	lives_left_ - modifier.getLivesLeft(),
-	        strength_level_ - modifier.getStrengthLevel(),
-	        agility_level_ - modifier.getAgilityLevel(),
-	        intellect_level_ - modifier.getIntellectLevel(),
-	        hardiness_level_ - modifier.getHardinessLevel(),
-	        quantity_of_experience_ - modifier.getQuantityOfExperience(),
-	        movement_level_ - modifier.getMovementLevel(),
-	        moves_left_in_turn_ - modifier.getMovesLeftInTurn(),
-	        cached_current_level_ - modifier.getCachedCurrentLevel(),
-	        max_life_at_current_level_ - modifier.getMaxLifeAtCurrentLevel(),
-	        max_mana_at_current_level_ - modifier.getMaxManaAtCurrentLevel(),
-	        max_offensive_rating_at_current_level_ - modifier.getMaxOffensiveRatingAtCurrentLevel(),
-	        max_defensive_rating_at_current_level_ - modifier.getMaxDefensiveRatingAtCurrentLevel(),
-	        max_armor_rating_at_current_level_ - modifier.getMaxArmorRatingAtCurrentLevel(),
-	        current_life_ - modifier.getCurrentLife(),
-	        current_mana_ - modifier.getCurrentMana(),
-	        current_offensive_rating_ - modifier.getCurrentOffensiveRating(),
-	        current_defensive_rating_ - modifier.getCurrentDefensiveRating(),
-	        current_armor_rating_ - modifier.getCurrentArmorRating()
-	    );
-	}
-    
+        return new StatsPack(
+                lives_left_ - modifier.getLivesLeft(),
+                strength_level_ - modifier.getStrengthLevel(),
+                agility_level_ - modifier.getAgilityLevel(),
+                intellect_level_ - modifier.getIntellectLevel(),
+                hardiness_level_ - modifier.getHardinessLevel(),
+                quantity_of_experience_ - modifier.getQuantityOfExperience(),
+                movement_level_ - modifier.getMovementLevel(),
+                moves_left_in_turn_ - modifier.getMovesLeftInTurn(),
+                cached_current_level_ - modifier.getCachedCurrentLevel(),
+                max_life_at_current_level_ - modifier.getMaxLifeAtCurrentLevel(),
+                max_mana_at_current_level_ - modifier.getMaxManaAtCurrentLevel(),
+                max_offensive_rating_at_current_level_ - modifier.getMaxOffensiveRatingAtCurrentLevel(),
+                max_defensive_rating_at_current_level_ - modifier.getMaxDefensiveRatingAtCurrentLevel(),
+                max_armor_rating_at_current_level_ - modifier.getMaxArmorRatingAtCurrentLevel(),
+                current_life_ - modifier.getCurrentLife(),
+                current_mana_ - modifier.getCurrentMana(),
+                current_offensive_rating_ - modifier.getCurrentOffensiveRating(),
+                current_defensive_rating_ - modifier.getCurrentDefensiveRating(),
+                current_armor_rating_ - modifier.getCurrentArmorRating()
+        );
+    }
+
     public int getQuantityOfExperience() {
-		return quantity_of_experience_;
-	}
+        return quantity_of_experience_;
+    }
 
     /**
      * Sets current experience
-     * 
+     *
      * @param quantity_of_experience	New experience
      */
-	public void setQuantityOfExperience(int quantity_of_experience) {
-		quantity_of_experience_ = quantity_of_experience;
-	}
+    public void setQuantityOfExperience(int quantity_of_experience) {
+        quantity_of_experience_ = quantity_of_experience;
+    }
 
     /**
-     * Receives quantity_of_experience to set for experience
-     * Returns new calculated level
-     * 
+     * Receives quantity_of_experience to set for experience Returns new
+     * calculated level
+     *
      * @param quantity_of_experience	New experience
-     * @return							New level
+     * @return	New level
      */
-	public int setQuantityOfExperienceAndReturnNewLevel(int quantity_of_experience) {
-		quantity_of_experience_ = quantity_of_experience;
-		return quantity_of_experience_/100;
-	}
+    public int setQuantityOfExperienceAndReturnNewLevel(int quantity_of_experience) {
+        quantity_of_experience_ = quantity_of_experience;
+        return quantity_of_experience_ / 100;
+    }
 
-	/**
-	 * Adds experience to current experience
-	 * 
-	 * @param quantity_of_experience	Experience gained
-	 */
-	public void addQuantityOfExperience(int quantity_of_experience) {
-		quantity_of_experience_ += quantity_of_experience;
-	}
+    /**
+     * Adds experience to current experience
+     *
+     * @param quantity_of_experience	Experience gained
+     */
+    public void addQuantityOfExperience(int quantity_of_experience) {
+        quantity_of_experience_ += quantity_of_experience;
+    }
 
-	/**
-	 * Receives quantity_of_experience gained
-	 * Returns levels gained
-	 * 
-	 * @param quantity_of_experience	Experience gained
-	 * @return							Levels gained
-	 */
-	public int addQuantityOfExperienceAndReturnLevelsGained(int quantity_of_experience) {
-		int old_experience = quantity_of_experience_;
-		quantity_of_experience_ += quantity_of_experience;
-		return quantity_of_experience_/100 - old_experience/100;
-	}
+    /**
+     * Receives quantity_of_experience gained Returns levels gained
+     *
+     * @param quantity_of_experience	Experience gained
+     * @return	Levels gained
+     */
+    public int addQuantityOfExperienceAndReturnLevelsGained(int quantity_of_experience) {
+        int old_experience = quantity_of_experience_;
+        quantity_of_experience_ += quantity_of_experience;
+        return quantity_of_experience_ / 100 - old_experience / 100;
+    }
 
-	public int getMovesLeftInTurn() {
-		return moves_left_in_turn_;
-	}
+    public int getMovesLeftInTurn() {
+        return moves_left_in_turn_;
+    }
 
-	public void setMovesLeftInTurn(int moves_left_in_turn) {
-		moves_left_in_turn_ = moves_left_in_turn;
-	}
+    public void setMovesLeftInTurn(int moves_left_in_turn) {
+        moves_left_in_turn_ = moves_left_in_turn;
+    }
 
-	public void moveOne() {
-		moves_left_in_turn_ -= 1;
-	}
+    public void moveOne() {
+        moves_left_in_turn_ -= 1;
+    }
 
-	public void resetMove() {
-		moves_left_in_turn_ = movement_level_;
-	}
-	
-	public int getCurrentLife() {
-		return current_life_;
-	}
+    public void resetMove() {
+        moves_left_in_turn_ = movement_level_;
+    }
 
-	public void setCurrentLife(int current_life) {
-		current_life_ = current_life;
-	}
+    public int getCurrentLife() {
+        return current_life_;
+    }
 
-	public int getCurrentMana() {
-		return current_mana_;
-	}
+    public void setCurrentLife(int current_life) {
+        current_life_ = current_life;
+    }
 
-	public void setCurrentMana(int current_mana) {
-		current_mana_ = current_mana;
-	}
+    public int getCurrentMana() {
+        return current_mana_;
+    }
 
-	public int getCurrentOffensiveRating() {
-		return current_offensive_rating_;
-	}
+    public void setCurrentMana(int current_mana) {
+        current_mana_ = current_mana;
+    }
 
-	public void setCurrentOffensiveRating(int current_offensive_rating) {
-		current_offensive_rating_ = current_offensive_rating;
-	}
+    public int getCurrentOffensiveRating() {
+        return current_offensive_rating_;
+    }
 
-	public int getCurrentDefensiveRating() {
-		return current_defensive_rating_;
-	}
+    public void setCurrentOffensiveRating(int current_offensive_rating) {
+        current_offensive_rating_ = current_offensive_rating;
+    }
 
-	public void setCurrentDefensiveRating(int current_defensive_rating) {
-		current_defensive_rating_ = current_defensive_rating;
-	}
+    public int getCurrentDefensiveRating() {
+        return current_defensive_rating_;
+    }
 
-	public int getCurrentArmorRating() {
-		return current_armor_rating_;
-	}
+    public void setCurrentDefensiveRating(int current_defensive_rating) {
+        current_defensive_rating_ = current_defensive_rating;
+    }
 
-	public void setCurrentArmorRating(int current_armor_rating) {
-		current_armor_rating_ = current_armor_rating;
-	}
+    public int getCurrentArmorRating() {
+        return current_armor_rating_;
+    }
 
-	public int getLivesLeft() {
-		return lives_left_;
-	}
-        
-        public void decrementLivesLeft() {
-		--lives_left_;
-	}
+    public void setCurrentArmorRating(int current_armor_rating) {
+        current_armor_rating_ = current_armor_rating;
+    }
 
-	public int getStrengthLevel() {
-		return strength_level_;
-	}
+    public int getLivesLeft() {
+        return lives_left_;
+    }
 
-	public int getAgilityLevel() {
-		return agility_level_;
-	}
+    public void decrementLivesLeft() {
+        --lives_left_;
+    }
 
-	public int getIntellectLevel() {
-		return intellect_level_;
-	}
+    public int getStrengthLevel() {
+        return strength_level_;
+    }
 
-	public int getHardinessLevel() {
-		return hardiness_level_;
-	}
+    public int getAgilityLevel() {
+        return agility_level_;
+    }
 
-	public int getMovementLevel() {
-		return movement_level_;
-	}
+    public int getIntellectLevel() {
+        return intellect_level_;
+    }
 
-	public int getCachedCurrentLevel() {
-		return cached_current_level_;
-	}
+    public int getHardinessLevel() {
+        return hardiness_level_;
+    }
 
-	public int getMaxLifeAtCurrentLevel() {
-		return max_life_at_current_level_;
-	}
+    public int getMovementLevel() {
+        return movement_level_;
+    }
 
-	public int getMaxManaAtCurrentLevel() {
-		return max_mana_at_current_level_;
-	}
+    public int getCachedCurrentLevel() {
+        return cached_current_level_;
+    }
 
-	public int getMaxOffensiveRatingAtCurrentLevel() {
-		return max_offensive_rating_at_current_level_;
-	}
+    public int getMaxLifeAtCurrentLevel() {
+        return max_life_at_current_level_;
+    }
 
-	public int getMaxDefensiveRatingAtCurrentLevel() {
-		return max_defensive_rating_at_current_level_;
-	}
+    public int getMaxManaAtCurrentLevel() {
+        return max_mana_at_current_level_;
+    }
 
-	public int getMaxArmorRatingAtCurrentLevel() {
-		return max_armor_rating_at_current_level_;
-	}
-	
+    public int getMaxOffensiveRatingAtCurrentLevel() {
+        return max_offensive_rating_at_current_level_;
+    }
+
+    public int getMaxDefensiveRatingAtCurrentLevel() {
+        return max_defensive_rating_at_current_level_;
+    }
+
+    public int getMaxArmorRatingAtCurrentLevel() {
+        return max_armor_rating_at_current_level_;
+    }
 }

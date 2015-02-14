@@ -14,7 +14,7 @@ import src.controller.Entity;
  * Players see the AvatarCreationView when they chose their occupation.
  * @author Matthew B, Jessan, JohnReedLOL
  */
-final class AvatarCreationView extends Viewport
+public final class AvatarCreationView extends Viewport
 {
     // Converts the class name into a base 35 number
     private static final long serialVersionUID = Long.parseLong("CCView", 35);
@@ -37,7 +37,7 @@ final class AvatarCreationView extends Viewport
 
     	int heightFromBottom = height_-sneakerArt_.size()-1;
     	for(int i = 0; i!=sneakerArt_.size();++i){
-    		int offCenteredLength = length_/2-sneakerArt_.get(0).length()/2;
+    		int offCenteredLength = width_/2-sneakerArt_.get(0).length()/2;
     		writeStringToContents(offCenteredLength,heightFromBottom+i,sneakerArt_.get(i));
     		//Above is a bit long, but I don't really think it's worth moving to a function, doing so would be just as cluttering. 
     	}
@@ -52,7 +52,7 @@ final class AvatarCreationView extends Viewport
     	
     	//Summoner positioning a bit weird
     	heightFromBottom+=summonerArt_.size()-3;//3 is the magic constant. Really, it makes it looks properly spaced.
-    	int midpoint = length_/2;
+    	int midpoint = width_/2;
     	writeStringToContents(midpoint,heightFromBottom,summonerString_);
     	++heightFromBottom;
     	for(int i = 0; i!=summonerArt_.size();++i){
@@ -66,47 +66,28 @@ final class AvatarCreationView extends Viewport
      * Generates a new ChaAvatarCreationViewses avatar_reference_ to modify the avatar.
      */
     public AvatarCreationView(Avatar my_avatar) {
+    	super();
     	avatar_reference_ = my_avatar;
 
-    	view_contents_=new char[length_][height_];
-    	makeSquare(0,0,length_-1,height_-1);//This is a static view, no need to dynamically render it each turn.
+    	view_contents_=new char[width_][height_];
+    	makeSquare(0,0,width_-1,height_-1);//This is a static view, no need to dynamically render it each turn.
 		title_ = getAsciiArtFromFile("src/view/ASCIIART/class.txt");
 		smasherArt_ = getAsciiArtFromFile("src/view/ASCIIART/smasher.txt");
 		sneakerArt_ = getAsciiArtFromFile("src/view/ASCIIART/sneaker.txt");
 		summonerArt_ = getAsciiArtFromFile("src/view/ASCIIART/summoner.txt");
 		renderArray();
-
-    	makeSquare(0,0,length_-1,height_-1);//This is a static view, no need to dynamically render it each turn.
-
-    	view_contents_=new char[length_][height_];
-    	makeSquare(0,0,length_-1,height_-1);//This is a static view, no need to dynamically render it each turn.
-
-		title_ = getAsciiArtFromFile("src/view/ASCIIART/class.txt");
-		smasherArt_ = getAsciiArtFromFile("src/view/ASCIIART/smasher.txt");
-		sneakerArt_ = getAsciiArtFromFile("src/view/ASCIIART/sneaker.txt");
-		summonerArt_ = getAsciiArtFromFile("src/view/ASCIIART/summoner.txt");
-		renderArray();
-
-
-    	view_contents_=new char[length_][height_];
-
-
-
-    	makeSquare(0,0,length_-1,height_-1);//This is a static view, no need to dynamically render it each turn.
-
-    	view_contents_=new char[length_][height_];
-    	makeSquare(0,0,length_-1,height_-1);//This is a static view, no need to dynamically render it each turn.
-
-		title_ = getAsciiArtFromFile("src/view/ASCIIART/class.txt");
-		smasherArt_ = getAsciiArtFromFile("src/view/ASCIIART/smasher.txt");
-		sneakerArt_ = getAsciiArtFromFile("src/view/ASCIIART/sneaker.txt");
-		summonerArt_ = getAsciiArtFromFile("src/view/ASCIIART/summoner.txt");
-		renderArray();
-
+    	
+    }
+    /*
+     * Set avatar to appropriate case
+     * @return Returns false if invalid
+     */
+    public boolean setOccupation(char c){
+    	return false;
     }
 	@Override
 	public void renderToDisplay() {
-		// TODO Auto-generated method stub
+		// Nothing to do here, this view is static. 
 		
 	}
 }

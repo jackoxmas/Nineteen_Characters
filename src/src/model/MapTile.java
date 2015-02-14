@@ -1,12 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package src.model;
 
 import java.util.LinkedList;
 import java.io.Serializable;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.IOException;
 import java.util.ListIterator;
 import src.controller.Entity;
 import src.controller.Item;
@@ -18,11 +16,12 @@ import src.controller.Terrain;
  */
 final class MapTile implements Serializable {
 
-    // Converts the class name into a base 35 number
-    private static final long serialVersionUID = Long.parseLong("MapTile", 35);
-
     public final int x_;
     public final int y_;
+    
+    private Terrain terrain_;
+    private Entity entity_;
+    private LinkedList<Item> items_;
 
     MapTile(int x, int y) {
         x_ = x;
@@ -31,10 +30,6 @@ final class MapTile implements Serializable {
         entity_ = null;
         items_ = new LinkedList<Item>();
     }
-
-    private Terrain terrain_;
-    private Entity entity_;
-    private LinkedList<Item> items_;
 
     /**
      * Returns 0 on success, returns -1 if terrain is already set.
@@ -115,11 +110,19 @@ final class MapTile implements Serializable {
     }
 
     public Item viewTopItem() {
-        return this.items_.peekLast();
+    	if(! this.items_.isEmpty()) {
+    		return this.items_.peekLast();
+    	} else {
+    		return null;
+    	}
     }
 
     public Item removeTopItem() {
-        return this.items_.removeLast();
+    	if(! this.items_.isEmpty()) {
+    		return this.items_.removeLast();
+    	} else {
+    		return null;
+    	}
     }
 
     /**
@@ -138,7 +141,20 @@ final class MapTile implements Serializable {
         else if (terrain_ != null) {
             return terrain_.getRepresentation();
         } else {
-            return ' ';
+            return 'M';
         }
     }
+    
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    // Converts the class name into a base 35 number
+    private static final long serialVersionUID = Long.parseLong("MAPTILE", 35);
+    /*
+    private void readObject (ObjectInputStream is) throws ClassNotFoundException, IOException {
+        is.defaultReadObject();
+    }
+    
+    private void writeObject (ObjectOutputStream oos) throws IOException {
+        oos.defaultWriteObject();
+    }*/
+    // </editor-fold>
 }

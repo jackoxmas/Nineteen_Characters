@@ -7,6 +7,7 @@ package src.controller;
 
 import src.model.MapAvatar_Relation;
 import src.view.Display;
+import src.view.AvatarCreationView;
 
 /**
  * Each avatar represents a player
@@ -37,9 +38,10 @@ public final class Avatar extends Entity {
         map_relationship_ = new MapAvatar_Relation(this, x_respawn_point, y_respawn_point);
     }
 
-    private final Display display_ = new Display(this);
+    private final Display display_ = new Display(new AvatarCreationView(this));
 
     public Display get_my_display() {
         return this.display_;
     }
+
 }

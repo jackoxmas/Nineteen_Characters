@@ -14,7 +14,7 @@ public class TestingMain {
 	public static void printArray(Viewport view){
 		char[][] in = view.getContents();
 		for(int j = 0; j!=view.height_;++j){
-			for(int i = 0; i!=view.length_;++i){
+			for(int i = 0; i!=view.width_;++i){
 				{System.out.print(in[i][j]);}
 			}
 			System.out.println();
@@ -26,8 +26,8 @@ public class TestingMain {
 		ViewPortTester Tester = new ViewPortTester();
 		printArray(Tester);
 		System.out.println("Done with viewportTester, ccviewtime!");
-		AvatarCreationView ccview = new AvatarCreationView(avatar);
-		printArray(ccview);
+		Display _display = new Display(new AvatarCreationView(avatar));
+		_display.printView();
 
 	}
 

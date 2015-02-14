@@ -33,7 +33,7 @@ public class Terrain extends DrawableThing {
      * This function is necessary because the constructor cannot safely build
      * the map_relationship. Make sure that this function uses a subclass this.
      */
-    private void initializeMapRelationship() {
+    private void initializeMapRelationship() {					
         map_relationship_ = new MapTerrain_Relation(this);
     }
 
@@ -56,11 +56,11 @@ public class Terrain extends DrawableThing {
     }
 
     void activate() {
-
+    	
     }
 
     void applyTerrainEffect(Entity entity) {
-
+    	
     }
 
     boolean determineIfCanPass(Entity entity) {

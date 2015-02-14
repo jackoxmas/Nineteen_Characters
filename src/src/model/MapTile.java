@@ -110,11 +110,19 @@ final class MapTile implements Serializable {
     }
 
     public Item viewTopItem() {
-        return this.items_.peekLast();
+    	if(! this.items_.isEmpty()) {
+    		return this.items_.peekLast();
+    	} else {
+    		return null;
+    	}
     }
 
     public Item removeTopItem() {
-        return this.items_.removeLast();
+    	if(! this.items_.isEmpty()) {
+    		return this.items_.removeLast();
+    	} else {
+    		return null;
+    	}
     }
 
     /**

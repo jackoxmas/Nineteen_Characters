@@ -42,7 +42,7 @@ public final class MapView extends Viewport {
 		int midpointy_ = y_/2;
 		for(int i = 0;i!=width_;++i){
 			for(int j = 0;j!=height_;++j){
-				view_contents_[i][j] = map_relationship_.getTileRepresentation(i-midpointx_,j+midpointy_);
+				view_contents_[i][j] = map_relationship_.getTileRepresentation(i-width_/2,height_/2-j);
 			}
 		}
 	}

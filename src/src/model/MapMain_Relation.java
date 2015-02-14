@@ -80,7 +80,7 @@ public class MapMain_Relation {
 
     public Item removeTopItem(Item i, int x, int y) {
         i.getMapRelation().associateWithMap(null);
-        return current_map_reference_.removeTopItem(i, x, y);
+        return current_map_reference_.removeTopItem(x, y);
     }
 
     public MapTile getTile(int x, int y) {
@@ -128,7 +128,7 @@ public class MapMain_Relation {
      */
     public void serializeMap(java.io.ObjectOutputStream outStream) throws Exception {
         try {
-            outStream.writeObject(map_reference_);
+            outStream.writeObject(current_map_reference_);
         } catch (Exception e) {
             throw e;
         }

@@ -64,9 +64,9 @@ public abstract class Viewport implements Serializable {
 		Path path = Paths.get(input);
 		path = path.toAbsolutePath();
 		ArrayList<String> art = new ArrayList<String>();
-		try (InputStream in = Files.newInputStream(path);
-		    BufferedReader reader =
-		      new BufferedReader(new InputStreamReader(in))) {
+		try {
+            InputStream in = Files.newInputStream(path);
+		    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		    String line = null;
 		    while ((line = reader.readLine()) != null) {
 		        art.add(line);

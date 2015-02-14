@@ -40,11 +40,11 @@ final class Map implements Serializable {
     public final int width_;
 
     // This should never get called
-    private Map() throws Exception {
+    private Map() {//throws Exception {
         height_ = 0;
-        width_ = 0;
+        width_ = 0; /*
         Exception e = new Exception("Do not use this constructor");
-        throw e;
+        throw e;*/
     }
 
     public Map(int x, int y) {

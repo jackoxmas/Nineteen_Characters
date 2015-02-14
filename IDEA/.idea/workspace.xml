@@ -2,56 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fbc16cae-2312-42a3-a657-0f99998ac22f" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\Main$1.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\Main$ProgramOpts.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\Main.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\SavedGame.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\Testing$TT.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\Testing.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\Vector2.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\controller\Avatar.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\controller\AvatarController.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\controller\DrawableThing.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\controller\Entity.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\controller\Item.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\controller\Occupation.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\controller\Smasher.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\controller\Sneak.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\controller\StatsPack.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\controller\Summoner.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\controller\Terrain$Color.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\controller\Terrain.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\model\Map.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\model\MapAvatar_Relation.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\model\MapDisplay_Relation.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\model\MapDrawableThing_Relation.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\model\MapEntity_Relation.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\model\MapItem_Relation.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\model\MapMain_Relation.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\model\MapTerrain_Relation.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\model\MapTile.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\test.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\view\AvatarCreationView.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\view\Display.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\view\MapView.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\view\StatsView.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\IDEA\out\production\source\src\view\Viewport.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\src\Main.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\src\SavedGame.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\src\Testing.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR3\src\test.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/source/.gitignore" afterPath="$PROJECT_DIR$/out/production/source/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/Main.java" afterPath="$PROJECT_DIR$/../src/src/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/MapDrawableThing_Relation.java" afterPath="$PROJECT_DIR$/../src/src/model/MapDrawableThing_Relation.java" />
+      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR\src\controller\StatsPack.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR\src\model\MapDrawableThing_Relation.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\diacopium\Desktop\COP Project\NCR\src\model\MapMain_Relation.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/Map.java" afterPath="$PROJECT_DIR$/../src/src/model/Map.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/MapMain_Relation.java" afterPath="$PROJECT_DIR$/../src/src/model/MapMain_Relation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/controller/StatsPack.java" afterPath="$PROJECT_DIR$/../src/src/controller/StatsPack.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/source/manual.txt" afterPath="$PROJECT_DIR$/out/production/source/manual.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/source/IDEA/.idea/modules.xml" afterPath="$PROJECT_DIR$/out/production/source/IDEA/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/source/IDEA/source/source.iml" afterPath="$PROJECT_DIR$/out/production/source/IDEA/source/source.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/view/Viewport.java" afterPath="$PROJECT_DIR$/../src/src/view/Viewport.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/source.iml" afterPath="$PROJECT_DIR$/source/source.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/source/IDEA/.idea/workspace.xml" afterPath="$PROJECT_DIR$/out/production/source/IDEA/.idea/workspace.xml" />
     </list>
     <ignored path="IDEA_Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -77,33 +35,12 @@
   <component name="FileEditorManager">
     <leaf>
       <file leaf-file-name="MapMain_Relation.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../src/model/MapMain_Relation.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="28" max-vertical-offset="748">
-              <caret line="25" column="4" selection-start-line="25" selection-start-column="4" selection-end-line="27" selection-end-column="5" />
-              <folding>
-                <element signature="docComment;class#MapMain_Relation#0" expanded="false" />
-                <element signature="docComment;method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
-                <element signature="docComment;method#initializeTerrain#0;class#MapMain_Relation#0" expanded="false" />
-                <element signature="e#1694#1756#0" expanded="true" />
-                <element signature="docComment;method#deserializeMap#0;class#MapMain_Relation#0" expanded="false" />
-                <element signature="method#deserializeMap#0;class#MapMain_Relation#0" expanded="false" />
-                <element signature="docComment;method#serializeMap#0;class#MapMain_Relation#0" expanded="false" />
-                <element signature="method#serializeMap#0;class#MapMain_Relation#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MapMain_Relation.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/src/model/MapMain_Relation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="419" max-vertical-offset="1037">
-              <caret line="77" column="5" selection-start-line="77" selection-start-column="5" selection-end-line="77" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="422" max-vertical-offset="1275">
+              <caret line="82" column="52" selection-start-line="82" selection-start-column="52" selection-end-line="82" selection-end-column="52" />
               <folding>
                 <element signature="docComment;class#MapMain_Relation#0" expanded="false" />
-                <element signature="e#622#623#0" expanded="true" />
-                <element signature="e#666#667#0" expanded="true" />
                 <element signature="docComment;method#createNewMap#0;class#MapMain_Relation#0" expanded="false" />
                 <element signature="docComment;method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
                 <element signature="method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
@@ -111,22 +48,40 @@
                 <element signature="method#removeAvatar#0;class#MapMain_Relation#0" expanded="false" />
                 <element signature="method#removeEntity#0;class#MapMain_Relation#0" expanded="false" />
                 <element signature="method#addItem#0;class#MapMain_Relation#0" expanded="false" />
-                <element signature="method#removeTopItem#0;class#MapMain_Relation#0" expanded="false" />
                 <element signature="docComment;method#initializeTerrain#0;class#MapMain_Relation#0" expanded="false" />
-                <element signature="e#2665#2727#0" expanded="true" />
+                <element signature="e#2993#3055#0" expanded="true" />
                 <element signature="docComment;method#deserializeMap#0;class#MapMain_Relation#0" expanded="false" />
                 <element signature="docComment;method#serializeMap#0;class#MapMain_Relation#0" expanded="false" />
-                <element signature="method#serializeMap#0;class#MapMain_Relation#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Viewport.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="JohnsTest.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../src/src/JohnsTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.24436091" vertical-offset="142" max-vertical-offset="1530">
+              <caret line="19" column="13" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Viewport.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/src/view/Viewport.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.7040573" vertical-offset="0" max-vertical-offset="2312">
-              <caret line="54" column="62" selection-start-line="54" selection-start-column="62" selection-end-line="54" selection-end-column="62" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="643" max-vertical-offset="2448">
+              <caret line="68" column="81" selection-start-line="68" selection-start-column="81" selection-end-line="68" selection-end-column="81" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Map.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../src/src/model/Map.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="303" max-vertical-offset="3349">
+              <caret line="42" column="19" selection-start-line="42" selection-start-column="19" selection-end-line="42" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -135,11 +90,10 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1164" max-vertical-offset="2754">
-              <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="867">
+              <caret line="6" column="29" selection-start-line="6" selection-start-column="29" selection-end-line="6" selection-end-column="29" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <element signature="n#!!doc;n#errDateFormat_#0;n#Main#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -165,9 +119,11 @@
         <option value="$PROJECT_DIR$/../src/controller/Entity.java" />
         <option value="$PROJECT_DIR$/../src/Main.java" />
         <option value="$PROJECT_DIR$/../src/src/JohnsTest.java" />
-        <option value="$PROJECT_DIR$/../src/src/Main.java" />
         <option value="$PROJECT_DIR$/../src/src/controller/StatsPack.java" />
         <option value="$PROJECT_DIR$/../src/src/model/MapDrawableThing_Relation.java" />
+        <option value="$PROJECT_DIR$/../src/src/Main.java" />
+        <option value="$PROJECT_DIR$/../src/src/view/Viewport.java" />
+        <option value="$PROJECT_DIR$/../src/src/model/Map.java" />
         <option value="$PROJECT_DIR$/../src/src/model/MapMain_Relation.java" />
       </list>
     </option>
@@ -185,7 +141,7 @@
     <OptionsSetting value="true" id="Update" />
     <OptionsSetting value="true" id="Status" />
     <OptionsSetting value="true" id="Edit" />
-    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="1" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
@@ -215,7 +171,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="NCR3" />
+              <option name="myItemId" value="NCR" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -225,7 +181,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="NCR3" />
+              <option name="myItemId" value="NCR" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -237,80 +193,14 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane">
+        <subPane>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="IDEA_Project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="NCR3" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="IDEA_Project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="NCR3" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controller" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="IDEA_Project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="NCR3" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="IDEA_Project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="NCR3" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -405,16 +295,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="IDEA_Project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -424,7 +304,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="options.lastSelected" value="configurable.group.tools" />
+    <property name="options.lastSelected" value="reference.idesettings.emmet" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -435,6 +315,7 @@
     <property name="dynamic.classpath" value="false" />
     <property name="LayoutCode.rearrangeEntriesJava" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="FullScreen" value="false" />
   </component>
   <component name="RunManager" selected="Application.Game">
     <configuration default="true" type="JUnit" factoryName="JUnit">
@@ -592,7 +473,7 @@
     </configuration>
     <configuration default="false" name="Game" type="Application" factoryName="Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" value="src.Main" />
+      <option name="MAIN_CLASS_NAME" value="src.JohnsTest" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="--debug" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
@@ -632,19 +513,19 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30804953" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30804953" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19827586" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.0882353" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2057101" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
@@ -695,28 +576,42 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../src/model/MapMain_Relation.java">
+    <entry file="file://$PROJECT_DIR$/../src/src/model/MapMain_Relation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="79" max-vertical-offset="1462">
-          <caret line="35" column="39" selection-start-line="35" selection-start-column="39" selection-end-line="35" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="527" max-vertical-offset="901">
+          <caret line="75" column="45" selection-start-line="75" selection-start-column="45" selection-end-line="75" selection-end-column="45" />
           <folding>
             <element signature="docComment;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#createNewMap#0;class#MapMain_Relation#0" expanded="false" />
             <element signature="docComment;method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addItem#0;class#MapMain_Relation#0" expanded="false" />
             <element signature="docComment;method#initializeTerrain#0;class#MapMain_Relation#0" expanded="false" />
-            <element signature="e#1694#1756#0" expanded="true" />
+            <element signature="e#2993#3055#0" expanded="true" />
             <element signature="docComment;method#deserializeMap#0;class#MapMain_Relation#0" expanded="false" />
-            <element signature="method#deserializeMap#0;class#MapMain_Relation#0" expanded="false" />
             <element signature="docComment;method#serializeMap#0;class#MapMain_Relation#0" expanded="false" />
-            <element signature="method#serializeMap#0;class#MapMain_Relation#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/JohnsTest.java">
+    <entry file="file://$PROJECT_DIR$/../src/src/view/Viewport.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1530">
-          <caret line="0" column="12" selection-start-line="0" selection-start-column="12" selection-end-line="0" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2448">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="2771">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -724,15 +619,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.24757281" vertical-offset="0" max-vertical-offset="5933">
           <caret line="9" column="81" selection-start-line="9" selection-start-column="81" selection-end-line="9" selection-end-column="81" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/controller/StatsPack.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17475729" vertical-offset="79" max-vertical-offset="2380">
-          <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -747,39 +633,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/model/MapDrawableThing_Relation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.21035598" vertical-offset="283" max-vertical-offset="901">
-          <caret line="16" column="39" selection-start-line="16" selection-start-column="39" selection-end-line="17" selection-end-column="82" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/model/MapMain_Relation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="28" max-vertical-offset="748">
-          <caret line="25" column="4" selection-start-line="25" selection-start-column="4" selection-end-line="27" selection-end-column="5" />
-          <folding>
-            <element signature="docComment;class#MapMain_Relation#0" expanded="false" />
-            <element signature="docComment;method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
-            <element signature="docComment;method#initializeTerrain#0;class#MapMain_Relation#0" expanded="false" />
-            <element signature="e#1694#1756#0" expanded="true" />
-            <element signature="docComment;method#deserializeMap#0;class#MapMain_Relation#0" expanded="false" />
-            <element signature="method#deserializeMap#0;class#MapMain_Relation#0" expanded="false" />
-            <element signature="docComment;method#serializeMap#0;class#MapMain_Relation#0" expanded="false" />
-            <element signature="method#serializeMap#0;class#MapMain_Relation#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/model/MapMain_Relation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="419" max-vertical-offset="1037">
-          <caret line="77" column="5" selection-start-line="77" selection-start-column="5" selection-end-line="77" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="422" max-vertical-offset="1275">
+          <caret line="82" column="52" selection-start-line="82" selection-start-column="52" selection-end-line="82" selection-end-column="52" />
           <folding>
             <element signature="docComment;class#MapMain_Relation#0" expanded="false" />
-            <element signature="e#622#623#0" expanded="true" />
-            <element signature="e#666#667#0" expanded="true" />
             <element signature="docComment;method#createNewMap#0;class#MapMain_Relation#0" expanded="false" />
             <element signature="docComment;method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
             <element signature="method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
@@ -787,31 +646,44 @@
             <element signature="method#removeAvatar#0;class#MapMain_Relation#0" expanded="false" />
             <element signature="method#removeEntity#0;class#MapMain_Relation#0" expanded="false" />
             <element signature="method#addItem#0;class#MapMain_Relation#0" expanded="false" />
-            <element signature="method#removeTopItem#0;class#MapMain_Relation#0" expanded="false" />
             <element signature="docComment;method#initializeTerrain#0;class#MapMain_Relation#0" expanded="false" />
-            <element signature="e#2665#2727#0" expanded="true" />
+            <element signature="e#2993#3055#0" expanded="true" />
             <element signature="docComment;method#deserializeMap#0;class#MapMain_Relation#0" expanded="false" />
             <element signature="docComment;method#serializeMap#0;class#MapMain_Relation#0" expanded="false" />
-            <element signature="method#serializeMap#0;class#MapMain_Relation#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="714">
-          <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2907">
+          <caret line="6" column="29" selection-start-line="6" selection-start-column="29" selection-end-line="6" selection-end-column="29" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="n#!!doc;n#errDateFormat_#0;n#Main#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/model/Map.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="303" max-vertical-offset="3349">
+          <caret line="42" column="19" selection-start-line="42" selection-start-column="19" selection-end-line="42" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/view/Viewport.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.7040573" vertical-offset="0" max-vertical-offset="2312">
-          <caret line="54" column="62" selection-start-line="54" selection-start-column="62" selection-end-line="54" selection-end-column="62" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="643" max-vertical-offset="2448">
+          <caret line="68" column="81" selection-start-line="68" selection-start-column="81" selection-end-line="68" selection-end-column="81" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/JohnsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24436091" vertical-offset="142" max-vertical-offset="1530">
+          <caret line="19" column="13" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="13" />
           <folding />
         </state>
       </provider>

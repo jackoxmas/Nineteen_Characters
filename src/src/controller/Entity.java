@@ -5,6 +5,7 @@
  */
 package src.controller;
 
+import java.util.ArrayList;
 import src.model.MapEntity_Relation;
 
 import java.io.Serializable;
@@ -36,11 +37,12 @@ abstract public class Entity extends DrawableThing implements Serializable {
             int x_respawn_point, int y_respawn_point) {
         super(name, representation);
         map_relationship_ = new MapEntity_Relation( this, x_respawn_point, y_respawn_point );
+        inventory_ = new ArrayList<Item>();
     }
 
     private Occupation occupation_ = null;
 
-    Item inventory_[];
+    ArrayList<Item> inventory_;
 
     // Only 1 equipped item in iteration 1
     Item equipped_item_;
@@ -49,8 +51,13 @@ abstract public class Entity extends DrawableThing implements Serializable {
 
     private StatsPack my_stats_after_powerups_;
 
+    /**
+     * Adds default stats to item stats and updates my_stats_after_powerups
+     * @author Jessan
+     */
     private void recalculateStats() {
         //my_stats_after_powerups_.equals(my_stats_after_powerups_.add(equipped_item_.get_stats_pack_()));
+        my_stats_after_powerups_ = get_default_stats_pack_().add(equipped_item_.get_default_stats_pack_());
     }
 
     /**
@@ -63,12 +70,7 @@ abstract public class Entity extends DrawableThing implements Serializable {
             StatsPack new_stats = new StatsPack(0,1,1,1,1,1,1,1,1);
             set_default_stats_pack(get_default_stats_pack_().add(new_stats));
         }
-        else if(occupation_ instanceof Smasher){
-            set_default_stats_pack(occupation_.change_stats(get_default_stats_pack_()));
-        }
-        else if (occupation_ instanceof Summoner){
-            set_default_stats_pack(occupation_.change_stats(get_default_stats_pack_()));
-        }
+        //if occupation is not null/have an occupation
         else {
             set_default_stats_pack(occupation_.change_stats(get_default_stats_pack_()));
         }
@@ -84,6 +86,6 @@ abstract public class Entity extends DrawableThing implements Serializable {
     }
     
     public void addItemToInventory(Item item) {
-        
+        inventory_.add(item);
     }
 }

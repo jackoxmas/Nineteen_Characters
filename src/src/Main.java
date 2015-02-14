@@ -6,6 +6,8 @@ package src;
 
 import src.controller.Entity;
 import src.model.MapMain_Relation;
+import src.view.Display;
+import src.view.MapView;
 
 import java.io.*;
 import java.lang.StackTraceElement;

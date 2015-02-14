@@ -36,10 +36,11 @@ public class Display implements Serializable {
      * 
      */
     public void printView() {
+    	current_view_.renderToDisplay();
         char[][] in = current_view_.getContents();
         // Use this to print a 2D array
 		for(int j = 0; j!=current_view_.height_;++j){
-			for(int i = 0; i!=current_view_.length_;++i){
+			for(int i = 0; i!=current_view_.width_;++i){
 				{System.out.print(in[i][j]);}
 			}
 			System.out.println();

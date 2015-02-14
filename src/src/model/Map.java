@@ -130,8 +130,8 @@ final class Map implements Serializable {
         }
         return error_code;
     }
-
-    public Item removeTopItem(Item i, int x, int y) {
+    
+    public Item removeTopItem(int x, int y) {
         return this.map_grid_[y][x].removeTopItem();
     }
 

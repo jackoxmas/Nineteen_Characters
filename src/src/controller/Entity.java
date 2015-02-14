@@ -107,4 +107,28 @@ abstract public class Entity extends DrawableThing implements Serializable {
     public void addItemToInventory(Item item) {
         inventory_.add(item);
     }
+    
+    public String toString(){
+    	String s = "Entity name: " + name_ + ", ";
+    	
+    	if(!(equipped_item_ == null))
+    		s += "\nequppied item: " + equipped_item_.name_;
+    	else
+    		s += "\nequppied item: null";
+    	
+    	s+= "\nInventory " + "(" + inventory_.size() + ")" + ":";
+    	for(int i = 0; i < inventory_.size(); ++i){
+    		s+= " " + inventory_.get(i).name_;
+    	}
+    	
+    	s+=".\n";
+    	
+    	s+="map_relationship_: ";
+    	if(map_relationship_ == null)
+    		s += "null";
+    	else 
+    		s += "Not null" ;
+    	
+    	return s;
+    }
 }

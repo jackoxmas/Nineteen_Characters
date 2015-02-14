@@ -15,8 +15,6 @@ import java.io.Serializable;
  * @author JohnMichaelReed
  */
 public class MapDrawableThing_Relation implements Serializable {
-    private static final long serialVersionUID = Long.parseLong("RELATIONMD", 35);
-
     protected Map current_map_reference_ = null;
     private MapTile my_tile_ = null;
     private final DrawableThing drawable_thing_;
@@ -95,4 +93,8 @@ public class MapDrawableThing_Relation implements Serializable {
     public void levelUpWithinRadius(boolean will_level_up_players, boolean will_level_up_npcs, int radius) {
 
     }
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private static final long serialVersionUID = Long.parseLong("RELATIONMD", 35);
+    // </editor-fold>
 }

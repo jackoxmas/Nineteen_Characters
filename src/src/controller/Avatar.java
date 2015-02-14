@@ -9,16 +9,15 @@ import src.model.MapAvatar_Relation;
 import src.view.Display;
 import src.view.AvatarCreationView;
 
+import java.io.Serializable;
+
 /**
  * Each avatar represents a player
  *
  *
  * @author JohnReedLOL
  */
-public final class Avatar extends Entity {
-
-    // Converts the class name into a base 35 number
-    private static final long serialVersionUID = Long.parseLong("Avatar", 35);
+public final class Avatar extends Entity implements Serializable {
 
     // map_relationship_ is used in place of a map_referance_
     private final MapAvatar_Relation map_relationship_;
@@ -44,4 +43,7 @@ public final class Avatar extends Entity {
         return this.display_;
     }
 
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private static final long serialVersionUID = Long.parseLong("AVATAR", 35);
+    // </editor-fold>
 }

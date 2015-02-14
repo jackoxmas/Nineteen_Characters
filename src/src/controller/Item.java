@@ -7,18 +7,15 @@ package src.controller;
 
 import src.model.MapItem_Relation;
 
+import java.io.Serializable;
+
 /**
  * Class item represents a stackable entity [Alex's definition of entity] that
  * cannot move itself.
  *
  * @author JohnReedLOL
  */
-public class Item extends DrawableThing {
-
-    // Converts a class name [which must be unique] into a unique base 35 number
-
-    private static final long serialVersionUID = Long.parseLong("Item", 35);
-
+public class Item extends DrawableThing implements Serializable {
     // map_relationship_ is used in place of a map_referance_
     private final MapItem_Relation map_relationship_;
     
@@ -75,4 +72,8 @@ public class Item extends DrawableThing {
             return true;
         }
     }
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private static final long serialVersionUID = Long.parseLong("ITEM", 35);
+    // </editor-fold>
 }

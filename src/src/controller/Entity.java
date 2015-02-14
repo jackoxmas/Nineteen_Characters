@@ -16,9 +16,6 @@ import java.io.Serializable;
  */
 abstract public class Entity extends DrawableThing implements Serializable {
 
-    // Converts an entity's name [which must be unique] into a unique base 35 number
-    private static final long serialVersionUID = Long.parseLong("ENTITY", 35);
-
     // map_relationship_ is used in place of a map_referance_
     private final MapEntity_Relation map_relationship_;
     
@@ -88,4 +85,8 @@ abstract public class Entity extends DrawableThing implements Serializable {
     public void addItemToInventory(Item item) {
         inventory_.add(item);
     }
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private static final long serialVersionUID = Long.parseLong("ENTITY", 35);
+    // </editor-fold>
 }

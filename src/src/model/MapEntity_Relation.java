@@ -10,11 +10,13 @@ import src.controller.Item;
 import src.controller.Occupation;
 import src.controller.StatsPack;
 
+import java.io.Serializable;
+
 /**
  *
  * @author JohnReedLOL
  */
-public class MapEntity_Relation extends MapDrawableThing_Relation {
+public class MapEntity_Relation extends MapDrawableThing_Relation implements Serializable {
 
     private final Entity entity_;
 
@@ -50,10 +52,6 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     }
 
-    public void levelUp(StatsPack stats_pack) {
-
-    }
-
     public void addStatsPack(StatsPack stats_pack) {
 
     }
@@ -64,13 +62,13 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     
     /**
      * An item underneath you can be picked up using the parameters 0,0.
-     * 0 if item is picked up successfully, 1 if no item is on the specified tile.
+     * 0 if item is picked up successfully, -1 if no item is on the specified tile.
      * @param x
      * @param y 
      * @return error_code
      */
     public int pickUpItemInDirection(int x, int y) {
-        int error_code = 1;
+        int error_code = -1;
         
     	Item itemToBePickedUp = current_map_reference_.removeTopItem(x + getMyXCordinate(),y + getMyYCordinate());
     	if(itemToBePickedUp != null){
@@ -80,4 +78,8 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     	
         return error_code;
     }
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private static final long serialVersionUID = Long.parseLong("RELATIONME", 35);
+    // </editor-fold>
 }

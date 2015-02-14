@@ -11,11 +11,26 @@ import src.controller.StatsPack;
 import src.controller.Terrain;
 
 /**
- * The map contains the map.
- *
+ * The map contains the map.\
+ * THIS CLASS SHOULD NOT BE PUBLIC JUST BECAUSE SENDCOMMANDTOAVATAR IS STUPID
  * @author John-Michael Reed
  */
-final class Map implements Serializable {
+class Map implements Serializable {
+    
+    /**
+     * @author John-Michael Reed
+     * Sends a key press from a keyboard to an avatar whose name is name.
+     * THIS FUNCTION SHOULD ONLY BE ACCESSIBLE VIA A MAP_KEYBOARD_RELATION
+     * @param name - Name of avatar to command
+     * @param command - signal to send to avatar
+     * @return zero if avatar accepts the command, non-zero if they do not
+     */
+    
+    public int sendCommandToAvatarByName(String name, char command) {
+        Avatar to_recieve_command = this.getAvatarByName(name);
+        int error_code = to_recieve_command.acceptKeyCommand(command);
+        return error_code;
+    }
     
     // The map has a clock
     private int time_measured_in_turns;
@@ -32,7 +47,7 @@ final class Map implements Serializable {
     
     /* MAP OBJECT */
     // MapModel.map_model_ is static because there is only one map_model_  
-    private static final Map the_map_ = new Map();
+    private Map the_map_ = new Map();
 
     //public static boolean NDEBUG_ = true;
     // MAP MUST BE SQUARE

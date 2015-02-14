@@ -17,6 +17,7 @@ import java.io.Serializable;
  * @author JohnMichaelReed
  */
 public class MapDrawableThing_Relation implements Serializable {
+
     private static final long serialVersionUID = Long.parseLong("RELATIONMD", 35);
 
     protected Map current_map_reference_ = null;
@@ -80,39 +81,117 @@ public class MapDrawableThing_Relation implements Serializable {
             return -3;
         }
     }
-    private class areaDamager extends AreaFunctor {
+
+    public final class AreaDamager extends AreaFunctor {
 
         @Override
-        public void repeat(int x_pos, int y_pos) {
+        public void repeat(int x_pos, int y_pos, int strength) {
             MapTile infliction = current_map_reference_.getTile(x_pos, y_pos);
             if (infliction != null) {
                 Entity to_hurt = infliction.getEntity();
                 if (to_hurt != null) {
-                    //StatsPack s = to_hurt.get_stats_pack_();
-                } else {
+                    StatsPack s = to_hurt.getModifiableStatsPack();
+                    s.setCurrentLife(s.getCurrentLife() - strength);
                     return;
                 }
-            } else {
-                return;
             }
         }
     };
-    
+
+    public final class AreaHealer extends AreaFunctor {
+
+        @Override
+        public void repeat(int x_pos, int y_pos, int strength) {
+            MapTile infliction = current_map_reference_.getTile(x_pos, y_pos);
+            if (infliction != null) {
+                Entity to_heal = infliction.getEntity();
+                if (to_heal != null) {
+                    StatsPack s = to_heal.getModifiableStatsPack();
+                    s.setCurrentLife(s.getCurrentLife() + strength);
+                    return;
+                }
+            }
+        }
+    };
+
+    public final class AreaKiller extends AreaFunctor {
+
+        /**
+         * Used to repeatedly apply exorbitant damage on a tile
+         *
+         * @param x_pos
+         * @param y_pos
+         * @param num_kills This parameter is not currently used
+         */
+        @Override
+        public void repeat(int x_pos, int y_pos, int num_kills) {
+            MapTile infliction = current_map_reference_.getTile(x_pos, y_pos);
+            if (infliction != null) {
+                Entity to_kill = infliction.getEntity();
+                if (to_kill != null) {
+                    StatsPack s = to_kill.getModifiableStatsPack();
+                    s.setCurrentLife(-9000);
+                    return;
+                }
+            }
+        }
+    };
+
+    public final class AreaLeveler extends AreaFunctor {
+
+        /**
+         * Used to repeatedly apply level up on a tile
+         *
+         * @param x_pos x position to effect
+         * @param y_pos y position to effect
+         * @param num_level_ups - number of levels to up
+         */
+        @Override
+        public void repeat(int x_pos, int y_pos, int num_level_ups) {
+            MapTile infliction = current_map_reference_.getTile(x_pos, y_pos);
+            if (infliction != null) {
+                Entity to_level = infliction.getEntity();
+                if (to_level != null) {
+                    for (int i = 0; i < num_level_ups; ++i) {
+                        to_level.levelUp();
+                    }
+                }
+            }
+        }
+    };
+
+    private final AreaDamager areaHurtFunctor = new AreaDamager();
+    private final AreaHealer areaHealFunctor = new AreaHealer();
+    private final AreaKiller areaKillFunctor = new AreaKiller();
+    private final AreaLeveler areaLevelFunctor = new AreaLeveler();
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone(); //To change body of generated methods, choose Tools | Templates.
+    }
+
     //area effects
     public void hurtWithinRadius(int damage, int radius) {
-        areaDamager a = new areaDamager();
-        
-}
+        AreaDamager a = new AreaDamager();
+        a.effectArea(this.getMyXCordinate(), this.getMyYCordinate(), radius, damage);
+    }
 
-public void healWithinRadius(int heal_quantity, int radius) {
-
+    public void healWithinRadius(int heal_quantity, int radius) {
+        AreaHealer a = new AreaHealer();
+        a.effectArea(this.getMyXCordinate(), this.getMyYCordinate(), radius, heal_quantity);
     }
 
     public void killWithinRadius(boolean will_kill_players, boolean will_kill_npcs, int radius) {
-
+        AreaKiller a = new AreaKiller();
+        a.effectArea(this.getMyXCordinate(), this.getMyYCordinate(), radius, 1);
     }
 
     public void levelUpWithinRadius(boolean will_level_up_players, boolean will_level_up_npcs, int radius) {
+        AreaLeveler a = new AreaLeveler();
+        a.effectArea(this.getMyXCordinate(), this.getMyYCordinate(), radius, 1);
+    }
 
+    public MapDrawableThing_Relation() {
+        this.drawable_thing_ = null;
     }
 }

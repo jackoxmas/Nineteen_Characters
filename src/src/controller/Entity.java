@@ -50,6 +50,10 @@ abstract public class Entity extends DrawableThing implements Serializable {
     //private final int max_level_;
 
     private StatsPack my_stats_after_powerups_;
+    
+    public StatsPack getModifiableStatsPack() {
+        return my_stats_after_powerups_;
+    }
 
     /**
      * Adds default stats to item stats and updates my_stats_after_powerups

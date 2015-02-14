@@ -205,4 +205,11 @@ public class MapDrawableThing_Relation implements Serializable {
     public MapDrawableThing_Relation() {
         this.drawable_thing_ = null;
     }
+    
+    public boolean isAssociatedWithMap(){
+    	if(current_map_reference_ == null)
+    		return false;
+    	else
+    		return true;
+    }
 }

@@ -43,5 +43,29 @@ public final class Avatar extends Entity {
     public Display get_my_display() {
         return this.display_;
     }
-
+    
+    @Override
+    public String toString(){
+    	String s = "Avatar name: " + name_;
+    	
+    	if(!(equipped_item_ == null))
+    		s += "\n equppied item: " + equipped_item_.name_;
+    	else
+    		s += "\n equppied item: null";
+    	
+    	s+= "\n Inventory " + "(" + inventory_.size() + ")" + ":";
+    	for(int i = 0; i < inventory_.size(); ++i){
+    		s+= " " + inventory_.get(i).name_;
+    	}
+    	
+    	s+="\n";
+    	
+    	s+=" map_relationship_: ";
+    	if(map_relationship_ == null)
+    		s += "null";
+    	else 
+    		s += "Not null" ;
+    	
+    	return s;
+    }
 }

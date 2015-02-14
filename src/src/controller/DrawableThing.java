@@ -45,10 +45,19 @@ abstract public class DrawableThing implements Serializable {
     private boolean is_viewable_;
     
     private StatsPack stats_pack_ = new StatsPack();
-    
+
+    /**
+     * returns the statspack(stats) without the items (default stats)
+     * @author Jessan
+     */
     public StatsPack get_default_stats_pack_() {
         return this.stats_pack_;
     }
+
+    /**
+     * sets default stats
+     * @author Jessan
+     */
     public void set_default_stats_pack(StatsPack stats_){
         this.stats_pack_ = stats_;
     }

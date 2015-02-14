@@ -109,7 +109,7 @@ abstract public class Entity extends DrawableThing implements Serializable {
     }
     
     public String toString(){
-    	String s = "Entity name: " + name_ + ", ";
+    	String s = "Entity name: " + name_;
     	
     	if(!(equipped_item_ == null))
     		s += "\nequppied item: " + equipped_item_.name_;
@@ -121,7 +121,7 @@ abstract public class Entity extends DrawableThing implements Serializable {
     		s+= " " + inventory_.get(i).name_;
     	}
     	
-    	s+=".\n";
+    	s+="\n";
     	
     	s+="map_relationship_: ";
     	if(map_relationship_ == null)

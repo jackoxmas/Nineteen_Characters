@@ -20,14 +20,24 @@ public class TestingMain {
 			System.out.println();
 		}
 	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public static void oldtest(){
 		Avatar avatar = new Avatar("avatar", 'x', 0, 0);
 		ViewPortTester Tester = new ViewPortTester();
 		printArray(Tester);
 		System.out.println("Done with viewportTester, ccviewtime!");
 		Display _display = new Display(new AvatarCreationView(avatar));
 		_display.printView();
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Avatar avatar = new Avatar("avatar", 'x', 0, 0);
+		Display _display = new Display(avatar.getMyView());
+		_display.printView();
+		avatar.getMyView().getInput('C');
+		_display.setView(avatar.getMyView());
+		_display.printView();
+		
+		
 
 	}
 

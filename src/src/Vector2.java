@@ -3,7 +3,10 @@
  * Last Access: 15-02-13
  */
 package src;
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /**
  * Vector2 objects represent a 2 dimensional, mathematical, integer vector or - 

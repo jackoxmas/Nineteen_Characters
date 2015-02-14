@@ -1,6 +1,5 @@
 package src;
 import src.controller.Avatar;
-import src.controller.Entity;
 import src.model.MapDisplay_Relation;
 import src.model.MapMain_Relation;
 import src.view.Display;
@@ -65,7 +64,7 @@ a.getMapRelation().killWithinRadius(1);
 a.getMapRelation().levelUpWithinRadius(1);
 a.getMapRelation().pickUpItemInDirection(0, 0);
 a.addItemToInventory(null);
-a.get_my_display();
+a.getMyView();
 }
 public static void testMoveAvatar(Avatar a, int x, int y) {
 System.out.println("Moving avatar. Error code: " + a.getMapRelation().moveInDirection(x, y));

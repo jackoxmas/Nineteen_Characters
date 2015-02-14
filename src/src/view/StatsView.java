@@ -39,6 +39,11 @@ public final class StatsView extends Viewport
 			i = new ArrayList<Character>(height_);
 		}
 	}
+	@Override
+	public boolean getInput(char c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 
 		

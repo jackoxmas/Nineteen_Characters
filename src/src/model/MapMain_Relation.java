@@ -20,6 +20,10 @@ public class MapMain_Relation {
     //private final Map map_reference_ = Map.getMyReferanceToTheMap(this);
     private Map current_map_reference_;
 
+    private MapMain_Relation(Map map) {
+        current_map_reference_ = map;
+    }
+
     /**
      * Creates a new map and associates this maprelation with that map. This is
      * the first function that a new MapMain_Relation must call.
@@ -93,4 +97,33 @@ public class MapMain_Relation {
     public int initializeTerrain(Terrain t, int x, int y) {
         return current_map_reference_.initializeTerrain(t, x, y);
     }
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    /**
+     * Build a Map and MapMain_Relation from the serialization stream.
+     * @param inStream The java.io.ObjectInputStream to pull data from
+     * @throws Exception
+     */
+    public static MapMain_Relation deserializeMap(java.io.ObjectInputStream inStream) throws Exception {
+        try {
+            MapMain_Relation mmr = new MapMain_Relation((Map)inStream.readObject());
+            return mmr;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    /**
+     * Write the Map to the serialization stream
+     * @param outStream The java.io.ObjectOutputStream to push data to
+     * @throws Exception
+     */
+    public void serializeMap(java.io.ObjectOutputStream outStream) throws Exception {
+        try {
+            outStream.writeObject(map_reference_);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    // </editor-fold>
 }

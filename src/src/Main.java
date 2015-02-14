@@ -1,88 +1,191 @@
+/**
+ * Implementor: Alex Stewart
+ * Last Update: 15-02-13
+ */
 package src;
 
-import src.controller.Avatar;
 import src.controller.Entity;
-import src.model.MapDisplay_Relation;
 import src.model.MapMain_Relation;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import java.io.*;
+import java.lang.StackTraceElement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Initializes, opens the program.
- *
- * @author JohnReedLOL.
+ * @author JohnReedLOL, Alex Stewart
  */
-public class Main {
+public class Main
+{
+    private static ProgramOpts pOpts_ = null;
+    private static SavedGame saveGame_;
 
-    MapMain_Relation m = new MapMain_Relation();
+    private static MapMain_Relation mmr_;
+
+
+    public static void main(String[] args) {
+        parseArgs(args); // Parse command line arguments
+        initialize(); // Initialize any data we need to before loading
+        handleArgs(args);
+
+        // testing
+        saveGameToDisk();
+
+        exitGame();
+        //initializeEverything();
+    }
+
+
+    // <editor-fold desc="GAME METHODS" defaultstate="collapsed">
+    private static void exitGame() {
+
+    }
+
+    private static void initialize() {
+        saveGame_ = null;
+        mmr_ = new MapMain_Relation(); // Initialize the Map Object
+        MapMain_Relation newmmr_ = new MapMain_Relation();
+        newmmr_.addEntity(new src.controller.Avatar("test", 'x', 0, 0), 0, 0);
+    }
+
+    private static void saveGameToDisk() {
+        if (saveGame_ == null) {
+            saveGame_ = SavedGame.newSavedGame();
+        }
+        Exception e = null;
+        saveGame_.saveFile(mmr_, e);
+        if (e != null)
+            errOut(e);
+    }
+
+    // TODO: complete
+    private static int startNewGame() {
+        return 0;
+    }
+    // </editor-fold>
+
+    // <editor-fold desc="UTILITIES" defaultstate="collapsed">
+    // Error date format for the errOut(Exception) write
+    private static SimpleDateFormat errDateFormat_ = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
 
     /**
-     * @param args the command line arguments
+     * This class holds information about optional program utilities which may
+     * be triggered via command line arguments. Reference {@link #parseArgs}
+     * for parsing implementation.
      */
-    public static void main(String[] args) {
-        testEverything();
-        initializeEverything();
+    private static class ProgramOpts {
+        // Debug Mode
+        String[] dbg_match = {"-d", "--debug"};
+        boolean dbg_flag = false;
+
+        // Load Saved Game
+        String[] lsg_match = {"-l", "--load"}; // option flag match string
+        boolean lsg_flag = false; // whether or not to load the game
+        int lsg_path = -1; // the index in args to get the path from
+
+        // Redirect STDERR
+        String[] err_match = {"-e", "-err-out"};
+        boolean err_flag = false;
+        int err_path = -1;
     }
 
-    public static void testEverything() {
-        MapMain_Relation map_main = new MapMain_Relation();
-        map_main.createNewMap(3, 3);
-        Avatar a = new Avatar("a", 'x', 0, 0);
-        System.out.println("Adding avatar. Error code: " + map_main.addAvatar(a, 0, 0));
-        MapDisplay_Relation map_display = new MapDisplay_Relation(null);
-        map_display.associateWithMap(map_main.getMyMap());
-        System.out.println( "representation of avatar: " + map_display.getTileRepresentation(0, 0) );
-        System.out.println( "representation of empty space: " + map_display.getTileRepresentation(1, 0) );
-        //a.getMapRelation().getMapTile().getTopCharacter();
-        System.out.println("x cordinate: " + a.getMapRelation().getMyXCordinate());
-        System.out.println("y cordinate: " + a.getMapRelation().getMyYCordinate());
+    /**
+     * Writes the provided String to the errOut stream with the prefix: (DEBUG).
+     * @param s The String to write.
+     */
+    public static void dbgOut(String s) {
+        if (s == null) s = "NULL";
+        if (pOpts_.dbg_flag)
+            errOut("(DEBUG) " + s);
+    }
 
-        testMoveAvatar(a, 1, 0);
-        testMoveAvatar(a, 1, 0);
-        try {
-            testMoveAvatar(a, 1, 0);
-        } catch(Exception e) {
-            System.out.println("success - avatar walked off map");
+    /**
+     * Writes the provided Exception to the errOut stream with the prefix: "ERROR:" and WITHOUT a stack trace called.
+     * If you wish to print the stack tace, call {@link #errOut(Exception, boolean)} with printTrace set to TRUE.
+     * @param e The Exception to write
+     */
+    public static void errOut(Exception e) {
+        errOut(e, false);
+    }
+
+    /**
+     * Writes the provided Exception to the errOut stream with the prefix: "ERROR:"
+     * @param e The Exception object to write
+     * @param printTrace whether or not to print the Exception's stack trace below the error output
+     */
+    public static void errOut(Exception e, boolean printTrace) {
+        if (e == null) {
+            errOut("errOut called with null Exception");
         }
-        
-        //a.getMapRelation().addStatsPack(stats_pack);
-        System.out.println(a == a.getMapRelation().getAvatar());
-        System.out.println(
-        map_main.getTile(a.getMapRelation().getMyXCordinate(), 
-                a.getMapRelation().getMyYCordinate()) 
-                == a.getMapRelation().getMapTile()
-        );
-        a.getMapRelation().addStatsPack(null);
-        a.getMapRelation().subtractStatsPack(null);
-        a.getMapRelation().hurtWithinRadius(10, 5);
-        a.getMapRelation().healWithinRadius(10, 1);
-        a.getMapRelation().killWithinRadius(true, false, 1); 
-        a.getMapRelation().levelUpWithinRadius(true, false, 1);
-        a.getMapRelation().pickUpItemInDirection(0, 0);
-        a.addItemToInventory(null);
-        a.get_my_display();
+        errOut("ERROR: " + e.getMessage());
+        if (!printTrace)
+            return;
+        for (StackTraceElement elem : e.getStackTrace()) {
+            errOut("TRACE: " + elem.toString());
+        }
     }
 
-    public static void testMoveAvatar(Avatar a, int x, int y) {
-        System.out.println("Moving avatar. Error code: " + a.getMapRelation().moveInDirection(x, y));
-        System.out.println("x cordinate: " + a.getMapRelation().getMyXCordinate());
-        System.out.println("y cordinate: " + a.getMapRelation().getMyYCordinate());
+    /**
+     * Writes the provided String to the errOut stream.
+     * @param s The message to write out.
+     */
+    public static void errOut(String s) {
+        if (s == null) s = "NULL";
+        System.err.println("[" + errDateFormat_.format(new Date()) + "] " + s);
     }
 
-    static void initializeEverything() {
-        // currently there is only one avatar
-        Avatar avatar = new Avatar("avatar", 'x', 0, 0);
+    private static void handleArgs(String[] args) {
+        if (pOpts_.err_flag) {
+            try {
+                System.setErr(new PrintStream(args[pOpts_.err_path]));
+            } catch (FileNotFoundException e) {
+                errOut(e);
+            }
+        }
+        if (pOpts_.lsg_flag) {
+            saveGame_ = new SavedGame(args[pOpts_.lsg_path]);
+            Exception e = null;
+            int s = saveGame_.loadFile(mmr_, e);
+            if (s == 0) { // the saved game load has failed
+                errOut(e);  // print out error
+                if (startNewGame() == 0) {
+                    errOut(e);
+                    exitGame();
+                }
+            }
+        }
     }
 
-    static void saveGameToDisk() {
+    private static void parseArgs(String[] args) {
+        pOpts_ = new ProgramOpts();
 
+        for (int a = 0; a < args.length; a++) {
+            // DEBUG
+            for (String m : pOpts_.dbg_match) {
+                if (m.equals(args[a])) {
+                    pOpts_.dbg_flag = true;
+                    break;
+                }
+            }
+
+            // LOAD SAVED GAME
+            for (String m : pOpts_.lsg_match) {
+                if (m.equals(args[a]) && (args.length > a + 1)) {
+                    pOpts_.lsg_path = a + 1;
+                    pOpts_.lsg_flag = true;
+                    break;
+                }
+            }
+            // REDIRECT STDERR
+            for (String m : pOpts_.err_match) {
+                if (m.equals(args[a]) && (args.length > a + 1)) {
+                    pOpts_.err_path = a + 1;
+                    pOpts_.err_flag = true;
+                    break;
+                }
+            }
+        }
     }
-
-    static void resumeGameFromDisk() {
-
-    }
-
-}
+    // </editor-fold>
+} // end of Main

@@ -39,3 +39,7 @@
 /src/src/view/TestingMain.class
 /src/src/view/ViewPortTester.class
 /bin/
+/IDEA/out/
+/IDEA/source/
+/IDEA/*.sav
+/IDEA/*.log

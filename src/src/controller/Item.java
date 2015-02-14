@@ -73,6 +73,21 @@ public class Item extends DrawableThing implements Serializable {
         }
     }
 
+    public String toString(){
+        String s = "Item name: " + name_;
+        s += "\n is_passable_: " + is_passable_;
+
+        s+="\n map_relationship_: ";
+        if(map_relationship_ == null)
+            s += "null";
+        else
+            s += "Not null" ;
+
+        s += "\n associated with map: " + map_relationship_.isAssociatedWithMap();
+
+        return s;
+    }
+
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     private static final long serialVersionUID = Long.parseLong("ITEM", 35);
     // </editor-fold>

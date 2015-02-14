@@ -26,7 +26,7 @@ initializeEverything();
 }
 public static void testEverything() {
 MapMain_Relation map_main = new MapMain_Relation();
-map_main.createNewMap(3, 3);
+map_main.bindToNewMapOfSize(3, 3);
 Avatar a = new Avatar("a", '~', 0, 0);
 MapView map_view = new MapView(a);
 map_main.addViewToMap(map_view);
@@ -61,8 +61,8 @@ a.getMapRelation().addStatsPack(null);
 a.getMapRelation().subtractStatsPack(null);
 a.getMapRelation().hurtWithinRadius(10, 5);
 a.getMapRelation().healWithinRadius(10, 1);
-a.getMapRelation().killWithinRadius(true, false, 1);
-a.getMapRelation().levelUpWithinRadius(true, false, 1);
+a.getMapRelation().killWithinRadius(1);
+a.getMapRelation().levelUpWithinRadius(1);
 a.getMapRelation().pickUpItemInDirection(0, 0);
 a.addItemToInventory(null);
 a.get_my_display();

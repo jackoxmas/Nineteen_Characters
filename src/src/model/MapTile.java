@@ -45,6 +45,19 @@ final class MapTile implements Serializable {
             return -1;
         }
     }
+    
+    /**
+     * INCOMPLETE
+     * @author Reed, John
+     * @return whether or not this tile is passable
+     */
+    public boolean isPassable() {
+        if(terrain_ == null || terrain_.getMapRelation().getIsAlwaysImpassable() == false) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * Only works if there in no entity there already.

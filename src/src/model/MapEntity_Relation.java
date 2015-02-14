@@ -52,10 +52,6 @@ public class MapEntity_Relation extends MapDrawableThing_Relation implements Ser
 
     }
 
-    public void levelUp(StatsPack stats_pack) {
-
-    }
-
     public void addStatsPack(StatsPack stats_pack) {
 
     }
@@ -66,13 +62,13 @@ public class MapEntity_Relation extends MapDrawableThing_Relation implements Ser
     
     /**
      * An item underneath you can be picked up using the parameters 0,0.
-     * 0 if item is picked up successfully, 1 if no item is on the specified tile.
+     * 0 if item is picked up successfully, -1 if no item is on the specified tile.
      * @param x
      * @param y 
      * @return error_code
      */
     public int pickUpItemInDirection(int x, int y) {
-        int error_code = 1;
+        int error_code = -1;
         
     	Item itemToBePickedUp = current_map_reference_.removeTopItem(x + getMyXCordinate(),y + getMyYCordinate());
     	if(itemToBePickedUp != null){

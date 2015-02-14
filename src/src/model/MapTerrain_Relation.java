@@ -21,6 +21,11 @@ public class MapTerrain_Relation extends MapDrawableThing_Relation implements Se
         terrain_ = terrain;
     }
 
+    public MapTerrain_Relation(Terrain terrain, boolean isAlwaysImpassible) {
+        super(terrain, isAlwaysImpassible);
+        terrain_ = terrain;
+    }
+
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     private static final long serialVersionUID = Long.parseLong("RELATIONMT", 35);
     // </editor-fold>

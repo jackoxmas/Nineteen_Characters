@@ -76,7 +76,7 @@ public class MapMain_Relation {
 
     public Item removeTopItem(Item i, int x, int y) {
         i.getMapRelation().associateWithMap(null);
-        return current_map_reference_.removeTopItem(i, x, y);
+        return current_map_reference_.removeTopItem(x, y);
     }
 
     public MapTile getTile(int x, int y) {

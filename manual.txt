@@ -1,0 +1,19 @@
+﻿==========================================
+///// COP PROJECT | IMPLEMENTATION 1 /////
+/////--------------------------------/////
+/////           MANUAL               /////
+==========================================
+//// 1.0 - Program Arguments
+game.exe [-d][-e FILE] [-l  FILE]
+
+	-d, --debug
+		Activates debug mode, where debug outputs are sent to the error stream. Error stream may 
+		be redirected, as per the --err-out option
+		
+	-e FILE, --err-out FILE
+		Redirects STDERR messages to the given file
+		
+	-l FILE, --load FILE
+		Immediately attempts to load the given file as a saved game. If the game cannot be loaded, 
+		a new game is started instead.
+		

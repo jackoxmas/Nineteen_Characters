@@ -15,7 +15,7 @@ import src.model.MapDrawableThing_Relation;
 abstract public class DrawableThing implements Serializable {
 
     // Converts the class name into a base 35 number. "DrawableThing" too long
-    private static final long serialVersionUID = Long.parseLong("Drawable", 35);
+    private static final long serialVersionUID = Long.parseLong("DRAWABLE", 35);
 
     // names of items and terrain should be non-unique.
     // names of entities should be unique to fit in a hashmap.

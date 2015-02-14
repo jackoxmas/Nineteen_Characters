@@ -1,6 +1,6 @@
 /**
  * Implementor: Alex Stewart
- * Last Access: 15-02-10
+ * Last Access: 15-02-13
  */
 package src;
 import java.io.*;
@@ -15,10 +15,10 @@ import java.io.*;
  */
 public class Vector2 implements Comparable, Serializable {
     
-    // Class priate values
+    // Class private values
     private Integer x_, y_;
     
-    // <editor-fold desc="CONSTRUCTORS">
+    // <editor-fold desc="CONSTRUCTORS" defaultstate="collapsed">
     /**
      * Constructs a new Vector2 object
      */
@@ -48,7 +48,7 @@ public class Vector2 implements Comparable, Serializable {
     }
     // </editor-fold>
     
-    // <editor-fold desc="CLASS ATTRIBUTES">
+    // <editor-fold desc="CLASS ATTRIBUTES" defaultstate="collapsed">
     /**
      * GET a COPY of this vector's values
      * Use {@link #x()} or {@link #y()} to get single values
@@ -128,7 +128,7 @@ public class Vector2 implements Comparable, Serializable {
     }
     // </editor-fold>
     
-    // <editor-fold desc="PUBLIC METHODS">
+    // <editor-fold desc="PUBLIC METHODS" defaultstate="collapsed">
     /**
      * Adds the two supplied Vector2 values and returns the result as a new 
      * Vector2. This method follows normal vector addition rules.
@@ -237,7 +237,7 @@ public class Vector2 implements Comparable, Serializable {
     }
     // </editor-fold>
     
-    // <editor-fold desc="INTERFACE IMPLEMENTATIONS">
+    // <editor-fold desc="INTERFACE IMPLEMENTATIONS" defaultstate="collapsed">
     /* COMPARABLE */
     // Floating point precision to use when comparing vectors
     private static int PREC = 4;
@@ -267,7 +267,7 @@ public class Vector2 implements Comparable, Serializable {
     
     /* SERIALIZABLE */
     // Serialization version ID
-    private static final long serialVersionUID = Long.parseLong("COPVECTOR2", 35);
+    private static final long serialVersionUID = Long.parseLong("VECTOR2", 35);
     
     /**
      * Reads byte data from an ObjectInputStream and uses it to populate this 

@@ -7,15 +7,17 @@ package src.controller;
 
 import java.util.ArrayList;
 import src.model.MapEntity_Relation;
+
+import java.io.Serializable;
+
 /**
  *
  * @author JohnReedLOL
  */
-abstract public class Entity extends DrawableThing {
-    
+abstract public class Entity extends DrawableThing implements Serializable {
 
     // Converts an entity's name [which must be unique] into a unique base 35 number
-    private static final long serialVersionUID = Long.parseLong("Entity", 35);
+    private static final long serialVersionUID = Long.parseLong("ENTITY", 35);
 
     // map_relationship_ is used in place of a map_referance_
     private final MapEntity_Relation map_relationship_;

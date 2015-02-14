@@ -8,11 +8,14 @@ package src.model;
 import src.controller.DrawableThing;
 import src.controller.Entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author JohnMichaelReed
  */
-public class MapDrawableThing_Relation {
+public class MapDrawableThing_Relation implements Serializable {
+    private static final long serialVersionUID = Long.parseLong("RELATIONMD", 35);
 
     protected Map current_map_reference_ = null;
     private MapTile my_tile_ = null;

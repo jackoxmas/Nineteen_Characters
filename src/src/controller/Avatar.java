@@ -65,6 +65,8 @@ public final class Avatar extends Entity {
     		s += "null";
     	else 
     		s += "Not null" ;
+    		
+    	s += "\n associated with map:" + map_relationship_.isAssociatedWithMap();
     	
     	return s;
     }

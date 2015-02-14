@@ -2,7 +2,6 @@ package src.controller;
 
 import java.io.Serializable;
 import src.model.MapDrawableThing_Relation;
-import src.model.MapTile;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -42,15 +41,17 @@ abstract public class DrawableThing implements Serializable {
         is_viewable_ = true;
         map_relationship_ = new MapDrawableThing_Relation(this);
     }
-    
+
     private boolean is_viewable_;
     
     private StatsPack stats_pack_ = new StatsPack();
     
-    public StatsPack get_stats_pack_() {
+    public StatsPack get_default_stats_pack_() {
         return this.stats_pack_;
     }
-    
+    public void set_default_stats_pack(StatsPack stats_){
+        this.stats_pack_ = stats_;
+    }
     public void onTurn() {
         
     }

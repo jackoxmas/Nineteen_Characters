@@ -14,7 +14,7 @@ import src.controller.Terrain;
  *
  * @author JohnReedLOL
  */
-public final class MapTile implements Serializable {
+final class MapTile implements Serializable {
 
     public final int x_;
     public final int y_;
@@ -50,7 +50,7 @@ public final class MapTile implements Serializable {
      * Only works if there in no entity there already.
      *
      * @param entity - entity to be added to the tile
-     * @return Returns 0 on success, non-zero if an entity is already there.
+     * @return error codes: -1 if an entity is already there.
      */
     public int addEntity(Entity entity) {
         if (this.entity_ == null && entity != null) {
@@ -71,8 +71,8 @@ public final class MapTile implements Serializable {
         if (this.entity_ == null) {
             return -1;
         } else {
-            this.entity_ = null;
             this.entity_.getMapRelation().setMapTile(null);
+            this.entity_ = null;
             return 0;
         }
     }
@@ -118,12 +118,23 @@ public final class MapTile implements Serializable {
     }
 
     /**
-     * Checks the tile to find its character representation
-     *
+     * Checks the tile to gets its character representation
+     * Returns empty space when tile is empty 
      * @return the character that will represent this tile on the map
+     * @author Reed, John
      */
     public char getTopCharacter() {
-        return 0;
+        if (!items_.isEmpty()) {
+            return items_.peekLast().getRepresentation();
+        }
+        else if (entity_ != null) {
+            return entity_.getRepresentation();
+        }
+        else if (terrain_ != null) {
+            return terrain_.getRepresentation();
+        } else {
+            return ' ';
+        }
     }
     
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
@@ -139,4 +150,3 @@ public final class MapTile implements Serializable {
     }*/
     // </editor-fold>
 }
-

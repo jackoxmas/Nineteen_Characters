@@ -5,8 +5,10 @@
  */
 package src.model;
 
+import src.AreaFunctor;
 import src.controller.DrawableThing;
 import src.controller.Entity;
+import src.controller.StatsPack;
 
 /**
  *
@@ -25,7 +27,7 @@ public class MapDrawableThing_Relation {
     public int getMyXCordinate() {
         return my_tile_.x_;
     }
-    
+
     /**
      * This function must be called to associate a map_relation with a map.
      */
@@ -75,13 +77,31 @@ public class MapDrawableThing_Relation {
             return -3;
         }
     }
+    private class areaDamager extends AreaFunctor {
 
+        @Override
+        public void repeat(int x_pos, int y_pos) {
+            MapTile infliction = current_map_reference_.getTile(x_pos, y_pos);
+            if (infliction != null) {
+                Entity to_hurt = infliction.getEntity();
+                if (to_hurt != null) {
+                    StatsPack s = to_hurt.get_stats_pack_();
+                } else {
+                    return;
+                }
+            } else {
+                return;
+            }
+        }
+    };
+    
     //area effects
     public void hurtWithinRadius(int damage, int radius) {
+        areaDamager a = new areaDamager();
+        
+}
 
-    }
-
-    public void healWithinRadius(int heal_quantity, int radius) {
+public void healWithinRadius(int heal_quantity, int radius) {
 
     }
 

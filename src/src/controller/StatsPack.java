@@ -37,6 +37,11 @@ public final class StatsPack implements Serializable {
     private int current_defensive_rating_;
     private int current_armor_rating_;
 
+    /**
+     * Constructs new StatsPack with all stats variables = 0
+     * 
+     * @author Jack Christmas
+     */
     StatsPack() {
         lives_left_ = 0;
         strength_level_ = 0;
@@ -59,6 +64,21 @@ public final class StatsPack implements Serializable {
         current_armor_rating_ = 0;
     }
 
+    /**
+     * Constructs new StatsPack with only primary stats
+     * 
+     * @param lives_left
+     * @param strength_level
+     * @param agility_level
+     * @param intellect_level
+     * @param hardiness_level
+     * @param quantity_of_experience
+     * @param movement_level
+     * @param moves_left_in_turn
+     * @param cached_current_level
+     * 
+     * @author Jack Christmas
+     */
     StatsPack(
             int lives_left,
             int strength_level,
@@ -91,6 +111,31 @@ public final class StatsPack implements Serializable {
         current_armor_rating_ = max_armor_rating_at_current_level_;
     }
 
+    /**
+     * Constructs StatsPack with all stats variables
+     * 
+     * @param lives_left
+     * @param strength_level
+     * @param agility_level
+     * @param intellect_level
+     * @param hardiness_level
+     * @param quantity_of_experience
+     * @param movement_level
+     * @param moves_left_in_turn
+     * @param cached_current_level
+     * @param max_life_at_current_level
+     * @param max_mana_at_current_level
+     * @param max_offensive_rating_at_current_level
+     * @param max_defensive_rating_at_current_level
+     * @param max_armor_rating_at_current_level
+     * @param current_life
+     * @param current_mana
+     * @param current_offensive_rating
+     * @param current_defensive_rating
+     * @param current_armor_rating
+     * 
+     * @author Jack Christmas
+     */
     StatsPack(
             int lives_left,
             int strength_level,
@@ -132,14 +177,14 @@ public final class StatsPack implements Serializable {
         current_defensive_rating_ = current_defensive_rating;
         current_armor_rating_ = current_armor_rating;
     }
-
+    
     /**
-     * This function is for when one DrawableThing modifies [increases] the
-     * stats of another DrawableThing.
-     *
-     * @param modifier - gets added to the currect statspack
-     * @return modified StatsPack
-     * @author John-Michael Reed
+     * Adding StatsPack of one DrawableThing to another:
+     * Adds stats in modifier to stats in StatsPack
+     * 
+     * @param modifier		StatsPack to be added
+     * @return StatsPack 	StatsPack + modifier
+     * @author Jack Christmas
      */
     public StatsPack add(final StatsPack modifier) {
     	return new StatsPack(
@@ -202,13 +247,47 @@ public final class StatsPack implements Serializable {
 		return quantity_of_experience_;
 	}
 
+    /**
+     * Sets current experience
+     * 
+     * @param quantity_of_experience	New experience
+     */
 	public void setQuantityOfExperience(int quantity_of_experience) {
 		quantity_of_experience_ = quantity_of_experience;
 	}
 
+    /**
+     * Receives quantity_of_experience to set for experience
+     * Returns new calculated level
+     * 
+     * @param quantity_of_experience	New experience
+     * @return							New level
+     */
+	public int setQuantityOfExperienceAndReturnNewLevel(int quantity_of_experience) {
+		quantity_of_experience_ = quantity_of_experience;
+		return quantity_of_experience_/100;
+	}
+
+	/**
+	 * Adds experience to current experience
+	 * 
+	 * @param quantity_of_experience	Experience gained
+	 */
 	public void addQuantityOfExperience(int quantity_of_experience) {
-		
 		quantity_of_experience_ += quantity_of_experience;
+	}
+
+	/**
+	 * Receives quantity_of_experience gained
+	 * Returns levels gained
+	 * 
+	 * @param quantity_of_experience	Experience gained
+	 * @return							Levels gained
+	 */
+	public int addQuantityOfExperienceAndReturnLevelsGained(int quantity_of_experience) {
+		int old_experience = quantity_of_experience_;
+		quantity_of_experience_ += quantity_of_experience;
+		return quantity_of_experience_/100 - old_experience/100;
 	}
 
 	public int getMovesLeftInTurn() {
@@ -219,11 +298,8 @@ public final class StatsPack implements Serializable {
 		moves_left_in_turn_ = moves_left_in_turn;
 	}
 
-	public boolean moveOne() {
-		if (moves_left_in_turn_ == 0)
-			return false;
+	public void moveOne() {
 		moves_left_in_turn_ -= 1;
-		return true;
 	}
 
 	public void resetMove() {

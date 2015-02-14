@@ -6,8 +6,12 @@
 package src.controller;
 
 import src.model.MapAvatar_Relation;
+import src.model.MapMain_Relation;
 import src.view.Display;
 import src.view.AvatarCreationView;
+import src.view.MapView;
+import src.view.StatsView;
+import src.view.Viewport;
 
 import java.io.Serializable;
 
@@ -45,14 +49,37 @@ public final class Avatar extends Entity implements Serializable {
     public Avatar(String name, char representation, int x_respawn_point, int y_respawn_point) {
         super(name, representation, x_respawn_point, y_respawn_point);
         map_relationship_ = new MapAvatar_Relation(this, x_respawn_point, y_respawn_point);
+        map_view_ = generateMapView();
+        stats_view_ = generateStatsView();
     }
 
-    private final Display display_ = new Display(new AvatarCreationView(this));
+    private Viewport current_view_ = new AvatarCreationView(this);
+    private MapView map_view_;
+    private StatsView stats_view_;
 
-    public Display get_my_display() {
-        return this.display_;
+    public Viewport getMyView() {
+        return this.current_view_;
+    }
+    public void switchToMapView(){
+    	current_view_ = map_view_;
+    }
+    public void switchToStatsView(){
+    	current_view_ = stats_view_;
+    }
+    
+    private MapView generateMapView(){
+		MapMain_Relation map_main = new MapMain_Relation();
+		map_main.bindToNewMapOfSize(Viewport.width_,Viewport.height_); //Can change these later if we so desire. 
+		MapView map_view = new MapView(this);
+		map_main.addViewToMap(map_view);
+		map_main.addAvatar(this, 0, 0);
+		return map_view;
+	}
+    private StatsView generateStatsView(){
+    	return new StatsView(this);
     }
 
+    
     @Override
     public String toString(){
         String s = "Avatar name: " + name_;

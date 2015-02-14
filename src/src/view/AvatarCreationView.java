@@ -10,6 +10,10 @@ import java.util.ArrayList;
 
 import src.controller.Avatar;
 import src.controller.Entity;
+import src.controller.Smasher;
+import src.controller.Sneak;
+import src.controller.Summoner;
+import src.model.MapMain_Relation;
 /**
  * Players see the AvatarCreationView when they chose their occupation.
  * @author Matthew B, Jessan, JohnReedLOL
@@ -82,7 +86,16 @@ public final class AvatarCreationView extends Viewport
      * Set avatar to appropriate case
      * @return Returns false if invalid
      */
-    public boolean setOccupation(char c){
+    private boolean setOccupation(char c){
+    	switch (c) {
+    	case 'C':  avatar_reference_.setOccupation(new Sneak());
+                 break;
+        case 'W': avatar_reference_.setOccupation(new Summoner());
+        		break;
+        case 'S': avatar_reference_.setOccupation(new Smasher());
+        		break;
+		default: System.err.println("Impossible Switch in CCview?");
+	 }
     	return false;
     }
 	@Override
@@ -90,4 +103,15 @@ public final class AvatarCreationView extends Viewport
 		// Nothing to do here, this view is static. 
 		
 	}
+
+	@Override
+	public boolean getInput(char c) {
+		if(c == 'C' || c == 'W' || c == 'S'){
+			 setOccupation(c);
+			 avatar_reference_.switchToMapView();
+			 return true;
+		}
+		return false;
+	}
 }
+	

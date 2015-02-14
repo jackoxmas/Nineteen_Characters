@@ -44,10 +44,6 @@ class Map implements Serializable {
     private LinkedHashMap<String, Entity> entity_list_;
     // Item is the address of an item in memory. Location is its xy coordinates on the grid.
     private LinkedList<Item> items_list_;
-    
-    /* MAP OBJECT */
-    // MapModel.map_model_ is static because there is only one map_model_  
-    private Map the_map_ = new Map();
 
     //public static boolean NDEBUG_ = true;
     // MAP MUST BE SQUARE

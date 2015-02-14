@@ -104,7 +104,7 @@ public class MapDrawableThing_Relation implements Serializable {
                 Entity to_hurt = infliction.getEntity();
                 if (to_hurt != null) {
                     StatsPack s = to_hurt.getModifiableStatsPack();
-                    s.setCurrentLife(s.getCurrentLife() - strength);
+                    //s.setCurrentLife(s.getCurrentLife() - strength);
                 }
             }
         }
@@ -119,7 +119,7 @@ public class MapDrawableThing_Relation implements Serializable {
                 Entity to_heal = infliction.getEntity();
                 if (to_heal != null) {
                     StatsPack s = to_heal.getModifiableStatsPack();
-                    s.setCurrentLife(s.getCurrentLife() + strength);
+                    //s.setCurrentLife(s.getCurrentLife() + strength);
                 }
             }
         }

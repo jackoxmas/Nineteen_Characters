@@ -4,15 +4,12 @@
  */
 package src;
 
-import src.controller.Entity;
-import src.model.MapMain_Relation;
-import src.view.Display;
-import src.view.MapView;
-
-import java.io.*;
-import java.lang.StackTraceElement;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import src.model.MapMain_Relation;
 
 /**
  * Initializes, opens the program.

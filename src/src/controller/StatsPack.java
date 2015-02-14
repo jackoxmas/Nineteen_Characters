@@ -10,7 +10,7 @@ public final class StatsPack implements Serializable {
     private static final long serialVersionUID = Long.parseLong("STATSPACK", 35);
 
     // Primary stats
-    private final int lives_left_;
+    private int lives_left_; // this can change without leveling up
     private final int strength_level_;
     private final int agility_level_;
     private final int intellect_level_;
@@ -349,6 +349,10 @@ public final class StatsPack implements Serializable {
 
 	public int getLivesLeft() {
 		return lives_left_;
+	}
+        
+        public void decrementLivesLeft() {
+		--lives_left_;
 	}
 
 	public int getStrengthLevel() {

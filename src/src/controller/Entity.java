@@ -78,7 +78,22 @@ abstract public class Entity extends DrawableThing implements Serializable {
         else {
             set_default_stats_pack(occupation_.change_stats(get_default_stats_pack_()));
         }
-
+    }
+    
+    /**
+     * Entities should check their health after they are damaged.
+     */
+    public void checkHealth() {
+        if(this.getModifiableStatsPack().getCurrentLife() < 1) {
+            commitSuicide();
+        }
+    }
+    
+    public void commitSuicide() {
+        super.get_default_stats_pack_().decrementLivesLeft();
+        if(super.get_default_stats_pack_().getLivesLeft() < 0) {
+            System.out.println("game over");
+        }
     }
     
     public void setOccupation(Occupation occupation) {

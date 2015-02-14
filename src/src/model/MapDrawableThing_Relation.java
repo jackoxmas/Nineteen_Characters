@@ -92,7 +92,6 @@ public class MapDrawableThing_Relation implements Serializable {
                 if (to_hurt != null) {
                     StatsPack s = to_hurt.getModifiableStatsPack();
                     s.setCurrentLife(s.getCurrentLife() - strength);
-                    return;
                 }
             }
         }
@@ -108,7 +107,6 @@ public class MapDrawableThing_Relation implements Serializable {
                 if (to_heal != null) {
                     StatsPack s = to_heal.getModifiableStatsPack();
                     s.setCurrentLife(s.getCurrentLife() + strength);
-                    return;
                 }
             }
         }
@@ -129,9 +127,7 @@ public class MapDrawableThing_Relation implements Serializable {
             if (infliction != null) {
                 Entity to_kill = infliction.getEntity();
                 if (to_kill != null) {
-                    StatsPack s = to_kill.getModifiableStatsPack();
-                    s.setCurrentLife(-9000);
-                    return;
+                    to_kill.commitSuicide();
                 }
             }
         }
@@ -181,12 +177,12 @@ public class MapDrawableThing_Relation implements Serializable {
         a.effectArea(this.getMyXCordinate(), this.getMyYCordinate(), radius, heal_quantity);
     }
 
-    public void killWithinRadius(boolean will_kill_players, boolean will_kill_npcs, int radius) {
+    public void killWithinRadius(/*boolean will_kill_players, boolean will_kill_npcs, */ int radius) {
         AreaKiller a = new AreaKiller();
         a.effectArea(this.getMyXCordinate(), this.getMyYCordinate(), radius, 1);
     }
 
-    public void levelUpWithinRadius(boolean will_level_up_players, boolean will_level_up_npcs, int radius) {
+    public void levelUpWithinRadius(/*boolean will_level_up_players, boolean will_level_up_npcs, */ int radius) {
         AreaLeveler a = new AreaLeveler();
         a.effectArea(this.getMyXCordinate(), this.getMyYCordinate(), radius, 1);
     }

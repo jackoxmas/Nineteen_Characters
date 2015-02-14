@@ -6,6 +6,7 @@
 package src.model;
 
 import src.view.Display;
+import src.view.Viewport;
 
 /**
  *
@@ -14,10 +15,10 @@ import src.view.Display;
 public class MapDisplay_Relation {
 
     private Map current_map_reference_;
-    private final Display display_;
+    private final Viewport view_;
 
-    public MapDisplay_Relation(Display display) {
-        display_ = display;
+    public MapDisplay_Relation(Viewport view) {
+        view_ = view;
     }
 
     /**

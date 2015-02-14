@@ -61,14 +61,23 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     public void subtractStatsPack(StatsPack stats_pack) {
 
     }
+    
     /**
-     * An item underneath you can be picked up using the parameters 0,0
+     * An item underneath you can be picked up using the parameters 0,0.
+     * 0 if item is picked up successfully, 1 if no item is on the specified tile.
      * @param x
      * @param y 
-     * @return error_code:
+     * @return error_code
      */
     public int pickUpItemInDirection(int x, int y) {
-        int error_code = 0;
+        int error_code = 1;
+        
+    	Item itemToBePickedUp = current_map_reference_.removeTopItem(x + getMyXCordinate(),y + getMyYCordinate());
+    	if(itemToBePickedUp != null){
+    		entity_.addItemToInventory(itemToBePickedUp);
+    		error_code = 0;
+    	}
+    	
         return error_code;
     }
 }

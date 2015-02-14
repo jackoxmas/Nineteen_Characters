@@ -7,6 +7,7 @@ import java.io.Serializable;
  *
  */
 public final class StatsPack implements Serializable {
+    private static final long serialVersionUID = Long.parseLong("STATSPACK", 35);
 
     // Primary stats
     private final int lives_left_;

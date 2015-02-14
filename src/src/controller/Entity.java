@@ -11,6 +11,7 @@ import src.model.MapEntity_Relation;
  * @author JohnReedLOL
  */
 abstract public class Entity extends DrawableThing {
+    
 
     // Converts an entity's name [which must be unique] into a unique base 35 number
     private static final long serialVersionUID = Long.parseLong("Entity", 35);

@@ -26,9 +26,8 @@ public class MapMain_Relation {
     }
 
     /**
-     * Creates a new map and associates this maprelation with that map. This is
-     * the first function that a new MapMain_Relation must call.
-     *
+     * Creates a new map and associates this maprelation with that map: 
+     * This is the first function that a MapMain_Relation must call.
      * @author John-Michael Reed
      * @param x - width of the map
      * @param y - height of the map

@@ -4,6 +4,8 @@ import src.controller.Avatar;
 import src.controller.Entity;
 import src.model.MapDisplay_Relation;
 import src.model.MapMain_Relation;
+import src.view.Display;
+import src.view.MapView;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -30,8 +32,17 @@ public class Main {
     public static void testEverything() {
         MapMain_Relation map_main = new MapMain_Relation();
         map_main.createNewMap(3, 3);
-        Avatar a = new Avatar("a", 'x', 0, 0);
+        Avatar a = new Avatar("a", '~', 0, 0);
+        MapView map_view = new MapView(a);
+        map_main.addViewToMap(map_view);
         System.out.println("Adding avatar. Error code: " + map_main.addAvatar(a, 0, 0));
+        char out = map_view.getMapRelation().getTileRepresentation(0, 0);
+		System.out.println("Mapview works: " + out);
+		//Example of mapview in use
+		Display _d = new Display(map_view);
+		_d.printView();
+		
+		
         MapDisplay_Relation map_display = new MapDisplay_Relation(null);
         map_display.associateWithMap(map_main.getMyMap());
         System.out.println( "representation of avatar: " + map_display.getTileRepresentation(0, 0) );

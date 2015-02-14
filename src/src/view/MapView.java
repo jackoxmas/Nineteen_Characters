@@ -5,6 +5,7 @@
  */
 package src.view;
 
+import src.controller.Avatar;
 import src.model.MapDisplay_Relation;
 
 /**
@@ -13,36 +14,35 @@ import src.model.MapDisplay_Relation;
  * @author Matthew B, Jessan, JohnReedLOL
  */
 
-final class MapView extends Viewport {
+public final class MapView extends Viewport {
 
     // Converts the class name into a base 35 number
     private static final long serialVersionUID = Long.parseLong("MapView", 35);
     
     // map_relationship_ is used in place of a map_referance_
-    private final MapDisplay_Relation map_relationship_;
-    private final int xPos_;
     private char[][] view_contents_;
-    private final int yPos_;
     private int x_;
     private int y_;//Set these to center via avatar later.
-    /*
-     * Generates a new MapView from the map using coordinates x and y.
-     */
-    public MapView(MapDisplay_Relation map_relationship, int x, int y) {
-        map_relationship_ = map_relationship;
-        xPos_ = x;
-        yPos_ = y;
-    	view_contents_=new char[length_][height_];
-    }
+    private Avatar AvatarRef_;
+
 	@Override
 	public void renderToDisplay() {
-		// TODO Auto-generated method stub
+		render();//All that's needed for now.
 		
 	}
+	public MapView(Avatar _avatar){
+		super();
+		AvatarRef_ = _avatar;
+		view_contents_ = getContents();
+	}
 	private void render(){
-		for(int i = x_;i!=x_+length_;++i){
-			for(int j = y_;j!=y_+height_;++j){
-				view_contents_[i][j] = map_relationship_.getTileRepresentation(i,j);
+		x_=AvatarRef_.getMapRelation().getMyXCordinate();
+		y_=AvatarRef_.getMapRelation().getMyYCordinate();
+		int midpointx_ = x_/2;
+		int midpointy_ = y_/2;
+		for(int i = 0;i!=width_;++i){
+			for(int j = 0;j!=height_;++j){
+				view_contents_[i][j] = map_relationship_.getTileRepresentation(i-midpointx_,j+midpointy_);
 			}
 		}
 	}

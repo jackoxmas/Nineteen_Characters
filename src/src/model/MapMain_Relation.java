@@ -9,6 +9,7 @@ import src.controller.Avatar;
 import src.controller.Entity;
 import src.controller.Item;
 import src.controller.Terrain;
+import src.view.MapView;
 
 /**
  * Allows for the initialization of the map.
@@ -80,6 +81,13 @@ public class MapMain_Relation {
 
     public MapTile getTile(int x, int y) {
         return current_map_reference_.getTile(x, y);
+    }
+    
+    public void addViewToMap(MapView view) {
+    	if(current_map_reference_ == null){System.out.println("A");}
+    		if(view == null){System.out.println("B");}
+    		if(view.getMapRelation() == null){System.out.println("C");}
+    	view.getMapRelation().associateWithMap(current_map_reference_);
     }
 
     /**

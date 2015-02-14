@@ -10,5 +10,5 @@ package src.controller;
  * @author JohnReedLOL
  */
 public interface Occupation {
-    
+    public StatsPack change_stats(StatsPack current_stats);
 }

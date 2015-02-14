@@ -6,12 +6,13 @@
 package src.model;
 
 import src.controller.Terrain;
+import java.io.Serializable;
 
 /**
  *
  * @author JohnMichaelReed
  */
-public class MapTerrain_Relation extends MapDrawableThing_Relation {
+public class MapTerrain_Relation extends MapDrawableThing_Relation implements Serializable {
 
     private final Terrain terrain_;
 
@@ -24,4 +25,8 @@ public class MapTerrain_Relation extends MapDrawableThing_Relation {
         super(terrain, isAlwaysImpassible);
         terrain_ = terrain;
     }
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private static final long serialVersionUID = Long.parseLong("RELATIONMT", 35);
+    // </editor-fold>
 }

@@ -10,11 +10,13 @@ import src.controller.Item;
 import src.controller.Occupation;
 import src.controller.StatsPack;
 
+import java.io.Serializable;
+
 /**
  *
  * @author JohnReedLOL
  */
-public class MapEntity_Relation extends MapDrawableThing_Relation {
+public class MapEntity_Relation extends MapDrawableThing_Relation implements Serializable {
 
     private final Entity entity_;
 
@@ -76,4 +78,8 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     	
         return error_code;
     }
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private static final long serialVersionUID = Long.parseLong("RELATIONME", 35);
+    // </editor-fold>
 }

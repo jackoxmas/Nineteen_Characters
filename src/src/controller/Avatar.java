@@ -13,16 +13,15 @@ import src.view.MapView;
 import src.view.StatsView;
 import src.view.Viewport;
 
+import java.io.Serializable;
+
 /**
  * Each avatar represents a player
  *
  *
  * @author JohnReedLOL
  */
-public final class Avatar extends Entity {
-
-    // Converts the class name into a base 35 number
-    private static final long serialVersionUID = Long.parseLong("Avatar", 35);
+public final class Avatar extends Entity implements Serializable {
 
     // map_relationship_ is used in place of a map_referance_
     private final MapAvatar_Relation map_relationship_;
@@ -83,28 +82,32 @@ public final class Avatar extends Entity {
     
     @Override
     public String toString(){
-    	String s = "Avatar name: " + name_;
-    	
-    	if(!(equipped_item_ == null))
-    		s += "\n equppied item: " + equipped_item_.name_;
-    	else
-    		s += "\n equppied item: null";
-    	
-    	s+= "\n Inventory " + "(" + inventory_.size() + ")" + ":";
-    	for(int i = 0; i < inventory_.size(); ++i){
-    		s+= " " + inventory_.get(i).name_;
-    	}
-    	
-    	s+="\n";
-    	
-    	s+=" map_relationship_: ";
-    	if(map_relationship_ == null)
-    		s += "null";
-    	else 
-    		s += "Not null" ;
-    		
-    	s += "\n associated with map:" + map_relationship_.isAssociatedWithMap();
-    	
-    	return s;
+        String s = "Avatar name: " + name_;
+
+        if(!(equipped_item_ == null))
+            s += "\n equppied item: " + equipped_item_.name_;
+        else
+            s += "\n equppied item: null";
+
+        s+= "\n Inventory " + "(" + inventory_.size() + ")" + ":";
+        for(int i = 0; i < inventory_.size(); ++i){
+            s+= " " + inventory_.get(i).name_;
+        }
+
+        s+="\n";
+
+        s+=" map_relationship_: ";
+        if(map_relationship_ == null)
+            s += "null";
+        else
+            s += "Not null" ;
+
+        s += "\n associated with map:" + map_relationship_.isAssociatedWithMap();
+
+        return s;
     }
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private static final long serialVersionUID = Long.parseLong("AVATAR", 35);
+    // </editor-fold>
 }

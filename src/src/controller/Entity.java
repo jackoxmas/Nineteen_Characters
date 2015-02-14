@@ -49,8 +49,13 @@ abstract public class Entity extends DrawableThing {
 
     private StatsPack my_stats_after_powerups_;
 
+    /**
+     * Adds default stats to item stats and updates my_stats_after_powerups
+     * @author Jessan
+     */
     private void recalculateStats() {
         //my_stats_after_powerups_.equals(my_stats_after_powerups_.add(equipped_item_.get_stats_pack_()));
+        my_stats_after_powerups_ = get_default_stats_pack_().add(equipped_item_.get_default_stats_pack_());
     }
 
     /**
@@ -63,7 +68,11 @@ abstract public class Entity extends DrawableThing {
             StatsPack new_stats = new StatsPack(0,1,1,1,1,1,1,1,1);
             set_default_stats_pack(get_default_stats_pack_().add(new_stats));
         }
+        //if occupation is not null/have an occupation
+        else {
             set_default_stats_pack(occupation_.change_stats(get_default_stats_pack_()));
+        }
+
     }
     
     public void setOccupation(Occupation occupation) {

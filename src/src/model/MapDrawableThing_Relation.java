@@ -88,7 +88,7 @@ public class MapDrawableThing_Relation implements Serializable {
             if (infliction != null) {
                 Entity to_hurt = infliction.getEntity();
                 if (to_hurt != null) {
-                    StatsPack s = to_hurt.get_stats_pack_();
+                    //StatsPack s = to_hurt.get_stats_pack_();
                 } else {
                     return;
                 }

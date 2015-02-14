@@ -23,6 +23,16 @@ public final class Avatar extends Entity {
     // map_relationship_ is used in place of a map_referance_
     private final MapAvatar_Relation map_relationship_;
     
+    
+    /**
+     * Accepts a key command from the map
+     * @param command
+     * @return 0 on success, not zero if command cannot be accepted
+     */
+    public int acceptKeyCommand(char command) {
+        return 0;
+    }
+    
     /**
      * Use this to call functions contained within the MapAvatar relationship
      * @return map_relationship_

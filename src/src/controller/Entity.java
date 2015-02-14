@@ -128,6 +128,9 @@ abstract public class Entity extends DrawableThing implements Serializable {
     		s += "null";
     	else 
     		s += "Not null" ;
+    		
+    	s += "\n associated with map:" + map_relationship_.isAssociatedWithMap();
+
     	
     	return s;
     }

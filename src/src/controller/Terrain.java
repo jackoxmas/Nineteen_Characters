@@ -6,15 +6,12 @@
 package src.controller;
 
 import src.model.MapTerrain_Relation;
-
+import java.io.Serializable;
 /**
  *
  * @author JohnReedLOL
  */
-public class Terrain extends DrawableThing {
-
-    // Converts a class name [which must be unique] into a unique base 35 number
-    private static final long serialVersionUID = Long.parseLong("Terrain", 35);
+public class Terrain extends DrawableThing implements Serializable {
 
     // map_relationship_ is used in place of a map_referance_
     private MapTerrain_Relation map_relationship_;
@@ -70,4 +67,12 @@ public class Terrain extends DrawableThing {
             return true;
         }
     }
+    
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    // Converts the class name into a base 35 number
+    private static final long serialVersionUID = Long.parseLong("TERRAIN", 35);
+
+
+
+    // </editor-fold>
 }

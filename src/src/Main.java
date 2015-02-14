@@ -27,6 +27,9 @@ public class Main
 
 
     public static void main(String[] args) {
+        
+        // Commenting out errors
+        /*
         parseArgs(args); // Parse command line arguments
         initialize(); // Initialize any data we need to before loading
         handleArgs(args);
@@ -36,6 +39,7 @@ public class Main
 
         exitGame();
         //initializeEverything();
+        */
     }
 
 

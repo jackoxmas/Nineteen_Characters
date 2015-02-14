@@ -8,11 +8,13 @@ package src.model;
 import src.controller.Avatar;
 import src.controller.Occupation;
 
+import java.io.Serializable;
+
 /**
  *
  * @author JohnMichaelReed
  */
-public class MapAvatar_Relation extends MapEntity_Relation {
+public class MapAvatar_Relation extends MapEntity_Relation implements Serializable {
 
     private final Avatar avatar_;
 
@@ -25,4 +27,8 @@ public class MapAvatar_Relation extends MapEntity_Relation {
     public Avatar getAvatar() {
         return avatar_;
     }
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private static final long serialVersionUID = Long.parseLong("RELATIONMA", 35);
+    // </editor-fold>
 }

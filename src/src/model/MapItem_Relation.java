@@ -6,12 +6,13 @@
 package src.model;
 
 import src.controller.Item;
+import java.io.Serializable;
 
 /**
  *
  * @author JohnReedLOL
  */
-public class MapItem_Relation extends MapDrawableThing_Relation {
+public class MapItem_Relation extends MapDrawableThing_Relation implements Serializable {
 
     private final Item item_;
 
@@ -24,4 +25,8 @@ public class MapItem_Relation extends MapDrawableThing_Relation {
     }
     private final boolean goes_in_inventory_;
     private final boolean is_one_shot_;
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private static final long serialVersionUID = Long.parseLong("RELATION_MI", 35);
+    // </editor-fold>
 }

@@ -8,8 +8,6 @@ import java.io.Serializable;
  */
 public final class StatsPack implements Serializable {
 
-    private static final long serialVersionUID = Long.parseLong("STATSPACK", 35);
-
     // Primary stats
     private int lives_left_; // this can change without leveling up
     private final int strength_level_;
@@ -274,6 +272,7 @@ public final class StatsPack implements Serializable {
      * @param quantity_of_experience	New experience
      * @return	New level
      */
+
     public int setQuantityOfExperienceAndReturnNewLevel(int quantity_of_experience) {
         quantity_of_experience_ = quantity_of_experience;
         return quantity_of_experience_ / 100;
@@ -407,4 +406,8 @@ public final class StatsPack implements Serializable {
     public int getMaxArmorRatingAtCurrentLevel() {
         return max_armor_rating_at_current_level_;
     }
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private static final long serialVersionUID = Long.parseLong("STATSPACK", 35);
+    // </editor-fold>
 }

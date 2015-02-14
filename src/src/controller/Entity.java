@@ -16,9 +16,6 @@ import java.io.Serializable;
  */
 abstract public class Entity extends DrawableThing implements Serializable {
 
-    // Converts an entity's name [which must be unique] into a unique base 35 number
-    private static final long serialVersionUID = Long.parseLong("ENTITY", 35);
-
     // map_relationship_ is used in place of a map_referance_
     private final MapEntity_Relation map_relationship_;
     
@@ -107,31 +104,35 @@ abstract public class Entity extends DrawableThing implements Serializable {
     public void addItemToInventory(Item item) {
         inventory_.add(item);
     }
-    
-    public String toString(){
-    	String s = "Entity name: " + name_;
-    	
-    	if(!(equipped_item_ == null))
-    		s += "\n equppied item: " + equipped_item_.name_;
-    	else
-    		s += "\n equppied item: null";
-    	
-    	s+= "\n Inventory " + "(" + inventory_.size() + ")" + ":";
-    	for(int i = 0; i < inventory_.size(); ++i){
-    		s+= " " + inventory_.get(i).name_;
-    	}
-    	
-    	s+="\n";
-    	
-    	s+=" map_relationship_: ";
-    	if(map_relationship_ == null)
-    		s += "null";
-    	else 
-    		s += "Not null" ;
-    		
-    	s += "\n associated with map:" + map_relationship_.isAssociatedWithMap();
 
-    	
-    	return s;
+    public String toString(){
+        String s = "Entity name: " + name_;
+
+        if(!(equipped_item_ == null))
+            s += "\n equppied item: " + equipped_item_.name_;
+        else
+            s += "\n equppied item: null";
+
+        s+= "\n Inventory " + "(" + inventory_.size() + ")" + ":";
+        for(int i = 0; i < inventory_.size(); ++i){
+            s+= " " + inventory_.get(i).name_;
+        }
+
+        s+="\n";
+
+        s+=" map_relationship_: ";
+        if(map_relationship_ == null)
+            s += "null";
+        else
+            s += "Not null" ;
+
+        s += "\n associated with map:" + map_relationship_.isAssociatedWithMap();
+
+
+        return s;
     }
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private static final long serialVersionUID = Long.parseLong("ENTITY", 35);
+    // </editor-fold>
 }

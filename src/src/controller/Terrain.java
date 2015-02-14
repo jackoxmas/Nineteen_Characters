@@ -71,8 +71,5 @@ public class Terrain extends DrawableThing implements Serializable {
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     // Converts the class name into a base 35 number
     private static final long serialVersionUID = Long.parseLong("TERRAIN", 35);
-
-
-
     // </editor-fold>
 }

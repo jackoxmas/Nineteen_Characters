@@ -47,7 +47,7 @@ class Map implements Serializable {
     
     /* MAP OBJECT */
     // MapModel.map_model_ is static because there is only one map_model_  
-    private static final Map the_map_ = new Map();
+    private Map the_map_ = new Map();
 
     //public static boolean NDEBUG_ = true;
     // MAP MUST BE SQUARE

@@ -41,7 +41,6 @@ public final class MapView extends Viewport {
 	}
 	private void render(){
 		clear();
-		System.out.println(x_ + " " + y_);
 		makeSquare(0, 0,width_-1,height_-1);
 		int midpointx_ = x_/2;
 		int midpointy_ = y_/2;

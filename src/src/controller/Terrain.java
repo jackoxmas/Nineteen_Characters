@@ -27,7 +27,6 @@ public class Terrain extends DrawableThing implements Serializable {
         return map_relationship_;
     }
 
- 
     public void setMapRelation(MapTerrain_Relation t) {
         map_relationship_ = t;
     }
@@ -44,7 +43,33 @@ public class Terrain extends DrawableThing implements Serializable {
     //    GREEN, BLUE, GRAY //grass, water, mountain
     //}
     //Color color_;
-    private char decal_;
+    private char decal_ = '\u0000'; // null character
+
+    public boolean hasDecal() {
+        if (decal_ == '\u0000' || decal_ == ' ') {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void setDecal(char decal) {
+        decal_ = decal;
+    }
+
+    public char getDecal() {
+        return decal_;
+    }
+    
+    @Override
+    public char getRepresentation() {
+        if(this.hasDecal()) {
+            return decal_;
+        } else {
+            return super.getRepresentation();
+        }
+    }
+    
     private final boolean contains_water_;
     private final boolean contains_mountain_;
 
@@ -64,7 +89,6 @@ public class Terrain extends DrawableThing implements Serializable {
         //color_ = color;
         contains_water_ = contains_water;
         contains_mountain_ = contains_mountain;
-        decal_ = ' ';
         initializeMapRelationship();
     }
 

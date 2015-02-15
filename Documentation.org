@@ -1,8 +1,22 @@
 #+AUTHOR: Nineteen_Characters!
+* 
+java -jar game.jar [-d][-e FILE] [-l  FILE]
+
+	-d, --debug
+		Activates debug mode, where debug outputs are sent to the error stream. Error stream may 
+		be redirected, as per the --err-out option
+		
+	-e FILE, --err-out FILE
+		Redirects STDERR messages to the given file
+		
+	-l FILE, --load FILE
+		Immediately attempts to load the given file as a saved game. If the game cannot be loaded, 
+		a new game is started instead.
+		
 * Loading a game
 After having saved a game, to load it back in, simply start the game, supplying the path to the file as a parameter. 
 #+BEGIN_SRC 
-//ADD EXAMPLE OF LAUNCHING GAME WITH LOAD FILE HERE 
+--load file
 #+END_SRC
 * Controls
 ** While the Character Creation Screen is visible

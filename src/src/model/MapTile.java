@@ -38,8 +38,8 @@ final public class MapTile implements SaveData {
      *
      * @param terrain - terrain to be added to the tile
      */
-    public int initializeTerrain(Terrain terrain) {
-        if (this.terrain_ == null && terrain != null) {
+    public int addTerrain(Terrain terrain) {
+        if (terrain != null) {
             this.terrain_ = terrain;
             return 0;
         } else {
@@ -165,7 +165,7 @@ final public class MapTile implements SaveData {
          else if (terrain_ != null) {
             return terrain_.getRepresentation();
         } else {
-            return 'M';
+            return '▩';
         }
     }
 

@@ -9,6 +9,7 @@ import src.AreaFunctor;
 import src.SaveData;
 import src.controller.Entity;
 import src.controller.EntityStatsPack;
+import src.controller.Item;
 
 /**
  *
@@ -19,14 +20,24 @@ public class MapDrawableThing_Relation implements SaveData {
     protected Map current_map_reference_ = null;
     private MapTile my_tile_ = null;
 
-    private void initguardMap(){
-    	if(current_map_reference_ == null){System.err.println("Empty map reference, " +
-    			"and attempted to access map. Perhaps avatar was never passed a map, or mapview was never passed a map");}
+    private void initguardMap() {
+        if (current_map_reference_ == null) {
+            System.err.println("Empty map reference, "
+                    + "and attempted to access map. Perhaps avatar was never passed a map, or mapview was never passed a map");
+        }
     }
-    private void initguardTile(){
-    	if(current_map_reference_ == null){System.err.println("Empty tile reference, " +
-    			"and attempted to access map. Perhaps avatar was never passed a map, or mapview was never passed a map");}
+
+    private void initguardTile() {
+        if (current_map_reference_ == null) {
+            System.err.println("Empty tile reference, "
+                    + "and attempted to access map. Perhaps avatar was never passed a map, or mapview was never passed a map");
+        }
     }
+
+    /**
+     * 
+     * @return x coordinate of tile drawable thing (avatar/entity/item/etc.) is on.
+     */
     public int getMyXCoordinate() {
         initguardTile();
         return my_tile_.x_;
@@ -39,15 +50,27 @@ public class MapDrawableThing_Relation implements SaveData {
         current_map_reference_ = m;
     }
 
+    /**
+     * 
+     * @return y coordinate of tile drawable thing (avatar/entity/item/etc.) is on.
+     */
     public int getMyYCoordinate() {
-    	initguardTile();
+        initguardTile();
         return my_tile_.y_;
     }
 
+    /**
+     * 
+     * @return MapTile associated with drawable thing (avatar/entity/item/etc.).
+     */
     public MapTile getMapTile() {
         return my_tile_;
     }
 
+    /**
+     * Set MapTile that drawable thing (avatar/entity/item/etc.) is on.
+     * @param new_tile 
+     */
     public void setMapTile(MapTile new_tile) {
         my_tile_ = new_tile;
     }
@@ -76,7 +99,12 @@ public class MapDrawableThing_Relation implements SaveData {
                 current_map_reference_.getTile(old_x, old_y).addEntity(e);
                 return -4;
             } else { // move the entity
-                return move_tile.addEntity(e);
+                int error_code = move_tile.addEntity(e);
+                Item walked_on_item = move_tile.viewTopItem();
+                if (walked_on_item != null) { // make the item walked on do stuff
+                    walked_on_item.onWalkOver();
+                }
+                return error_code;
             }
         } else {
             return -3;
@@ -91,12 +119,18 @@ public class MapDrawableThing_Relation implements SaveData {
         public void repeat(int x_pos, int y_pos, int strength) {
             MapTile infliction = current_map_reference_.getTile(x_pos, y_pos);
             if (infliction != null) {
+                // If there is no decal, fuck shit up
+                if(infliction.getTerrain()!= null && ! infliction.getTerrain().hasDecal() ) {
+                    infliction.getTerrain().addDecal('♨');
+                }
                 Entity to_hurt = infliction.getEntity();
                 if (to_hurt != null) {
                     EntityStatsPack s = to_hurt.getStatsPack();
                     s.current_life_ -= strength;
-                    System.out.println("Current Life after: " + s.current_life_);
-                } else System.out.println("NULL");
+                    src.view.Display.setMessage("Current Life after: " + s.current_life_,3);
+                } else {
+                    System.out.println("NULL");
+                }
             }
         }
     };
@@ -190,12 +224,13 @@ public class MapDrawableThing_Relation implements SaveData {
         AreaLeveler a = new AreaLeveler();
         a.effectArea(this.getMyXCoordinate(), this.getMyYCoordinate(), radius, 1);
     }
-    
-    public boolean isAssociatedWithMap(){
-    	if(current_map_reference_ == null)
-    		return false;
-    	else
-    		return true;
+
+    public boolean isAssociatedWithMap() {
+        if (current_map_reference_ == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">

@@ -38,10 +38,7 @@ public final class MapView extends Viewport implements SaveData {
 	}
 	private void render(){
 		clear();
-		System.out.println(x_ + " " + y_);
-		makeSquare(0, 0,width_-1,height_-1);
-		int midpointx_ = x_/2;
-		int midpointy_ = y_/2;
+		//makeSquare(0, 0,width_-1,height_-1);
 		for(int i = 1;i!=width_-1;++i){
 			for(int j = 1;j!=height_-1;++j){
 				view_contents_[i][j] = map_relationship_.getTileRepresentation(i-width_/2+x_,height_/2-j+y_);

@@ -29,7 +29,12 @@ public class MapItem_Relation extends MapDrawableThing_Relation implements SaveD
     }
     private final boolean goes_in_inventory_;
     private final boolean is_one_shot_;
-
+    public boolean goesInInventory() {
+        return goes_in_inventory_;
+    }
+    public boolean isOneShot() {
+        return is_one_shot_;
+    }
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     @Override
     public String getSerTag() {

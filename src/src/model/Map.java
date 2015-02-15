@@ -67,6 +67,11 @@ class Map implements SaveData{
 
     }
 
+    /**
+     * Map Constructor, creates new x by y Map.
+     * @param x - Lenght of Map
+     * @param y - Height of Map
+     */
     public Map(int x, int y) {
         //if (NDEBUG_) {
         height_ = y;
@@ -113,12 +118,12 @@ class Map implements SaveData{
      return Map.the_map_;
      }
      */
+     
     /**
-     * Adds an avatar to the map
-     *
-     * @param a
-     * @param x
-     * @param y
+     * Adds an avatar to the map.
+     * @param a - Avatar to be added
+     * @param x - x position of where you want to add Avatar
+     * @param y - y posiition of where you want to add Avatar
      * @return -1 on fail, 0 on success
      */
     public int addAvatar(Avatar a, int x, int y) {
@@ -132,6 +137,13 @@ class Map implements SaveData{
         }
     }
 
+    /**
+     * Adds an entity to the map.
+     * @param e - Entity to be added
+     * @param x - x position of where you want to add entity
+     * @param y - y posiition of where you want to add entity
+     * @return -1 on fail, 0 on success
+     */
     public int addEntity(Entity e, int x, int y) {
         int error_code = this.map_grid_[y][x].addEntity(e);
         if (error_code == 0) {
@@ -142,6 +154,13 @@ class Map implements SaveData{
 
     }
 
+    /**
+     * Adds an item to the map.
+     * @param i - Item to be added
+     * @param x - x position of where you want to add item
+     * @param y - y posiition of where you want to add item
+     * @return -1 on fail, 0 on success
+     */
     public int addItem(Item i, int x, int y) {
         int error_code = this.map_grid_[y][x].addItem(i);
         if (error_code == 0) {
@@ -153,6 +172,12 @@ class Map implements SaveData{
         return error_code;
     }
 
+    /**
+     * Removes top item from tile in position (x,y).
+     * @param x - x position of tile
+     * @param y - y position of tile
+     * @return Top item from tile (x,y)
+     */
     public Item removeTopItem(int x, int y) {
         return this.map_grid_[y][x].removeTopItem();
     }
@@ -160,13 +185,13 @@ class Map implements SaveData{
     /**
      * Once a tile has terrain, that terrain is constant.
      *
-     * @param t
-     * @param x
-     * @param y
+     * @param t - Terrain
+     * @param x - x position for tile
+     * @param y - y position for tile
      * @return error code
      */
     public int initializeTerrain(Terrain t, int x, int y) {
-        int error_code = this.map_grid_[y][x].initializeTerrain(t);
+        int error_code = this.map_grid_[y][x].addTerrain(t);
         if (error_code == 0) {
             t.getMapRelation().associateWithMap(this);
             t.getMapRelation().setMapTile(this.map_grid_[y][x]);
@@ -175,10 +200,9 @@ class Map implements SaveData{
     }
 
     /**
-     * Returns -1 if the entity to be removed does not exist.
-     *
-     * @param a
-     * @return
+     * Removes and Avatar from map.
+     * @param a - Avatar to be removed.
+     * @return  -1 if the entity to be removed does not exist.
      */
     public int removeAvatar(Avatar a) {
         this.avatar_list_.remove(a.name_);
@@ -191,10 +215,10 @@ class Map implements SaveData{
     }
 
     /**
-     * Returns -1 if the entity to be removed does not exist.
+     * Removes entity from map.
      *
-     * @param e
-     * @return
+     * @param e - entity to be removed
+     * @return -1 if the entity to be removed does not exist.
      */
     public int removeEntity(Entity e) {
         this.avatar_list_.remove(e.name_);
@@ -205,20 +229,30 @@ class Map implements SaveData{
         return -1;
     }
 
+    /**
+     * 
+     * @param name - name of Avatar
+     * @return Avatar with the name of of input.
+     */
     public Avatar getAvatarByName(String name) {
         return this.avatar_list_.get(name);
     }
 
+    /**
+     * 
+     * @param name - name of Entity
+     * @return Entity with the name of of input.
+     */
     public Entity getEntityByName(String name) {
         return this.entity_list_.get(name);
     }
 
     /**
-     * Returns null if tile is outside the map
+     * Gets mapTile at (x,y).
      *
-     * @param x_pos
-     * @param y_pos
-     * @return
+     * @param x_pos - x position of tile
+     * @param y_pos - y position of tile
+     * @return MapTile at (x,y), null if tile is outside the map.
      */
     public MapTile getTile(int x_pos, int y_pos) {
         if (x_pos < 0 || y_pos < 0 || x_pos >= map_grid_[0].length || y_pos >= map_grid_.length) {

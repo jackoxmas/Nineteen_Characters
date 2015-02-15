@@ -42,7 +42,7 @@ abstract public class Entity extends DrawableThing implements Serializable {
             int x_respawn_point, int y_respawn_point) {
         super(name, representation);
         map_relationship_ = new MapEntity_Relation(this, x_respawn_point, y_respawn_point);
-        inventory_ = new ArrayList<>();
+        inventory_ = new ArrayList<Item>();
     }
 
     private Occupation occupation_ = null;

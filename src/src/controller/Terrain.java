@@ -5,14 +5,21 @@
  */
 package src.controller;
 
+import src.SaveData;
+import src.SavedGame;
 import src.model.MapTerrain_Relation;
-import java.io.Serializable;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  *
  * @author JohnReedLOL
  */
-public class Terrain extends DrawableThing implements Serializable {
+public class Terrain extends DrawableThing {
 
     // map_relationship_ is used in place of a map_referance_
     private MapTerrain_Relation map_relationship_;
@@ -39,10 +46,10 @@ public class Terrain extends DrawableThing implements Serializable {
         this.map_relationship_ = new MapTerrain_Relation(this);
     }
 
-    //public enum Color {
-    //    GREEN, BLUE, GRAY //grass, water, mountain
-    //}
-    //Color color_;
+    public enum Color {
+        GREEN, BLUE, GRAY //grass, water, mountain
+    }
+    Color color_;
     private char decal_ = '\u0000'; // null character
 
     public boolean hasDecal() {
@@ -55,6 +62,13 @@ public class Terrain extends DrawableThing implements Serializable {
 
     public void addDecal(char decal) {
         decal_ = decal;
+    }
+
+    private boolean contains_water_;
+    private boolean contains_mountain_;
+
+    protected Terrain (String name, char terrainChar) {
+        super(name, terrainChar, false);
     }
     
     public void removeDecal(char decal) {
@@ -69,9 +83,6 @@ public class Terrain extends DrawableThing implements Serializable {
             return super.getRepresentation();
         }
     }
-    
-    private final boolean contains_water_;
-    private final boolean contains_mountain_;
 
     public Terrain(String name, char representation, boolean contains_mountain,
             boolean contains_water, char decal) {
@@ -117,7 +128,51 @@ public class Terrain extends DrawableThing implements Serializable {
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    // Converts the class name into a base 35 number
-    private static final long serialVersionUID = Long.parseLong("TERRAIN", 35);
+    @Override
+    public String getSerTag() {
+        return "TERRAIN";
+    }
+
+    @Override
+    public Terrain deserialize(ObjectInputStream ois, LinkedList<Integer> out_refHashes) throws ClassNotFoundException, IOException {
+        SavedGame.defaultDataRead(this, ois, out_refHashes);
+        // super class requirements
+        String name = ois.readUTF();
+        char rep = ois.readChar();
+        Terrain t = new Terrain(name, rep);
+        t.setViewable(ois.readBoolean());
+        // primitives
+        color_ = Color.valueOf(ois.readUTF());
+        contains_mountain_ = ois.readBoolean();
+        contains_water_ = ois.readBoolean();
+        decal_ = ois.readChar();
+        // references
+        out_refHashes.add(ois.readInt()); // MapTerrain_Relation
+        return t;
+    }
+
+    @Override
+    public void relink(Object[] refs) {
+        map_relationship_ = (MapTerrain_Relation)refs[0];
+    }
+
+    @Override
+    public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> out_refMap) throws IOException {
+        SavedGame.defaultDataWrite(this, oos);
+        // super class requirements
+        oos.writeChars(this.name_);
+        oos.writeChar(this.getRepresentation());
+        oos.writeBoolean(this.getViewable());
+        // local primitives
+        oos.writeChars(color_.name());
+        oos.writeBoolean(contains_mountain_);
+        oos.writeBoolean(contains_water_);
+        oos.writeChar(decal_);
+        oos.writeChars(name_);
+
+        // references
+        oos.writeInt(SavedGame.getHash(map_relationship_));
+        out_refMap.putIfAbsent((SaveData)map_relationship_, false);
+    }
     // </editor-fold>
 }

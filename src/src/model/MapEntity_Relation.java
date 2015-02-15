@@ -15,7 +15,7 @@ import java.io.Serializable;
  *
  * @author JohnReedLOL
  */
-public class MapEntity_Relation extends MapDrawableThing_Relation implements Serializable {
+public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     private final Entity entity_;
 
@@ -87,6 +87,5 @@ public class MapEntity_Relation extends MapDrawableThing_Relation implements Ser
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("RELATIONME", 35);
     // </editor-fold>
 }

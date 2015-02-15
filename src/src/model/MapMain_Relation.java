@@ -7,6 +7,7 @@ package src.model;
 
 import src.Main;
 import src.SaveData;
+import src.SavedGame;
 import src.controller.Avatar;
 import src.controller.Entity;
 import src.controller.Item;
@@ -24,14 +25,22 @@ import java.util.LinkedList;
  *
  * @author JohnMichaelReed (includes inner functions)
  */
-public class MapMain_Relation implements SaveData {
+public class MapMain_Relation implements  SaveData {
 
     //private final Map map_reference_ = Map.getMyReferanceToTheMap(this);
     private Map current_map_reference_;
+    
+    public static final int MAX_NUMBER_OF_WORLDS = 1;
+    private static int number_of_worlds_generated_ = 0;
 
-    private MapMain_Relation(Map map) {
-        current_map_reference_ = map;
-    }
+    //private MapMain_Relation(Map map) {
+    //    current_map_reference_ = map;
+    //}
+    /**
+     * Creates a new map and binds this mmr to that map
+     * @param x - width of newly creared map
+     * @param y - height of newly created map
+     */
     public MapMain_Relation(int x, int y) {
         bindToNewMapOfSize(x,y);
     }
@@ -44,7 +53,15 @@ public class MapMain_Relation implements SaveData {
      * @param y - height of the map
      */
     public void bindToNewMapOfSize(int x, int y) {
-        current_map_reference_ = new Map(x, y);
+        if( number_of_worlds_generated_ >= MAX_NUMBER_OF_WORLDS ) {
+            current_map_reference_ = new Map(x, y);
+            ++number_of_worlds_generated_;
+        } else {
+            System.err.println("Number of world allowed: " + MAX_NUMBER_OF_WORLDS);
+            System.err.println("Number of worlds already in existence: " + number_of_worlds_generated_ );
+            System.err.println("Please don't make more than " + MAX_NUMBER_OF_WORLDS + " worlds.");
+            System.exit(-1);
+        }
     }
 
     public MapMain_Relation() {
@@ -117,27 +134,21 @@ public class MapMain_Relation implements SaveData {
     }
 
 
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     @Override
     public String getSerTag() {
-        return "RELMAPMAIN";
+        return "RELATION_MAP_MAIN";
     }
 
-    @Override
-    public Object deserialize(ObjectInputStream ois, LinkedList<Integer> out_refHashes) throws ClassNotFoundException, IOException {
-        return null;
-    }
 
-    @Override
+    //@Override
     public void relink(Object[] refs) {
-        if (refs.length > 0 && refs[0] instanceof Map)
-            this.current_map_reference_ = (Map)refs[0];
-        else
-            Main.errOut("Invalid Map reference");
+
     }
 
     @Override
-    public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> refMap) throws IOException {
-
+    public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> savMap) throws IOException {
+        SavedGame.defaultDataWrite(this, oos, savMap);
     }
     // </editor-fold>
 }

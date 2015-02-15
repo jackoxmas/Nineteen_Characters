@@ -16,7 +16,7 @@ import java.io.Serializable;
  */
 public class MapAvatar_Relation extends MapEntity_Relation implements Serializable {
 
-    private final Avatar avatar_;
+    private Avatar avatar_;
 
     public MapAvatar_Relation(Avatar avatar,
             int x_respawn_point, int y_respawn_point) {

@@ -6,11 +6,8 @@
 package src.model;
 
 import src.AreaFunctor;
-import src.controller.DrawableThing;
 import src.controller.Entity;
 import src.controller.EntityStatsPack;
-
-import java.io.Serializable;
 
 /**
  *
@@ -20,6 +17,7 @@ public class MapDrawableThing_Relation {
 
     protected Map current_map_reference_ = null;
     private MapTile my_tile_ = null;
+
     private void initguardMap(){
     	if(current_map_reference_ == null){System.err.println("Empty map reference, " +
     			"and attempted to access map. Perhaps avatar was never passed a map, or mapview was never passed a map");}
@@ -28,8 +26,8 @@ public class MapDrawableThing_Relation {
     	if(current_map_reference_ == null){System.err.println("Empty tile reference, " +
     			"and attempted to access map. Perhaps avatar was never passed a map, or mapview was never passed a map");}
     }
-    public int getMyXCordinate() {
-    	initguardTile();
+    public int getMyXCoordinate() {
+        initguardTile();
         return my_tile_.x_;
     }
 
@@ -40,7 +38,7 @@ public class MapDrawableThing_Relation {
         current_map_reference_ = m;
     }
 
-    public int getMyYCordinate() {
+    public int getMyYCoordinate() {
     	initguardTile();
         return my_tile_.y_;
     }
@@ -56,9 +54,9 @@ public class MapDrawableThing_Relation {
     /**
      * Moves an entity without removing it from the list of entities
      *
-     * @param entity The entity to be moved
-     * @param x - distance to push in the x direction
-     * @param y - distance to push in the y direction
+     * @param: entity The entity to be moved
+     * @param: x - distance to push in the x direction
+     * @param: y - distance to push in the y direction
      * @return error codes: -1 if tile is taken, -2 if entity is null, -3 if
      * entity cannot be found, -4 if tile is off the map
      * @author John-Michael Reed
@@ -67,8 +65,8 @@ public class MapDrawableThing_Relation {
         if (e == null) {
             return -2;
         }
-        int old_x = e.getMapRelation().getMyXCordinate();
-        int old_y = e.getMapRelation().getMyYCordinate();
+        int old_x = e.getMapRelation().getMyXCoordinate();
+        int old_y = e.getMapRelation().getMyYCoordinate();
         Entity toMove = current_map_reference_.getTile(old_x, old_y).getEntity();
         if (toMove == e) {
             current_map_reference_.getTile(old_x, old_y).removeEntity();
@@ -134,7 +132,7 @@ public class MapDrawableThing_Relation {
                 }
             }
         }
-    };
+    }
 
     public final class AreaLeveler extends AreaFunctor {
 
@@ -157,7 +155,7 @@ public class MapDrawableThing_Relation {
                 }
             }
         }
-    };
+    }
 
     private final AreaDamager areaHurtFunctor = new AreaDamager();
     private final AreaHealer areaHealFunctor = new AreaHealer();
@@ -172,22 +170,22 @@ public class MapDrawableThing_Relation {
     //area effects
     public void hurtWithinRadius(int damage, int radius) {
         AreaDamager a = new AreaDamager();
-        a.effectArea(this.getMyXCordinate(), this.getMyYCordinate(), radius, damage);
+        a.effectArea(this.getMyXCoordinate(), this.getMyYCoordinate(), radius, damage);
     }
 
     public void healWithinRadius(int heal_quantity, int radius) {
         AreaHealer a = new AreaHealer();
-        a.effectArea(this.getMyXCordinate(), this.getMyYCordinate(), radius, heal_quantity);
+        a.effectArea(this.getMyXCoordinate(), this.getMyYCoordinate(), radius, heal_quantity);
     }
 
     public void killWithinRadius(/*boolean will_kill_players, boolean will_kill_npcs, */int radius) {
         AreaKiller a = new AreaKiller();
-        a.effectArea(this.getMyXCordinate(), this.getMyYCordinate(), radius, 1);
+        a.effectArea(this.getMyXCoordinate(), this.getMyYCoordinate(), radius, 1);
     }
 
     public void levelUpWithinRadius(/*boolean will_level_up_players, boolean will_level_up_npcs, */int radius) {
         AreaLeveler a = new AreaLeveler();
-        a.effectArea(this.getMyXCordinate(), this.getMyYCordinate(), radius, 1);
+        a.effectArea(this.getMyXCoordinate(), this.getMyYCoordinate(), radius, 1);
     }
     
     public boolean isAssociatedWithMap(){

@@ -62,7 +62,7 @@ public class Item extends DrawableThing{
      * @param target - The entity that the item will be used on.
      */
     public void use(Entity target) {
-    	
+
     }
 
     /**
@@ -98,24 +98,5 @@ public class Item extends DrawableThing{
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    @Override
-    public String getSerTag() {
-        return "ITEM";
-    }
-
-    @Override
-    public Object deserialize(ObjectInputStream ois, LinkedList<Integer> out_refHashes) throws ClassNotFoundException, IOException {
-        return null;
-    }
-
-    @Override
-    public void relink(Object[] refs) {
-
-    }
-
-    @Override
-    public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> refMap) throws IOException {
-
-    }
     // </editor-fold>
 }

@@ -1,21 +1,29 @@
 package src.model;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.io.Serializable;
+
+import src.Main;
+import src.SaveData;
+import src.SavedGame;
 import src.controller.Entity;
 import src.controller.Item;
 import src.controller.Avatar;
 import src.controller.Terrain;
 
 /**
- * The map contains the map.\ THIS CLASS SHOULD NOT BE PUBLIC JUST BECAUSE
- * SENDCOMMANDTOAVATAR IS STUPID
- *
+ * The map contains the map.\ THIS CLASS SHOULD NOT BE PUBLIC JUST BECAUSE - IT IS FUCKING PACKAGE PRIVATE I MADE IT PUBLIC TO TEST SOMETHING.
+ * SENDCOMMANDTOAVATAR IS STUPID - NO ITS NOT STUPID IT REPRESENTS A NETWORK CONNECTION PASSING COMMANDS FROM USER TO MAP
+ * WHAT HAVE YOU DONE!!!!!! THAT MAP IS SUPPOSED TO BE A PACKAGE PRIVATE ENTITY ONLY ACCESSIBLE VIA RELATIONS
+ * YOU ARE BREAKING ENCAPSULATION!!!!!!!!!!!!!!!
  * @author John-Michael Reed
  */
-class Map implements Serializable {
+class Map implements SaveData{
 
     /**
      * @author John-Michael Reed Sends a key press from a keyboard to an avatar
@@ -36,18 +44,18 @@ class Map implements Serializable {
 
     /* MAP DATA OBJECTS */
     // 2d array of tiles.
-    private MapTile map_grid_[][];
+    private transient MapTile map_grid_[][];
     // String is the avatar's name. The avatar name must be unqiue or else bugs will occur.
-    private LinkedHashMap<String, Avatar> avatar_list_;
+    private transient LinkedHashMap<String, Avatar> avatar_list_;
     // String is the entity's name. The entity name must be unqiue or else bugs will occur.
-    private LinkedHashMap<String, Entity> entity_list_;
+    private transient LinkedHashMap<String, Entity> entity_list_;
     // Item is the address of an item in memory. Location is its xy coordinates on the grid.
-    private LinkedList<Item> items_list_;
+    private transient LinkedList<Item> items_list_;
 
     //public static boolean NDEBUG_ = true;
     // MAP MUST BE SQUARE
-    public final int height_;
-    public final int width_;
+    public int height_;
+    public int width_;
 
     // This should never get called
     private Map() {//throws Exception {
@@ -170,8 +178,8 @@ class Map implements Serializable {
      */
     public int removeAvatar(Avatar a) {
         this.avatar_list_.remove(a.name_);
-        if (this.map_grid_[a.getMapRelation().getMyXCordinate()][a.getMapRelation().getMyYCordinate()].getEntity() == a) {
-            this.map_grid_[a.getMapRelation().getMyXCordinate()][a.getMapRelation().getMyYCordinate()].removeEntity();
+        if (this.map_grid_[a.getMapRelation().getMyXCoordinate()][a.getMapRelation().getMyYCoordinate()].getEntity() == a) {
+            this.map_grid_[a.getMapRelation().getMyXCoordinate()][a.getMapRelation().getMyYCoordinate()].removeEntity();
             return 0;
         } else {
             return -1;
@@ -186,8 +194,8 @@ class Map implements Serializable {
      */
     public int removeEntity(Entity e) {
         this.avatar_list_.remove(e.name_);
-        if (this.map_grid_[e.getMapRelation().getMyXCordinate()][e.getMapRelation().getMyYCordinate()].getEntity() == e) {
-            this.map_grid_[e.getMapRelation().getMyXCordinate()][e.getMapRelation().getMyYCordinate()].removeEntity();
+        if (this.map_grid_[e.getMapRelation().getMyXCoordinate()][e.getMapRelation().getMyYCoordinate()].getEntity() == e) {
+            this.map_grid_[e.getMapRelation().getMyXCoordinate()][e.getMapRelation().getMyYCoordinate()].removeEntity();
             return 0;
         }
         return -1;
@@ -215,93 +223,21 @@ class Map implements Serializable {
         return map_grid_[y_pos][x_pos];
     }
 
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("MAP", 35);
 
-    /**
-     * Populates this Map object with data extracted from the provided
-     * ObjectInputStream. The expected data format is defined in Map.java. If
-     * the data is corrupt or out-of-date, IOExceptions will be thrown.
-     * <p>
-     * Use this function to initialize Map objects from saved game streams.
-     * </p>
-     *
-     * @param in The java.io.ObjectInputStream to pull data from
-     * @throws java.io.IOException
-     * @throws ClassNotFoundException
-     */
-    private void readObjectData(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        /*
-         try {
-         // Map Tile Grid
-         int w = in.readInt();
-         int h = in.readInt();
-         map_grid_ = new MapTile[w][h];
-         for (int j = 0; j < h; j++) {
-         for (int i = 0; i < w; i++) {
-         map_grid_[i][j] = (MapTile)in.readObject();
-         }
-         }
-         // Update local map height and width
-         map_width_ = w;
-         map_height_ = h;
-                
-         // Avatar List
-         avatar_list_ = (LinkedHashMap<String, Avatar>)in.readObject();
-            
-         // Entity List
-         entity_list_ = (LinkedHashMap<String, Entity>)in.readObject();
-            
-         // Item List
-         items_list_ = (LinkedList<Item>)in.readObject();
-         }
-         catch (IOException e) {
-         throw e;
-         }*/
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    @Override
+    public String getSerTag() {
+        return "MAP";
     }
 
-    /**
-     * Serializes data from this Map object to the provided output stream using
-     * the data format as defined in the Map.java file. This method may throw
-     * errors if this Map object is not fully initialized or if the stream
-     * cannot be written to.
-     * <p>
-     * Use this method to write data to a saved game stream to be pushed to
-     * disk.</p>
-     *
-     * @param out The java.io.ObjectOutputStream to write data to
-     * @throws java.io.IOException
-     */
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-        /*
-         if (NDEBUG_)
-         throw new java.io.IOException("Will not save map with \"DEBUG_\" enabled");
-         try {
-         // MAP GRID
-         if (map_grid_ == null) throw new java.io.IOException("Map grid not initialized");
-         out.writeInt(map_width_);
-         out.writeInt(map_height_);
-         for (int j = 0; j < map_height_; j++) {
-         for (int i = 0; i < map_width_; i++) {
-         out.writeObject(map_grid_[i][j]);
-         }
-         }
-         // AVATAR LIST
-         if (avatar_list_ == null) throw new java.io.IOException("Avatar list not initialized");
-         out.writeObject(avatar_list_);
-         // ENTITY LIST
-         if (entity_list_ == null) throw new java.io.IOException("Entity list not initialized");
-         out.writeObject(entity_list_);
-         // ITEMS LIST
-         if (items_list_ == null) throw new java.io.IOException("Items list not initialized");
-         out.writeObject(items_list_);
-         }
-         catch (IOException e) {
-         throw e;
-         }
-         */
+    private void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
+        Main.dbgOut("FOUND IT!");
+    }
+
+    @Override
+    public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> savMap) throws IOException {
+        SavedGame.defaultDataWrite(this, oos, savMap);
     }
     // </editor-fold>
 }

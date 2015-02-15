@@ -26,6 +26,6 @@ public class MapItem_Relation extends MapDrawableThing_Relation implements Seria
     private final boolean is_one_shot_;
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("RELATION_MI", 35);
+    private static final long serialVersionUID = 53142515L; // Long.parseLong("re_mi", 35);
     // </editor-fold>
 }

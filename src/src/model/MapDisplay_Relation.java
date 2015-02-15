@@ -6,6 +6,7 @@
 package src.model;
 
 import src.view.Display;
+import src.view.Viewport;
 
 /**
  *
@@ -14,10 +15,13 @@ import src.view.Display;
 public class MapDisplay_Relation {
 
     private Map current_map_reference_;
-    private final Display display_;
-
-    public MapDisplay_Relation(Display display) {
-        display_ = display;
+    private final Viewport view_;
+    private void initguard(){
+    	if(current_map_reference_ == null){System.err.println("Empty map reference, " +
+    			"and attempted to access map. Perhaps avatar was never passed a map, or mapview was never passed a map");}
+    }
+    public MapDisplay_Relation(Viewport view) {
+        view_ = view;
     }
 
     /**
@@ -36,6 +40,7 @@ public class MapDisplay_Relation {
      * @return error code: returns empty space if the tile is off the map
      */
     public char getTileRepresentation(int x, int y) {
+    	initguard();
         MapTile tile_at_x_y = current_map_reference_.getTile(x, y);
         if (tile_at_x_y == null) {
             return ' ';

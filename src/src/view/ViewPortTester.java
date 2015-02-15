@@ -28,4 +28,10 @@ public class ViewPortTester extends Viewport{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public boolean getInput(char c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

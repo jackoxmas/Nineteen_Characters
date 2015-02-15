@@ -12,6 +12,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import src.Vector2;
+import src.model.MapDisplay_Relation;
+import src.model.MapDrawableThing_Relation;
 
 /**
  * Abstract view class that the views inherit from.
@@ -22,13 +24,26 @@ public abstract class Viewport implements Serializable {
     // Converts the class name into a base 35 number
     private static final long serialVersionUID = Long.parseLong("View", 35);
     public static final int height_=40;
-    public static final int length_=80;
+    public static final int width_=80;
 	private char[][] view_contents_;
-	private Display display_;
-
+	private int message_persistance_counter_ = 0;
+	private String message_string_ = "";
+	public abstract boolean getInput(char c);
+	public Viewport(){
+		map_relationship_ = new MapDisplay_Relation(this);
+	}
+	protected MapDisplay_Relation map_relationship_;
+	    
+	    /**
+	     * Use this to call functions contained within the MapDrawable relationship
+	     * @return map_relationship_
+	     * @author M Bregg
+	     */
+    public MapDisplay_Relation getMapRelation() {
+        return map_relationship_;
+    }
 	/**
-	 * Tells the view to tell display to print it's contents, and update it's own array if
-	 * needed
+	 * Tells the view to update it's array contents. 
 	 */
 	public abstract void renderToDisplay();
 	/**
@@ -38,6 +53,28 @@ public abstract class Viewport implements Serializable {
 	public char[][] getContents() {
 	initGuard();
 	return this.view_contents_;	
+	}
+	/**
+	 * Renders the message box in the view, to be called by display during print loop.
+	 */
+	public void renderMessageBox(){
+		initGuard();
+		if(message_persistance_counter_ == 0){return;}
+		message_persistance_counter_--;
+		writeStringToContents(0,height_-1,message_string_);
+	}
+	/** Print at the bottom of the view, a message. 
+	 * 
+	 * @param message The string to be displayed
+	 * @param count The number of 'frames' to display it for. 
+	 * @return Returns false is message is too long, else true.
+	 */
+	public boolean messageBox(String message, int count){
+		initGuard();
+		message_string_ = message;
+		message_persistance_counter_ = count;
+		if(!writeStringToContents(0, height_-1, message)){message_persistance_counter_=0; return false;}
+		else{return true;}
 	}
 	/**
 	 * Load in ascii art from file
@@ -50,9 +87,9 @@ public abstract class Viewport implements Serializable {
 		Path path = Paths.get(input);
 		path = path.toAbsolutePath();
 		ArrayList<String> art = new ArrayList<String>();
-		try (InputStream in = Files.newInputStream(path);
-		    BufferedReader reader =
-		      new BufferedReader(new InputStreamReader(in))) {
+		try {
+            InputStream in = Files.newInputStream(path);
+		    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		    String line = null;
 		    while ((line = reader.readLine()) != null) {
 		        art.add(line);
@@ -65,16 +102,16 @@ public abstract class Viewport implements Serializable {
 
 	
 	}
-	public void clear(){
+	protected void clear(){
 		if(view_contents_==null){return;}//Avoid doing this on null array.
 		for(int j = 0; j!=height_;++j){
-			for(int i = 0; i!=length_;++i){
+			for(int i = 0; i!=width_;++i){
 				{view_contents_[i][j]=' ';}
 			}	
 		}
 	}
 	private void initGuard(){
-		if(view_contents_ == null){view_contents_=new char[length_][height_];
+		if(view_contents_ == null){view_contents_=new char[width_][height_];
 			clear();
 		}
 	}
@@ -86,7 +123,7 @@ public abstract class Viewport implements Serializable {
 	*/
 	protected boolean writeStringToContents(int x, int y, String in) {
 		initGuard();
-		if(x+in.length()>= length_){return false;}
+		if(x+in.length()>= width_){return false;}
 		if(y>=height_) {return false;}
 		if(x<0 || y < 0){return false;}
 		for(int i = 0; i!=in.length();++i){view_contents_[x+i][y] = in.charAt(i);}
@@ -109,7 +146,7 @@ public abstract class Viewport implements Serializable {
     protected boolean makeSquare(int x, int y, int length, int width){
     	initGuard();
     	//Bounds checking
-    	if(x+length >= length_) {return false;}
+    	if(x+length >= width_) {return false;}
     	if(y+width >= height_){return false;}
     	if(x<0 || y < 0){return false;}
     	//Begin filling the square

@@ -8,7 +8,7 @@ package src.model;
 import src.AreaFunctor;
 import src.controller.DrawableThing;
 import src.controller.Entity;
-import src.controller.StatsPack;
+import src.controller.EntityStatsPack;
 
 import java.io.Serializable;
 
@@ -21,24 +21,9 @@ public class MapDrawableThing_Relation implements Serializable {
     protected Map current_map_reference_ = null;
     private MapTile my_tile_ = null;
     private final DrawableThing drawable_thing_;
-    public boolean isAlwaysImpassable_;
 
     public MapDrawableThing_Relation(DrawableThing drawable_thing) {
         drawable_thing_ = drawable_thing;
-        isAlwaysImpassable_ = false;
-    }
-
-    public MapDrawableThing_Relation(DrawableThing drawable_thing, boolean passable) {
-        drawable_thing_ = drawable_thing;
-        isAlwaysImpassable_ = passable;
-    }
-    
-    public boolean getIsAlwaysImpassable() {
-        return isAlwaysImpassable_;
-    }
-    
-    public void setIsAlwaysImpassable(boolean isAlwaysImpassable) {
-        isAlwaysImpassable_ = isAlwaysImpassable;
     }
 
     public int getMyXCordinate() {
@@ -103,9 +88,10 @@ public class MapDrawableThing_Relation implements Serializable {
             if (infliction != null) {
                 Entity to_hurt = infliction.getEntity();
                 if (to_hurt != null) {
-                    StatsPack s = to_hurt.getModifiableStatsPack();
-                    //s.setCurrentLife(s.getCurrentLife() - strength);
-                }
+                    EntityStatsPack s = to_hurt.getStatsPack();
+                    s.current_life_ -= strength;
+                    System.out.println("Current Life after: " + s.current_life_);
+                } else System.out.println("NULL");
             }
         }
     };
@@ -118,8 +104,8 @@ public class MapDrawableThing_Relation implements Serializable {
             if (infliction != null) {
                 Entity to_heal = infliction.getEntity();
                 if (to_heal != null) {
-                    StatsPack s = to_heal.getModifiableStatsPack();
-                    //s.setCurrentLife(s.getCurrentLife() + strength);
+                    EntityStatsPack s = to_heal.getStatsPack();
+                    s.current_life_ += strength;
                 }
             }
         }
@@ -162,7 +148,7 @@ public class MapDrawableThing_Relation implements Serializable {
                 Entity to_level = infliction.getEntity();
                 if (to_level != null) {
                     for (int i = 0; i < num_level_ups; ++i) {
-                        to_level.levelUp();
+                        to_level.gainEnoughExperienceTolevelUp();
                     }
                 }
             }

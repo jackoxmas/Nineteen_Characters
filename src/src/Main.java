@@ -25,14 +25,14 @@ public class Main
 
 
     public static void main(String[] args) {
-        parseArgs(args); // Parse command line arguments
-        initialize(); // Initialize any data we need to before loading
-        handleArgs(args);
+        //parseArgs(args); // Parse command line arguments
+        //initialize(); // Initialize any data we need to before loading
+        //handleArgs(args);
 
         // testing
-        saveGameToDisk();
+        //saveGameToDisk();
 
-        exitGame();
+        //exitGame();
         //initializeEverything();
     }
 

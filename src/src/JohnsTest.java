@@ -1,5 +1,6 @@
 package src;
 import src.controller.Avatar;
+import src.controller.Terrain;
 import src.model.MapDisplay_Relation;
 import src.model.MapMain_Relation;
 import src.view.Display;
@@ -27,9 +28,15 @@ public static void testEverything() {
 MapMain_Relation map_main = new MapMain_Relation();
 map_main.bindToNewMapOfSize(3, 3);
 Avatar a = new Avatar("a", '~', 0, 0);
+Terrain obstacle = new Terrain("boulder", 'O', true, false);
 MapView map_view = new MapView(a);
 map_main.addViewToMap(map_view);
+map_main.initializeTerrain(obstacle, 2, 0);
 System.out.println("Adding avatar. Error code: " + map_main.addAvatar(a, 0, 0));
+System.out.println(map_main.getTile(2, 0).isPassable());
+System.out.println(map_main.getTile(0, 2).isPassable());
+System.out.println(map_main.getTile(0, 0).isPassable());
+
 char out = map_view.getMapRelation().getTileRepresentation(0, 0);
 System.out.println("Mapview works: " + out);
 //Example of mapview in use
@@ -56,13 +63,23 @@ map_main.getTile(a.getMapRelation().getMyXCordinate(),
 a.getMapRelation().getMyYCordinate())
 == a.getMapRelation().getMapTile()
 );
-a.getMapRelation().addStatsPack(null);
-a.getMapRelation().subtractStatsPack(null);
+System.out.println(a.getStatsPack().toString());
+
 a.getMapRelation().hurtWithinRadius(10, 5);
+System.out.println(a.getStatsPack().toString());
+
 a.getMapRelation().healWithinRadius(10, 1);
+System.out.println(a.getStatsPack().toString());
+
 a.getMapRelation().killWithinRadius(1);
+System.out.println(a.getStatsPack().toString());
+
 a.getMapRelation().levelUpWithinRadius(1);
+System.out.println(a.getStatsPack().toString());
+
 a.getMapRelation().pickUpItemInDirection(0, 0);
+System.out.println(a.getStatsPack().toString());
+
 a.addItemToInventory(null);
 a.getMyView();
 }

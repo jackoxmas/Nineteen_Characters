@@ -191,6 +191,20 @@ abstract public class Entity extends DrawableThing implements Serializable {
         inventory_.add(item);
     }
 
+    /**
+     * returns the derived stats
+     * @author Jessan
+     */
+    public DrawableThingStatsPack derivedStats(){
+        DrawableThingStatsPack temp = new DrawableThingStatsPack();
+        //if no equipped item Derived Stats will be 0
+        if(equipped_item_ == null)
+            return temp;
+
+        temp = stats_pack_;
+        temp.reduceBy(equipped_item_.getStatsPack());
+        return temp;
+    }
     public String toString() {
         String s = "Entity name: " + name_;
 

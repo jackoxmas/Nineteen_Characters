@@ -108,7 +108,7 @@ public class MapDrawableThing_Relation {
                 if (to_hurt != null) {
                     EntityStatsPack s = to_hurt.getStatsPack();
                     s.current_life_ -= strength;
-                    System.out.println("Current Life after: " + s.current_life_);
+                    src.view.Display.setMessage("Current Life after: " + s.current_life_,3);
                 } else {
                     System.out.println("NULL");
                 }

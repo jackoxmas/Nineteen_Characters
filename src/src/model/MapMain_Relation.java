@@ -33,6 +33,9 @@ public class MapMain_Relation implements  SaveData {
     private MapMain_Relation(Map map) {
         current_map_reference_ = map;
     }
+    public MapMain_Relation(int x, int y) {
+        bindToNewMapOfSize(x,y);
+    }
 
     /**
      * Creates a new map and associates this maprelation with that map: 

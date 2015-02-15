@@ -29,9 +29,10 @@ public static void testEverything() {
 MapMain_Relation map_main = new MapMain_Relation();
 map_main.bindToNewMapOfSize(3, 3);
 Avatar a = new Avatar("a", '~', 0, 0);
+a.setMap(map_main);
 Terrain obstacle = new Terrain("boulder", 'O', true, false);
+MapView map_view = new MapView();
 obstacle.addDecal('✚');
-MapView map_view = new MapView(a);
 map_main.addViewToMap(map_view);
 map_main.addTerrain(obstacle, 2, 1);
 System.out.println("Adding avatar. Error code: " + map_main.addAvatar(a, 0, 0));
@@ -71,8 +72,10 @@ int error_code5 = a.getMapRelation().dropItem();
 System.out.println("error code 5" + error_code5);
 
 testMoveAvatar(a, 0, 1);
+_d.printView();
 try {
 testMoveAvatar(a, 1, 0);
+_d.printView();
 } catch(Exception e) {
 System.out.println("success - avatar walked off map");
 }
@@ -110,7 +113,7 @@ System.out.println("y cordinate: " + a.getMapRelation().getMyYCoordinate());
 }
 static void initializeEverything() {
 // currently there is only one avatar
-Avatar avatar = new Avatar("avatar", 'x', 0, 0);
+//Avatar avatar = new Avatar("avatar", 'x', 0, 0);
 }
 static void saveGameToDisk() {
 }

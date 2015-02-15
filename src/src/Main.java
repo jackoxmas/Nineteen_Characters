@@ -47,7 +47,9 @@ public class Main
         mmr_ = new MapMain_Relation(); // Initialize the Map Object
         MapMain_Relation newmmr_ = new MapMain_Relation();
         newmmr_.bindToNewMapOfSize(5, 5); // Each MapMain Relation creates a map and binds itself to that map.
-        newmmr_.addEntity(new src.controller.Avatar("test", 'x', 0, 0), 0, 0);
+        src.controller.Avatar ave_ = new src.controller.Avatar("test", 'x', 0,0);
+        ave_.setMap(mmr_);
+        newmmr_.addEntity(ave_, 0, 0);
     }
 
     private static void saveGameToDisk() {

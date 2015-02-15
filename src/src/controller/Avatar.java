@@ -58,7 +58,9 @@ public final class Avatar extends Entity{
     public void setMapRelation(MapAvatar_Relation a) {
         map_relationship_ = a;
     }
-
+/* Make sure to call set map after this!
+ * 
+ */
     public Avatar(String name, char representation, int x_respawn_point, int y_respawn_point) {
         super(name, representation, x_respawn_point, y_respawn_point);
         map_relationship_ = new MapAvatar_Relation(this, x_respawn_point, y_respawn_point);
@@ -69,7 +71,6 @@ public final class Avatar extends Entity{
     private Viewport current_view_ = new AvatarCreationView(this);
     private MapView map_view_;
     private StatsView stats_view_;
-
     public Viewport getMyView() {
         return this.current_view_;
     }
@@ -83,16 +84,16 @@ public final class Avatar extends Entity{
     }
 
     private MapView generateMapView() {
-        MapMain_Relation map_main = new MapMain_Relation();
-        map_main.bindToNewMapOfSize(Viewport.width_, Viewport.height_); //Can change these later if we so desire. 
-        MapView map_view = new MapView(this);
-        map_main.addViewToMap(map_view);
-        map_main.addAvatar(this, 0, 0);
+        MapView map_view = new MapView();
         return map_view;
     }
 
     private StatsView generateStatsView() {
         return new StatsView(this);
+    }
+    public void setMap(MapMain_Relation map_main){
+    	map_main.addViewToMap(map_view_);
+    	map_main.addAvatar(this, 0, 0);
     }
 
     @Override
@@ -128,22 +129,34 @@ public final class Avatar extends Entity{
      */
     public void getInput(char c){
     	if(current_view_ == map_view_){//If we currently have our mapview equipped(check by reference)
+
+    		MapAvatar_Relation mar = this.getMapRelation();
+    		if(mar == null){return;}//If the avatar is not on the map, it can't really do anything.
+    		map_view_.setCenter(mar.getMyXCoordinate(),mar.getMyYCoordinate());
     		switch(c){
     		case '1'://Move SW
+    			mar.moveInDirection(-1, -1);
     			break;
     		case '2'://Move S
+    			mar.moveInDirection(0, -1);
     			break;
     		case '3'://Move SE
+    			mar.moveInDirection(1, -1);
     			break;
     		case '4': // Move W
+    			mar.moveInDirection(-1,0);
     			break;
     		case '6'://Move E
+    			mar.moveInDirection(1,0);
     			break;
     		case '7'://Move NW
+    			mar.moveInDirection(-1, 1);
     			break;
     		case '8'://Move N
+    			mar.moveInDirection(0,1);
     			break;
     		case '9': //Move NE
+    			mar.moveInDirection(1,1);
     			break;
     		case 'S': //Save game
     			break;
@@ -154,20 +167,31 @@ public final class Avatar extends Entity{
     		case 'q'://move NW
     			break;
     		case 'w': //move N
+    			mar.moveInDirection(0, 1);
     			break;
     		case 'e'://move NE
+    			mar.moveInDirection(1,1);
     			break;
     		case 'a': //move W
+    			mar.moveInDirection(-1,1);
     			break;
     		case 's'://Move stationary?
     			break;
     		case 'd'://Move E
+    			mar.moveInDirection(1,0);
     			break;
     		case 'z'://Move SW
+    			mar.moveInDirection(-1,-1);
     			break;
     		case 'x'://move s
+    			mar.moveInDirection(0,-1);
     			break;
     		case 'c'://move SE
+    			mar.moveInDirection(1,-1);
+    			break;
+    		case 'D': //drop item
+    			break;
+    		case 'p'://pickup item
     			break;
     		default: //no valid input
     			break;

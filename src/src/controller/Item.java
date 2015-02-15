@@ -62,7 +62,7 @@ public class Item extends DrawableThing{
      * @param target - The entity that the item will be used on.
      */
     public void use(Entity target) {
-    	
+
     }
 
     /**

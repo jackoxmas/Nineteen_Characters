@@ -139,7 +139,7 @@ public final class Avatar extends Entity {
                 System.out.println("Avatar cannot be controlled without a MapAvatar_Relation");
                 return;
             }//If the avatar is not on the map, it can't really do anything.
-            map_view_.setCenter(mar.getMyXCordinate(), mar.getMyYCordinate());
+            map_view_.setCenter(mar.getMyXCoordinate(), mar.getMyXCoordinate());
             switch (c) {
                 case '1'://Move SW
                     mar.moveInDirection(-1, -1);

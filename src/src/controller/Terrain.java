@@ -53,12 +53,12 @@ public class Terrain extends DrawableThing implements Serializable {
         }
     }
 
-    public void setDecal(char decal) {
+    public void addDecal(char decal) {
         decal_ = decal;
     }
-
-    public char getDecal() {
-        return decal_;
+    
+    public void removeDecal(char decal) {
+        decal_ = ' ';
     }
     
     @Override

@@ -30,7 +30,7 @@ MapMain_Relation map_main = new MapMain_Relation();
 map_main.bindToNewMapOfSize(3, 3);
 Avatar a = new Avatar("a", '~', 0, 0);
 Terrain obstacle = new Terrain("boulder", 'O', true, false);
-obstacle.setDecal('✚');
+obstacle.addDecal('✚');
 MapView map_view = new MapView(a);
 map_main.addViewToMap(map_view);
 map_main.addTerrain(obstacle, 2, 0);

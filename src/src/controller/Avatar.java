@@ -5,11 +5,17 @@
  */
 package src.controller;
 
+import src.SaveData;
 import src.model.MapAvatar_Relation;
 import src.view.Display;
 import src.view.AvatarCreationView;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Each avatar represents a player
@@ -17,7 +23,7 @@ import java.io.Serializable;
  *
  * @author JohnReedLOL
  */
-public final class Avatar extends Entity implements Serializable {
+public final class Avatar extends Entity{
 
     // map_relationship_ is used in place of a map_referance_
     private final MapAvatar_Relation map_relationship_;
@@ -80,7 +86,27 @@ public final class Avatar extends Entity implements Serializable {
         return s;
     }
 
+
+
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("AVATAR", 35);
+    @Override
+    public String getSerTag() {
+        return null;
+    }
+
+    @Override
+    public Object deserialize(ObjectInputStream ois, LinkedList<Integer> out_refHashes) throws ClassNotFoundException, IOException {
+        return null;
+    }
+
+    @Override
+    public void relink(Object[] refs) {
+
+    }
+
+    @Override
+    public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> refMap) throws IOException {
+
+    }
     // </editor-fold>
 }

@@ -4,8 +4,11 @@
  */
 package src;
 import java.io.*;
+import java.lang.reflect.Field;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 import src.model.*;
 
@@ -25,9 +28,10 @@ public class SavedGame {
      * is modified. The version number 0 is reserved. This value has no 
      * relation to the Java native Serialization object ID.
      */
-    public static final int SAVE_DATA_VERSION = 1;
+    public static final long SAVE_DATA_VERSION = 1;
     public static final String SAVE_EXT = ".sav";
     public static final char SAVE_ITERATOR_FLAG = '_';
+    // SAVE FILE FORMAT: yyMMdd_<number>.sav
     
     /** DATA FORMAT VERSION: 1
      * =======================
@@ -69,11 +73,11 @@ public class SavedGame {
             ObjectInputStream ois = new ObjectInputStream(fis);
             
             // Check the version number
-            if (ois.readInt() != SAVE_DATA_VERSION)
+            if (ois.readLong() != SAVE_DATA_VERSION)
                 throw new IOException("Invalid save file version number");
             
             // Hand stream over to MapMain_Relation to deserialize Map
-            mapRel = MapMain_Relation.deserializeMap(ois); // Populate the map object
+
             ois.close();
             fis.close();
         }
@@ -93,8 +97,23 @@ public class SavedGame {
             FileOutputStream fos = new FileOutputStream(filePath_, false);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
 
-            oos.writeInt(SAVE_DATA_VERSION); // write the save version
-            mapRel.serializeMap(oos); // serialize the map
+            oos.writeLong(SAVE_DATA_VERSION); // write the save version
+            Main.dbgOut("Writing SAVE VERSION: " + SAVE_DATA_VERSION);
+
+            HashMap<SaveData, Boolean> proc = new HashMap<SaveData, Boolean>();
+
+            SaveData sObject = mapRel;
+            proc.put(sObject, false);
+            do {
+                sObject.serialize(oos, proc);
+                proc.replace(sObject, true);
+                for (HashMap.Entry<SaveData, Boolean> e : proc.entrySet()) {
+                    if (!e.getValue().booleanValue()) {
+                        sObject = e.getKey();
+                        break;
+                    }
+                }
+            } while (proc.containsValue(Boolean.FALSE));
 
             oos.close();
             fos.close();
@@ -103,6 +122,38 @@ public class SavedGame {
             Main.errOut(e, true);
             return 0;
         }
+    }
+
+    public static void defaultDataRead(SaveData caller, ObjectInputStream ois, LinkedList<Integer> out_refHashes) throws IOException, ClassNotFoundException {
+        // read the object's save version and compare to input stream
+        final long sdv = genSDVersion(caller.getSerTag());
+        if (Long.compare(sdv, ois.readLong()) != 0)
+            throw new ClassNotFoundException();
+        if (out_refHashes == null) out_refHashes = new LinkedList<Integer>();
+        out_refHashes.add(ois.readInt()); // add caller's hash to refHashes
+    }
+
+    public static void defaultDataWrite(SaveData caller, ObjectOutputStream oos) throws IOException{
+        // write the object's save version
+        oos.writeLong(genSDVersion(caller.getSerTag()));
+        oos.writeInt(getHash(caller)); // write caller's hash
+    }
+
+    public static final long genSDVersion(String name) {
+        if (name == null || name.length() == 0) {
+            Main.errOut("SDVersion requested for NULL or empty string");
+            return 0;
+        }
+
+        long sdv = SAVE_DATA_VERSION;
+        for (char c : name.toCharArray()) {
+            sdv *= c;
+        }
+        return sdv;
+    }
+
+    public static final int getHash (Object o) {
+        return System.identityHashCode(o);
     }
 
     /**
@@ -114,7 +165,6 @@ public class SavedGame {
         String pwd = System.getProperty("user.dir"); // get the current working directory
         return newSavedGame(pwd);
     }
-
 
     public static SavedGame newSavedGame(String directory) {
         Main.dbgOut("New save game requested for dir: " + directory);

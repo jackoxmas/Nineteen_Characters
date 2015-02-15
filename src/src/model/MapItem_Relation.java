@@ -18,7 +18,6 @@ public class MapItem_Relation extends MapDrawableThing_Relation implements Seria
 
     public MapItem_Relation(Item item,
             boolean goes_in_inventory, boolean is_one_shot) {
-        super(item);
         item_ = item;
         goes_in_inventory_ = goes_in_inventory;
         is_one_shot_ = is_one_shot;

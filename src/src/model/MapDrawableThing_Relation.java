@@ -16,15 +16,10 @@ import java.io.Serializable;
  *
  * @author JohnMichaelReed
  */
-public class MapDrawableThing_Relation implements Serializable {
+public abstract class MapDrawableThing_Relation implements Serializable {
 
     protected Map current_map_reference_ = null;
     private MapTile my_tile_ = null;
-    private final DrawableThing drawable_thing_;
-
-    public MapDrawableThing_Relation(DrawableThing drawable_thing) {
-        drawable_thing_ = drawable_thing;
-    }
 
     public int getMyXCordinate() {
         return my_tile_.x_;
@@ -184,10 +179,6 @@ public class MapDrawableThing_Relation implements Serializable {
     public void levelUpWithinRadius(/*boolean will_level_up_players, boolean will_level_up_npcs, */int radius) {
         AreaLeveler a = new AreaLeveler();
         a.effectArea(this.getMyXCordinate(), this.getMyYCordinate(), radius, 1);
-    }
-
-    public MapDrawableThing_Relation() {
-        this.drawable_thing_ = null;
     }
     
     public boolean isAssociatedWithMap(){

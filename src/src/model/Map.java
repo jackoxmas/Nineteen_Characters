@@ -110,6 +110,14 @@ final class Map implements Serializable {
         }
     }
 
+    /**
+     * Adds an entity to the map at the defined (x,y) position
+     * 
+     * @param e
+     * @param x
+     * @param y
+     * @return 0 on success, -1 on fail
+     */
     public int addEntity(Entity e, int x, int y) {
         int error_code = this.map_grid_[y][x].addEntity(e);
         if (error_code == 0) {

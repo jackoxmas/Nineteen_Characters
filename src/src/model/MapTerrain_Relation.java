@@ -17,12 +17,6 @@ public class MapTerrain_Relation extends MapDrawableThing_Relation implements Se
     private final Terrain terrain_;
 
     public MapTerrain_Relation(Terrain terrain) {
-        super(terrain);
-        terrain_ = terrain;
-    }
-
-    public MapTerrain_Relation(Terrain terrain, boolean isAlwaysImpassible) {
-        super(terrain, isAlwaysImpassible);
         terrain_ = terrain;
     }
 

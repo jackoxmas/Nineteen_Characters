@@ -18,7 +18,6 @@ public class MapItem_Relation extends MapDrawableThing_Relation implements Seria
 
     public MapItem_Relation(Item item,
             boolean goes_in_inventory, boolean is_one_shot) {
-        super(item);
         item_ = item;
         goes_in_inventory_ = goes_in_inventory;
         is_one_shot_ = is_one_shot;
@@ -27,6 +26,6 @@ public class MapItem_Relation extends MapDrawableThing_Relation implements Seria
     private final boolean is_one_shot_;
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("RELATION_MI", 35);
+    private static final long serialVersionUID = 53142515L; // Long.parseLong("re_mi", 35);
     // </editor-fold>
 }

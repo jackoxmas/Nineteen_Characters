@@ -17,16 +17,19 @@ import java.io.Serializable;
  */
 public class Item extends DrawableThing implements Serializable {
     // map_relationship_ is used in place of a map_referance_
-    private final MapItem_Relation map_relationship_;
+    private MapItem_Relation map_relationship_;
     
     /**
      * Use this to call functions contained within the MapItem relationship
      * @return map_relationship_
      * @author Reed, John
      */
-    @Override
     public MapItem_Relation getMapRelation() {
         return map_relationship_;
+    }
+
+    public void setMapRelation(MapItem_Relation i) {
+        map_relationship_ = i;
     }
 
     private boolean is_passable_;
@@ -38,7 +41,7 @@ public class Item extends DrawableThing implements Serializable {
         map_relationship_ = new MapItem_Relation(
                 this, goes_in_inventory, is_one_shot);
     }
-    
+    @Override
     public boolean isPassable() {
         return this.is_passable_;
     }

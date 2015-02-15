@@ -20,57 +20,41 @@ abstract public class DrawableThing implements Serializable {
 
     // For things that take up only  1 tile or need to appear on a minimap
     private final char single_character_representation_;
-    
-    private final MapDrawableThing_Relation map_relationship_;
-    
-    /**
-     * Use this to call functions contained within the MapDrawable relationship
-     * @return map_relationship_
-     * @author Reed, John
-     */
-    public MapDrawableThing_Relation getMapRelation() {
-        return map_relationship_;
-    }
-    
+
     protected DrawableThing(String name, char representation) {
         name_ = name;
         single_character_representation_ = representation;
         is_viewable_ = true;
-        map_relationship_ = new MapDrawableThing_Relation(this);
     }
 
     private boolean is_viewable_;
-    
-    private StatsPack stats_pack_ = new StatsPack();
+
+    private final DrawableThingStatsPack stats_pack_ = new DrawableThingStatsPack();
 
     /**
      * returns the statspack(stats) without the items (default stats)
+     *
      * @author Jessan
      */
-    public StatsPack get_default_stats_pack_() {
+    public DrawableThingStatsPack getStatsPack() {
         return this.stats_pack_;
     }
 
-    /**
-     * sets default stats
-     * @author Jessan
-     */
-    public void set_default_stats_pack(StatsPack stats_){
-        this.stats_pack_ = stats_;
-    }
+    abstract public boolean isPassable();
+
     public void onTurn() {
-        
+
     }
 
     //representation changes for terrain with/without decal
     public char getRepresentation() {
         return this.single_character_representation_;
     }
-    
+
     public void setViewable(boolean is_viewable) {
         is_viewable_ = is_viewable;
     }
-    
+
     public boolean getViewable() {
         return this.is_viewable_;
     }

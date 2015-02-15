@@ -12,5 +12,5 @@ import java.io.Serializable;
  * @author JohnReedLOL
  */
 public interface Occupation extends Serializable {
-    public StatsPack change_stats(StatsPack current_stats);
+    public void change_stats(EntityStatsPack current_stats);
 }

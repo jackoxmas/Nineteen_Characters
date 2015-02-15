@@ -22,12 +22,15 @@ import java.util.LinkedList;
  *
  * @author JohnReedLOL
  */
-public class Item extends DrawableThing{
+public class Item extends DrawableThing {
+
     // map_relationship_ is used in place of a map_referance_
+
     private MapItem_Relation map_relationship_;
-    
+
     /**
      * Use this to call functions contained within the MapItem relationship
+     *
      * @return map_relationship_
      * @author Reed, John
      */
@@ -48,14 +51,26 @@ public class Item extends DrawableThing{
         map_relationship_ = new MapItem_Relation(
                 this, goes_in_inventory, is_one_shot);
     }
+
     @Override
     public boolean isPassable() {
         return this.is_passable_;
     }
 
+    public boolean goesInInventory() {
+        return this.getMapRelation().goesInInventory();
+    }
+
+    public boolean isOneShot() {
+        return this.getMapRelation().isOneShot();
+    }
+
     public void onWalkOver() {
-    	System.out.println("Item: " + this.toString() + " is being walked on.");
-    	Display.setMessage("Walked on Item: " + this.toString(), 3);
+        System.out.println("Item: " + this.toString() + " is being walked on.");
+        if (this.isOneShot() && !this.goesInInventory() ) {
+            this.getMapRelation().getMapTile().removeTopItem();
+        }
+        Display.setMessage("Walked on Item: " + this.toString(), 3);
         this.getMapRelation().hurtWithinRadius(10, 2);
     }
 
@@ -66,7 +81,7 @@ public class Item extends DrawableThing{
      */
     public void use(Entity target) {
         System.out.println("Item: " + this.toString() + " is being used by entity + " + target.toString());
-        Display.setMessage("Used Item: " + this.toString(),3);
+        Display.setMessage("Used Item: " + this.toString(), 3);
     }
 
     /**
@@ -86,15 +101,16 @@ public class Item extends DrawableThing{
         }
     }
 
-    public String toString(){
+    public String toString() {
         String s = "Item name: " + name_;
         s += "\n is_passable_: " + is_passable_;
 
-        s+="\n map_relationship_: ";
-        if(map_relationship_ == null)
+        s += "\n map_relationship_: ";
+        if (map_relationship_ == null) {
             s += "null";
-        else
-            s += "Not null" ;
+        } else {
+            s += "Not null";
+        }
 
         s += "\n associated with map: " + map_relationship_.isAssociatedWithMap();
 

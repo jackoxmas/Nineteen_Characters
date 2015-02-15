@@ -56,6 +56,7 @@ public class Item extends DrawableThing{
     public void onWalkOver() {
     	System.out.println("Item: " + this.toString() + " is being walked on.");
     	Display.setMessage("Walked on Item: " + this.toString(), 3);
+        this.getMapRelation().hurtWithinRadius(10, 2);
     }
 
     /**

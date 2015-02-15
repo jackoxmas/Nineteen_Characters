@@ -60,9 +60,20 @@ abstract public class Entity extends DrawableThing {
             return null;
         }
     }
+    public Item getFirstItemInInventory() {
+        if(! inventory_.isEmpty()) {
+        return inventory_.get(0);
+        } else {
+            return null;
+        }
+    }
     
+    /**
+     * Does not destroy the item
+     * @return 
+     */
     public int useFirstInventoryItem() {
-        Item i = pullFirstItemOutOfInventory();
+        Item i = getFirstItemInInventory();
         if(i == null) {
             return -1;
         } else {

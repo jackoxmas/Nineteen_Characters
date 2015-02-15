@@ -41,14 +41,14 @@ public class TestingMain {
 
 		// TODO Auto-generated method stub
 		MapMain_Relation mmr_ = new MapMain_Relation();
-        mmr_.bindToNewMapOfSize(Viewport.width_, Viewport.height_); //Can change these later if we so desire. 
-		Avatar avatar = new Avatar("avatar", '@', 0, 0);
+        mmr_.bindToNewMapOfSize(Viewport.width_/2, Viewport.height_); //Can change these later if we so desire. 
+		Avatar avatar = new Avatar("avatar", '☉', 0, 0);
 		avatar.setMap(mmr_);
 		Display _display = new Display(avatar.getMyView());
 		avatar.getMyView().messageBox("This is a test of the emergency broadcasting system.",1);
 		_display.printView();
 		_display.printView();
-		Terrain obstacle = new Terrain("boulder", 'O', true, false);
+		Terrain obstacle = new Terrain("boulder", '☠', true, false);
 		mmr_.addTerrain(obstacle, 2, 2);
 		System.out.println("☠ and ★ and ✚");
 		Scanner sc = new Scanner(System.in);

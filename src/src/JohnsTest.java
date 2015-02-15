@@ -71,8 +71,10 @@ int error_code5 = a.getMapRelation().dropItem();
 System.out.println("error code 5" + error_code5);
 
 testMoveAvatar(a, 0, 1);
+_d.printView();
 try {
 testMoveAvatar(a, 1, 0);
+_d.printView();
 } catch(Exception e) {
 System.out.println("success - avatar walked off map");
 }

@@ -7,6 +7,7 @@ package src.model;
 
 import src.Main;
 import src.SaveData;
+import src.SavedGame;
 import src.controller.Avatar;
 import src.controller.Entity;
 import src.controller.Item;
@@ -24,7 +25,7 @@ import java.util.LinkedList;
  *
  * @author JohnMichaelReed (includes inner functions)
  */
-public class MapMain_Relation implements SaveData {
+public class MapMain_Relation implements  SaveData {
 
     //private final Map map_reference_ = Map.getMyReferanceToTheMap(this);
     private Map current_map_reference_;
@@ -114,9 +115,16 @@ public class MapMain_Relation implements SaveData {
     }
 
 
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     @Override
     public String getSerTag() {
-        return "RELMAPMAIN";
+        return "RELATION_MAP_MAIN";
+    }
+
+    @Override
+    public void setDTRelation(MapDrawableThing_Relation dtr) throws ClassNotFoundException {
+
     }
 
     @Override
@@ -126,15 +134,12 @@ public class MapMain_Relation implements SaveData {
 
     @Override
     public void relink(Object[] refs) {
-        if (refs.length > 0 && refs[0] instanceof Map)
-            this.current_map_reference_ = (Map)refs[0];
-        else
-            Main.errOut("Invalid Map reference");
+
     }
 
     @Override
-    public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> refMap) throws IOException {
-
+    public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> savMap) throws IOException {
+        SavedGame.defaultDataWrite(this, oos, savMap);
     }
     // </editor-fold>
 }

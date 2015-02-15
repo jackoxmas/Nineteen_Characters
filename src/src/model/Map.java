@@ -1,9 +1,13 @@
 package src.model;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.io.Serializable;
+
+import src.SaveData;
 import src.controller.Entity;
 import src.controller.Item;
 import src.controller.Avatar;
@@ -15,7 +19,7 @@ import src.controller.Terrain;
  *
  * @author John-Michael Reed
  */
-class Map implements Serializable {
+class Map {
 
     /**
      * @author John-Michael Reed Sends a key press from a keyboard to an avatar
@@ -46,8 +50,8 @@ class Map implements Serializable {
 
     //public static boolean NDEBUG_ = true;
     // MAP MUST BE SQUARE
-    public final int height_;
-    public final int width_;
+    public int height_;
+    public int width_;
 
     // This should never get called
     private Map() {//throws Exception {
@@ -170,8 +174,8 @@ class Map implements Serializable {
      */
     public int removeAvatar(Avatar a) {
         this.avatar_list_.remove(a.name_);
-        if (this.map_grid_[a.getMapRelation().getMyXCordinate()][a.getMapRelation().getMyYCordinate()].getEntity() == a) {
-            this.map_grid_[a.getMapRelation().getMyXCordinate()][a.getMapRelation().getMyYCordinate()].removeEntity();
+        if (this.map_grid_[a.getMapRelation().getMyXCoordinate()][a.getMapRelation().getMyYCoordinate()].getEntity() == a) {
+            this.map_grid_[a.getMapRelation().getMyXCoordinate()][a.getMapRelation().getMyYCoordinate()].removeEntity();
             return 0;
         } else {
             return -1;
@@ -186,8 +190,8 @@ class Map implements Serializable {
      */
     public int removeEntity(Entity e) {
         this.avatar_list_.remove(e.name_);
-        if (this.map_grid_[e.getMapRelation().getMyXCordinate()][e.getMapRelation().getMyYCordinate()].getEntity() == e) {
-            this.map_grid_[e.getMapRelation().getMyXCordinate()][e.getMapRelation().getMyYCordinate()].removeEntity();
+        if (this.map_grid_[e.getMapRelation().getMyXCoordinate()][e.getMapRelation().getMyYCoordinate()].getEntity() == e) {
+            this.map_grid_[e.getMapRelation().getMyXCoordinate()][e.getMapRelation().getMyYCoordinate()].removeEntity();
             return 0;
         }
         return -1;
@@ -216,20 +220,7 @@ class Map implements Serializable {
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("MAP", 35);
-
-    /**
-     * Populates this Map object with data extracted from the provided
-     * ObjectInputStream. The expected data format is defined in Map.java. If
-     * the data is corrupt or out-of-date, IOExceptions will be thrown.
-     * <p>
-     * Use this function to initialize Map objects from saved game streams.
-     * </p>
-     *
-     * @param in The java.io.ObjectInputStream to pull data from
-     * @throws java.io.IOException
-     * @throws ClassNotFoundException
-     */
+/*
     private void readObjectData(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         /*
@@ -258,21 +249,44 @@ class Map implements Serializable {
          }
          catch (IOException e) {
          throw e;
-         }*/
+         }
     }
 
-    /**
-     * Serializes data from this Map object to the provided output stream using
-     * the data format as defined in the Map.java file. This method may throw
-     * errors if this Map object is not fully initialized or if the stream
-     * cannot be written to.
-     * <p>
-     * Use this method to write data to a saved game stream to be pushed to
-     * disk.</p>
-     *
-     * @param out The java.io.ObjectOutputStream to write data to
-     * @throws java.io.IOException
-     */
+    public void loadFromStream(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        time_measured_in_turns = ois.readInt();
+        width_ = ois.readInt();
+        height_ = ois.readInt();
+
+        int count = ois.readInt();
+        Avatar a;
+        for (int i = 0; i < count; i++) {
+            a = Avatar.load(ois);
+            addAvatar(a, ois.readInt(), ois.readInt());
+        }
+
+        count = readInt();
+    }
+
+    private void relate(SaveData actor, MapDrawableThing_Relation mdtr) throws ClassNotFoundException {
+        if (actor instanceof Avatar) {
+            ((Avatar) actor).setDTRelation(mdtr);
+        }
+    }
+
+    public void saveToStream(ObjectOutputStream oos) throws IOException {
+        oos.writeInt(time_measured_in_turns);
+        oos.writeInt(width_);
+        oos.writeInt(height_);
+
+        // ENTITIES
+        oos.writeInt(avatar_list_.size());
+        for (java.util.Map.Entry<String, Avatar> e : avatar_list_.entrySet()) {
+            Avatar.save(e.getValue(), oos);
+            oos.writeInt(e.getValue().getMapRelation().getMyXCoordinate());
+            oos.writeInt(e.getValue().getMapRelation().getMyYCoordinate());
+        }
+    }
+
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
         /*
@@ -301,7 +315,7 @@ class Map implements Serializable {
          catch (IOException e) {
          throw e;
          }
-         */
-    }
+
+    }*/
     // </editor-fold>
 }

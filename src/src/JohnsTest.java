@@ -60,8 +60,8 @@ map_display.associateWithMap(map_main.getMyMap());
 System.out.println( "representation of avatar: " + map_display.getTileRepresentation(0, 0) );
 System.out.println( "representation of empty space: " + map_display.getTileRepresentation(1, 0) );
 //a.getMapRelation().getMapTile().getTopCharacter();
-System.out.println("x cordinate: " + a.getMapRelation().getMyXCordinate());
-System.out.println("y cordinate: " + a.getMapRelation().getMyYCordinate());
+System.out.println("x cordinate: " + a.getMapRelation().getMyXCoordinate());
+System.out.println("y cordinate: " + a.getMapRelation().getMyYCoordinate());
 testMoveAvatar(a, 1, 0);
 int error_code3 = a.getMapRelation().dropItem();
 System.out.println("error code 3" + error_code3);
@@ -79,8 +79,8 @@ System.out.println("success - avatar walked off map");
 //a.getMapRelation().addStatsPack(stats_pack);
 System.out.println(a == a.getMapRelation().getAvatar());
 System.out.println(
-map_main.getTile(a.getMapRelation().getMyXCordinate(),
-a.getMapRelation().getMyYCordinate())
+map_main.getTile(a.getMapRelation().getMyXCoordinate(),
+a.getMapRelation().getMyYCoordinate())
 == a.getMapRelation().getMapTile()
 );
 System.out.println(a.getStatsPack().toString());
@@ -105,8 +105,8 @@ a.getMyView();
 }
 public static void testMoveAvatar(Avatar a, int x, int y) {
 System.out.println("Moving avatar. Error code: " + a.getMapRelation().moveInDirection(x, y));
-System.out.println("x cordinate: " + a.getMapRelation().getMyXCordinate());
-System.out.println("y cordinate: " + a.getMapRelation().getMyYCordinate());
+System.out.println("x cordinate: " + a.getMapRelation().getMyXCoordinate());
+System.out.println("y cordinate: " + a.getMapRelation().getMyYCoordinate());
 }
 static void initializeEverything() {
 // currently there is only one avatar

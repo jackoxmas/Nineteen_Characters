@@ -6,7 +6,6 @@
 package src.view;
 
 import src.controller.Avatar;
-import src.model.MapDisplay_Relation;
 
 /**
  * Players see the MapView while they are interacting with the map
@@ -37,8 +36,8 @@ public final class MapView extends Viewport {
 	}
 	private void render(){
 		clear();
-		x_=AvatarRef_.getMapRelation().getMyXCordinate();
-		y_=AvatarRef_.getMapRelation().getMyYCordinate();
+		x_=AvatarRef_.getMapRelation().getMyXCoordinate();
+		y_=AvatarRef_.getMapRelation().getMyYCoordinate();
 		int midpointx_ = x_/2;
 		int midpointy_ = y_/2;
 		for(int i = 0;i!=width_;++i){

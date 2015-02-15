@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import src.SaveData;
@@ -19,26 +20,20 @@ import src.model.MapDrawableThing_Relation;
  *
  * @author JohnReedLOL
  */
-abstract public class DrawableThing implements SaveData {
+abstract public class DrawableThing {// implements SaveData {
 
     // names of items and terrain should be non-unique.
     // names of entities should be unique to fit in a hashmap.
-    public final String name_;
+    public String name_;
 
     // For things that take up only  1 tile or need to appear on a minimap
-    private final char single_character_representation_;
+    private char single_character_representation_;
 
     private boolean is_viewable_;
 
     private DrawableThingStatsPack stats_pack_ = new DrawableThingStatsPack();
 
     protected DrawableThing(String name, char representation) {
-        name_ = name;
-        single_character_representation_ = representation;
-        is_viewable_ = true;
-    }
-
-    protected DrawableThing(String name, char representation, boolean dummy) {
         name_ = name;
         single_character_representation_ = representation;
         is_viewable_ = true;
@@ -78,4 +73,7 @@ abstract public class DrawableThing implements SaveData {
     public boolean getViewable() {
         return this.is_viewable_;
     }
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    // </editor-fold>
 }

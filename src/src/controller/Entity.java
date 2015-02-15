@@ -25,7 +25,6 @@ abstract public class Entity extends DrawableThing implements Serializable {
      * @return map_relationship_
      * @author Reed, John
      */
-    @Override
     public MapEntity_Relation getMapRelation() {
         return map_relationship_;
     }

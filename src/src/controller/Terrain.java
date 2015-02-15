@@ -23,7 +23,6 @@ public class Terrain extends DrawableThing implements Serializable {
      * @return map_relationship_
      * @author Reed, John
      */
-    @Override
     public MapTerrain_Relation getMapRelation() {
         return map_relationship_;
     }

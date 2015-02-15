@@ -24,7 +24,6 @@ public class Item extends DrawableThing implements Serializable {
      * @return map_relationship_
      * @author Reed, John
      */
-    @Override
     public MapItem_Relation getMapRelation() {
         return map_relationship_;
     }

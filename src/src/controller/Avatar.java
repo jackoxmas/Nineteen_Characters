@@ -204,8 +204,6 @@ public final class Avatar extends Entity{
     	}
     }
 
-
-
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
 
     // </editor-fold>

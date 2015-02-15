@@ -3,14 +3,16 @@
  * Last Update: 15-02-13
  */
 package src;
-import java.io.*;
-import java.lang.reflect.Field;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import src.model.*;
+import src.model.MapMain_Relation;
 
 /**
  * This class manages a saved game object. A saved game has a file path and 

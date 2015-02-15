@@ -36,6 +36,7 @@ public final class MapView extends Viewport {
 		view_contents_ = getContents();
 	}
 	private void render(){
+		clear();
 		x_=AvatarRef_.getMapRelation().getMyXCordinate();
 		y_=AvatarRef_.getMapRelation().getMyYCordinate();
 		int midpointx_ = x_/2;
@@ -45,5 +46,10 @@ public final class MapView extends Viewport {
 				view_contents_[i][j] = map_relationship_.getTileRepresentation(i-width_/2,height_/2-j);
 			}
 		}
+	}
+	@Override
+	public boolean getInput(char c) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

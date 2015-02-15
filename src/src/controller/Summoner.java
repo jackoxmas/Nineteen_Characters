@@ -12,9 +12,10 @@ package src.controller;
  */
 public final class Summoner implements Occupation
 {
-    public StatsPack change_stats(StatsPack current_stats){
-        StatsPack level_up_stats = new StatsPack(0,1,1,2,1,0,1,0,1);
-        return current_stats.add(level_up_stats);
+    public void change_stats(EntityStatsPack current_stats) {
+        //for sneak
+        current_stats.intellect_level_ += 1;
+
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">

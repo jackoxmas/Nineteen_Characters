@@ -45,7 +45,7 @@ public class TestingMain {
         mmr_.bindToNewMapOfSize(Viewport.width_/2, Viewport.height_); //Can change these later if we so desire. 
 	Avatar avatar = new Avatar("avatar", '☉', 0, 0);
         avatar.setMap(mmr_);
-        Item equipable = new Item("i", 'i', true, true, false);
+        Item equipable = new Item("☂", '☂', true, true, false);
         mmr_.addItem(equipable, 5, 5);
         Display _display = new Display(avatar.getMyView());
         avatar.getMyView().messageBox("This is a test of the emergency broadcasting system.", 1);

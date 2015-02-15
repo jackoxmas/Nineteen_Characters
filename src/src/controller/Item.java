@@ -70,8 +70,8 @@ public class Item extends DrawableThing {
         if (this.isOneShot() && !this.goesInInventory() ) {
             this.getMapRelation().getMapTile().removeTopItem();
         }
-        //Display.setMessage("Walked on Item: " + this.toString(), 3);
-        this.getMapRelation().hurtWithinRadius(10, 2);
+        // Display.setMessage("Walked on Item: " + this.toString(), 3);
+        // this.getMapRelation().hurtWithinRadius(10, 2);
     }
 
     /**

@@ -127,16 +127,36 @@ public class MapMain_Relation implements SaveData {
 		return current_map_reference_.removeEntity(e);
 	}
 
+	/**
+	 * Adds an Item to the map.
+	 * @param i - item to be added
+	 * @param x - x position
+	 * @param y - y position
+	 * @return -1 on fail, 0 on success
+	 */
 	public int addItem(Item i, int x, int y) {
 		int error_code = current_map_reference_.addItem(i, x, y);
 		return error_code;
 	}
 
+	/**
+	 * Remove top Item from the tile at (x,y).
+	 * @param i - item to be removed
+	 * @param x - position of tile
+	 * @param y - y position of tile
+	 * @return Item from til at (x,y).
+	 */
 	public Item removeTopItem(Item i, int x, int y) {
 		i.getMapRelation().associateWithMap(null);
 		return current_map_reference_.removeTopItem(x, y);
 	}
 
+	/**
+	 * 
+	 * @param x - x position
+	 * @param y - y position
+	 * @return MapTile at position (x,y).
+	 */
 	public MapTile getTile(int x, int y) {
 		return current_map_reference_.getTile(x, y);
 	}

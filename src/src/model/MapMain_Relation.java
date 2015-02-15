@@ -53,7 +53,7 @@ public class MapMain_Relation implements  SaveData {
      * @param y - height of the map
      */
     public void bindToNewMapOfSize(int x, int y) {
-        if( number_of_worlds_generated_ >= MAX_NUMBER_OF_WORLDS ) {
+        if( number_of_worlds_generated_ <= MAX_NUMBER_OF_WORLDS ) {
             current_map_reference_ = new Map(x, y);
             ++number_of_worlds_generated_;
         } else {

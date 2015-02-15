@@ -22,10 +22,10 @@ public class Testing extends Main{
 
         SavedGame sg = SavedGame.newSavedGame();
         MapMain_Relation mmr = new MapMain_Relation();
-        mmr.bindToNewMapOfSize(10, 10);
+        mmr.bindToNewMapOfSize(19, 12);
         sg.saveFile(mmr, new Exception());
-        sg.loadFile(mmr, new Exception());
-
+        mmr = null;
+        mmr = sg.loadFile();
         System.out.println("== FINISH LINE ==");
     }
 }

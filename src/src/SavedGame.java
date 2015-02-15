@@ -41,15 +41,16 @@ public class SavedGame {
         filePath_ = filePath;
     }
     
-    public int loadFile(MapMain_Relation out_mapRel, Exception exep) {
+    public MapMain_Relation loadFile() {
         Main.dbgOut("Save game load requested from: " + filePath_, 2);
-        exep = null; // First, set the out Exception variable to null
+
         // Error checking
         if (filePath_ == null) {
-            exep = new Exception("Provided filepath is NULL");
-            return 0;
+            Main.errOut("Provided filepath is NULL");
+            return null;
         }
-        
+
+        MapMain_Relation new_mmr = null;
         // Attempt to open the file and read the map object
         try {
             FileInputStream fis = new FileInputStream(filePath_);
@@ -75,6 +76,10 @@ public class SavedGame {
 
                 ArrayDeque<Integer> relHashes = new ArrayDeque<Integer>(); // object's relationship hashes
                 sObject = sd_type.cast(defaultDataRead(sd_type, ois, relHashes));
+
+                // Pull the first serialized object out. It is the map-main relationship
+                if (new_mmr == null) new_mmr = MapMain_Relation.class.cast(sObject);
+
                 Integer objHash = relHashes.pop();
                 if (objHash == 0)
                     throw new Exception("Object not deserialized correctly.");
@@ -95,17 +100,19 @@ public class SavedGame {
                 defaultDataRelink(e.getKey(), refs); // relink keys to their references
             }
 
+            // Close streams
             ois.close();
             fis.close();
+
         } catch (IOException ioe) {
             Main.errOut(ioe, true);
-            return 0;
+            return null;
         } catch (Exception e) {
-            exep = e;
-            return 0;
+            Main.errOut(e, true);
+            return null;
         }
         
-        return 1;
+        return new_mmr;
     }
     
     public int saveFile(MapMain_Relation mapRel, Exception out_exep) {

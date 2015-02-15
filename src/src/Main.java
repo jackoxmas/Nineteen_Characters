@@ -161,12 +161,10 @@ public class Main
         }
         if (pOpts_.lsg_flag) {
             saveGame_ = new SavedGame(args[pOpts_.lsg_path]);
-            Exception e = null;
-            int s = saveGame_.loadFile(mmr_, e);
-            if (s == 0) { // the saved game load has failed
-                errOut(e);  // print out error
+            mmr_ = saveGame_.loadFile();
+            if (mmr_ == null) {
                 if (startNewGame() == 0) {
-                    errOut(e);
+                    errOut("Could not start a new game");
                     exitGame();
                 }
             }

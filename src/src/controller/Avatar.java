@@ -39,6 +39,7 @@ public final class Avatar extends Entity {
     private final MapView map_view_;
     private final StatsView stats_view_;
     private char storedInput;
+    private char storedChoice;
 
     /**
      * Accepts a key command from the map
@@ -153,6 +154,36 @@ public final class Avatar extends Entity {
 				storedInput = '~';
 				if (error_code != -1)
 					System.out.println("pickUpItem function failed to get an item");
+			} else if (storedInput == 'u') {
+				switch (current) {
+	    			case '1':
+						map_relationship_.sendAttack(0, -1);
+						break;
+					case '2':
+						map_relationship_.sendAttack(0, -1);
+						break;
+					case '3':
+						map_relationship_.sendAttack(1, -1);
+						break;
+					case '4':
+						map_relationship_.sendAttack(-1, 0);
+						break;
+					case '5':
+						map_relationship_.sendAttack(0, 0);
+						break;
+					case '6':
+						map_relationship_.sendAttack(1, 0);
+						break;
+					case '7':
+						map_relationship_.sendAttack(-1, 1);
+						break;
+					case '8':
+						map_relationship_.sendAttack(0, 1);
+						break;
+					case '9':
+						map_relationship_.sendAttack(1, 1);
+						break;
+				}
 			} else if (storedInput == ' ') {
 				switch (current) {
 	    			case '1':
@@ -240,22 +271,30 @@ public final class Avatar extends Entity {
 					case 'e':
 						map_relationship_.moveInDirection(1, 1);
 						break;
-					case 'S':
-						break;
-					case 'v':
+					case 'S': // Save the game
 						break;
 					case 'i':
+						switchToStatsView();
+						break;
+					case 'u': // Uses item
 						break;
 					case 'D':
-						 int error_code_D = map_relationship_.dropItem();
-						 if(error_code_D != 0) {
-						 	System.out.println("dropItem function failed to drop an item");
-						 }
-						 break;
+						int error_code_D = map_relationship_.dropItem();
+						if(error_code_D != 0) {
+							System.out.println("dropItem function failed to drop an item");
+						}
+						break;
+					case ' ': // Attack in next direction
+						storedInput = ' ';
+						break;
+					case 'p': // Pick up in next direction
+						storedInput = 'p';
+						break;
+					default:
+						break;
 				}
-				storedInput = '~';
 			}
-    		current_viewport_.renderToDisplay(); //See lower comment, maybe avatar should have a Display also to print it's views?
+    		current_viewport_.renderToDisplay();
 		}
 	}
 

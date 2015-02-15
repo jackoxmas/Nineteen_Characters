@@ -56,7 +56,7 @@ public class TestingMain {
 			char c;
 			c = sc.next().charAt(0);
 			if(c == '5'){return;}
-			avatar.getInput(c);
+			avatar.sendInput(c);
 			_display.setView(avatar.getMyView());
 			_display.printView();
 

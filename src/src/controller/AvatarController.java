@@ -31,6 +31,7 @@ public final class AvatarController
     	}
     	
     	in.close();
+    	
     }
     
 }

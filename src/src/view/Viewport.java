@@ -31,6 +31,7 @@ public abstract class Viewport implements Serializable {
 	public abstract boolean getInput(char c);
 	public Viewport(){
 		map_relationship_ = new MapDisplay_Relation(this);
+		view_contents_ = new char[width_][height_];
 	}
 	protected MapDisplay_Relation map_relationship_;
 	    
@@ -115,6 +116,20 @@ public abstract class Viewport implements Serializable {
 			clear();
 		}
 	}
+	
+	/**
+	 * Right justifies a string
+	 * @author Jack
+	 */
+	protected String rightAlign(int length, String text) {
+		if (length < text.length())
+			return text;
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < length-text.length(); i++)
+			sb.append(' ');
+		return sb.toString() + text;
+	}
+	
 	/**
 	 * Writes the string given into view from the given starting coords. 
 	 * @returns false if not enough room/invalidposition

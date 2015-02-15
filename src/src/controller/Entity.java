@@ -49,6 +49,10 @@ abstract public class Entity extends DrawableThing {
 
     protected final ArrayList<Item> inventory_;
     
+    public ArrayList<Item> getInventory() {
+    	return inventory_;
+    }
+    
     /**
      * 
      * @return Null if list is empty 

@@ -101,7 +101,7 @@ public class MapDrawableThing_Relation {
             MapTile infliction = current_map_reference_.getTile(x_pos, y_pos);
             if (infliction != null) {
                 // If there is no decal, fuck shit up
-                if(! infliction.getTerrain().hasDecal() ) {
+                if(infliction.getTerrain()!= null && ! infliction.getTerrain().hasDecal() ) {
                     infliction.getTerrain().addDecal('♨');
                 }
                 Entity to_hurt = infliction.getEntity();

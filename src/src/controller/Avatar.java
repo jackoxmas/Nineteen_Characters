@@ -29,7 +29,7 @@ import java.util.LinkedList;
  *
  * @author JohnReedLOL
  */
-public final class Avatar extends Entity{
+public final class Avatar extends Entity {
 
     // map_relationship_ is used in place of a map_referance_
     private MapAvatar_Relation map_relationship_;
@@ -64,9 +64,10 @@ public final class Avatar extends Entity{
     public void setMapRelation(MapAvatar_Relation a) {
         map_relationship_ = a;
     }
-/* Make sure to call set map after this!
- * 
- */
+    /* Make sure to call set map after this!
+     * 
+     */
+
     public Avatar(String name, char representation, int x_respawn_point, int y_respawn_point) {
         super(name, representation, x_respawn_point, y_respawn_point);
         map_relationship_ = new MapAvatar_Relation(this, x_respawn_point, y_respawn_point);
@@ -95,9 +96,10 @@ public final class Avatar extends Entity{
     private StatsView generateStatsView() {
         return new StatsView(this);
     }
-    public void setMap(MapMain_Relation map_main){
-    	map_main.addViewToMap(map_view_);
-    	map_main.addAvatar(this, 0, 0);
+
+    public void setMap(MapMain_Relation map_main) {
+        map_main.addViewToMap(map_view_);
+        map_main.addAvatar(this, 0, 0);
     }
     
 	/* determine if input is not important

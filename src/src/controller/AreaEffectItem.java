@@ -13,14 +13,15 @@ import src.view.Display;
  */
 public class AreaEffectItem extends Item {
 
-    private Effect effect_;
+    // Alex probably didn't make serialization code for this 
+    transient private Effect effect_;
 
     public enum Effect {
 
         HEAL, HURT, LEVEL, KILL
     }
 
-    private int power_ = 10;
+    transient private int power_ = 10;
 
     AreaEffectItem(String name, char representation, boolean is_passable,
             boolean goes_in_inventory, boolean is_one_shot, Effect effect, int power) {

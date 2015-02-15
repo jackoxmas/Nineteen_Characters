@@ -41,6 +41,7 @@ public class TestingMain {
 		_display.printView();
 		
 		System.out.println(System.getProperty("java.class.path"));
+		System.out.println("☠ and ★ and ✚");
 
 	}
 

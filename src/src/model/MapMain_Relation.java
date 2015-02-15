@@ -95,16 +95,33 @@ public class MapMain_Relation implements SaveData {
 		return error_code;
 	}
 
+	/**
+	 * Adds an entity to the map.
+	 * @param e - entity to be added.
+	 * @param x - x position
+	 * @param y - y position
+	 * @return -1 on fail, 0 on success
+	 */
 	public int addEntity(Entity e, int x, int y) {
 		int error_code = current_map_reference_.addEntity(e, x, y);
 		return error_code;
 	}
 
+	/**
+	 * Removes an Avatar from the map.
+	 * @param a
+	 * @return -1 on fail, 0 on success
+	 */
 	public int removeAvatar(Avatar a) {
 		a.getMapRelation().associateWithMap(null);
 		return current_map_reference_.removeAvatar(a);
 	}
 
+	/**
+	 * Removes an Entity from the map.
+	 * @param e - entity to be removed
+	 * @return -1 on fail, 0 on success
+	 */
 	public int removeEntity(Entity e) {
 		e.getMapRelation().associateWithMap(null);
 		return current_map_reference_.removeEntity(e);

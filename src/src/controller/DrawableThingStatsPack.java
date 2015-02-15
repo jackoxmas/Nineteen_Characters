@@ -57,6 +57,7 @@ armor_rating_ - other.armor_rating_
 ); 
 }
 */
+
 public void addOn(final DrawableThingStatsPack other) {
 life_ += other.life_;
 mana_ += other.mana_;

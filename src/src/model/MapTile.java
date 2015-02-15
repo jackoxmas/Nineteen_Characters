@@ -163,7 +163,7 @@ final public class MapTile implements Serializable {
          else if (terrain_ != null) {
             return terrain_.getRepresentation();
         } else {
-            return 'M';
+            return '▩';
         }
     }
 

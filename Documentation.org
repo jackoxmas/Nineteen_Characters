@@ -71,7 +71,7 @@ After having saved a game, to load it back in, simply start the game, supplying 
 ** While the map is visible
 *** View Switching
 - Hit v to open the stats and inventory screen
-- Hit i to use item, then a direction to use it in said direction
+- Hit i to use the item directly below the avatar. 
 *** Movement
 #+BEGIN_SRC 
 NW   N   NE

@@ -29,6 +29,7 @@ public class TestingMain {
 		_display.printView();
 	}
 	public static void main(String[] args) {
+
 		// TODO Auto-generated method stub
 		Avatar avatar = new Avatar("avatar", 'x', 0, 0);
 		Display _display = new Display(avatar.getMyView());
@@ -39,7 +40,7 @@ public class TestingMain {
 		_display.setView(avatar.getMyView());
 		_display.printView();
 		
-		
+		System.out.println(System.getProperty("java.class.path"));
 
 	}
 

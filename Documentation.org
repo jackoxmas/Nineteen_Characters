@@ -69,10 +69,13 @@ SW   S   SE
 *** Save Game
 - Hit S
 - A Save File will be created
+- Format : yyMMdd_<number>.sav
 ** In the Inventory screen
 - Hit U to toggle the use option on
 - Hit D to toggle the drop option on
+- Hit E for toggle equip
 - Proceed to hit the number of the item you wish to apply the action to
 - Finally, select a direction
+- If the action cannot be done on the item, nothing happens
 *** View Switching
 Hit M to return to the map

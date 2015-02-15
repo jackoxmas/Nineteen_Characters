@@ -50,7 +50,9 @@ public final class Avatar extends Entity implements Serializable {
     public void setMapRelation(MapAvatar_Relation a) {
         map_relationship_ = a;
     }
-
+/* Make sure to call set map after this!
+ * 
+ */
     public Avatar(String name, char representation, int x_respawn_point, int y_respawn_point) {
         super(name, representation, x_respawn_point, y_respawn_point);
         map_relationship_ = new MapAvatar_Relation(this, x_respawn_point, y_respawn_point);
@@ -61,7 +63,6 @@ public final class Avatar extends Entity implements Serializable {
     private Viewport current_view_ = new AvatarCreationView(this);
     private MapView map_view_;
     private StatsView stats_view_;
-
     public Viewport getMyView() {
         return this.current_view_;
     }
@@ -75,16 +76,16 @@ public final class Avatar extends Entity implements Serializable {
     }
 
     private MapView generateMapView() {
-        MapMain_Relation map_main = new MapMain_Relation();
-        map_main.bindToNewMapOfSize(Viewport.width_, Viewport.height_); //Can change these later if we so desire. 
         MapView map_view = new MapView(this);
-        map_main.addViewToMap(map_view);
-        map_main.addAvatar(this, 0, 0);
         return map_view;
     }
 
     private StatsView generateStatsView() {
         return new StatsView(this);
+    }
+    public void setMap(MapMain_Relation map_main){
+    	map_main.addViewToMap(map_view_);
+    	map_main.addAvatar(this, 0, 0);
     }
 
     @Override

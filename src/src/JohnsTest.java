@@ -29,6 +29,7 @@ public static void testEverything() {
 MapMain_Relation map_main = new MapMain_Relation();
 map_main.bindToNewMapOfSize(3, 3);
 Avatar a = new Avatar("a", '~', 0, 0);
+a.setMap(map_main);
 Terrain obstacle = new Terrain("boulder", 'O', true, false);
 MapView map_view = new MapView(a);
 map_main.addViewToMap(map_view);
@@ -102,7 +103,7 @@ System.out.println("y cordinate: " + a.getMapRelation().getMyYCordinate());
 }
 static void initializeEverything() {
 // currently there is only one avatar
-Avatar avatar = new Avatar("avatar", 'x', 0, 0);
+//Avatar avatar = new Avatar("avatar", 'x', 0, 0);
 }
 static void saveGameToDisk() {
 }

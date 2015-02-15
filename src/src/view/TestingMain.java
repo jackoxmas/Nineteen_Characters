@@ -5,6 +5,8 @@ package src.view;
 import java.util.Scanner;
 
 import src.controller.Avatar;
+import src.controller.Terrain;
+import src.model.MapMain_Relation;
 
 public class TestingMain {
 
@@ -25,7 +27,10 @@ public class TestingMain {
 		}
 	}
 	public static void oldtest(){
+		MapMain_Relation mmr_ = new MapMain_Relation();
+		mmr_.bindToNewMapOfSize(Viewport.width_, Viewport.height_); //Can change these later if we so desire. 
 		Avatar avatar = new Avatar("avatar", 'x', 0, 0);
+		avatar.setMap(mmr_);
 		ViewPortTester Tester = new ViewPortTester();
 		printArray(Tester);
 		System.out.println("Done with viewportTester, ccviewtime!");
@@ -35,11 +40,16 @@ public class TestingMain {
 	public static void main(String[] args) {
 
 		// TODO Auto-generated method stub
-		Avatar avatar = new Avatar("avatar", '☺', 0, 0);
+		MapMain_Relation mmr_ = new MapMain_Relation();
+        mmr_.bindToNewMapOfSize(Viewport.width_, Viewport.height_); //Can change these later if we so desire. 
+		Avatar avatar = new Avatar("avatar", '@', 0, 0);
+		avatar.setMap(mmr_);
 		Display _display = new Display(avatar.getMyView());
 		avatar.getMyView().messageBox("This is a test of the emergency broadcasting system.",1);
 		_display.printView();
 		_display.printView();
+		Terrain obstacle = new Terrain("boulder", 'O', true, false);
+		mmr_.initializeTerrain(obstacle, 2, 2);
 		System.out.println("☠ and ★ and ✚");
 		Scanner sc = new Scanner(System.in);
 		while(true){

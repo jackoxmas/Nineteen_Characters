@@ -42,16 +42,24 @@ public class TestingMain {
 
     public static void main(String[] args) {
         MapMain_Relation mmr_ = new MapMain_Relation();
-        mmr_.bindToNewMapOfSize(Viewport.width_/2, Viewport.height_); //Can change these later if we so desire. 
-	Avatar avatar = new Avatar("avatar", '☉', 0, 0);
+        mmr_.bindToNewMapOfSize(Viewport.width_ / 2, Viewport.height_); //Can change these later if we so desire. 
+        Avatar avatar = new Avatar("avatar", '☉', 0, 0);
         avatar.setMap(mmr_);
         Item equipable = new Item("☂", '☂', true, true, false);
+
+        // ▨
+        for (int y = 0; y < Viewport.height_; ++y) {
+            for (int x = 0; x < Viewport.width_ / 2; ++x) {
+                Terrain obstacle = new Terrain("land", '▨', false, false);
+                mmr_.addTerrain(obstacle, x, y);
+            }
+        }
         mmr_.addItem(equipable, 5, 5);
         Display _display = new Display(avatar.getMyView());
         avatar.getMyView().messageBox("This is a test of the emergency broadcasting system.", 1);
         _display.printView();
         _display.printView();
-	Terrain obstacle = new Terrain("boulder", '☠', true, false);
+        Terrain obstacle = new Terrain("boulder", '☠', true, false);
         mmr_.addTerrain(obstacle, 2, 2);
         System.out.println("☠ and ★ and ✚");
         Scanner sc = new Scanner(System.in);

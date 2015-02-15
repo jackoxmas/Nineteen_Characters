@@ -3,11 +3,14 @@ package src.model;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.io.Serializable;
 
+import src.Main;
 import src.SaveData;
+import src.SavedGame;
 import src.controller.Entity;
 import src.controller.Item;
 import src.controller.Avatar;
@@ -20,7 +23,7 @@ import src.controller.Terrain;
  * YOU ARE BREAKING ENCAPSULATION!!!!!!!!!!!!!!!
  * @author John-Michael Reed
  */
-class Map {
+class Map implements SaveData{
 
     /**
      * @author John-Michael Reed Sends a key press from a keyboard to an avatar
@@ -41,13 +44,13 @@ class Map {
 
     /* MAP DATA OBJECTS */
     // 2d array of tiles.
-    private MapTile map_grid_[][];
+    private transient MapTile map_grid_[][];
     // String is the avatar's name. The avatar name must be unqiue or else bugs will occur.
-    private LinkedHashMap<String, Avatar> avatar_list_;
+    private transient LinkedHashMap<String, Avatar> avatar_list_;
     // String is the entity's name. The entity name must be unqiue or else bugs will occur.
-    private LinkedHashMap<String, Entity> entity_list_;
+    private transient LinkedHashMap<String, Entity> entity_list_;
     // Item is the address of an item in memory. Location is its xy coordinates on the grid.
-    private LinkedList<Item> items_list_;
+    private transient LinkedList<Item> items_list_;
 
     //public static boolean NDEBUG_ = true;
     // MAP MUST BE SQUARE
@@ -220,103 +223,21 @@ class Map {
         return map_grid_[y_pos][x_pos];
     }
 
+
+
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-/*
-    private void readObjectData(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        /*
-         try {
-         // Map Tile Grid
-         int w = in.readInt();
-         int h = in.readInt();
-         map_grid_ = new MapTile[w][h];
-         for (int j = 0; j < h; j++) {
-         for (int i = 0; i < w; i++) {
-         map_grid_[i][j] = (MapTile)in.readObject();
-         }
-         }
-         // Update local map height and width
-         map_width_ = w;
-         map_height_ = h;
-                
-         // Avatar List
-         avatar_list_ = (LinkedHashMap<String, Avatar>)in.readObject();
-            
-         // Entity List
-         entity_list_ = (LinkedHashMap<String, Entity>)in.readObject();
-            
-         // Item List
-         items_list_ = (LinkedList<Item>)in.readObject();
-         }
-         catch (IOException e) {
-         throw e;
-         }
+    @Override
+    public String getSerTag() {
+        return "MAP";
     }
 
-    public void loadFromStream(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-        time_measured_in_turns = ois.readInt();
-        width_ = ois.readInt();
-        height_ = ois.readInt();
-
-        int count = ois.readInt();
-        Avatar a;
-        for (int i = 0; i < count; i++) {
-            a = Avatar.load(ois);
-            addAvatar(a, ois.readInt(), ois.readInt());
-        }
-
-        count = readInt();
+    private void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
+        Main.dbgOut("FOUND IT!");
     }
 
-    private void relate(SaveData actor, MapDrawableThing_Relation mdtr) throws ClassNotFoundException {
-        if (actor instanceof Avatar) {
-            ((Avatar) actor).setDTRelation(mdtr);
-        }
+    @Override
+    public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> savMap) throws IOException {
+        SavedGame.defaultDataWrite(this, oos, savMap);
     }
-
-    public void saveToStream(ObjectOutputStream oos) throws IOException {
-        oos.writeInt(time_measured_in_turns);
-        oos.writeInt(width_);
-        oos.writeInt(height_);
-
-        // ENTITIES
-        oos.writeInt(avatar_list_.size());
-        for (java.util.Map.Entry<String, Avatar> e : avatar_list_.entrySet()) {
-            Avatar.save(e.getValue(), oos);
-            oos.writeInt(e.getValue().getMapRelation().getMyXCoordinate());
-            oos.writeInt(e.getValue().getMapRelation().getMyYCoordinate());
-        }
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-        /*
-         if (NDEBUG_)
-         throw new java.io.IOException("Will not save map with \"DEBUG_\" enabled");
-         try {
-         // MAP GRID
-         if (map_grid_ == null) throw new java.io.IOException("Map grid not initialized");
-         out.writeInt(map_width_);
-         out.writeInt(map_height_);
-         for (int j = 0; j < map_height_; j++) {
-         for (int i = 0; i < map_width_; i++) {
-         out.writeObject(map_grid_[i][j]);
-         }
-         }
-         // AVATAR LIST
-         if (avatar_list_ == null) throw new java.io.IOException("Avatar list not initialized");
-         out.writeObject(avatar_list_);
-         // ENTITY LIST
-         if (entity_list_ == null) throw new java.io.IOException("Entity list not initialized");
-         out.writeObject(entity_list_);
-         // ITEMS LIST
-         if (items_list_ == null) throw new java.io.IOException("Items list not initialized");
-         out.writeObject(items_list_);
-         }
-         catch (IOException e) {
-         throw e;
-         }
-
-    }*/
     // </editor-fold>
 }

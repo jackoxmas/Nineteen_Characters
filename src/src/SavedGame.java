@@ -9,8 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -35,6 +34,7 @@ public class SavedGame {
     public static final long SAVE_DATA_VERSION = 1;
     public static final String SAVE_EXT = ".sav";
     public static final char SAVE_ITERATOR_FLAG = '_';
+    private static final String SAVE_EOF_STRING = "///END OF FILE///";
     // SAVE FILE FORMAT: yyMMdd_<number>.sav
     
     public SavedGame(String filePath) {
@@ -42,7 +42,7 @@ public class SavedGame {
     }
     
     public int loadFile(MapMain_Relation out_mapRel, Exception exep) {
-        Main.dbgOut("Save game load requested from: " + filePath_);
+        Main.dbgOut("Save game load requested from: " + filePath_, 2);
         exep = null; // First, set the out Exception variable to null
         // Error checking
         if (filePath_ == null) {
@@ -51,26 +51,56 @@ public class SavedGame {
         }
         
         // Attempt to open the file and read the map object
-        try
-        {
+        try {
             FileInputStream fis = new FileInputStream(filePath_);
             ObjectInputStream ois = new ObjectInputStream(fis);
-            
+
             // Check the version number
             if (ois.readLong() != SAVE_DATA_VERSION)
                 throw new IOException("Invalid save file version number");
-            
+
             // Deserialize map starting with Map
             HashMap<SaveData, ArrayDeque<Integer>> sdRelations = new HashMap<SaveData, ArrayDeque<Integer>>();
-            HashMap<SaveData, Boolean> saveMap = new HashMap<SaveData, Boolean>();
+            HashMap<Integer, SaveData> hashes = new HashMap<Integer, SaveData>();
 
 
+            Class temp;
+            Class<? extends SaveData> sd_type;
+            SaveData sObject;
+            // TIME TO CHEESE IT!
+            String cl_string = (String)ois.readUTF();
+            while (cl_string.compareTo(SAVE_EOF_STRING) != 0) {
+                //sd_type = Class.forName(cl_string).asSubclass(Class<? extends SaveData>);
+                sd_type = Class.forName(cl_string).asSubclass(SaveData.class);    // read the first object's class
+
+                ArrayDeque<Integer> relHashes = new ArrayDeque<Integer>(); // object's relationship hashes
+                sObject = sd_type.cast(defaultDataRead(sd_type, ois, relHashes));
+                Integer objHash = relHashes.pop();
+                if (objHash == 0)
+                    throw new Exception("Object not deserialized correctly.");
+
+                sdRelations.putIfAbsent(sObject, relHashes);    // add the rel hashes to the rel-hash-map
+                hashes.putIfAbsent(objHash, sObject);           // add this object to the hash map
+                cl_string = ois.readUTF();  // read the next class name
+            };
+
+            // Relink everything
+            ArrayDeque<SaveData> refs;
+            // Iterate through the relationship map and crosscheck using hash map
+            for (Map.Entry<SaveData, ArrayDeque<Integer>> e : sdRelations.entrySet()) {
+                refs = new ArrayDeque<SaveData>();
+                while (e.getValue().size() > 0) {
+                    refs.addLast(hashes.get(e.getValue().pop()));
+                }
+                defaultDataRelink(e.getKey(), refs); // relink keys to their references
+            }
 
             ois.close();
             fis.close();
-        }
-        catch (Exception e)
-        {
+        } catch (IOException ioe) {
+            Main.errOut(ioe, true);
+            return 0;
+        } catch (Exception e) {
             exep = e;
             return 0;
         }
@@ -80,21 +110,26 @@ public class SavedGame {
     
     public int saveFile(MapMain_Relation mapRel, Exception out_exep) {
         out_exep = null; // first, set the out Exception variable to null
-        Main.dbgOut("Saving Game File to: " + filePath_);
+        Main.dbgOut("Saving Game File to: " + filePath_, 1);
         try {
             FileOutputStream fos = new FileOutputStream(filePath_, false);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
+            Main.dbgOut("Obj. Output Stream Open", 3);
 
             oos.writeLong(SAVE_DATA_VERSION); // write the save version
-            Main.dbgOut("Writing SAVE VERSION: " + SAVE_DATA_VERSION);
+            Main.dbgOut("Writing SAVE VERSION: " + SAVE_DATA_VERSION, 2);
 
-            HashMap<SaveData, ArrayDeque<Integer>> sdRelations = new HashMap<SaveData, ArrayDeque<Integer>>();
+            //HashMap<SaveData, ArrayDeque<Integer>> sdRelations = new HashMap<SaveData, ArrayDeque<Integer>>();
             HashMap<SaveData, Boolean> saveMap = new HashMap<SaveData, Boolean>();
 
             SaveData sObject = mapRel;
             saveMap.put(sObject, false);
             do {
-                sObject.serialize(oos, saveMap);
+                //oos.writeChars(sObject.getClass().getName());
+                oos.writeUTF(sObject.getClass().getName());
+                Main.dbgOut("Wrote Class Name: " + sObject.getClass().getName(), 4);
+                defaultDataWrite(sObject, oos, saveMap);
+                //sObject.serialize(oos, saveMap);
                 saveMap.replace(sObject, true);
                 sObject = null;
                 for (HashMap.Entry<SaveData, Boolean> e : saveMap.entrySet()) {
@@ -104,43 +139,88 @@ public class SavedGame {
                     }
                 }
             } while (sObject != null);
+            oos.writeUTF(SAVE_EOF_STRING);  // write the EOF flag
 
             oos.close();
             fos.close();
+            Main.dbgOut("Obj. Output Stream & FILE closed.", 3);
+            Main.dbgOut("Saving completed successfully.", 1);
             return 1;
         } catch (Exception e) {
             Main.errOut(e, true);
+            Main.dbgOut("Saving failed.", 1);
             return 0;
         }
     }
 
-    public static void defaultDataRead(SaveData caller, ObjectInputStream ois, ArrayDeque<Integer> out_refHashes) throws IOException, ClassNotFoundException {
+    public static Object defaultDataRead(Class<? extends SaveData> caller_t, ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
         // read the object's save version and compare to input stream
-        final long sdv = genSDVersion(caller.getSerTag());
-        if (Long.compare(sdv, ois.readLong()) != 0)
-            throw new ClassNotFoundException();
-        if (out_refHashes == null) out_refHashes = new ArrayDeque<Integer>();
-        out_refHashes.add(ois.readInt()); // add caller's hash to refHashes
-
-        // if superclass is SD also, read its fields
-        for (Class<?> i : caller.getClass().getSuperclass().getInterfaces()) {
-            if (i == SaveData.class) {
-                fieldDataRead(SaveData.class.cast(caller), ois, out_refHashes);
-                break;
+        Object caller = null;
+        try { // Call the default constructor
+            for (Constructor<?> m : caller_t.getDeclaredConstructors()) {
+                if (m.getParameterCount() == 0) {
+                    m.setAccessible(true);
+                    caller = m.newInstance();
+                    break;
+                }
             }
+            if (caller == null)
+                throw new Exception("NO default constructor in " + caller_t.getName());
+        } catch (Exception noCon) {
+            Main.errOut(noCon, true);
+            Main.errOut(">> Check that " + caller_t.getName() + " has a valid default constructor.");
+            return null;
         }
-        // now read this class' fields
-        fieldDataRead(caller, ois, out_refHashes);
+        try {
+            final long sdv = genSDVersion(caller_t.cast(caller).getSerTag());
+            if (Long.compare(sdv, ois.readLong()) != 0)
+                throw new ClassNotFoundException();
+            if (out_rels == null) out_rels = new ArrayDeque<Integer>();
+            out_rels.add(ois.readInt()); // add caller's hash to refHashes
+
+            // if superclass is SD also, read its fields
+            for (Class<?> i : caller.getClass().getSuperclass().getInterfaces()) {
+                if (i == SaveData.class) {
+                    fieldDataRead(SaveData.class.cast(caller), ois, out_rels);
+                    break;
+                }
+            }
+            // now read this class' fields
+            fieldDataRead(caller_t.cast(caller), ois, out_rels);
+            Method other = getCustomRead(caller_t.cast(caller));
+
+            if (other != null)
+                other.invoke(caller, ois, out_rels);
+
+            return caller;
+        } catch (IllegalAccessException iae) {
+            Main.errOut(iae, true);
+        } catch (InvocationTargetException ivte) {
+            Main.errOut(ivte, true);
+        }
+        return null;
     }
 
     public static void defaultDataRelink(SaveData caller, ArrayDeque<SaveData> refs) {
+        // jump to superclass needs first
         for (Class<?> i : caller.getClass().getSuperclass().getInterfaces()) {
             if (i == SaveData.class) {
                 fieldDataLink(SaveData.class.cast(caller), refs);
                 break;
             }
         }
+
+        // now link caller references
         fieldDataLink(caller, refs);
+        Method other = getCustomLink(caller);
+        try {
+            if (other != null)
+                other.invoke(caller, refs);
+        } catch (IllegalAccessException iae) {
+            Main.errOut(iae, true);
+        } catch (InvocationTargetException ivte) {
+            Main.errOut(ivte, true);
+        }
     }
 
     public static void defaultDataWrite(SaveData caller, ObjectOutputStream oos, HashMap<SaveData, Boolean> savMap) throws IOException{
@@ -158,9 +238,18 @@ public class SavedGame {
 
         // now write this class' fields
         fieldDataWrite(caller, oos, savMap);
-    }
+        Method other = getCustomWrite(caller);
+        try {
+            if (other != null)
+                other.invoke(caller, oos, savMap);
+        } catch (IllegalAccessException iae) {
+            Main.errOut(iae, true);
+        } catch (InvocationTargetException ivte) {
+            Main.errOut(ivte, true);
+        }
+}
 
-    private static <T extends SaveData> void fieldDataRead(T caller, ObjectInputStream ois, ArrayDeque<Integer> out_refHashes) throws IOException, ClassNotFoundException {
+    private static <T extends SaveData> void fieldDataRead(T caller, ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
         try {
             ArrayDeque<Field> fields = new ArrayDeque<Field>();
             ArrayDeque<Field> SDs = new ArrayDeque<Field>();
@@ -170,7 +259,7 @@ public class SavedGame {
                 f.set(caller, ois.readObject());
             }
             for (Field f : SDs) {
-                out_refHashes.push(ois.readInt());
+                out_rels.add(ois.readInt());
             }
         } catch (IllegalAccessException e) {
             Main.errOut(e, true);
@@ -216,9 +305,60 @@ public class SavedGame {
 
         long sdv = SAVE_DATA_VERSION;
         for (char c : name.toCharArray()) {
-            sdv *= c;
+            sdv *= c - 1;
         }
         return sdv;
+    }
+
+    private static Method getCustomLink(SaveData caller) {
+        for (Method m : caller.getClass().getDeclaredMethods()) {
+            m.setAccessible(true);
+            if(!m.getName().equals(SaveData.CUSTOMLINK))
+                continue;
+            if(m.getReturnType().equals(Void.class))
+                continue;
+            Class<?>[] params = m.getParameterTypes();
+            if (params.length != 2)
+                continue;
+            if (!params[0].equals(ArrayDeque.class))
+                continue;
+            return m;
+        }
+        return null;
+    }
+
+    public static Method getCustomRead(SaveData caller) {
+        for (Method m : caller.getClass().getDeclaredMethods()) {
+            m.setAccessible(true);
+            if(!m.getName().equals(SaveData.CUSTOMREAD))
+                continue;
+            if(m.getReturnType().equals(Void.class))
+                continue;
+            Class<?>[] params = m.getParameterTypes();
+            if (params.length != 2)
+                continue;
+            if (!params[0].equals(ObjectOutputStream.class) || !params[1].equals(HashMap.class))
+                continue;
+            return m;
+        }
+        return null;
+    }
+
+    public static Method getCustomWrite(SaveData caller) {
+        for (Method m : caller.getClass().getDeclaredMethods()) {
+            m.setAccessible(true);
+            if(!m.getName().equals(SaveData.CUSTOMWRITE))
+                continue;
+            if(m.getReturnType().equals(Void.class))
+                continue;
+            Class<?>[] params = m.getParameterTypes();
+            if (params.length != 2)
+                continue;
+            if (!params[0].equals(ObjectOutputStream.class) || !params[1].equals(HashMap.class))
+                continue;
+            return m;
+        }
+        return null;
     }
 
     public static final int getHash (Object o) {
@@ -288,4 +428,6 @@ public class SavedGame {
             }
         }
     }
+
+
 }

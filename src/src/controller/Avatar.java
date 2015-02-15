@@ -27,7 +27,7 @@ import java.util.LinkedList;
  *
  * @author JohnReedLOL
  */
-public final class Avatar extends Entity{
+public final class Avatar extends Entity {
 
     // map_relationship_ is used in place of a map_referance_
     private MapAvatar_Relation map_relationship_;
@@ -56,9 +56,10 @@ public final class Avatar extends Entity{
     public void setMapRelation(MapAvatar_Relation a) {
         map_relationship_ = a;
     }
-/* Make sure to call set map after this!
- * 
- */
+    /* Make sure to call set map after this!
+     * 
+     */
+
     public Avatar(String name, char representation, int x_respawn_point, int y_respawn_point) {
         super(name, representation, x_respawn_point, y_respawn_point);
         map_relationship_ = new MapAvatar_Relation(this, x_respawn_point, y_respawn_point);
@@ -69,6 +70,7 @@ public final class Avatar extends Entity{
     private Viewport current_view_ = new AvatarCreationView(this);
     private MapView map_view_;
     private StatsView stats_view_;
+
     public Viewport getMyView() {
         return this.current_view_;
     }
@@ -89,9 +91,10 @@ public final class Avatar extends Entity{
     private StatsView generateStatsView() {
         return new StatsView(this);
     }
-    public void setMap(MapMain_Relation map_main){
-    	map_main.addViewToMap(map_view_);
-    	map_main.addAvatar(this, 0, 0);
+
+    public void setMap(MapMain_Relation map_main) {
+        map_main.addViewToMap(map_view_);
+        map_main.addAvatar(this, 0, 0);
     }
 
     @Override
@@ -125,84 +128,95 @@ public final class Avatar extends Entity{
     /*
      * Handles avatar input
      */
-    public void getInput(char c){
-    	if(current_view_ == map_view_){//If we currently have our mapview equipped(check by reference)
 
-    		MapAvatar_Relation mar = this.getMapRelation();
-    		if(mar == null){return;}//If the avatar is not on the map, it can't really do anything.
-    		map_view_.setCenter(mar.getMyXCordinate(),mar.getMyYCordinate());
-    		switch(c){
-    		case '1'://Move SW
-    			mar.moveInDirection(-1, -1);
-    			break;
-    		case '2'://Move S
-    			mar.moveInDirection(0, -1);
-    			break;
-    		case '3'://Move SE
-    			mar.moveInDirection(1, -1);
-    			break;
-    		case '4': // Move W
-    			mar.moveInDirection(-1,0);
-    			break;
-    		case '6'://Move E
-    			mar.moveInDirection(1,0);
-    			break;
-    		case '7'://Move NW
-    			mar.moveInDirection(-1, 1);
-    			break;
-    		case '8'://Move N
-    			mar.moveInDirection(0,1);
-    			break;
-    		case '9': //Move NE
-    			mar.moveInDirection(1,1);
-    			break;
-    		case 'S': //Save game
-    			break;
-    		case 'v': //Open stats
-    			break;
-    		case 'i': //Use item
-    			break;
-    		case 'q'://move NW
-    			break;
-    		case 'w': //move N
-    			mar.moveInDirection(0, 1);
-    			break;
-    		case 'e'://move NE
-    			mar.moveInDirection(1,1);
-    			break;
-    		case 'a': //move W
-    			mar.moveInDirection(-1,1);
-    			break;
-    		case 's'://Move stationary?
-    			break;
-    		case 'd'://Move E
-    			mar.moveInDirection(1,0);
-    			break;
-    		case 'z'://Move SW
-    			mar.moveInDirection(-1,-1);
-    			break;
-    		case 'x'://move s
-    			mar.moveInDirection(0,-1);
-    			break;
-    		case 'c'://move SE
-    			mar.moveInDirection(1,-1);
-    			break;
-    		case 'D': //drop item
-    			break;
-    		case 'p'://pickup item
-    			break;
-    		default: //no valid input
-    			break;
-    		}
-    		current_view_.renderToDisplay(); //See lower comment, maybe avatar should have a Display also to print it's views?
-    	}
-    	else{
-    		current_view_.getInput(c);
-    		current_view_.renderToDisplay();//Although printing with display already calls this, might just want to move the display into avatar or something, not really sure
-    	}
+    public void getInput(char c) {
+        if (current_view_ == map_view_) {//If we currently have our mapview equipped(check by reference)
+
+            MapAvatar_Relation mar = this.getMapRelation();
+            if (mar == null) {
+                System.out.println("Avatar cannot be controlled without a MapAvatar_Relation");
+                return;
+            }//If the avatar is not on the map, it can't really do anything.
+            map_view_.setCenter(mar.getMyXCordinate(), mar.getMyYCordinate());
+            switch (c) {
+                case '1'://Move SW
+                    mar.moveInDirection(-1, -1);
+                    break;
+                case '2'://Move S
+                    mar.moveInDirection(0, -1);
+                    break;
+                case '3'://Move SE
+                    mar.moveInDirection(1, -1);
+                    break;
+                case '4': // Move W
+                    mar.moveInDirection(-1, 0);
+                    break;
+                case '6'://Move E
+                    mar.moveInDirection(1, 0);
+                    break;
+                case '7'://Move NW
+                    mar.moveInDirection(-1, 1);
+                    break;
+                case '8'://Move N
+                    mar.moveInDirection(0, 1);
+                    break;
+                case '9': //Move NE
+                    mar.moveInDirection(1, 1);
+                    break;
+                case 'S': //Save game
+                    break;
+                case 'v': //Open stats
+                    break;
+                case 'i': //Use item
+                    break;
+                case 'q'://move NW
+                    mar.moveInDirection(-1, 1);
+                    break;
+                case 'w': //move N
+                    mar.moveInDirection(0, 1);
+                    break;
+                case 'e'://move NE
+                    mar.moveInDirection(1, 1);
+                    break;
+                case 'a': //move W
+                    mar.moveInDirection(-1, 1);
+                    break;
+                case 's'://Move stationary?
+                    mar.moveInDirection(0, 0);
+                    break;
+                case 'd'://Move E
+                    mar.moveInDirection(1, 0);
+                    break;
+                case 'z'://Move SW
+                    mar.moveInDirection(-1, -1);
+                    break;
+                case 'x'://move s
+                    mar.moveInDirection(0, -1);
+                    break;
+                case 'c'://move SE
+                    mar.moveInDirection(1, -1);
+                    break;
+                case 'D': //drop item
+                    int error_code_D = mar.dropItem();
+                    if(error_code_D != 0) {
+                        System.out.println("dropItem function failed to drop an item");
+                    }
+                    break;
+                case 'p'://pickup item
+                    int error_code_p = mar.pickUpItemInDirection(0, 0);
+                    if(error_code_p != 0) {
+                        System.out.println("pickUpItem function failed to get an item");
+                    }
+                    break;
+                default: //no valid input
+                    break;
+            }
+            current_view_.renderToDisplay(); //See lower comment, maybe avatar should have a Display also to print it's views?
+        } else {
+            current_view_.getInput(c);
+            current_view_.renderToDisplay();//Although printing with display already calls this, might just want to move the display into avatar or something, not really sure
+        }
     }
-
-
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     @Override

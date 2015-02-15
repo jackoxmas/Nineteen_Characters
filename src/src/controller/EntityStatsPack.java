@@ -11,6 +11,20 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
     public int quantity_of_experience_ = 1;
     public int movement_level_ = 1;
 
+// Gets decremented every time an entity moves
+    public int moves_left_in_turn_ = 1;
+
+// Constant Secondary Stats
+    public int cached_current_level_ = 1;
+
+// Modifiable Secondary Stats
+// These secondary stats can be modified without leveling up
+    public int current_life_ = 1;
+    public int current_mana_ = 1;
+    public int current_offensive_rating_ = 1;
+    public int current_defensive_rating_ = 1;
+    public int current_armor_rating_ = 1;
+
     @Override
     public String toString() {
         return super.toString()
@@ -25,22 +39,15 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
                 + "Mana: " + mana_ + "\n"
                 + "Offense: " + offensive_rating_ + "\n"
                 + "Defense: " + defensive_rating_ + "\n"
-                + "Armor: " + armor_rating_ + "\n";
+                + "Armor: " + armor_rating_ + "\n"
+                + "moves_left_in_turn_: " + moves_left_in_turn_ + "\n"
+                + "cached_current_level_: " + cached_current_level_ + "\n"
+                + "current_life_: " + current_life_ + "\n"
+                + "current_mana_: " + current_mana_ + "\n"
+                + "current_offensive_rating_: " + current_offensive_rating_ + "\n"
+                + "current_defensive_rating_: " + current_defensive_rating_ + "\n"
+                + "current_armor_rating_: " + current_armor_rating_ + "\n";
     }
-
-// Gets decremented every time an entity moves
-    public int moves_left_in_turn_ = 1;
-
-// Constant Secondary Stats
-    public int cached_current_level_ = 1;
-
-// Modifiable Secondary Stats
-// These secondary stats can be modified without leveling up
-    private int current_life_ = 1;
-    private int current_mana_ = 1;
-    private int current_offensive_rating_ = 1;
-    private int current_defensive_rating_ = 1;
-    private int current_armor_rating_ = 1;
 
     public EntityStatsPack() {
         super(1, 1, 1, 1, 1);

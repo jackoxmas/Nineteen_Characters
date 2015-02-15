@@ -8,7 +8,6 @@ package src.model;
 import src.controller.Entity;
 import src.controller.Item;
 import src.controller.Occupation;
-import src.controller.StatsPack;
 
 import java.io.Serializable;
 
@@ -49,14 +48,6 @@ public class MapEntity_Relation extends MapDrawableThing_Relation implements Ser
     }
 
     public void recieveAttack(int damage) {
-
-    }
-
-    public void addStatsPack(StatsPack stats_pack) {
-
-    }
-
-    public void subtractStatsPack(StatsPack stats_pack) {
 
     }
     

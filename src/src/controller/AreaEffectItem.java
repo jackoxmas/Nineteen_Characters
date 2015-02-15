@@ -14,7 +14,7 @@ import src.view.Display;
 public class AreaEffectItem extends Item {
 
     // Alex probably didn't make serialization code for this 
-    transient private Effect effect_;
+    transient /* TEMPORARY */ private Effect effect_;
 
     public enum Effect {
 
@@ -48,7 +48,7 @@ public class AreaEffectItem extends Item {
                 this.getMapRelation().hurtWithinRadius(power_, 2);
                 break;
             case HURT:
-                this.getMapRelation().hurtWithinRadius(power_, 2);
+                this.getMapRelation().healWithinRadius(power_, 2);
                 break;
             case LEVEL:
                 this.getMapRelation().levelUpWithinRadius(2);

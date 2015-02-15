@@ -8,6 +8,7 @@ package src.model;
 import src.AreaFunctor;
 import src.controller.Entity;
 import src.controller.EntityStatsPack;
+import src.controller.Item;
 
 /**
  *
@@ -75,7 +76,12 @@ public class MapDrawableThing_Relation {
                 current_map_reference_.getTile(old_x, old_y).addEntity(e);
                 return -4;
             } else { // move the entity
-                return move_tile.addEntity(e);
+                int error_code = move_tile.addEntity(e);
+                Item walked_on_item = move_tile.viewTopItem();
+                if(walked_on_item != null) { // make the item walked on do stuff
+                    walked_on_item.onWalkOver();
+                }
+                return error_code;
             }
         } else {
             return -3;

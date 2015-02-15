@@ -33,6 +33,10 @@ public class MapDrawableThing_Relation {
         }
     }
 
+    /**
+     * 
+     * @return x coordinate of tile drawable thing (avatar/entity/item/etc.) is on.
+     */
     public int getMyXCoordinate() {
         initguardTile();
         return my_tile_.x_;
@@ -45,15 +49,27 @@ public class MapDrawableThing_Relation {
         current_map_reference_ = m;
     }
 
+    /**
+     * 
+     * @return y coordinate of tile drawable thing (avatar/entity/item/etc.) is on.
+     */
     public int getMyYCoordinate() {
         initguardTile();
         return my_tile_.y_;
     }
 
+    /**
+     * 
+     * @return MapTile associated with drawable thing (avatar/entity/item/etc.).
+     */
     public MapTile getMapTile() {
         return my_tile_;
     }
 
+    /**
+     * Set MapTile that drawable thing (avatar/entity/item/etc.) is on.
+     * @param new_tile 
+     */
     public void setMapTile(MapTile new_tile) {
         my_tile_ = new_tile;
     }

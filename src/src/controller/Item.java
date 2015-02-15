@@ -21,7 +21,7 @@ import java.util.LinkedList;
  *
  * @author JohnReedLOL
  */
-public class Item extends DrawableThing{
+public class Item extends DrawableThing {
     // map_relationship_ is used in place of a map_referance_
     private MapItem_Relation map_relationship_;
     
@@ -97,6 +97,12 @@ public class Item extends DrawableThing{
         return s;
     }
 
+
+
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    @Override
+    public String getSerTag() {
+        return "ITEM";
+    }
     // </editor-fold>
 }

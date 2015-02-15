@@ -139,16 +139,5 @@ public class MapMain_Relation implements  SaveData {
     public String getSerTag() {
         return "RELATION_MAP_MAIN";
     }
-
-
-    //@Override
-    public void relink(Object[] refs) {
-
-    }
-
-    @Override
-    public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> savMap) throws IOException {
-        SavedGame.defaultDataWrite(this, oos, savMap);
-    }
     // </editor-fold>
 }

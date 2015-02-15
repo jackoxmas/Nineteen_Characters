@@ -6,6 +6,8 @@
 package src.controller;
 
 import java.util.ArrayList;
+
+import src.SaveData;
 import src.model.MapEntity_Relation;
 
 import java.io.Serializable;
@@ -14,7 +16,7 @@ import java.io.Serializable;
  *
  * @author JohnReedLOL
  */
-abstract public class Entity extends DrawableThing {
+abstract public class Entity extends DrawableThing implements SaveData {
 
     // map_relationship_ is used in place of a map_referance_
     private MapEntity_Relation map_relationship_;
@@ -47,7 +49,7 @@ abstract public class Entity extends DrawableThing {
 
     private Occupation occupation_ = null;
 
-    protected final ArrayList<Item> inventory_;
+    protected transient ArrayList<Item> inventory_;
     
     /**
      * 
@@ -234,16 +236,6 @@ abstract public class Entity extends DrawableThing {
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    /*
-    protected Entity (String name, char drawableThingChar) {
-        super(name, drawableThingChar);
-        inventory_ = new ArrayList<Item>();
-    }
-
-    protected void ser_linkMap(MapEntity_Relation rel) { map_relationship_ = rel) }
-
-    protected void ser_linkStats(EntityStatsPack pack) {
-        stats_pack_ = pack;
-    }*/
+    protected Entity() {}
     // </editor-fold>
 }

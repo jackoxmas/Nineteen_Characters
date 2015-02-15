@@ -1,6 +1,8 @@
 package src.controller;
 
-public class DrawableThingStatsPack {
+import src.SaveData;
+
+public class DrawableThingStatsPack implements SaveData{
 
 public int life_;
 
@@ -73,4 +75,10 @@ defensive_rating_ -= other.defensive_rating_;
 armor_rating_ -= other.armor_rating_;
 }
 
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    @Override
+    public String getSerTag() {
+        return "STATSPACK_DRAWABLE";
+    }
+    // </editor-fold>
 }

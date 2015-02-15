@@ -135,6 +135,9 @@ public class SavedGame {
                 //oos.writeChars(sObject.getClass().getName());
                 oos.writeUTF(sObject.getClass().getName());
                 Main.dbgOut("Wrote Class Name: " + sObject.getClass().getName(), 4);
+
+                oos.writeLong(genSDVersion(sObject.getSerTag()));
+                oos.writeInt(getHash(sObject)); // write caller's hash
                 defaultDataWrite(sObject, oos, saveMap);
                 //sObject.serialize(oos, saveMap);
                 saveMap.replace(sObject, true);
@@ -212,7 +215,7 @@ public class SavedGame {
         // jump to superclass needs first
         for (Class<?> i : caller.getClass().getSuperclass().getInterfaces()) {
             if (i == SaveData.class) {
-                fieldDataLink(SaveData.class.cast(caller), refs);
+                defaultDataRelink((SaveData)(caller.getClass().getSuperclass().cast(caller)), refs);
                 break;
             }
         }
@@ -231,14 +234,10 @@ public class SavedGame {
     }
 
     public static void defaultDataWrite(SaveData caller, ObjectOutputStream oos, HashMap<SaveData, Boolean> savMap) throws IOException{
-        // write the object's save version
-        oos.writeLong(genSDVersion(caller.getSerTag()));
-        oos.writeInt(getHash(caller)); // write caller's hash
-
         // if superclass is SD also, write its fields
         for (Class<?> i : caller.getClass().getSuperclass().getInterfaces()) {
             if (i == SaveData.class) {
-                fieldDataWrite(SaveData.class.cast(caller), oos, savMap);
+                defaultDataWrite((SaveData) (caller.getClass().getSuperclass().cast(caller)), oos, savMap);
                 break;
             }
         }
@@ -344,7 +343,7 @@ public class SavedGame {
             Class<?>[] params = m.getParameterTypes();
             if (params.length != 2)
                 continue;
-            if (!params[0].equals(ObjectOutputStream.class) || !params[1].equals(HashMap.class))
+            if (!params[0].equals(ObjectInputStream.class) || !params[1].equals(ArrayDeque.class))
                 continue;
             return m;
         }

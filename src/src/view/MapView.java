@@ -5,6 +5,7 @@
  */
 package src.view;
 
+import src.SaveData;
 import src.controller.Avatar;
 
 /**
@@ -13,13 +14,10 @@ import src.controller.Avatar;
  * @author Matthew B, Jessan, JohnReedLOL
  */
 
-public final class MapView extends Viewport {
-
-    // Converts the class name into a base 35 number
-    private static final long serialVersionUID = Long.parseLong("MapView", 35);
+public final class MapView extends Viewport implements SaveData {
     
     // map_relationship_ is used in place of a map_referance_
-    private char[][] view_contents_;
+    private transient char[][] view_contents_;
     private int x_;
     private int y_;//Set these to center via avatar later.
 
@@ -56,4 +54,10 @@ public final class MapView extends Viewport {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+    // TODO: Add fold
+    @Override
+    public String getSerTag() {
+        return "VIEW_MAP";
+    }
 }

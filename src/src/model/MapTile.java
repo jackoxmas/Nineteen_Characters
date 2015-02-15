@@ -6,6 +6,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
 import java.util.ListIterator;
+
+import src.SaveData;
 import src.controller.Entity;
 import src.controller.Item;
 import src.controller.Terrain;
@@ -14,7 +16,7 @@ import src.controller.Terrain;
  *
  * @author JohnReedLOL
  */
-final public class MapTile implements Serializable {
+final public class MapTile implements SaveData {
 
     public final int x_;
     public final int y_;
@@ -167,16 +169,11 @@ final public class MapTile implements Serializable {
         }
     }
 
+
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    // Converts the class name into a base 35 number
-    private static final long serialVersionUID = Long.parseLong("MAPTILE", 35);
-    /*
-     private void readObject (ObjectInputStream is) throws ClassNotFoundException, IOException {
-     is.defaultReadObject();
-     }
-    
-     private void writeObject (ObjectOutputStream oos) throws IOException {
-     oos.defaultWriteObject();
-     }*/
+    @Override
+    public String getSerTag() {
+        return "MapTile";
+    }
     // </editor-fold>
 }

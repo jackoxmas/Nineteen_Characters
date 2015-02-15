@@ -20,7 +20,7 @@ import src.model.MapDrawableThing_Relation;
  *
  * @author JohnReedLOL
  */
-abstract public class DrawableThing {// implements SaveData {
+abstract public class DrawableThing implements SaveData {
 
     // names of items and terrain should be non-unique.
     // names of entities should be unique to fit in a hashmap.
@@ -75,5 +75,11 @@ abstract public class DrawableThing {// implements SaveData {
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    protected DrawableThing() {}
+
+    @Override
+    public String getSerTag() {
+        return "DRAWABLETHING";
+    }
     // </editor-fold>
 }

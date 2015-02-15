@@ -5,14 +5,19 @@
  */
 package src.model;
 
+import src.SaveData;
 import src.controller.Item;
+
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  *
  * @author JohnReedLOL
  */
-public class MapItem_Relation extends MapDrawableThing_Relation implements Serializable {
+public class MapItem_Relation extends MapDrawableThing_Relation implements SaveData {
 
     private final Item item_;
 
@@ -26,6 +31,9 @@ public class MapItem_Relation extends MapDrawableThing_Relation implements Seria
     private final boolean is_one_shot_;
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = 53142515L; // Long.parseLong("re_mi", 35);
+    @Override
+    public String getSerTag() {
+        return "RELATION_MAP_ITEM";
+    }
     // </editor-fold>
 }

@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import src.SaveData;
 import src.Vector2;
 import src.model.MapDisplay_Relation;
 import src.model.MapDrawableThing_Relation;
@@ -19,19 +20,19 @@ import src.model.MapDrawableThing_Relation;
  * Abstract view class that the views inherit from.
  * @author Matthew B, JohnReedLOL
  */
-public abstract class Viewport implements Serializable {
+public abstract class Viewport implements SaveData {
 
-    // Converts the class name into a base 35 number
-    private static final long serialVersionUID = Long.parseLong("View", 35);
     public static final int height_=40;
     public static final int width_=80;
-	private char[][] view_contents_;
+	private transient char[][] view_contents_;
 	private int message_persistance_counter_ = 0;
 	private String message_string_ = "";
 	public abstract boolean getInput(char c);
+
 	public Viewport(){
 		map_relationship_ = new MapDisplay_Relation(this);
 	}
+
 	protected MapDisplay_Relation map_relationship_;
 	    
 	    /**
@@ -175,5 +176,9 @@ public abstract class Viewport implements Serializable {
 	  return makeSquare(coord.x(),coord.y(),size.x(),size.y());
   }
 
-	
+    // TODO: add fold
+    @Override
+    public String getSerTag() {
+        return "VIEWPORT";
+    }
 }

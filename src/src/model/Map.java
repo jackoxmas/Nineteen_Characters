@@ -3,6 +3,7 @@ package src.model;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -146,6 +147,9 @@ class Map implements SaveData{
         if (error_code == 0) {
             i.getMapRelation().associateWithMap(this);
         }
+
+        // push to the local item list
+        items_list_.push(i);
         return error_code;
     }
 
@@ -226,18 +230,71 @@ class Map implements SaveData{
 
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    protected transient int s_cntItems;
+    protected transient int s_cntAvtr;
+    protected transient int s_cntEntity;
+
     @Override
     public String getSerTag() {
         return "MAP";
     }
 
-    private void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
-        Main.dbgOut("FOUND IT!");
+    private void linkOther (ArrayDeque<SaveData> refs) {/*
+        for (int j = 0; j < map_grid_[0].length; j++) {
+            for (int i = 0; i < map_grid_.length; i++) {
+                map_grid_[i][j] = MapTile.class.cast(refs.pop());
+            }
+        }*/
+
+        int c = 0;
+
+        for (c = 0; c < s_cntItems; c++) {
+            items_list_ = new LinkedList<Item>();
+            items_list_.push(Item.class.cast(refs.pop()));
+        }
     }
 
-    @Override
-    public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> savMap) throws IOException {
-        SavedGame.defaultDataWrite(this, oos, savMap);
+    private void readOther (ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
+        /*int w = ois.readInt();
+        int h = ois.readInt();
+        if (w <= 0 || h <= 0)
+            throw new IOException("Corrupted data");
+
+        MapTile new_tBuff[][] = new MapTile[w][h];
+        for (int j = 0; j < h; j++) {
+            for (int i = 0; i < w; i++) {
+                out_rels.addLast(ois.readInt());
+            }
+        }*/
+
+        int c = 0;
+
+        // ITEM LIST
+        for (c = 0; c < s_cntItems; c++) {
+            out_rels.addLast(ois.readInt());
+        }
+    }
+
+    private void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {/*
+        // MAP TILES
+        oos.writeInt(map_grid_.length);
+        if (map_grid_.length == 0)
+            oos.writeInt(-1);   // errcode for 0 dimension 2 length
+        else
+            oos.writeInt(map_grid_[0].length);
+        for (int j = 0; j < map_grid_[0].length; j++) {
+            for (int i = 0; i < map_grid_.length; i++) {
+                oos.writeInt(SavedGame.getHash(map_grid_[i][j]));
+                saveMap.putIfAbsent(map_grid_[i][j], false);
+            }
+        }*/
+
+        // ITEM LIST
+        oos.writeInt(items_list_.size());
+        for (Item i : items_list_) {
+            oos.writeInt(SavedGame.getHash(i));
+            saveMap.putIfAbsent(i, false);
+        }
     }
     // </editor-fold>
 }

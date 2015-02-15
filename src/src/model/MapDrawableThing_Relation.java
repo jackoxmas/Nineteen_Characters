@@ -6,6 +6,7 @@
 package src.model;
 
 import src.AreaFunctor;
+import src.SaveData;
 import src.controller.Entity;
 import src.controller.EntityStatsPack;
 
@@ -13,7 +14,7 @@ import src.controller.EntityStatsPack;
  *
  * @author JohnMichaelReed
  */
-public class MapDrawableThing_Relation {
+public class MapDrawableThing_Relation implements SaveData {
 
     protected Map current_map_reference_ = null;
     private MapTile my_tile_ = null;
@@ -81,6 +82,8 @@ public class MapDrawableThing_Relation {
             return -3;
         }
     }
+
+
 
     public final class AreaDamager extends AreaFunctor {
 
@@ -196,5 +199,9 @@ public class MapDrawableThing_Relation {
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    @Override
+    public String getSerTag() {
+        return "RELATION_MAP_DRAWTHING";
+    }
     // </editor-fold>
 }

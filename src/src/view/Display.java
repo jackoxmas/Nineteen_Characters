@@ -19,7 +19,12 @@ import src.model.MapDisplay_Relation;
 public class Display implements Serializable {
 
     // Converts the class name into a base 35 number
-
+	private static String message_ = "";
+	private static int counter_ = 0;
+	public static void setMessage(String m, int counter){
+		message_ = m;
+		counter_ = counter;
+	}
     private static final long serialVersionUID = Long.parseLong("Display", 35);
     /**
      * Create a display from a Viewport
@@ -37,7 +42,6 @@ public class Display implements Serializable {
      */
     public void printView() {
     	current_view_.renderToDisplay();
-    	current_view_.renderMessageBox();
     	this.clearScreen();
         char[][] in = current_view_.getContents();
         // Use this to print a 2D array
@@ -47,6 +51,7 @@ public class Display implements Serializable {
 			}
 			System.out.print(System.lineSeparator());
 		}
+		if(counter_ > 0){System.out.println(message_);--counter_;}
     }
     private void clearScreen(){
     	//Create the illusion of clearing the screen.

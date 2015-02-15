@@ -49,7 +49,7 @@ public class TestingMain {
 		_display.printView();
 		_display.printView();
 		Terrain obstacle = new Terrain("boulder", 'O', true, false);
-		mmr_.initializeTerrain(obstacle, 2, 2);
+		mmr_.addTerrain(obstacle, 2, 2);
 		System.out.println("☠ and ★ and ✚");
 		Scanner sc = new Scanner(System.in);
 		while(true){

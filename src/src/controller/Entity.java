@@ -42,15 +42,27 @@ abstract public class Entity extends DrawableThing implements Serializable {
             int x_respawn_point, int y_respawn_point) {
         super(name, representation);
         map_relationship_ = new MapEntity_Relation(this, x_respawn_point, y_respawn_point);
-        inventory_ = new ArrayList<>();
+        inventory_ = new ArrayList<Item>();
     }
 
     private Occupation occupation_ = null;
 
-    ArrayList<Item> inventory_;
+    protected final ArrayList<Item> inventory_;
+    
+    /**
+     * 
+     * @return Null if list is empty 
+     */
+    public Item pullFirstItemOutOfInventory() {
+        if(! inventory_.isEmpty()) {
+        return inventory_.remove(0);
+        } else {
+            return null;
+        }
+    }
 
     // Only 1 equipped item in iteration 1
-    Item equipped_item_;
+    protected Item equipped_item_;
 
     /**
      * @author John-Michael Reed
@@ -82,8 +94,8 @@ abstract public class Entity extends DrawableThing implements Serializable {
         if (true /* Inventory has room */) {
                 DrawableThingStatsPack to_remove = equipped_item_.getStatsPack();
                 this.stats_pack_.reduceBy(to_remove);
-                equipped_item_ = null;
                 inventory_.add(equipped_item_);
+                equipped_item_ = null;
                 return 0;
             } 
         else {

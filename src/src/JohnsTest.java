@@ -32,8 +32,9 @@ Avatar a = new Avatar("a", '~', 0, 0);
 a.setMap(map_main);
 Terrain obstacle = new Terrain("boulder", 'O', true, false);
 MapView map_view = new MapView();
+obstacle.addDecal('✚');
 map_main.addViewToMap(map_view);
-map_main.initializeTerrain(obstacle, 2, 0);
+map_main.addTerrain(obstacle, 2, 1);
 System.out.println("Adding avatar. Error code: " + map_main.addAvatar(a, 0, 0));
 
 Item equipable = new Item("i", 'i', true, true, false);
@@ -63,9 +64,18 @@ System.out.println( "representation of empty space: " + map_display.getTileRepre
 System.out.println("x cordinate: " + a.getMapRelation().getMyXCordinate());
 System.out.println("y cordinate: " + a.getMapRelation().getMyYCordinate());
 testMoveAvatar(a, 1, 0);
-testMoveAvatar(a, 1, 0);
+int error_code3 = a.getMapRelation().dropItem();
+System.out.println("error code 3" + error_code3);
+int error_code4 = a.unEquipInventoryItem();
+System.out.println("error code 4" + error_code4);
+int error_code5 = a.getMapRelation().dropItem();
+System.out.println("error code 5" + error_code5);
+
+testMoveAvatar(a, 0, 1);
+_d.printView();
 try {
 testMoveAvatar(a, 1, 0);
+_d.printView();
 } catch(Exception e) {
 System.out.println("success - avatar walked off map");
 }

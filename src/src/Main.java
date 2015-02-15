@@ -81,6 +81,7 @@ public class Main
         // Debug Mode
         String[] dbg_match = {"-d", "--debug"};
         boolean dbg_flag = false;
+        int dbg_level = 1;
 
         // Load Saved Game
         String[] lsg_match = {"-l", "--load"}; // option flag match string
@@ -100,7 +101,15 @@ public class Main
     public static void dbgOut(String s) {
         if (s == null) s = "NULL";
         if (pOpts_.dbg_flag)
-            errOut("(DEBUG) " + s);
+            errOut("(DEBUG|0) " + s);
+    }
+
+    public static void dbgOut(String s, int dLevel) {
+        if (dLevel > pOpts_.dbg_level)
+            return;
+        if (s == null) s = "NULL";
+        if (pOpts_.dbg_flag)
+            errOut("(DEBUG|" + pOpts_.dbg_level + ") " + s);
     }
 
     /**
@@ -166,8 +175,11 @@ public class Main
         for (int a = 0; a < args.length; a++) {
             // DEBUG
             for (String m : pOpts_.dbg_match) {
-                if (m.equals(args[a])) {
+                if (m.equals(args[a]) && (args.length > a + 1)) {
                     pOpts_.dbg_flag = true;
+                    int temp = Integer.parseInt(args[a+1]);
+                    if (temp > 0)
+                        pOpts_.dbg_level = temp;
                     break;
                 }
             }

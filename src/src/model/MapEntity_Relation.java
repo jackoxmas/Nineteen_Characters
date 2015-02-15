@@ -15,7 +15,7 @@ import java.io.Serializable;
  *
  * @author JohnReedLOL
  */
-public class MapEntity_Relation extends MapDrawableThing_Relation implements Serializable {
+public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     private final Entity entity_;
 
@@ -27,15 +27,18 @@ public class MapEntity_Relation extends MapDrawableThing_Relation implements Ser
     }
     private final int x_respawn_point_;
     private final int y_respawn_point_;
-    
+
     public void spawn(Entity toSpawn, int time_until_spawn) {
 
     }
+
     /**
      * Moves the entity that this relation refers to over x and up y
+     *
      * @param x x displacement
      * @param y y displacement
-     * @return error codes: see function pushEntityInDirection() in MapDrawableThing_Relation
+     * @return error codes: see function pushEntityInDirection() in
+     * MapDrawableThing_Relation
      * @author John-Michael Reed
      */
     public int moveInDirection(int x, int y) {
@@ -49,27 +52,40 @@ public class MapEntity_Relation extends MapDrawableThing_Relation implements Ser
     public void recieveAttack(int damage) {
 
     }
-    
+
     /**
-     * An item underneath you can be picked up using the parameters 0,0.
-     * 0 if item is picked up successfully, -1 if no item is on the specified tile.
+     * An item underneath you can be picked up using the parameters 0,0. 0 if
+     * item is picked up successfully, -1 if no item is on the specified tile.
+     *
      * @param x
-     * @param y 
+     * @param y
      * @return error_code
      */
     public int pickUpItemInDirection(int x, int y) {
         int error_code = -1;
-        
-    	Item itemToBePickedUp = current_map_reference_.removeTopItem(x + getMyXCordinate(),y + getMyYCordinate());
-    	if(itemToBePickedUp != null){
-    		entity_.addItemToInventory(itemToBePickedUp);
-    		error_code = 0;
-    	}
-    	
+
+        Item itemToBePickedUp = current_map_reference_.removeTopItem(x + getMyXCordinate(), y + getMyYCordinate());
+        if (itemToBePickedUp != null) {
+            entity_.addItemToInventory(itemToBePickedUp);
+            error_code = 0;
+        }
+
         return error_code;
+    }
+    /**
+     * 
+     * @return -1 if no item can be dropped (inventory empty)
+     */
+    public int dropItem() {
+        Item itemToBeDropped = entity_.pullFirstItemOutOfInventory();
+        if (itemToBeDropped != null) {
+            current_map_reference_.addItem(itemToBeDropped, this.getMapTile().x_, this.getMapTile().y_);
+            return 0;
+        } else {
+            return -1;
+        }
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("RELATIONME", 35);
     // </editor-fold>
 }

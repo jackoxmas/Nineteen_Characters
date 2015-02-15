@@ -16,7 +16,7 @@ import java.io.Serializable;
  *
  * @author JohnMichaelReed
  */
-public abstract class MapDrawableThing_Relation implements Serializable {
+public class MapDrawableThing_Relation {
 
     protected Map current_map_reference_ = null;
     private MapTile my_tile_ = null;
@@ -198,6 +198,5 @@ public abstract class MapDrawableThing_Relation implements Serializable {
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("RELATIONMD", 35);
     // </editor-fold>
 }

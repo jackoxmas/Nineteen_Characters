@@ -5,24 +5,35 @@
  */
 package src.model;
 
+import src.Main;
+import src.SaveData;
 import src.controller.Avatar;
 import src.controller.Entity;
 import src.controller.Item;
 import src.controller.Terrain;
 import src.view.MapView;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.LinkedList;
+
 /**
  * Allows for the initialization of the map.
  *
  * @author JohnMichaelReed (includes inner functions)
  */
-public class MapMain_Relation {
+public class MapMain_Relation implements SaveData {
 
     //private final Map map_reference_ = Map.getMyReferanceToTheMap(this);
     private Map current_map_reference_;
 
     private MapMain_Relation(Map map) {
         current_map_reference_ = map;
+    }
+    public MapMain_Relation(int x, int y) {
+        bindToNewMapOfSize(x,y);
     }
 
     /**
@@ -101,36 +112,32 @@ public class MapMain_Relation {
      * @param y
      * @return error code
      */
-    public int initializeTerrain(Terrain t, int x, int y) {
+    public int addTerrain(Terrain t, int x, int y) {
         return current_map_reference_.initializeTerrain(t, x, y);
     }
 
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    /**
-     * Build a Map and MapMain_Relation from the serialization stream.
-     * @param inStream The java.io.ObjectInputStream to pull data from
-     * @throws Exception
-     */
-    public static MapMain_Relation deserializeMap(java.io.ObjectInputStream inStream) throws Exception {
-        try {
-            MapMain_Relation mmr = new MapMain_Relation((Map)inStream.readObject());
-            return mmr;
-        } catch (Exception e) {
-            throw e;
-        }
+
+    @Override
+    public String getSerTag() {
+        return "RELMAPMAIN";
     }
 
-    /**
-     * Write the Map to the serialization stream
-     * @param outStream The java.io.ObjectOutputStream to push data to
-     * @throws Exception
-     */
-    public void serializeMap(java.io.ObjectOutputStream outStream) throws Exception {
-        try {
-            outStream.writeObject(current_map_reference_);
-        } catch (Exception e) {
-            throw e;
-        }
+    @Override
+    public Object deserialize(ObjectInputStream ois, LinkedList<Integer> out_refHashes) throws ClassNotFoundException, IOException {
+        return null;
+    }
+
+    @Override
+    public void relink(Object[] refs) {
+        if (refs.length > 0 && refs[0] instanceof Map)
+            this.current_map_reference_ = (Map)refs[0];
+        else
+            Main.errOut("Invalid Map reference");
+    }
+
+    @Override
+    public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> refMap) throws IOException {
+
     }
     // </editor-fold>
 }

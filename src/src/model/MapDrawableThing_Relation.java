@@ -56,9 +56,9 @@ public class MapDrawableThing_Relation {
     /**
      * Moves an entity without removing it from the list of entities
      *
-     * @param entity The entity to be moved
-     * @param x - distance to push in the x direction
-     * @param y - distance to push in the y direction
+     * @param: entity The entity to be moved
+     * @param: x - distance to push in the x direction
+     * @param: y - distance to push in the y direction
      * @return error codes: -1 if tile is taken, -2 if entity is null, -3 if
      * entity cannot be found, -4 if tile is off the map
      * @author John-Michael Reed
@@ -134,7 +134,7 @@ public class MapDrawableThing_Relation {
                 }
             }
         }
-    };
+    }
 
     public final class AreaLeveler extends AreaFunctor {
 
@@ -157,7 +157,7 @@ public class MapDrawableThing_Relation {
                 }
             }
         }
-    };
+    }
 
     private final AreaDamager areaHurtFunctor = new AreaDamager();
     private final AreaHealer areaHealFunctor = new AreaHealer();

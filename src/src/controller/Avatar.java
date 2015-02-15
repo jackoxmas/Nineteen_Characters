@@ -76,10 +76,15 @@ public final class Avatar extends Entity {
         current_view_ = new AvatarCreationView(this);
     }
 
+    /**
+     * Used to return the current view of the Avatar
+     * 
+     * @return
+     */
     public Viewport getMyView() {
         return this.current_view_;
     }
-
+    
     public void switchToMapView() {
         current_view_ = map_view_;
     }

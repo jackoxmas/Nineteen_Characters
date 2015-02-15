@@ -20,8 +20,16 @@ public class MapDrawableThing_Relation {
 
     protected Map current_map_reference_ = null;
     private MapTile my_tile_ = null;
-
+    private void initguardMap(){
+    	if(current_map_reference_ == null){System.err.println("Empty map reference, " +
+    			"and attempted to access map. Perhaps avatar was never passed a map, or mapview was never passed a map");}
+    }
+    private void initguardTile(){
+    	if(current_map_reference_ == null){System.err.println("Empty tile reference, " +
+    			"and attempted to access map. Perhaps avatar was never passed a map, or mapview was never passed a map");}
+    }
     public int getMyXCordinate() {
+    	initguardTile();
         return my_tile_.x_;
     }
 
@@ -33,6 +41,7 @@ public class MapDrawableThing_Relation {
     }
 
     public int getMyYCordinate() {
+    	initguardTile();
         return my_tile_.y_;
     }
 

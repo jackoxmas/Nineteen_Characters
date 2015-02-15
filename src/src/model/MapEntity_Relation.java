@@ -21,7 +21,6 @@ public class MapEntity_Relation extends MapDrawableThing_Relation implements Ser
 
     public MapEntity_Relation(Entity entity,
             int x_respawn_point, int y_respawn_point) {
-        super(entity);
         entity_ = entity;
         x_respawn_point_ = x_respawn_point;
         y_respawn_point_ = y_respawn_point;

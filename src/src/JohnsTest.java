@@ -1,5 +1,6 @@
 package src;
 import src.controller.Avatar;
+import src.controller.Item;
 import src.controller.Terrain;
 import src.model.MapDisplay_Relation;
 import src.model.MapMain_Relation;
@@ -33,9 +34,20 @@ MapView map_view = new MapView(a);
 map_main.addViewToMap(map_view);
 map_main.initializeTerrain(obstacle, 2, 0);
 System.out.println("Adding avatar. Error code: " + map_main.addAvatar(a, 0, 0));
+
+Item equipable = new Item("i", 'i', true, true, false);
+map_main.addItem(equipable, 0, 0);
+int error_code1 = a.equipInventoryItem();
+
+System.out.println("top: " + map_main.getTile(0, 0).getTopCharacter() + error_code1);
+a.getMapRelation().pickUpItemInDirection(0, 0);
+int error_code2 = a.equipInventoryItem();
+System.out.println("top: " + map_main.getTile(0, 0).getTopCharacter()+ error_code2);
+
 System.out.println(map_main.getTile(2, 0).isPassable());
 System.out.println(map_main.getTile(0, 2).isPassable());
 System.out.println(map_main.getTile(0, 0).isPassable());
+         
 
 char out = map_view.getMapRelation().getTileRepresentation(0, 0);
 System.out.println("Mapview works: " + out);

@@ -25,7 +25,6 @@ abstract public class Entity extends DrawableThing implements Serializable {
      * @return map_relationship_
      * @author Reed, John
      */
-    @Override
     public MapEntity_Relation getMapRelation() {
         return map_relationship_;
     }
@@ -52,6 +51,45 @@ abstract public class Entity extends DrawableThing implements Serializable {
 
     // Only 1 equipped item in iteration 1
     Item equipped_item_;
+
+    /**
+     * @author John-Michael Reed
+     * @return error codes: -2, inventory has no item; -1, cannot equip another
+     * item
+     */
+    public int equipInventoryItem() {
+        if (!inventory_.isEmpty()) {
+            if (equipped_item_ == null) {
+                DrawableThingStatsPack to_add = inventory_.get(0).getStatsPack();
+                this.stats_pack_.addOn(to_add);
+                equipped_item_ = inventory_.get(0);
+                inventory_.remove(0); // Very inefficient for large number of items
+                return 0;
+            } else {
+                return -1;
+            }
+        } else {
+            return -2;
+        }
+    }
+
+    /**
+     * @author John-Michael Reed
+     * @return error codes: -1 inventory is too full for item
+     * [not yet availible]
+     */
+    public int unEquipInventoryItem() {
+        if (true /* Inventory has room */) {
+                DrawableThingStatsPack to_remove = equipped_item_.getStatsPack();
+                this.stats_pack_.reduceBy(to_remove);
+                equipped_item_ = null;
+                inventory_.add(equipped_item_);
+                return 0;
+            } 
+        else {
+            return -1;
+        }
+    }
 
     //private final int max_level_;
     private final EntityStatsPack stats_pack_ = new EntityStatsPack();

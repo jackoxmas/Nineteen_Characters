@@ -70,8 +70,9 @@ After having saved a game, to load it back in, simply start the game, supplying 
 
 ** While the map is visible
 *** View Switching
-- Hit v to open the stats and inventory screen
-- Hit i to use the item directly below the avatar. 
+- Hit f to open the stats and inventory screen
+- Hit p to enter pick up mode, and then direction to pick up.
+- 
 *** Movement
 #+BEGIN_SRC 
 NW   N   NE
@@ -83,7 +84,7 @@ NW   N   NE
 SW   S   SE
 #+END_SRC
 *** Save Game
-- Hit S
+- Hit v
 - A Save File will be created
 - Format : yyMMdd_<number>.sav
 ** In the Inventory screen

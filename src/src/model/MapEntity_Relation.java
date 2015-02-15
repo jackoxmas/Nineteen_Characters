@@ -7,9 +7,6 @@ package src.model;
 
 import src.controller.Entity;
 import src.controller.Item;
-import src.controller.Occupation;
-
-import java.io.Serializable;
 
 /**
  *
@@ -17,7 +14,7 @@ import java.io.Serializable;
  */
 public class MapEntity_Relation extends MapDrawableThing_Relation {
 
-    private final Entity entity_;
+    private Entity entity_;
 
     public MapEntity_Relation(Entity entity,
             int x_respawn_point, int y_respawn_point) {
@@ -25,8 +22,8 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         x_respawn_point_ = x_respawn_point;
         y_respawn_point_ = y_respawn_point;
     }
-    private final int x_respawn_point_;
-    private final int y_respawn_point_;
+    private int x_respawn_point_;
+    private int y_respawn_point_;
 
     public void spawn(Entity toSpawn, int time_until_spawn) {
 
@@ -64,7 +61,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     public int pickUpItemInDirection(int x, int y) {
         int error_code = -1;
 
-        Item itemToBePickedUp = current_map_reference_.removeTopItem(x + getMyXCordinate(), y + getMyYCordinate());
+        Item itemToBePickedUp = current_map_reference_.removeTopItem(x + getMyXCoordinate(), y + getMyYCoordinate());
         if (itemToBePickedUp != null) {
             entity_.addItemToInventory(itemToBePickedUp);
             error_code = 0;

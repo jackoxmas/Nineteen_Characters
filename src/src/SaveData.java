@@ -3,6 +3,8 @@
  */
 package src;
 
+import src.model.MapDrawableThing_Relation;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.io.IOException;
@@ -14,7 +16,8 @@ import java.io.ObjectOutputStream;
  */
 public interface SaveData {
     public String getSerTag();
+    public void setDTRelation(MapDrawableThing_Relation dtr) throws ClassNotFoundException;
     public Object deserialize(ObjectInputStream ois, LinkedList<Integer> out_refHashes) throws ClassNotFoundException, IOException;
     public void relink(Object[] refs);
-    public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> refMap) throws IOException;
+    public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> savMap) throws IOException;
 }

@@ -6,7 +6,6 @@
 package src.view;
 
 import src.controller.Avatar;
-import src.model.MapDisplay_Relation;
 
 /**
  * Players see the MapView while they are interacting with the map

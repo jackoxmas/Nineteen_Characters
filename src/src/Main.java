@@ -109,7 +109,7 @@ public class Main
             return;
         if (s == null) s = "NULL";
         if (pOpts_.dbg_flag)
-            errOut("(DEBUG|" + pOpts_.dbg_level + ") " + s);
+            errOut("(DEBUG|" + dLevel + ") " + s);
     }
 
     /**
@@ -130,7 +130,7 @@ public class Main
         if (e == null) {
             errOut("errOut called with null Exception");
         }
-        errOut("ERROR: " + e.getMessage());
+        errOut("ERROR: " + e.toString());
         if (!printTrace)
             return;
         for (StackTraceElement elem : e.getStackTrace()) {
@@ -147,13 +147,17 @@ public class Main
         System.err.println("[" + errDateFormat_.format(new Date()) + "] " + s);
     }
 
-    private static void handleArgs(String[] args) {
+    protected static void handleArgs(String[] args) {
         if (pOpts_.err_flag) {
             try {
                 System.setErr(new PrintStream(args[pOpts_.err_path]));
+                dbgOut("ARGS: error out set piped to: " + pOpts_.err_path, 2);
             } catch (FileNotFoundException e) {
                 errOut(e);
             }
+        }
+        if (pOpts_.dbg_flag) {
+            dbgOut("ARGS: debug mode enabled at level: " + pOpts_.dbg_level, 2);
         }
         if (pOpts_.lsg_flag) {
             saveGame_ = new SavedGame(args[pOpts_.lsg_path]);
@@ -169,17 +173,19 @@ public class Main
         }
     }
 
-    private static void parseArgs(String[] args) {
+    protected static void parseArgs(String[] args) {
         pOpts_ = new ProgramOpts();
 
         for (int a = 0; a < args.length; a++) {
             // DEBUG
             for (String m : pOpts_.dbg_match) {
-                if (m.equals(args[a]) && (args.length > a + 1)) {
+                if (m.equals(args[a])) {
+                    if (args.length > a + 1) {
+                        int temp = Integer.parseInt(args[a+1]);
+                        if (temp > 0)
+                            pOpts_.dbg_level = temp;
+                    }
                     pOpts_.dbg_flag = true;
-                    int temp = Integer.parseInt(args[a+1]);
-                    if (temp > 0)
-                        pOpts_.dbg_level = temp;
                     break;
                 }
             }

@@ -5,7 +5,7 @@
 package src;
 
 import src.controller.Avatar;
-
+import src.model.*;
 import java.lang.reflect.Field;
 
 /**
@@ -14,15 +14,16 @@ import java.lang.reflect.Field;
  * 
  * @author Alex Stewart
  */
-public class Testing {
+public class Testing extends Main{
 
     public static void main (String[] args) {
-        System.out.println("DECL:");
-        for (Field f : Avatar.class.getDeclaredFields())
-            System.out.println(f.getName());
+        Main.parseArgs(args);
+        Main.handleArgs(args);
 
-        System.out.println("OTHER:");
-        for (Field f : Avatar.class.getFields())
-            System.out.println(f.getName());
+        SavedGame sg = SavedGame.newSavedGame();
+        MapMain_Relation mmr = new MapMain_Relation();
+        mmr.bindToNewMapOfSize(10, 10);
+        sg.saveFile(mmr, new Exception());
+        System.out.println("== FINISH LINE ==");
     }
 }

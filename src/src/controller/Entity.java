@@ -14,7 +14,7 @@ import java.io.Serializable;
  *
  * @author JohnReedLOL
  */
-abstract public class Entity extends DrawableThing implements Serializable {
+abstract public class Entity extends DrawableThing {
 
     // map_relationship_ is used in place of a map_referance_
     private MapEntity_Relation map_relationship_;
@@ -104,7 +104,7 @@ abstract public class Entity extends DrawableThing implements Serializable {
     }
 
     //private final int max_level_;
-    private final EntityStatsPack stats_pack_ = new EntityStatsPack();
+    private EntityStatsPack stats_pack_ = new EntityStatsPack();
 
     public EntityStatsPack getStatsPack() {
         return stats_pack_;
@@ -234,6 +234,16 @@ abstract public class Entity extends DrawableThing implements Serializable {
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("ENTITY", 35);
+    /*
+    protected Entity (String name, char drawableThingChar) {
+        super(name, drawableThingChar);
+        inventory_ = new ArrayList<Item>();
+    }
+
+    protected void ser_linkMap(MapEntity_Relation rel) { map_relationship_ = rel) }
+
+    protected void ser_linkStats(EntityStatsPack pack) {
+        stats_pack_ = pack;
+    }*/
     // </editor-fold>
 }

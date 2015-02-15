@@ -1,10 +1,11 @@
 #+AUTHOR: Nineteen_Characters!
 * 
-java -jar game.jar [-d][-e FILE] [-l  FILE]
+java -jar game.jar [-d [LEVEL]][-e FILE] [-l  FILE]
 
-	-d, --debug
+	-d [LEVEL], --debug [LEVEL]
 		Activates debug mode, where debug outputs are sent to the error stream. Error stream may 
-		be redirected, as per the --err-out option
+		be redirected, as per the --err-out option. LEVEL is an integer number representing the level of 
+		detail requested in the debug output. If no value is specified, the default is level 1.
 		
 	-e FILE, --err-out FILE
 		Redirects STDERR messages to the given file

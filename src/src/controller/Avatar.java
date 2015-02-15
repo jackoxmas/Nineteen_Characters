@@ -6,7 +6,9 @@
 package src.controller;
 
 import src.SaveData;
+import src.SavedGame;
 import src.model.MapAvatar_Relation;
+import src.model.MapDrawableThing_Relation;
 import src.model.MapMain_Relation;
 import src.view.Display;
 import src.view.AvatarCreationView;
@@ -130,7 +132,7 @@ public final class Avatar extends Entity{
 
     		MapAvatar_Relation mar = this.getMapRelation();
     		if(mar == null){return;}//If the avatar is not on the map, it can't really do anything.
-    		map_view_.setCenter(mar.getMyXCordinate(),mar.getMyYCordinate());
+    		map_view_.setCenter(mar.getMyXCoordinate(),mar.getMyYCoordinate());
     		switch(c){
     		case '1'://Move SW
     			mar.moveInDirection(-1, -1);
@@ -205,24 +207,6 @@ public final class Avatar extends Entity{
 
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    @Override
-    public String getSerTag() {
-        return null;
-    }
 
-    @Override
-    public Object deserialize(ObjectInputStream ois, LinkedList<Integer> out_refHashes) throws ClassNotFoundException, IOException {
-        return null;
-    }
-
-    @Override
-    public void relink(Object[] refs) {
-
-    }
-
-    @Override
-    public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> refMap) throws IOException {
-
-    }
     // </editor-fold>
 }

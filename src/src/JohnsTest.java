@@ -32,7 +32,7 @@ Avatar a = new Avatar("a", '~', 0, 0);
 Terrain obstacle = new Terrain("boulder", 'O', true, false);
 MapView map_view = new MapView(a);
 map_main.addViewToMap(map_view);
-map_main.initializeTerrain(obstacle, 2, 0);
+map_main.addTerrain(obstacle, 2, 0);
 System.out.println("Adding avatar. Error code: " + map_main.addAvatar(a, 0, 0));
 
 Item equipable = new Item("i", 'i', true, true, false);

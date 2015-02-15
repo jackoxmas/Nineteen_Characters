@@ -101,7 +101,7 @@ public class MapMain_Relation {
      * @param y
      * @return error code
      */
-    public int initializeTerrain(Terrain t, int x, int y) {
+    public int addTerrain(Terrain t, int x, int y) {
         return current_map_reference_.initializeTerrain(t, x, y);
     }
 

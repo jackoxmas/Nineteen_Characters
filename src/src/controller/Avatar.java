@@ -115,6 +115,62 @@ public final class Avatar extends Entity implements Serializable {
 
         return s;
     }
+    /*
+     * Handles avatar input
+     */
+    public void getInput(char c){
+    	if(current_view_ == map_view_){//If we currently have our mapview equipped(check by reference)
+    		switch(c){
+    		case '1'://Move SW
+    			break;
+    		case '2'://Move S
+    			break;
+    		case '3'://Move SE
+    			break;
+    		case '4': // Move W
+    			break;
+    		case '6'://Move E
+    			break;
+    		case '7'://Move NW
+    			break;
+    		case '8'://Move N
+    			break;
+    		case '9': //Move NE
+    			break;
+    		case 'S': //Save game
+    			break;
+    		case 'v': //Open stats
+    			break;
+    		case 'i': //Use item
+    			break;
+    		case 'q'://move NW
+    			break;
+    		case 'w': //move N
+    			break;
+    		case 'e'://move NE
+    			break;
+    		case 'a': //move W
+    			break;
+    		case 's'://Move stationary?
+    			break;
+    		case 'd'://Move E
+    			break;
+    		case 'z'://Move SW
+    			break;
+    		case 'x'://move s
+    			break;
+    		case 'c'://move SE
+    			break;
+    		default: //no valid input
+    			break;
+    		}
+    		current_view_.renderToDisplay(); //See lower comment, maybe avatar should have a Display also to print it's views?
+    	}
+    	else{
+    		current_view_.getInput(c);
+    		current_view_.renderToDisplay();//Although printing with display already calls this, might just want to move the display into avatar or something, not really sure
+    	}
+    }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     private static final long serialVersionUID = Long.parseLong("AVATAR", 35);

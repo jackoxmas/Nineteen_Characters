@@ -154,11 +154,13 @@ final public class MapTile implements Serializable {
      * @author Reed, John
      */
     public char getTopCharacter() {
-        if (!items_.isEmpty()) {
-            return items_.peekLast().getRepresentation();
-        } else if (entity_ != null) {
+    	if (entity_ != null) {
             return entity_.getRepresentation();
-        } else if (terrain_ != null) {
+    	}
+         else if (!items_.isEmpty()) {
+             return items_.peekLast().getRepresentation();
+         }
+         else if (terrain_ != null) {
             return terrain_.getRepresentation();
         } else {
             return 'M';

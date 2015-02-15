@@ -53,7 +53,7 @@ public class Item extends DrawableThing{
     }
 
     public void onWalkOver() {
-    	
+    	System.out.println("Item: " + this.toString() + " is being walked on.");
     }
 
     /**
@@ -62,7 +62,7 @@ public class Item extends DrawableThing{
      * @param target - The entity that the item will be used on.
      */
     public void use(Entity target) {
-
+        System.out.println("Item: " + this.toString() + " is being used by entity + " + target.toString());
     }
 
     /**

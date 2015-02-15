@@ -60,6 +60,16 @@ abstract public class Entity extends DrawableThing {
             return null;
         }
     }
+    
+    public int useFirstInventoryItem() {
+        Item i = pullFirstItemOutOfInventory();
+        if(i == null) {
+            return -1;
+        } else {
+            i.use(this);
+            return 0;
+        }
+    }
 
     // Only 1 equipped item in iteration 1
     protected Item equipped_item_;

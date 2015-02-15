@@ -169,7 +169,13 @@ public final class Avatar extends Entity {
                     break;
                 case 'v': //Open stats
                     break;
-                case 'i': //Use item
+                case 'i': //Use item in direction
+                    break;
+                case 'u': //Use item in inventory
+                    int error_code_u = this.useFirstInventoryItem();
+                    if(error_code_u != 0) {
+                        System.out.println("Use item in inventory with key u failed.");
+                    }
                     break;
                 case 'q'://move NW
                     mar.moveInDirection(-1, 1);

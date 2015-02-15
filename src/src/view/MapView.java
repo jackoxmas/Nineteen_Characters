@@ -6,7 +6,6 @@
 package src.view;
 
 import src.controller.Avatar;
-import src.model.MapDisplay_Relation;
 
 /**
  * Players see the MapView while they are interacting with the map
@@ -23,27 +22,38 @@ public final class MapView extends Viewport {
     private char[][] view_contents_;
     private int x_;
     private int y_;//Set these to center via avatar later.
-    private Avatar AvatarRef_;
 
 	@Override
 	public void renderToDisplay() {
 		render();//All that's needed for now.
 		
 	}
-	public MapView(Avatar _avatar){
+	public MapView(){
 		super();
-		AvatarRef_ = _avatar;
 		view_contents_ = getContents();
+		x_=0;
+		y_=0;
+	}
+	public void setCenter(int x, int y){
+		x_ = x;
+		y_= y;
 	}
 	private void render(){
-		x_=AvatarRef_.getMapRelation().getMyXCordinate();
-		y_=AvatarRef_.getMapRelation().getMyYCordinate();
+		clear();
+		System.out.println(x_ + " " + y_);
+		makeSquare(0, 0,width_-1,height_-1);
 		int midpointx_ = x_/2;
 		int midpointy_ = y_/2;
-		for(int i = 0;i!=width_;++i){
-			for(int j = 0;j!=height_;++j){
-				view_contents_[i][j] = map_relationship_.getTileRepresentation(i-width_/2,height_/2-j);
+		for(int i = 1;i!=width_-1;++i){
+			for(int j = 1;j!=height_-1;++j){
+				view_contents_[i][j] = map_relationship_.getTileRepresentation(i-width_/2+x_,height_/2-j+y_);
 			}
+
 		}
+	}
+	@Override
+	public boolean getInput(char c) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

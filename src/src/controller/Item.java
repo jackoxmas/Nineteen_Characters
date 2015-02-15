@@ -5,7 +5,15 @@
  */
 package src.controller;
 
+import src.SaveData;
 import src.model.MapItem_Relation;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Class item represents a stackable entity [Alex's definition of entity] that
@@ -13,23 +21,21 @@ import src.model.MapItem_Relation;
  *
  * @author JohnReedLOL
  */
-public class Item extends DrawableThing {
-
-    // Converts a class name [which must be unique] into a unique base 35 number
-
-    private static final long serialVersionUID = Long.parseLong("Item", 35);
-
+public class Item extends DrawableThing{
     // map_relationship_ is used in place of a map_referance_
-    private final MapItem_Relation map_relationship_;
+    private MapItem_Relation map_relationship_;
     
     /**
      * Use this to call functions contained within the MapItem relationship
      * @return map_relationship_
      * @author Reed, John
      */
-    @Override
     public MapItem_Relation getMapRelation() {
         return map_relationship_;
+    }
+
+    public void setMapRelation(MapItem_Relation i) {
+        map_relationship_ = i;
     }
 
     private boolean is_passable_;
@@ -41,7 +47,7 @@ public class Item extends DrawableThing {
         map_relationship_ = new MapItem_Relation(
                 this, goes_in_inventory, is_one_shot);
     }
-    
+    @Override
     public boolean isPassable() {
         return this.is_passable_;
     }
@@ -56,7 +62,7 @@ public class Item extends DrawableThing {
      * @param target - The entity that the item will be used on.
      */
     public void use(Entity target) {
-    	
+
     }
 
     /**
@@ -75,4 +81,22 @@ public class Item extends DrawableThing {
             return true;
         }
     }
+
+    public String toString(){
+        String s = "Item name: " + name_;
+        s += "\n is_passable_: " + is_passable_;
+
+        s+="\n map_relationship_: ";
+        if(map_relationship_ == null)
+            s += "null";
+        else
+            s += "Not null" ;
+
+        s += "\n associated with map: " + map_relationship_.isAssociatedWithMap();
+
+        return s;
+    }
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    // </editor-fold>
 }

@@ -4,15 +4,12 @@
  */
 package src;
 
-import src.controller.Entity;
-import src.model.MapMain_Relation;
-import src.view.Display;
-import src.view.MapView;
-
-import java.io.*;
-import java.lang.StackTraceElement;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import src.model.MapMain_Relation;
 
 /**
  * Initializes, opens the program.
@@ -20,6 +17,7 @@ import java.util.Date;
  */
 public class Main
 {
+    
     private static ProgramOpts pOpts_ = null;
     private static SavedGame saveGame_;
 
@@ -27,14 +25,14 @@ public class Main
 
 
     public static void main(String[] args) {
-        parseArgs(args); // Parse command line arguments
-        initialize(); // Initialize any data we need to before loading
-        handleArgs(args);
+        //parseArgs(args); // Parse command line arguments
+        //initialize(); // Initialize any data we need to before loading
+        //handleArgs(args);
 
         // testing
-        saveGameToDisk();
+        //saveGameToDisk();
 
-        exitGame();
+        //exitGame();
         //initializeEverything();
     }
 
@@ -48,7 +46,10 @@ public class Main
         saveGame_ = null;
         mmr_ = new MapMain_Relation(); // Initialize the Map Object
         MapMain_Relation newmmr_ = new MapMain_Relation();
-        newmmr_.addEntity(new src.controller.Avatar("test", 'x', 0, 0), 0, 0);
+        newmmr_.bindToNewMapOfSize(5, 5); // Each MapMain Relation creates a map and binds itself to that map.
+        src.controller.Avatar ave_ = new src.controller.Avatar("test", 'x', 0,0);
+        ave_.setMap(mmr_);
+        newmmr_.addEntity(ave_, 0, 0);
     }
 
     private static void saveGameToDisk() {
@@ -80,6 +81,7 @@ public class Main
         // Debug Mode
         String[] dbg_match = {"-d", "--debug"};
         boolean dbg_flag = false;
+        int dbg_level = 1;
 
         // Load Saved Game
         String[] lsg_match = {"-l", "--load"}; // option flag match string
@@ -99,7 +101,15 @@ public class Main
     public static void dbgOut(String s) {
         if (s == null) s = "NULL";
         if (pOpts_.dbg_flag)
-            errOut("(DEBUG) " + s);
+            errOut("(DEBUG|0) " + s);
+    }
+
+    public static void dbgOut(String s, int dLevel) {
+        if (dLevel > pOpts_.dbg_level)
+            return;
+        if (s == null) s = "NULL";
+        if (pOpts_.dbg_flag)
+            errOut("(DEBUG|" + dLevel + ") " + s);
     }
 
     /**
@@ -120,7 +130,7 @@ public class Main
         if (e == null) {
             errOut("errOut called with null Exception");
         }
-        errOut("ERROR: " + e.getMessage());
+        errOut("ERROR: " + e.toString());
         if (!printTrace)
             return;
         for (StackTraceElement elem : e.getStackTrace()) {
@@ -137,13 +147,17 @@ public class Main
         System.err.println("[" + errDateFormat_.format(new Date()) + "] " + s);
     }
 
-    private static void handleArgs(String[] args) {
+    protected static void handleArgs(String[] args) {
         if (pOpts_.err_flag) {
             try {
                 System.setErr(new PrintStream(args[pOpts_.err_path]));
+                dbgOut("ARGS: error out set piped to: " + pOpts_.err_path, 2);
             } catch (FileNotFoundException e) {
                 errOut(e);
             }
+        }
+        if (pOpts_.dbg_flag) {
+            dbgOut("ARGS: debug mode enabled at level: " + pOpts_.dbg_level, 2);
         }
         if (pOpts_.lsg_flag) {
             saveGame_ = new SavedGame(args[pOpts_.lsg_path]);
@@ -159,13 +173,18 @@ public class Main
         }
     }
 
-    private static void parseArgs(String[] args) {
+    protected static void parseArgs(String[] args) {
         pOpts_ = new ProgramOpts();
 
         for (int a = 0; a < args.length; a++) {
             // DEBUG
             for (String m : pOpts_.dbg_match) {
                 if (m.equals(args[a])) {
+                    if (args.length > a + 1) {
+                        int temp = Integer.parseInt(args[a+1]);
+                        if (temp > 0)
+                            pOpts_.dbg_level = temp;
+                    }
                     pOpts_.dbg_flag = true;
                     break;
                 }

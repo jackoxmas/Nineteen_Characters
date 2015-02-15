@@ -5,11 +5,12 @@
  */
 package src.controller;
 
+import java.io.Serializable;
+
 /**
  * Represents the eight directions plus one direction for staying in place
  * @author JohnReedLOL
  */
-public interface Occupation {
-    public StatsPack change_stats(StatsPack current_stats);
-
+public interface Occupation extends Serializable {
+    public void change_stats(EntityStatsPack current_stats);
 }

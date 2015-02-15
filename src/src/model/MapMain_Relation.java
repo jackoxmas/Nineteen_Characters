@@ -5,36 +5,63 @@
  */
 package src.model;
 
+import src.Main;
+import src.SaveData;
+import src.SavedGame;
 import src.controller.Avatar;
 import src.controller.Entity;
 import src.controller.Item;
 import src.controller.Terrain;
 import src.view.MapView;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.LinkedList;
+
 /**
  * Allows for the initialization of the map.
  *
  * @author JohnMichaelReed (includes inner functions)
  */
-public class MapMain_Relation {
+public class MapMain_Relation implements  SaveData {
 
     //private final Map map_reference_ = Map.getMyReferanceToTheMap(this);
     private Map current_map_reference_;
+    
+    public static final int MAX_NUMBER_OF_WORLDS = 1;
+    private static int number_of_worlds_generated_ = 0;
 
-    private MapMain_Relation(Map map) {
-        current_map_reference_ = map;
+    //private MapMain_Relation(Map map) {
+    //    current_map_reference_ = map;
+    //}
+    /**
+     * Creates a new map and binds this mmr to that map
+     * @param x - width of newly creared map
+     * @param y - height of newly created map
+     */
+    public MapMain_Relation(int x, int y) {
+        bindToNewMapOfSize(x,y);
     }
 
     /**
-     * Creates a new map and associates this maprelation with that map. This is
-     * the first function that a new MapMain_Relation must call.
-     *
+     * Creates a new map and associates this maprelation with that map: 
+     * This is the first function that a MapMain_Relation must call.
      * @author John-Michael Reed
      * @param x - width of the map
      * @param y - height of the map
      */
-    public void createNewMap(int x, int y) {
-        current_map_reference_ = new Map(x, y);
+    public void bindToNewMapOfSize(int x, int y) {
+        if( number_of_worlds_generated_ >= MAX_NUMBER_OF_WORLDS ) {
+            current_map_reference_ = new Map(x, y);
+            ++number_of_worlds_generated_;
+        } else {
+            System.err.println("Number of world allowed: " + MAX_NUMBER_OF_WORLDS);
+            System.err.println("Number of worlds already in existence: " + number_of_worlds_generated_ );
+            System.err.println("Please don't make more than " + MAX_NUMBER_OF_WORLDS + " worlds.");
+            System.exit(-1);
+        }
     }
 
     public MapMain_Relation() {
@@ -102,36 +129,26 @@ public class MapMain_Relation {
      * @param y
      * @return error code
      */
-    public int initializeTerrain(Terrain t, int x, int y) {
+    public int addTerrain(Terrain t, int x, int y) {
         return current_map_reference_.initializeTerrain(t, x, y);
     }
 
+
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    /**
-     * Build a Map and MapMain_Relation from the serialization stream.
-     * @param inStream The java.io.ObjectInputStream to pull data from
-     * @throws Exception
-     */
-    public static MapMain_Relation deserializeMap(java.io.ObjectInputStream inStream) throws Exception {
-        try {
-            MapMain_Relation mmr = new MapMain_Relation((Map)inStream.readObject());
-            return mmr;
-        } catch (Exception e) {
-            throw e;
-        }
+    @Override
+    public String getSerTag() {
+        return "RELATION_MAP_MAIN";
     }
 
-    /**
-     * Write the Map to the serialization stream
-     * @param outStream The java.io.ObjectOutputStream to push data to
-     * @throws Exception
-     */
-    public void serializeMap(java.io.ObjectOutputStream outStream) throws Exception {
-        try {
-            outStream.writeObject(current_map_reference_);
-        } catch (Exception e) {
-            throw e;
-        }
+
+    //@Override
+    public void relink(Object[] refs) {
+
+    }
+
+    @Override
+    public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> savMap) throws IOException {
+        SavedGame.defaultDataWrite(this, oos, savMap);
     }
     // </editor-fold>
 }

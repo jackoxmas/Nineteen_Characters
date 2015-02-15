@@ -37,14 +37,22 @@ public class Display implements Serializable {
      */
     public void printView() {
     	current_view_.renderToDisplay();
+    	current_view_.renderMessageBox();
+    	this.clearScreen();
         char[][] in = current_view_.getContents();
         // Use this to print a 2D array
 		for(int j = 0; j!=current_view_.height_;++j){
 			for(int i = 0; i!=current_view_.width_;++i){
 				{System.out.print(in[i][j]);}
 			}
-			System.out.println();
+			System.out.print(System.lineSeparator());
 		}
+    }
+    private void clearScreen(){
+    	//Create the illusion of clearing the screen.
+    	for(int i = 0; i!=2*current_view_.height_;++i){
+    		System.out.print(System.lineSeparator());
+    	}
     }
     /**
      * Change the viewport held by the display

@@ -76,7 +76,7 @@ public final class Avatar extends Entity implements Serializable {
     }
 
     private MapView generateMapView() {
-        MapView map_view = new MapView(this);
+        MapView map_view = new MapView();
         return map_view;
     }
 
@@ -121,7 +121,10 @@ public final class Avatar extends Entity implements Serializable {
      */
     public void getInput(char c){
     	if(current_view_ == map_view_){//If we currently have our mapview equipped(check by reference)
+
     		MapAvatar_Relation mar = this.getMapRelation();
+    		if(mar == null){return;}//If the avatar is not on the map, it can't really do anything.
+    		map_view_.setCenter(mar.getMyXCordinate(),mar.getMyYCordinate());
     		switch(c){
     		case '1'://Move SW
     			mar.moveInDirection(-1, -1);

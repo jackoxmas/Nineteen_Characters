@@ -23,22 +23,24 @@ public final class MapView extends Viewport {
     private char[][] view_contents_;
     private int x_;
     private int y_;//Set these to center via avatar later.
-    private Avatar AvatarRef_;
 
 	@Override
 	public void renderToDisplay() {
 		render();//All that's needed for now.
 		
 	}
-	public MapView(Avatar _avatar){
+	public MapView(){
 		super();
-		AvatarRef_ = _avatar;
 		view_contents_ = getContents();
+		x_=0;
+		y_=0;
+	}
+	public void setCenter(int x, int y){
+		x_ = x;
+		y_= y;
 	}
 	private void render(){
 		clear();
-		x_=AvatarRef_.getMapRelation().getMyXCordinate();
-		y_=AvatarRef_.getMapRelation().getMyYCordinate();
 		System.out.println(x_ + " " + y_);
 		makeSquare(0, 0,width_-1,height_-1);
 		int midpointx_ = x_/2;

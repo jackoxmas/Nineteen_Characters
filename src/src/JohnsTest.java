@@ -31,7 +31,7 @@ map_main.bindToNewMapOfSize(3, 3);
 Avatar a = new Avatar("a", '~', 0, 0);
 a.setMap(map_main);
 Terrain obstacle = new Terrain("boulder", 'O', true, false);
-MapView map_view = new MapView(a);
+MapView map_view = new MapView();
 map_main.addViewToMap(map_view);
 map_main.initializeTerrain(obstacle, 2, 0);
 System.out.println("Adding avatar. Error code: " + map_main.addAvatar(a, 0, 0));

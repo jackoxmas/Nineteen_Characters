@@ -7,6 +7,7 @@ package src.controller;
 
 import src.SaveData;
 import src.model.MapItem_Relation;
+import src.view.Display;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -54,6 +55,7 @@ public class Item extends DrawableThing{
 
     public void onWalkOver() {
     	System.out.println("Item: " + this.toString() + " is being walked on.");
+    	Display.setMessage("Walked on Item: " + this.toString(), 3);
     }
 
     /**
@@ -63,6 +65,7 @@ public class Item extends DrawableThing{
      */
     public void use(Entity target) {
         System.out.println("Item: " + this.toString() + " is being used by entity + " + target.toString());
+        Display.setMessage("Used Item: " + this.toString(),3);
     }
 
     /**

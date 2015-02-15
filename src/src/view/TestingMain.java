@@ -8,7 +8,6 @@ import src.controller.Terrain;
 import src.model.MapMain_Relation;
 
 public class TestingMain {
-
     public TestingMain() {
         // TODO Auto-generated constructor stub
     }
@@ -48,12 +47,11 @@ public class TestingMain {
         Item equipable = new Item("☂", '☂', true, true, false);
         mmr_.addItem(equipable, 5, 5);
         Display _display = new Display(avatar.getMyView());
-        avatar.getMyView().messageBox("This is a test of the emergency broadcasting system.", 1);
         _display.printView();
-        _display.printView();
-	Terrain obstacle = new Terrain("boulder", '☠', true, false);
+        Terrain obstacle = new Terrain("boulder", '☠', true, false);
         mmr_.addTerrain(obstacle, 2, 2);
         System.out.println("☠ and ★ and ✚");
+        Display.setMessage("test",3);
         Scanner sc = new Scanner(System.in);
         while (true) {
             char c;

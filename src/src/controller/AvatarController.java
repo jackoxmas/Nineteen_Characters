@@ -24,12 +24,10 @@ public final class AvatarController
     private void runTheGame() throws Exception {
     	
     	BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-    	int last = 0;
-    	int current = 0;
+    	int input = -1;
     	
-    	while ( (current = in.read() ) != -1 ) {
-			my_avatar_.input((char)last, (char)current);
-			last = current;
+    	while ( (input = in.read() ) != -1 ) {
+			my_avatar_.sendInput((char)input);
     	}
     	
     	in.close();

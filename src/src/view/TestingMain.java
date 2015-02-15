@@ -35,13 +35,10 @@ public class TestingMain {
 	public static void main(String[] args) {
 
 		// TODO Auto-generated method stub
-		Avatar avatar = new Avatar("avatar", 'x', 0, 0);
+		Avatar avatar = new Avatar("avatar", '☺', 0, 0);
 		Display _display = new Display(avatar.getMyView());
 		avatar.getMyView().messageBox("This is a test of the emergency broadcasting system.",1);
 		_display.printView();
-		_display.printView();
-		avatar.getMyView().getInput('C');
-		_display.setView(avatar.getMyView());
 		_display.printView();
 		System.out.println("☠ and ★ and ✚");
 		Scanner sc = new Scanner(System.in);

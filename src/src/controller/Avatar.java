@@ -155,20 +155,31 @@ public final class Avatar extends Entity implements Serializable {
     		case 'q'://move NW
     			break;
     		case 'w': //move N
+    			mar.moveInDirection(0, 1);
     			break;
     		case 'e'://move NE
+    			mar.moveInDirection(1,1);
     			break;
     		case 'a': //move W
+    			mar.moveInDirection(-1,1);
     			break;
     		case 's'://Move stationary?
     			break;
     		case 'd'://Move E
+    			mar.moveInDirection(1,0);
     			break;
     		case 'z'://Move SW
+    			mar.moveInDirection(-1,-1);
     			break;
     		case 'x'://move s
+    			mar.moveInDirection(0,-1);
     			break;
     		case 'c'://move SE
+    			mar.moveInDirection(1,-1);
+    			break;
+    		case 'D': //drop item
+    			break;
+    		case 'p'://pickup item
     			break;
     		default: //no valid input
     			break;

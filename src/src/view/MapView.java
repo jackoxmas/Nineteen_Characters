@@ -39,12 +39,15 @@ public final class MapView extends Viewport {
 		clear();
 		x_=AvatarRef_.getMapRelation().getMyXCordinate();
 		y_=AvatarRef_.getMapRelation().getMyYCordinate();
+		System.out.println(x_ + " " + y_);
+		makeSquare(0, 0,width_-1,height_-1);
 		int midpointx_ = x_/2;
 		int midpointy_ = y_/2;
-		for(int i = 0;i!=width_;++i){
-			for(int j = 0;j!=height_;++j){
-				view_contents_[i][j] = map_relationship_.getTileRepresentation(i-width_/2,height_/2-j);
+		for(int i = 1;i!=width_-1;++i){
+			for(int j = 1;j!=height_-1;++j){
+				view_contents_[i][j] = map_relationship_.getTileRepresentation(i-width_/2+x_,height_/2-j+y_);
 			}
+
 		}
 	}
 	@Override

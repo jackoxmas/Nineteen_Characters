@@ -120,22 +120,31 @@ public final class Avatar extends Entity implements Serializable {
      */
     public void getInput(char c){
     	if(current_view_ == map_view_){//If we currently have our mapview equipped(check by reference)
+    		MapAvatar_Relation mar = this.getMapRelation();
     		switch(c){
     		case '1'://Move SW
+    			mar.moveInDirection(-1, -1);
     			break;
     		case '2'://Move S
+    			mar.moveInDirection(0, -1);
     			break;
     		case '3'://Move SE
+    			mar.moveInDirection(1, -1);
     			break;
     		case '4': // Move W
+    			mar.moveInDirection(-1,0);
     			break;
     		case '6'://Move E
+    			mar.moveInDirection(1,0);
     			break;
     		case '7'://Move NW
+    			mar.moveInDirection(-1, 1);
     			break;
     		case '8'://Move N
+    			mar.moveInDirection(0,1);
     			break;
     		case '9': //Move NE
+    			mar.moveInDirection(1,1);
     			break;
     		case 'S': //Save game
     			break;

@@ -1,5 +1,9 @@
 package src.view;
 
+
+
+import java.util.Scanner;
+
 import src.controller.Avatar;
 
 public class TestingMain {
@@ -39,9 +43,20 @@ public class TestingMain {
 		avatar.getMyView().getInput('C');
 		_display.setView(avatar.getMyView());
 		_display.printView();
-		
-		System.out.println(System.getProperty("java.class.path"));
 		System.out.println("☠ and ★ and ✚");
+		Scanner sc = new Scanner(System.in);
+		while(true){
+			char c;
+			c = sc.next().charAt(0);
+			if(c == '5'){return;}
+			avatar.getInput(c);
+			_display.setView(avatar.getMyView());
+			_display.printView();
+
+			
+		}
+		
+	
 
 	}
 

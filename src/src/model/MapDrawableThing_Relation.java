@@ -206,7 +206,7 @@ public class MapDrawableThing_Relation {
                     for (int i = 0; i < num_level_ups; ++i) {
                         to_level.gainEnoughExperienceTolevelUp();
                     }
-                    src.view.Display.setMessage("Current Life after: " + s.cached_current_level_, 3);
+                    src.view.Display.setMessage("Current Level after: " + s.cached_current_level_, 3);
                 }
             }
         }

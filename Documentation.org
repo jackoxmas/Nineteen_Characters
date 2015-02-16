@@ -1,5 +1,7 @@
 #+AUTHOR: Nineteen_Characters!
-* 
+* Font : This game works best with the following font
+http://dejavu-fonts.org/wiki/Main_Page
+* Running 
 java -jar game.jar [-d [LEVEL]][-e FILE] [-l  FILE]
 
 	-d [LEVEL], --debug [LEVEL]

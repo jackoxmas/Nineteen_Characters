@@ -27,6 +27,7 @@ public class Item extends DrawableThing {
     // map_relationship_ is used in place of a map_referance_
     private MapItem_Relation map_relationship_;
 
+    private boolean hasBeenActivated;
     /**
      * Use this to call functions contained within the MapItem relationship
      *
@@ -49,6 +50,7 @@ public class Item extends DrawableThing {
         is_passable_ = is_passable;
         map_relationship_ = new MapItem_Relation(
                 this, goes_in_inventory, is_one_shot);
+        hasBeenActivated = false;
     }
 
     /**
@@ -94,6 +96,7 @@ public class Item extends DrawableThing {
      */
     public void use(Entity target) {
         //System.out.println("Item: " + this.toString() + " is being used by entity + " + target.toString());
+    	hasBeenActivated = true;
         Display.setMessage("Used Item: " + this.toString() + " Health: " + target.getStatsPack().current_life_
                 + "Level: " + target.getStatsPack().cached_current_level_, 3);
     }

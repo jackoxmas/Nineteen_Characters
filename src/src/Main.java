@@ -9,7 +9,14 @@ import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import src.controller.AreaEffectItem;
+import src.controller.Avatar;
+import src.controller.AvatarController;
+import src.controller.Item;
+import src.controller.Terrain;
 import src.model.MapMain_Relation;
+import src.view.Display;
+import src.view.Viewport;
 
 /**
  * Initializes, opens the program.
@@ -20,14 +27,18 @@ public class Main
     
     private static ProgramOpts pOpts_ = null;
     private static SavedGame saveGame_;
+    private static Avatar avatar_;
 
     private static MapMain_Relation mmr_;
 
 
     public static void main(String[] args) {
         //parseArgs(args); // Parse command line arguments
-        //initialize(); // Initialize any data we need to before loading
+        initialize(); // Initialize any data we need to before loading
+        populateMap();//Add stuff into the map
+        startGame(); // Begin the avatarcontroller loop
         //handleArgs(args);
+        
 
         // testing
         //saveGameToDisk();
@@ -44,14 +55,62 @@ public class Main
 
     private static void initialize() {
         saveGame_ = null;
-        mmr_ = new MapMain_Relation(); // Initialize the Map Object
-        MapMain_Relation newmmr_ = new MapMain_Relation();
-        newmmr_.bindToNewMapOfSize(5, 5); // Each MapMain Relation creates a map and binds itself to that map.
-        src.controller.Avatar ave_ = new src.controller.Avatar("test", 'x', 0,0);
-        ave_.setMap(mmr_);
-        newmmr_.addEntity(ave_, 0, 0);
-    }
+        mmr_ = new MapMain_Relation();
+        mmr_.bindToNewMapOfSize(Viewport.width_ / 2, Viewport.height_); //Can change these later if we so desire. 
+        Avatar avatar = new Avatar("avatar", '☃', 0, 0);
+        avatar.setMap(mmr_);
+        avatar_ = avatar;
+        Display _display = new Display(avatar.getMyView());
+        _display.printView();
 
+
+    }
+    private static void populateMap(){
+        Item equipable = new Item("☂", '☂', true, true, false);
+        equipable.getStatsPack().offensive_rating_ += 17;
+        
+        mmr_.addItem(equipable, 5, 5); // ▨
+        for (int y = 0; y < Viewport.height_; ++y) {
+            for (int x = 0; x < Viewport.width_ / 2; ++x) {
+                Terrain obstacle = new Terrain("land", '▨', false, false);
+                if (y == 4) {
+                    if (x == 2) {
+                        obstacle.addDecal('☠');
+                    } else if (x == 6) {
+                        obstacle.addDecal('★');
+                    } else if (x == 9) {
+                        obstacle.addDecal('✚');
+                    }
+                }
+                mmr_.addTerrain(obstacle, x, y);
+            }
+        }
+            // String name, char representation, boolean is_passable,
+        // boolean goes_in_inventory, boolean is_one_shot, Effect effect, int power
+        AreaEffectItem inflict_pain = new AreaEffectItem("inflict_pain", '♨', true, false,
+                true, AreaEffectItem.Effect.HURT, 10);
+        mmr_.addItem(inflict_pain, 16, 7);
+        
+        AreaEffectItem area_heal = new AreaEffectItem("area_heal", '♥', true, false,
+                false, AreaEffectItem.Effect.HEAL, 10);
+        mmr_.addItem(area_heal, 12, 12);
+        
+        AreaEffectItem area_kill = new AreaEffectItem("area_kill", '☣', true, false,
+                true, AreaEffectItem.Effect.KILL, 10);
+        mmr_.addItem(area_kill, 3, 11);
+        
+        AreaEffectItem area_level = new AreaEffectItem("area_level", '↑', true, false,
+                true, AreaEffectItem.Effect.LEVEL, 10);
+        mmr_.addItem(area_level, 11, 5);
+        
+
+        Terrain obstacle = new Terrain("boulder", '■', true, false);
+        mmr_.addTerrain(obstacle, 2, 2);
+    }
+    private static void startGame(){
+    	AvatarController AC = new AvatarController(avatar_);
+    	AC.runTheGame();
+    }
     private static void saveGameToDisk() {
         if (saveGame_ == null) {
             saveGame_ = SavedGame.newSavedGame();

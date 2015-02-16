@@ -25,7 +25,7 @@ import java.util.LinkedList;
  * 
  * @author JohnMichaelReed (includes inner functions)
  */
-public class MapMain_Relation implements SaveData {
+public class MapMain_Relation {//implements SaveData {
 
 	// private final Map map_reference_ = Map.getMyReferanceToTheMap(this);
 	private Map current_map_reference_;
@@ -187,6 +187,7 @@ public class MapMain_Relation implements SaveData {
 	}
 
 	// <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    /*
 	@Override
 	public String getSerTag() {
 		return "RELATION_MAP_MAIN";
@@ -201,6 +202,6 @@ public class MapMain_Relation implements SaveData {
 	public void serialize(ObjectOutputStream oos,
 			HashMap<SaveData, Boolean> savMap) throws IOException {
 		SavedGame.defaultDataWrite(this, oos, savMap);
-	}
+	}*/
 	// </editor-fold>
 }

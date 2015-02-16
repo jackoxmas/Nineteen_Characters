@@ -176,7 +176,9 @@ public class Map {//} implements SaveData{
      * @return Top item from tile (x,y)
      */
     public Item removeTopItem(int x, int y) {
-        return this.map_grid_[y][x].removeTopItem();
+    	Item item = this.map_grid_[y][x].removeTopItem();
+    	items_list_.remove(item);
+        return item;
     }
 
     /**

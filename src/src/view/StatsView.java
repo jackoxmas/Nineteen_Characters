@@ -44,7 +44,6 @@ public final class StatsView extends Viewport
 	@Override
 	public void renderToDisplay() {
 		renderArray();
-		Display.setMessage("render to display", 5);
 	}
 	/*
 	 * Helper method to handle bulk of rendering, keeps renderToDisplay pure

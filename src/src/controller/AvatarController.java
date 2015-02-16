@@ -35,7 +35,6 @@ public final class AvatarController
     	char input = '`';
     	Display _display = new Display(my_avatar_.getMyView());
     	while ( (input = sc.next().charAt(0) ) != '`' ) {
-    		System.out.println("this should only happen once");
 			my_avatar_.getInput((char)input);
 			_display.setView(my_avatar_.getMyView());
             _display.printView();

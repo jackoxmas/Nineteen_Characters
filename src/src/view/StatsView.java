@@ -93,14 +93,14 @@ public final class StatsView extends Viewport
     	for (int i = 0; i < (avatar_reference_.getStatsPack().quantity_of_experience_
     			- ((avatar_reference_.getStatsPack().cached_current_level_-1)*100))/10; i++)
     		spades.append("♠");
-    	writeStringToContents(38, 12, rightAlign(10, spades.toString()));
-    	writeStringToContents(44, 13, "" + 100);
+    	writeStringToContents(40, 12, rightAlign(10, spades.toString()));
+    	writeStringToContents(44, 13, rightAlign(3, "" + avatar_reference_.getStatsPack().quantity_of_experience_));
 
     	writeStringToContents(68, 6, rightAlign(3, "" + avatar_reference_.getStatsPack().lives_left_));
     	writeStringToContents(68, 8, rightAlign(3, "" + avatar_reference_.getStatsPack().moves_left_in_turn_));
-    	writeStringToContents(72, 6, rightAlign(3, "" + avatar_reference_.getStatsPack().movement_level_));
-    	writeStringToContents(72, 11, rightAlign(3, "" + avatar_reference_.getStatsPack().offensive_rating_));
-    	writeStringToContents(72, 12, rightAlign(3, "" + avatar_reference_.getStatsPack().defensive_rating_));
+    	writeStringToContents(72, 8, rightAlign(3, "" + avatar_reference_.getStatsPack().movement_level_));
+    	writeStringToContents(72, 11, rightAlign(3, "" + avatar_reference_.getStatsPack().current_offensive_rating_));
+    	writeStringToContents(72, 12, rightAlign(3, "" + avatar_reference_.getStatsPack().current_defensive_rating_));
     	writeStringToContents(72, 13, rightAlign(3, "" + avatar_reference_.getStatsPack().current_armor_rating_));
     }
 

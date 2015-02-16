@@ -10,8 +10,8 @@
 ║                               Mana: ♦♦♦♦♦♦♦♦♦♦                               ║
 ║    Strength:                         (   /   )                               ║
 ║    Agility:                                       Offensive Rating:          ║
-║    Intellect:           Experience: ♠♠♠♠♠♠♠♠♠♠    Defensive Rating:          ║
-║    Hardiness:                        (   /   )    Armor Rating:              ║
+║    Intellect:           Experience:               Defensive Rating:          ║
+║    Hardiness:                        (   /100)    Armor Rating:              ║
 ║                                                                              ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║                                                                              ║

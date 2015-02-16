@@ -188,13 +188,6 @@ public class SavedGame {
             if (out_rels == null) out_rels = new ArrayDeque<Integer>();
             out_rels.add(ois.readInt()); // add caller's hash to refHashes
 
-            // if superclass is SD also, read its fields
-            for (Class<?> i : caller.getClass().getSuperclass().getInterfaces()) {
-                if (i == SaveData.class) {
-                    fieldDataRead(SaveData.class.cast(caller), ois, out_rels);
-                    break;
-                }
-            }
             // now read this class' fields
             fieldDataRead(caller_t.cast(caller), ois, out_rels);
             Method other = getCustomRead(caller_t.cast(caller));
@@ -212,13 +205,6 @@ public class SavedGame {
     }
 
     public static void defaultDataRelink(SaveData caller, ArrayDeque<SaveData> refs) {
-        // jump to superclass needs first
-        for (Class<?> i : caller.getClass().getSuperclass().getInterfaces()) {
-            if (i == SaveData.class) {
-                defaultDataRelink((SaveData)(caller.getClass().getSuperclass().cast(caller)), refs);
-                break;
-            }
-        }
 
         // now link caller references
         fieldDataLink(caller, refs);
@@ -234,13 +220,6 @@ public class SavedGame {
     }
 
     public static void defaultDataWrite(SaveData caller, ObjectOutputStream oos, HashMap<SaveData, Boolean> savMap) throws IOException{
-        // if superclass is SD also, write its fields
-        for (Class<?> i : caller.getClass().getSuperclass().getInterfaces()) {
-            if (i == SaveData.class) {
-                defaultDataWrite((SaveData) (caller.getClass().getSuperclass().cast(caller)), oos, savMap);
-                break;
-            }
-        }
 
         // now write this class' fields
         fieldDataWrite(caller, oos, savMap);

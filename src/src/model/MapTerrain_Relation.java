@@ -5,6 +5,7 @@
  */
 package src.model;
 
+import src.SaveData;
 import src.controller.Terrain;
 import java.io.Serializable;
 
@@ -12,7 +13,7 @@ import java.io.Serializable;
  *
  * @author JohnMichaelReed
  */
-public class MapTerrain_Relation extends MapDrawableThing_Relation implements Serializable {
+public class MapTerrain_Relation extends MapDrawableThing_Relation implements SaveData {
 
     private final Terrain terrain_;
 
@@ -21,6 +22,8 @@ public class MapTerrain_Relation extends MapDrawableThing_Relation implements Se
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("RELATIONMT", 35);
+    public String getSerTag() {
+        return "RELATION_MAP_TERRAIN";
+    }
     // </editor-fold>
 }

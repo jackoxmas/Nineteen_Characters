@@ -13,7 +13,8 @@ import src.view.Display;
  */
 public class AreaEffectItem extends Item {
 
-    // Alex probably didn't make serialization code for this 
+    // Alex probably didn't make serialization code for this
+    // ^^ THAT WHAT YOU THINK! ^^
     transient /* TEMPORARY */ private Effect effect_;
 
     public enum Effect {

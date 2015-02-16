@@ -20,21 +20,17 @@ public interface SaveData {
     public static String CUSTOMREAD = "readOther";
     public static String CUSTOMWRITE = "writeOther";
     public String getSerTag();
-    //public void setDTRelation(MapDrawableThing_Relation dtr) throws ClassNotFoundException;
-    //public Class<? extends SaveData> deserialize(ObjectInputStream ois, LinkedList<Integer> out_refHashes) throws ClassNotFoundException, IOException;
-    //public void relink(Object[] refs);
-    //public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> savMap) throws IOException;
 
     /*
-    private void linkOther (ArrayDeque<SaveData> refs) {
+    protected void linkOther (ArrayDeque<SaveData> refs) {
 
     }
 
-    private void readOther (ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
+    protected void readOther (ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
 
     }
 
-    private void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
+    protected void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
 
     }
      */

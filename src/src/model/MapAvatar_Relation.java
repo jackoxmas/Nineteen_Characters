@@ -5,16 +5,22 @@
  */
 package src.model;
 
+import src.SaveData;
 import src.controller.Avatar;
 import src.controller.Occupation;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayDeque;
+import java.util.HashMap;
 
 /**
  *
  * @author JohnMichaelReed
  */
-public class MapAvatar_Relation extends MapEntity_Relation implements Serializable {
+public class MapAvatar_Relation extends MapEntity_Relation implements SaveData {
 
     private Avatar avatar_;
 
@@ -39,6 +45,8 @@ public class MapAvatar_Relation extends MapEntity_Relation implements Serializab
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("RELATIONMA", 35);
+    public String getSerTag() {
+        return "RELATION_MAP_AVATAR";
+    }
     // </editor-fold>
 }

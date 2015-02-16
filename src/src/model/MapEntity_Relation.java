@@ -5,6 +5,7 @@
  */
 package src.model;
 
+import src.SaveData;
 import src.controller.Entity;
 import src.controller.Item;
 
@@ -12,7 +13,7 @@ import src.controller.Item;
  *
  * @author JohnReedLOL
  */
-public class MapEntity_Relation extends MapDrawableThing_Relation {
+public class MapEntity_Relation extends MapDrawableThing_Relation implements SaveData {
 
     private Entity entity_;
 
@@ -84,5 +85,8 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    public String getSerTag() {
+        return "RELATION_MAP_ENTITY";
+    }
     // </editor-fold>
 }

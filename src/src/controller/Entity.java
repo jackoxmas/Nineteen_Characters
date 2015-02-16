@@ -5,12 +5,18 @@
  */
 package src.controller;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 import src.SaveData;
+import src.SavedGame;
 import src.model.MapEntity_Relation;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  *
@@ -278,5 +284,39 @@ abstract public class Entity extends DrawableThing implements SaveData {
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     protected Entity() {}
+
+    private int s_invCount;
+    public String getSerTag() {
+        return "ENTITY";
+    }
+
+    protected void linkOther (ArrayDeque<SaveData> refs) {
+        super.linkOther(refs);
+
+        inventory_ = new ArrayList<Item>();
+        for (int i = 0; i < s_invCount; i++) {
+            inventory_.add((Item)refs.pop());
+        }
+    }
+
+    protected void readOther (ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
+        super.readOther(ois, out_rels);
+
+        s_invCount = ois.readInt();
+        for (int i = 0; i < s_invCount; i++) {
+            out_rels.addLast(ois.readInt());
+        }
+    }
+
+    protected void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
+        super.writeOther(oos, saveMap);
+
+        // Write inventory
+        oos.writeInt(inventory_.size());
+        for (int i = 0; i < inventory_.size(); i++) {
+            oos.writeInt(SavedGame.getHash(inventory_.get(i)));
+            saveMap.putIfAbsent(inventory_.get(i), false);
+        }
+    }
     // </editor-fold>
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -80,6 +81,25 @@ abstract public class DrawableThing implements SaveData {
     @Override
     public String getSerTag() {
         return "DRAWABLETHING";
+    }
+
+    protected void readOther (ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
+        name_ = ois.readUTF();
+        single_character_representation_ = ois.readChar();
+        is_viewable_ = ois.readBoolean();
+        out_rels.addLast(ois.readInt());
+    }
+
+    protected void linkOther (ArrayDeque<SaveData> refs) {
+        stats_pack_ = (DrawableThingStatsPack)refs.pop();
+    }
+
+    protected void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
+        oos.writeUTF(name_);
+        oos.writeChar(single_character_representation_);
+        oos.writeBoolean(is_viewable_);
+        oos.writeInt(SavedGame.getHash(stats_pack_));
+        saveMap.putIfAbsent(stats_pack_, false);
     }
     // </editor-fold>
 }

@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -22,7 +23,7 @@ import java.util.LinkedList;
  *
  * @author JohnReedLOL
  */
-public class Item extends DrawableThing {
+public class Item extends DrawableThing implements SaveData {
 
     // map_relationship_ is used in place of a map_referance_
 
@@ -124,6 +125,18 @@ public class Item extends DrawableThing {
     @Override
     public String getSerTag() {
         return "ITEM";
+    }
+
+    protected void linkOther (ArrayDeque<SaveData> refs) {
+        super.linkOther(refs);
+    }
+
+    protected void readOther (ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
+        super.readOther(ois, out_rels);
+    }
+
+    protected void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
+        super.writeOther(oos, saveMap);
     }
     // </editor-fold>
 }

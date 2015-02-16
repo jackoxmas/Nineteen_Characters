@@ -206,7 +206,7 @@ abstract public class Entity extends DrawableThing {
         else {
             occupation_.change_stats(stats_pack_);
         }
-        recalculateStats();
+        //recalculateStats();
     }
 
     /**

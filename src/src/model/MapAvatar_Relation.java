@@ -11,7 +11,7 @@ import src.controller.Occupation;
 import java.io.Serializable;
 
 /**
- *
+ * Handles interactions between map + avatar that neither should otherwise be othered from.
  * @author JohnMichaelReed
  */
 public class MapAvatar_Relation extends MapEntity_Relation implements Serializable {

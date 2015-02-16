@@ -16,6 +16,7 @@ import src.controller.Summoner;
 import src.model.MapMain_Relation;
 /**
  * Players see the AvatarCreationView when they chose their occupation.
+ *Generates the view, loads the ascii art, and then gives it to display to print
  * @author Matthew B, Jessan, JohnReedLOL
  */
 public final class AvatarCreationView extends Viewport

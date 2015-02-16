@@ -116,7 +116,7 @@ public class Main
             saveGame_ = SavedGame.newSavedGame();
         }
         Exception e = null;
-        saveGame_.saveFile(mmr_, e);
+
         if (e != null)
             errOut(e);
     }
@@ -154,7 +154,7 @@ public class Main
     }
 
     /**
-     * Writes the provided String to the errOut stream with the prefix: (DEBUG).
+     * Writes the provided String to the errOut stream with the prefix: (DEBUG|0).
      * @param s The String to write.
      */
     public static void dbgOut(String s) {
@@ -163,6 +163,13 @@ public class Main
             errOut("(DEBUG|0) " + s);
     }
 
+    /**
+     * Writes the provided String to the errOut stream with the prefix: (DEBUG|X) where X is the debug level of the
+     * output. If the provided debug level is greater (larger number) than the debug level option set in
+     * {@link ProgramOpts}, the debug string will not be output.
+     * @param s The debug string to write
+     * @param dLevel The debug level of the output
+     */
     public static void dbgOut(String s, int dLevel) {
         if (dLevel > pOpts_.dbg_level)
             return;
@@ -206,6 +213,10 @@ public class Main
         System.err.println("[" + errDateFormat_.format(new Date()) + "] " + s);
     }
 
+    /**
+     * Commits the changes specified by the current {@link ProgramOpts}.
+     * @param args The command line arguments that were given to this program (not used in this method)
+     */
     protected static void handleArgs(String[] args) {
         if (pOpts_.err_flag) {
             try {
@@ -221,17 +232,22 @@ public class Main
         if (pOpts_.lsg_flag) {
             saveGame_ = new SavedGame(args[pOpts_.lsg_path]);
             Exception e = null;
-            int s = saveGame_.loadFile(mmr_, e);
+            //int s = saveGame_.loadFile(mmr_, e);
+            /*
             if (s == 0) { // the saved game load has failed
                 errOut(e);  // print out error
                 if (startNewGame() == 0) {
                     errOut(e);
                     exitGame();
                 }
-            }
+            }*/
         }
     }
 
+    /**
+     * Parses an array of String objects for program options and sets their appropriate values in {@link ProgramOpts}.
+     * @param args The command line arguments that were given to this program
+     */
     protected static void parseArgs(String[] args) {
         pOpts_ = new ProgramOpts();
 

@@ -5,7 +5,7 @@
   <javac srcdir="src"
          destdir="bin"
          debug="on"
-         source="1.7"
+         source="1.6"
 	 />
         <jar jarfile="NineteenCharacters.jar" basedir="./bin" includes="**/**.class">
 	  <fileset dir="view/ASCIIART">

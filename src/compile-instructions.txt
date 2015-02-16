@@ -1,0 +1,13 @@
+Requires : At least java 1.7, ant, unicode support
+Navigate to this folder in terminal
+type in ant
+Allow ant to build
+The jar has now been generated.
+java -jar NineteenCharacters.jar
+
+Command list:
+Naviate to here
+ant
+
+
+

@@ -53,7 +53,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     /**
      * An item underneath you can be picked up using the parameters 0,0. 0 if
      * item is picked up successfully, -1 if no item is on the specified tile.
-     *
+     * @author John-Michael Reed
      * @param x
      * @param y
      * @return error_code
@@ -64,21 +64,26 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         Item itemToBePickedUp = current_map_reference_.removeTopItem(x + getMyXCoordinate(), y + getMyYCoordinate());
         if (itemToBePickedUp != null) {
             entity_.addItemToInventory(itemToBePickedUp);
+            src.view.Display.setMessage("Picked up item: " + itemToBePickedUp.name_, 3);
             error_code = 0;
+        } else {
+            src.view.Display.setMessage("There is nothing here to pick up.", 3);
         }
 
         return error_code;
     }
     /**
-     * 
+     * @author John-Michael Reed
      * @return -1 if no item can be dropped (inventory empty)
      */
     public int dropItem() {
         Item itemToBeDropped = entity_.pullFirstItemOutOfInventory();
         if (itemToBeDropped != null) {
             current_map_reference_.addItem(itemToBeDropped, this.getMapTile().x_, this.getMapTile().y_);
+            src.view.Display.setMessage("Dropped item: " + itemToBeDropped.name_, 3);
             return 0;
         } else {
+            src.view.Display.setMessage("You have no items to drop.", 3);
             return -1;
         }
     }

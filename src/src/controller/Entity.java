@@ -104,6 +104,7 @@ abstract public class Entity extends DrawableThing {
     public int useFirstInventoryItem() {
         Item i = getFirstItemInInventory();
         if (i == null) {
+            Display.setMessage("You have no items to use.", 3);
             return -1;
         } else {
             i.use(this);

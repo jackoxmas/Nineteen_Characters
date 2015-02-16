@@ -392,9 +392,6 @@ public final class Avatar extends Entity {
                     break;
                 case 'u': //Use item in inventory
                     int error_code_u = this.useFirstInventoryItem();
-                    if (error_code_u != 0) {
-                        System.out.println("Use item in inventory with key u failed.");
-                    }
                     break;
                 case 'q'://move NW
                     mar.moveInDirection(-1, 1);
@@ -425,23 +422,15 @@ public final class Avatar extends Entity {
                     break;
                 case 'D': //drop item
                     int error_code_D = mar.dropItem();
-                    if (error_code_D != 0) {
-                        System.out.println("dropItem function failed to drop an item");
-                    } else {
-                        Display.setMessage("You dropped an item!", 3);
-                    }
                     break;
-                case 'E': //equip
+                case 'E': // equip
                     this.equipInventoryItem();
                     break;
-                case 'U':
+                case 'U': // unEquip
                     unEquipInventoryItem();
                     break;
                 case 'p'://pickup item
                     int error_code_p = mar.pickUpItemInDirection(0, 0);
-                    if (error_code_p != 0) {
-                        System.out.println("pickUpItem function failed to get an item");
-                    }
                     break;
                 default: //no valid input
                     break;

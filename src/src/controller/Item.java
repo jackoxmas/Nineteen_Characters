@@ -93,9 +93,8 @@ public class Item extends DrawableThing {
      * @param target - The entity that the item will be used on.
      */
     public void use(Entity target) {
-        //System.out.println("Item: " + this.toString() + " is being used by entity + " + target.toString());
         Display.setMessage("Used Item: " + this.toString() + " Health: " + target.getStatsPack().current_life_
-                + "Level: " + target.getStatsPack().cached_current_level_, 3);
+                + " Level: " + target.getStatsPack().cached_current_level_, 3);
     }
 
     /**

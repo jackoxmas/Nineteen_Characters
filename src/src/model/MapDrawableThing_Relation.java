@@ -73,6 +73,13 @@ public class MapDrawableThing_Relation {
     public void setMapTile(MapTile new_tile) {
         my_tile_ = new_tile;
     }
+    
+    /**
+     * Get map reference
+     */
+    public Map getMap() {
+    	return current_map_reference_;
+    }
 
     /**
      * Moves an entity without removing it from the list of entities

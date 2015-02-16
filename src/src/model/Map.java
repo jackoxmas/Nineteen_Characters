@@ -23,7 +23,7 @@ import src.controller.Terrain;
  * YOU ARE BREAKING ENCAPSULATION!!!!!!!!!!!!!!!
  * @author John-Michael Reed
  */
-class Map {//} implements SaveData{
+public class Map {//} implements SaveData{
 
     /**
      * @author John-Michael Reed Sends a key press from a keyboard to an avatar
@@ -223,6 +223,14 @@ class Map {//} implements SaveData{
             return 0;
         }
         return -1;
+    }
+    
+    public MapTile[][] getMapGrid() {
+    	return map_grid_;
+    }
+
+    public LinkedList<Item> getItemsList() {
+    	return items_list_;
     }
 
     /**

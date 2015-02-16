@@ -139,6 +139,22 @@ public class Terrain extends DrawableThing {
     void applyTerrainEffect(Entity entity) {
 
     }
+    
+    public String hasWater() {
+    	if (contains_water_)
+    		return "true";
+    	return "false";
+    }
+    
+    public char getDecal() {
+    	return decal_;
+    }
+    
+    public String hasMountain() {
+    	if (contains_mountain_)
+    		return "true";
+    	return "false";
+    }
 
     boolean determineIfCanPass(Entity entity) {
         if (contains_water_ || contains_mountain_) {

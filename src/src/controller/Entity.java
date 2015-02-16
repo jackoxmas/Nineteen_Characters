@@ -155,6 +155,18 @@ abstract public class Entity extends DrawableThing {
             return -1;
         }
     }
+    
+    public boolean hasEquipped() {
+    	if (equipped_item_ != null)
+    		return true;
+    	return false;
+    }
+    
+    public Item getEquipped() {
+    	if (equipped_item_ != null)
+    		return equipped_item_;
+    	return null;
+    }
 
     //private final int max_level_;
     private EntityStatsPack stats_pack_ = new EntityStatsPack();

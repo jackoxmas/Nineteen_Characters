@@ -118,10 +118,6 @@ public abstract class Viewport implements Serializable {
 		if(y>=height_) {return false;}
 		if(x<0 || y < 0){return false;}
 		for(int i = 0; i < in.length();i++){
-                    System.out.println(x);
-                    System.out.println(y);
-                    System.out.println(i);
-                    System.out.println();
                     view_contents_[x+i][y] = in.charAt(i);
                 }
 		return true;

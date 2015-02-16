@@ -107,8 +107,6 @@ abstract public class Entity extends DrawableThing {
             if (equipped_item_ == null) {
                 Display.setMessage("Equipping item: " + inventory_.get(0).name_, 3);
                 DrawableThingStatsPack to_add = inventory_.get(0).getStatsPack();
-                System.out.println("to add: " + inventory_.get(0).getStatsPack().offensive_rating_);
-                System.out.println("before add: " + this.stats_pack_.offensive_rating_);
                 this.stats_pack_.addOn(to_add);
                 equipped_item_ = inventory_.get(0);
                 inventory_.remove(0); // Very inefficient for large number of items

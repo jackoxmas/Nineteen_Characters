@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import src.Vector2;
 /* 
- * Another useless testing class, goes through the basic functions of ViewPort to ensure they work.
+ * Another (useless) testing class, goes through the basic functions of ViewPort to ensure they work.
  */
 
 public class ViewPortTester extends Viewport{

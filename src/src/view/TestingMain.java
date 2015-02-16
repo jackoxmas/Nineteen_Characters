@@ -9,7 +9,7 @@ import src.controller.Item;
 import src.controller.Terrain;
 import src.model.MapMain_Relation;
 /*
- * A simple testing method used early on. Should get deleted at some point.
+ * A simple testing method used early on. Should get deleted at some point, but might be useful at some point.
  */
 public class TestingMain {
 

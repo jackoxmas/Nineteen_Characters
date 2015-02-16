@@ -113,19 +113,20 @@ public final class StatsView extends Viewport
     		if (i < 10) {
     			if (display_index)
     				writeStringToContents(19+i, 2, "" + (char)(48+i));
-    			writeStringToContents(19+i, 4, item_name);
+    			System.out.println("yes it works");
+    			writeStringToContents(4, 19+i, item_name);
     		} else if (i < 12) {
     			if (display_index)
     				writeStringToContents(19+i, 2, "" + (char)(97+i));
-    			writeStringToContents(19+i, 4, item_name);
+    			writeStringToContents(4, 19+i, item_name);
     		} else if (i < 24) {
     			if (display_index)
     				writeStringToContents(19+i, 2, "" + (char)(97+i));
-    			writeStringToContents(19+i, 30, item_name);
+    			writeStringToContents(30, 19+i, item_name);
     		} else if (i < 36) {
     			if (display_index)
     				writeStringToContents(19+i, 2, "" + (char)(97+i));
-    			writeStringToContents(19+i, 56, item_name);
+    			writeStringToContents(56, 19+i, item_name);
     		}
     	}
     }

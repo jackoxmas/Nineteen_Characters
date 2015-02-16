@@ -46,10 +46,6 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     }
 
-    public void receiveAttack(int damage) {
-
-    }
-
     /**
      * An item underneath you can be picked up using the parameters 0,0. 0 if
      * item is picked up successfully, -1 if no item is on the specified tile.

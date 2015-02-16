@@ -130,7 +130,8 @@ public class MapDrawableThing_Relation {
                 Entity to_hurt = infliction.getEntity();
                 if (to_hurt != null) {
                     EntityStatsPack s = to_hurt.getStatsPack();
-                    s.current_life_ -= strength;
+                    // s.current_life_ -= strength;
+                    to_hurt.receiveAttack(strength, null); // kills avatar if health is negative
                     src.view.Display.setMessage("Current Life after: " + s.current_life_, 3);
                 }
             }

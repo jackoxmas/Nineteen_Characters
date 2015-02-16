@@ -12,7 +12,8 @@ import java.io.Serializable;
 import src.view.Display;
 
 /**
- * Entity inherits from DrawableThing. Entity is a DrawableThing that can move on the map.
+ * Entity inherits from DrawableThing. Entity is a DrawableThing that can move
+ * on the map.
  */
 abstract public class Entity extends DrawableThing {
 
@@ -31,6 +32,7 @@ abstract public class Entity extends DrawableThing {
 
     /**
      * Set MapEntity_Relation
+     *
      * @param e - MapEntity_Relation
      */
     public void setMapRelation(MapEntity_Relation e) {
@@ -47,6 +49,7 @@ abstract public class Entity extends DrawableThing {
 
     /**
      * Entity Constructor
+     *
      * @param name
      * @param representation - What will represent the Entity on the screen.
      * @param x_respawn_point
@@ -65,6 +68,7 @@ abstract public class Entity extends DrawableThing {
 
     /**
      * Gets the Inventory of Entity.
+     *
      * @return ArrayList of Items that are in the Entities Inventory
      */
     public ArrayList<Item> getInventory() {
@@ -73,6 +77,7 @@ abstract public class Entity extends DrawableThing {
 
     /**
      * Gets first Item in Inventory. In the 0 position of the arrayList.
+     *
      * @return Null if list is empty
      */
     public Item pullFirstItemOutOfInventory() {
@@ -112,11 +117,23 @@ abstract public class Entity extends DrawableThing {
         }
     }
 
+    public void receiveAttack(int damage, Occupation occupation) {
+        if(occupation == null) {
+            this.stats_pack_.current_life_ -= damage;
+            if(this.stats_pack_.current_life_ <= 0) {
+                this.commitSuicide();
+            }
+        } else {
+            // ...
+        }
+    }
+
     // Only 1 equipped item in iteration 1
     protected Item equipped_item_;
 
     /**
      * Equip Item at position 0 of the Inventory ArrayList.
+     *
      * @author John-Michael Reed
      * @return error codes: -2, inventory has no item; -1, cannot equip another
      * item
@@ -138,18 +155,18 @@ abstract public class Entity extends DrawableThing {
             return -2;
         }
     }
-    
 
     /**
      * Equip Item at position 0 of the Inventory ArrayList.
+     *
      * @author John-Michael Reed
      * @return error codes: -2, inventory has no item; -1, cannot equip another
      * item
      */
     public void equipInventoryItem(Item equipped) {
-    	equipped_item_ = equipped;
+        equipped_item_ = equipped;
     }
-    
+
     /**
      * @author John-Michael Reed
      * @return error codes: -1 inventory is too full for item [not yet
@@ -168,17 +185,19 @@ abstract public class Entity extends DrawableThing {
             return -1;
         }
     }
-    
+
     public boolean hasEquipped() {
-    	if (equipped_item_ != null)
-    		return true;
-    	return false;
+        if (equipped_item_ != null) {
+            return true;
+        }
+        return false;
     }
-    
+
     public Item getEquipped() {
-    	if (equipped_item_ != null)
-    		return equipped_item_;
-    	return null;
+        if (equipped_item_ != null) {
+            return equipped_item_;
+        }
+        return null;
     }
 
     //private final int max_level_;
@@ -276,6 +295,7 @@ abstract public class Entity extends DrawableThing {
 
     /**
      * Sets Entities Occupation.
+     *
      * @param occupation
      */
     public void setOccupation(Occupation occupation) {
@@ -283,7 +303,8 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     *  Get the Entities occupation.
+     * Get the Entities occupation.
+     *
      * @return Occupation of Entity
      */
     public Occupation getOccupation() {
@@ -292,6 +313,7 @@ abstract public class Entity extends DrawableThing {
 
     /**
      * Add item to the inventory.
+     *
      * @param item
      */
     public void addItemToInventory(Item item) {

@@ -28,16 +28,26 @@ public final class MapView extends Viewport {
 		render();//All that's needed for now.
 		
 	}
+	/*
+	 * Constructor, inits center to (0,0)
+	 */
 	public MapView(){
 		super();
 		view_contents_ = getContents();
 		x_=0;
 		y_=0;
 	}
+	/*
+	 * Set the center to render the view from
+	 * @param int x, int y, x and y coords
+	 */
 	public void setCenter(int x, int y){
 		x_ = x;
 		y_= y;
 	}
+	/*
+	 * Helper method to keep renderToDisplay pure
+	 */
 	private void render(){
 		clear();
 		makeSquare(0, 0,width_-1,height_-1);

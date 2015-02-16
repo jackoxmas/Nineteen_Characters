@@ -80,6 +80,10 @@ public abstract class Viewport implements Serializable {
 
 	
 	}
+	/*
+	 * Clear the current array
+	 * Helper method for rendering and such
+	 */
 	protected void clear(){
 		if(view_contents_==null){return;}//Avoid doing this on null array.
 		for(int j = 0; j!=height_;++j){
@@ -88,6 +92,9 @@ public abstract class Viewport implements Serializable {
 			}	
 		}
 	}
+	/* 
+	 * If someone tries to touch the view_contents_ prior to it being set, fix that.
+	 */
 	private void initGuard(){
 		if(view_contents_ == null){view_contents_=new char[width_][height_];
 			clear();

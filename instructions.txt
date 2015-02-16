@@ -1,0 +1,5 @@
+To compile, navigate to the ./src folder, and see directions there.
+To run, navigate to the ./src folder, and 
+java -jar NineteenCharacters.jar
+
+or execute startgame.sh/startgame.command in terminal

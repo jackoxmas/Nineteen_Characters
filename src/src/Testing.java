@@ -14,11 +14,11 @@ import java.lang.reflect.Field;
  * 
  * @author Alex Stewart
  */
-public class Testing extends Main{
+public class Testing extends RunGame{
 
     public static void main (String[] args) {
-        Main.parseArgs(args);
-        Main.handleArgs(args);
+        RunGame.parseArgs(args);
+        RunGame.handleArgs(args);
 
         SavedGame sg = SavedGame.newSavedGame();
         MapMain_Relation mmr = new MapMain_Relation();

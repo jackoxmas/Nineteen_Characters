@@ -5,7 +5,7 @@
  */
 package src.model;
 
-import src.Main;
+import src.RunGame;
 import src.SaveData;
 import src.SavedGame;
 import src.controller.Avatar;

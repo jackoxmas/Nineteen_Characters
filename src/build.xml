@@ -13,7 +13,7 @@
 	    <include name="**/**.txt"/>
 	  </fileset>
   	  <manifest>
-  	    <attribute name="Main-Class" value="src.Main"/>
+  	    <attribute name="Main-Class" value="src.RunGame"/>
   	    <attribute name="Class-Path" value="./"/>
   	  </manifest>
     	</jar>

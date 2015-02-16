@@ -35,7 +35,7 @@ import src.view.Viewport;
  * Initializes, opens the program.
  * @author JohnReedLOL, Alex Stewart
  */
-public class Main
+public class RunGame
 {
     
     private static ProgramOpts pOpts_ = null;

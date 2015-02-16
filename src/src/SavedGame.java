@@ -172,7 +172,7 @@ public class SavedGame {
     }
 
     public static SavedGame newSavedGame(String directory) {
-        Main.dbgOut("New save game requested for dir: " + directory);
+        RunGame.dbgOut("New save game requested for dir: " + directory);
         String date = SAVE_DATE_FORMAT.format(new Date()); // get the current date string
 
         // Search the current directory for existing saves and keep an iterator to append the save name with a unique
@@ -195,7 +195,7 @@ public class SavedGame {
                 }
             }
         } catch (Exception e) {
-            Main.errOut(e);
+            RunGame.errOut(e);
         }
         // iterator is now the correct unique ID
         // ready to construct path

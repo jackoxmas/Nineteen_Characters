@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.io.Serializable;
 
-import src.Main;
+import src.RunGame;
 import src.SaveData;
 import src.SavedGame;
 import src.controller.Entity;

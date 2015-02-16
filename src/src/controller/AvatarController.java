@@ -27,7 +27,7 @@ public final class AvatarController
     	int input = -1;
     	
     	while ( (input = in.read() ) != -1 ) {
-			my_avatar_.sendInput((char)input);
+			my_avatar_.getInput((char)input);
     	}
     	
     	in.close();

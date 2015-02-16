@@ -18,12 +18,22 @@ public class MapAvatar_Relation extends MapEntity_Relation implements Serializab
 
     private Avatar avatar_;
 
+    /**
+     * MapAvatar_Relation constructor. Inherits from MapEntity_Relation.
+     * @param avatar
+     * @param x_respawn_point
+     * @param y_respawn_point
+     */
     public MapAvatar_Relation(Avatar avatar,
             int x_respawn_point, int y_respawn_point) {
         super(avatar, x_respawn_point, y_respawn_point);
         avatar_ = avatar;
     }
 
+    /**
+     * Gets Avatar associated with the relation.
+     * @return avatar
+     */
     public Avatar getAvatar() {
         return avatar_;
     }

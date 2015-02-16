@@ -36,8 +36,8 @@ final public class MapTile implements Serializable {
      *
      * @param terrain - terrain to be added to the tile
      */
-    public int initializeTerrain(Terrain terrain) {
-        if (this.terrain_ == null && terrain != null) {
+    public int addTerrain(Terrain terrain) {
+        if (terrain != null) {
             this.terrain_ = terrain;
             return 0;
         } else {
@@ -130,6 +130,10 @@ final public class MapTile implements Serializable {
         return this.entity_;
     }
 
+    /**
+     * Peeks at (does not remove) top item on tile.
+     * @return Item on top of the tile. Does not remove item from tile.
+     */
     public Item viewTopItem() {
         if (!this.items_.isEmpty()) {
             return this.items_.peekLast();
@@ -138,6 +142,10 @@ final public class MapTile implements Serializable {
         }
     }
 
+    /**
+     * Removes top item of tile.
+     * @return Item on top of tile. Removes it from tile.
+     */
     public Item removeTopItem() {
         if (!this.items_.isEmpty()) {
             return this.items_.removeLast();
@@ -163,7 +171,7 @@ final public class MapTile implements Serializable {
          else if (terrain_ != null) {
             return terrain_.getRepresentation();
         } else {
-            return 'M';
+            return '▩';
         }
     }
 

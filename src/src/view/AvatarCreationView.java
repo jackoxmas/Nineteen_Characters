@@ -89,10 +89,14 @@ public final class AvatarCreationView extends Viewport
     private boolean setOccupation(char c){
     	switch (c) {
     	case 'C':  avatar_reference_.setOccupation(new Sneak());
+    				avatar_reference_.setRepresentation('☭');
                  break;
         case 'W': avatar_reference_.setOccupation(new Summoner());
+        		  avatar_reference_.setRepresentation('☃');
+        		  src.view.Display.setMessage("Put on my robe and wizard hat",4);
         		break;
         case 'S': avatar_reference_.setOccupation(new Smasher());
+        			avatar_reference_.setRepresentation('⚔');
         		break;
 		default: System.err.println("Impossible Switch in CCview?");
 	 }

@@ -64,6 +64,35 @@ abstract public class Entity extends DrawableThing {
             return null;
         }
     }
+    
+    /**
+     * Returns first Item object in Inventory
+     * 
+     * @return
+     */
+    public Item getFirstItemInInventory() {
+        if(! inventory_.isEmpty()) {
+        return inventory_.get(0);
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Uses first item in inventory
+     * Does not destroy the item
+     * 
+     * @return 0 on success, -1 on fail (no item to use) 
+     */
+    public int useFirstInventoryItem() {
+        Item i = getFirstItemInInventory();
+        if(i == null) {
+            return -1;
+        } else {
+            i.use(this);
+            return 0;
+        }
+    }
 
     // Only 1 equipped item in iteration 1
     protected Item equipped_item_;
@@ -124,10 +153,22 @@ abstract public class Entity extends DrawableThing {
 
     }
 
+    /**
+     * Include stat increase from item
+     * i.e., item with stat increase is equipped 
+     * 
+     * @param item
+     */
     public void addItemStatsToMyStats(Item item) {
         stats_pack_.addOn(item.getStatsPack());
     }
 
+    /**
+     * Removes state increase from item
+     * i.e., item with stat increase is unequipped
+     * 
+     * @param item
+     */
     public void subtractItemStatsFromMyStats(Item item) {
         stats_pack_.reduceBy(item.getStatsPack());
     }

@@ -35,6 +35,10 @@ public final class AvatarCreationView extends Viewport
     private String sneakerString_ = "C to Select a Sneaker:";
     private String summonerString_ = "W to Select a Summoner:";
     private String smasherString_ = "S to Select a Smasher:";
+    /* 
+     * Internal method to assit with the rendering, does most of the bulk work, separated out so
+     * that renderToDisplay remains pure
+     */
     private void renderArray(){
     	makeSquare(0,0,width_-1,height_-1);
     	for(int i = 0; i!=title_.size();++i){
@@ -103,13 +107,20 @@ public final class AvatarCreationView extends Viewport
 	 }
     	return false;
     }
+    /* 
+     * 
+     * @see src.view.Viewport#renderToDisplay()
+     */
 	@Override
 	public void renderToDisplay() {
 		clear();
 		renderArray();
 		
 	}
-
+/*
+ * 
+ * @see src.view.Viewport#getInput(char)
+ */
 	@Override
 	public boolean getInput(char c) {
 		if(c == 'C' || c == 'W' || c == 'S'){

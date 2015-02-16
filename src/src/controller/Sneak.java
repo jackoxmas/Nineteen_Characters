@@ -21,4 +21,9 @@ public final class Sneak  implements Occupation
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     private static final long serialVersionUID = Long.parseLong("OCSNEAK", 35);
     // </editor-fold>
+    
+    @Override
+    public String toString() {
+    	return "Sneak";
+    }
 }

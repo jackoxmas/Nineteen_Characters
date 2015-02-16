@@ -33,13 +33,22 @@ public class TestingMain {
     public static void oldtest() {
         MapMain_Relation mmr_ = new MapMain_Relation();
         mmr_.bindToNewMapOfSize(Viewport.width_, Viewport.height_); //Can change these later if we so desire. 
-        Avatar avatar = new Avatar("avatar", 'x', 0, 0);
-        avatar.setMap(mmr_);
-        ViewPortTester Tester = new ViewPortTester();
-        printArray(Tester);
-        System.out.println("Done with viewportTester, ccviewtime!");
-        Display _display = new Display(new AvatarCreationView(avatar));
-        _display.printView();
+		Avatar avatar = new Avatar("avatar", '@', 0, 0);
+		avatar.setMap(mmr_);
+		Display _display = new Display(avatar.getMyView());
+		_display.printView();
+		Terrain obstacle = new Terrain("boulder", 'O', true, false);
+		mmr_.addTerrain(obstacle, 2, 2);
+		System.out.println("☠ and ★ and ✚");
+		Scanner sc = new Scanner(System.in);
+		while(true){
+			char c;
+			c = sc.next().charAt(0);
+			if(c == '5'){return;}
+			avatar.sendInput(c);
+			_display.setView(avatar.getMyView());
+			_display.printView();
+		}
     }
 
     public static void main(String[] args) {

@@ -12,8 +12,7 @@ import java.io.Serializable;
 import src.view.Display;
 
 /**
- *
- * @author JohnReedLOL
+ * Entity inherits from DrawableThing. Entity is a DrawableThing that can move on the map.
  */
 abstract public class Entity extends DrawableThing {
 
@@ -30,15 +29,29 @@ abstract public class Entity extends DrawableThing {
         return map_relationship_;
     }
 
+    /**
+     * Set MapEntity_Relation
+     * @param e - MapEntity_Relation
+     */
     public void setMapRelation(MapEntity_Relation e) {
         map_relationship_ = e;
     }
 
+    /**
+     * Returns false because Entities are not passable.
+     */
     @Override
     public boolean isPassable() {
         return false;
     }
 
+    /**
+     * Entity Constructor
+     * @param name
+     * @param representation - What will represent the Entity on the screen.
+     * @param x_respawn_point
+     * @param y_respawn_point
+     */
     public Entity(String name, char representation,
             int x_respawn_point, int y_respawn_point) {
         super(name, representation);
@@ -50,12 +63,16 @@ abstract public class Entity extends DrawableThing {
 
     protected final ArrayList<Item> inventory_;
 
+    /**
+     * Gets the Inventory of Entity.
+     * @return ArrayList of Items that are in the Entities Inventory
+     */
     public ArrayList<Item> getInventory() {
         return inventory_;
     }
 
     /**
-     *
+     * Gets first Item in Inventory. In the 0 position of the arrayList.
      * @return Null if list is empty
      */
     public Item pullFirstItemOutOfInventory() {
@@ -69,7 +86,7 @@ abstract public class Entity extends DrawableThing {
     /**
      * Returns first Item object in Inventory
      *
-     * @return
+     * @return Item
      */
     public Item getFirstItemInInventory() {
         if (!inventory_.isEmpty()) {
@@ -98,6 +115,7 @@ abstract public class Entity extends DrawableThing {
     protected Item equipped_item_;
 
     /**
+     * Equip Item at position 0 of the Inventory ArrayList.
      * @author John-Michael Reed
      * @return error codes: -2, inventory has no item; -1, cannot equip another
      * item
@@ -141,6 +159,9 @@ abstract public class Entity extends DrawableThing {
     //private final int max_level_;
     private EntityStatsPack stats_pack_ = new EntityStatsPack();
 
+    /**
+     * Get Entities StatsPack.
+     */
     public EntityStatsPack getStatsPack() {
         return stats_pack_;
     }
@@ -218,6 +239,9 @@ abstract public class Entity extends DrawableThing {
         }
     }
 
+    /**
+     * Entity dies, Game Over.
+     */
     public void commitSuicide() {
         --stats_pack_.lives_left_;
         if (stats_pack_.lives_left_ < 0) {
@@ -225,14 +249,26 @@ abstract public class Entity extends DrawableThing {
         }
     }
 
+    /**
+     * Sets Entities Occupation.
+     * @param occupation
+     */
     public void setOccupation(Occupation occupation) {
         occupation_ = occupation;
     }
 
+    /**
+     *  Get the Entities occupation.
+     * @return Occupation of Entity
+     */
     public Occupation getOccupation() {
         return occupation_;
     }
 
+    /**
+     * Add item to the inventory.
+     * @param item
+     */
     public void addItemToInventory(Item item) {
         inventory_.add(item);
     }

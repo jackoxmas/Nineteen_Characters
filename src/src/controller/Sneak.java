@@ -7,8 +7,7 @@
 package src.controller;
 
 /**
- *
- * @author JohnReedLOL
+ * Sneak Occupation, agility +1.
  */
 public final class Sneak  implements Occupation
 {

@@ -7,8 +7,7 @@
 package src.controller;
 
 /**
- *
- * @author JohnReedLOL
+ * Summoner Occupation, intellect +1.
  */
 public final class Summoner implements Occupation
 {

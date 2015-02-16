@@ -26,7 +26,6 @@ import java.util.LinkedList;
 /**
  * Each avatar represents a player
  *
- *
  * @author JohnReedLOL
  */
 public final class Avatar extends Entity {
@@ -62,6 +61,10 @@ public final class Avatar extends Entity {
         return map_relationship_;
     }
 
+    /**
+     * Sets MapAvatar_Relation
+     * @param a
+     */
     public void setMapRelation(MapAvatar_Relation a) {
         map_relationship_ = a;
     }
@@ -86,10 +89,16 @@ public final class Avatar extends Entity {
         return this.current_viewport_;
     }
 
+    /**
+     * Switches to Map View.
+     */
     public void switchToMapView() {
         current_viewport_ = map_view_;
     }
 
+    /**
+     * Switches to Stats View.
+     */
     public void switchToStatsView() {
         current_viewport_ = stats_view_;
     }
@@ -103,12 +112,16 @@ public final class Avatar extends Entity {
         return new StatsView(this);
     }
 
+    /**
+     * Sets Map.
+     * @param map_main
+     */
     public void setMap(MapMain_Relation map_main) {
         map_main.addViewToMap(map_view_);
         map_main.addAvatar(this, 0, 0);
     }
 
-    /* determine if input is not important
+   /** determine if input is not important
      * or if we already did something
      * then if true
      * 
@@ -330,10 +343,11 @@ public final class Avatar extends Entity {
 
         return s;
     }
-    /*
-     * Handles avatar input
+    
+    /**
+     * Handles Avatar input.
+     * @param c
      */
-
     public void getInput(char c) {
         if (current_viewport_ == map_view_) {//If we currently have our mapview equipped(check by reference)
 

@@ -301,8 +301,11 @@ public class RunGame
         mmr_.addItem(area_level, 11, 5);
         
 
-        Terrain obstacle = new Terrain("boulder", '▲', true, false);
-        mmr_.addTerrain(obstacle, 2, 2);
+        Terrain mountain = new Terrain("boulder", '▲', true, false);
+        mmr_.addTerrain(mountain, 2, 2);
+        
+        Terrain water = new Terrain("water", '~', false, true);
+        mmr_.addTerrain(water, 5, 2);
     }
     private static void startGame(){
     	AvatarController AC = new AvatarController(avatar_);

@@ -23,8 +23,8 @@ public class Testing extends Main{
         SavedGame sg = SavedGame.newSavedGame();
         MapMain_Relation mmr = new MapMain_Relation();
         mmr.bindToNewMapOfSize(10, 10);
-        sg.saveFile(mmr, new Exception());
-        sg.loadFile(mmr, new Exception());
+        //sg.saveFile(mmr, new Exception());
+        //sg.loadFile(mmr, new Exception());
 
         System.out.println("== FINISH LINE ==");
     }

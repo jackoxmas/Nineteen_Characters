@@ -45,7 +45,9 @@ public final class StatsView extends Viewport
 	public void renderToDisplay() {
 		renderArray();
 	}
-	
+	/*
+	 * Helper method to handle bulk of rendering, keeps renderToDisplay pure
+	 */
     private void renderArray() {
     	for (int i = 0; i < template_.size(); i++) {
     		writeStringToContents(0, 0+i, template_.get(i));
@@ -53,7 +55,9 @@ public final class StatsView extends Viewport
     	renderStats();
     	renderInventory();
     }
-
+/*
+ * helps renderToDisplay
+ */
     private void renderStats() {
     	if (avatar_reference_.getOccupation() == null)
     		return;
@@ -103,7 +107,9 @@ public final class StatsView extends Viewport
     	writeStringToContents(72, 12, rightAlign(3, "" + avatar_reference_.getStatsPack().current_defensive_rating_));
     	writeStringToContents(72, 13, rightAlign(3, "" + avatar_reference_.getStatsPack().current_armor_rating_));
     }
-
+/*
+ * Helps renderToDisplay
+ */
     private void renderInventory() {
     	ArrayList<Item> inventory = avatar_reference_.getInventory();
     	for (int i = 0; i < inventory.size(); i++) {

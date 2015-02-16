@@ -17,6 +17,7 @@ import src.model.MapDrawableThing_Relation;
 
 /**
  * Abstract view class that the views inherit from.
+ * Contains some basic drawing functions, and a map relation.
  * @author Matthew B, JohnReedLOL
  */
 public abstract class Viewport implements Serializable {
@@ -79,6 +80,10 @@ public abstract class Viewport implements Serializable {
 
 	
 	}
+	/*
+	 * Clear the current array
+	 * Helper method for rendering and such
+	 */
 	protected void clear(){
 		if(view_contents_==null){return;}//Avoid doing this on null array.
 		for(int j = 0; j!=height_;++j){
@@ -87,6 +92,9 @@ public abstract class Viewport implements Serializable {
 			}	
 		}
 	}
+	/* 
+	 * If someone tries to touch the view_contents_ prior to it being set, fix that.
+	 */
 	private void initGuard(){
 		if(view_contents_ == null){view_contents_=new char[width_][height_];
 			clear();
@@ -114,10 +122,13 @@ public abstract class Viewport implements Serializable {
 	*/
 	protected boolean writeStringToContents(int x, int y, String in) {
 		initGuard();
-		if(x+in.length()> width_){return false;}
-		if(y>height_) {return false;}
+
+		if(x+(in.length()-1) >= width_){return false;}
+		if(y>=height_) {return false;}
 		if(x<0 || y < 0){return false;}
-		for(int i = 0; i < in.length();i++){view_contents_[x+i][y] = in.charAt(i);}
+		for(int i = 0; i < in.length();i++){
+                    view_contents_[x+i][y] = in.charAt(i);
+                }
 		return true;
 	}
 	/**

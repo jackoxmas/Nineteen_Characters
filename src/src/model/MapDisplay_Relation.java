@@ -9,7 +9,7 @@ import src.view.Display;
 import src.view.Viewport;
 
 /**
- *
+ * 
  * @author JohnMichaelReed
  */
 public class MapDisplay_Relation {

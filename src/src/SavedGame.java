@@ -40,7 +40,59 @@ public class SavedGame {
     public SavedGame(String filePath) {
         filePath_ = filePath;
     }
-    
+
+    public int loadGame() {
+        return 0;
+    }
+
+    public MapMain_Relation saveGame() {
+        return null;
+    }
+
+    /**
+     * Generates a new SavedGame object with the file path set to the next available save game file path in the current
+     * working directory.
+     * @return The new SavedGame object
+     */
+    public static SavedGame newSavedGame() {
+        String pwd = System.getProperty("user.dir"); // get the current working directory
+        return newSavedGame(pwd);
+    }
+
+    public static SavedGame newSavedGame(String directory) {
+        Main.dbgOut("New save game requested for dir: " + directory);
+        String date = SAVE_DATE_FORMAT.format(new Date()); // get the current date string
+
+        // Search the current directory for existing saves and keep an iterator to append the save name with a unique
+        // ID for this day.
+        int iterator = 1;
+        try {
+            File dir = new File(System.getProperty("user.dir"));
+            File[] files = dir.listFiles();
+            String s_buff;
+
+            int i_buff;
+            for (File f : files) { // Search files in directory
+                if (f.getName().endsWith(SavedGame.SAVE_EXT)) { // for save files...
+                    s_buff = f.getName(); // temprorarily store the filename
+                    if(!s_buff.startsWith(date))
+                        continue; // if the save isn't from this date, ignore it
+                    s_buff = s_buff.substring(s_buff.lastIndexOf('_') + 1, s_buff.lastIndexOf(".")); // otherwise, get the ID
+                    i_buff = Integer.parseInt(s_buff);
+                    if (i_buff >= iterator) iterator = i_buff + 1; // ensure that the iterator is always ahead by 1
+                }
+            }
+        } catch (Exception e) {
+            Main.errOut(e);
+        }
+        // iterator is now the correct unique ID
+        // ready to construct path
+        String path = date + SAVE_ITERATOR_FLAG + iterator + SAVE_EXT;
+        return new SavedGame(path);
+    }
+
+    // <editor-fold desc="SAVEGAME SERIALIZATION CORPSE" defaultstate="collapsed">
+    /*
     public int loadFile(MapMain_Relation out_mapRel, Exception exep) {
         Main.dbgOut("Save game load requested from: " + filePath_, 2);
         exep = null; // First, set the out Exception variable to null
@@ -49,7 +101,7 @@ public class SavedGame {
             exep = new Exception("Provided filepath is NULL");
             return 0;
         }
-        
+
         // Attempt to open the file and read the map object
         try {
             FileInputStream fis = new FileInputStream(filePath_);
@@ -104,10 +156,10 @@ public class SavedGame {
             exep = e;
             return 0;
         }
-        
+
         return 1;
     }
-    
+
     public int saveFile(MapMain_Relation mapRel, Exception out_exep) {
         out_exep = null; // first, set the out Exception variable to null
         Main.dbgOut("Saving Game File to: " + filePath_, 1);
@@ -247,7 +299,7 @@ public class SavedGame {
         } catch (InvocationTargetException ivte) {
             Main.errOut(ivte, true);
         }
-}
+    }
 
     private static <T extends SaveData> void fieldDataRead(T caller, ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
         try {
@@ -363,71 +415,6 @@ public class SavedGame {
 
     public static final int getHash (Object o) {
         return System.identityHashCode(o);
-    }
-
-    /**
-     * Generates a new SavedGame object with the file path set to the next available save game file path in the current
-     * working directory.
-     * @return The new SavedGame object
-     */
-    public static SavedGame newSavedGame() {
-        String pwd = System.getProperty("user.dir"); // get the current working directory
-        return newSavedGame(pwd);
-    }
-
-    public static SavedGame newSavedGame(String directory) {
-        Main.dbgOut("New save game requested for dir: " + directory);
-        String date = SAVE_DATE_FORMAT.format(new Date()); // get the current date string
-
-        // Search the current directory for existing saves and keep an iterator to append the save name with a unique
-        // ID for this day.
-        int iterator = 1;
-        try {
-            File dir = new File(System.getProperty("user.dir"));
-            File[] files = dir.listFiles();
-            String s_buff;
-
-            int i_buff;
-            for (File f : files) { // Search files in directory
-                if (f.getName().endsWith(SavedGame.SAVE_EXT)) { // for save files...
-                    s_buff = f.getName(); // temprorarily store the filename
-                    if(!s_buff.startsWith(date))
-                        continue; // if the save isn't from this date, ignore it
-                    s_buff = s_buff.substring(s_buff.lastIndexOf('_') + 1, s_buff.lastIndexOf(".")); // otherwise, get the ID
-                    i_buff = Integer.parseInt(s_buff);
-                    if (i_buff >= iterator) iterator = i_buff + 1; // ensure that the iterator is always ahead by 1
-                }
-            }
-        } catch (Exception e) {
-            Main.errOut(e);
-        }
-        // iterator is now the correct unique ID
-        // ready to construct path
-        String path = date + SAVE_ITERATOR_FLAG + iterator + SAVE_EXT;
-        return new SavedGame(path);
-    }
-
-    private static void ripFields (Object caller, ArrayDeque<Field> out_fields, ArrayDeque<Field> out_SDs) throws IllegalAccessException {
-        Field[] fs = caller.getClass().getDeclaredFields();
-        int fMod;
-        for (Field f : fs) {    // for each field in the class
-            f.setAccessible(true);  // ignore stupid concepts like (private or final)
-            fMod = f.getModifiers();    // get any other modifiers on the field
-            if (Modifier.isTransient(fMod)) continue;   // skip this field if it is "transient"
-            if (Modifier.isStatic(fMod)) continue;      // skip if "static"
-
-            Class<?>[] interfaces = f.getType().getInterfaces();    // get the field's type's interfaces
-            boolean isSD = false;   // check to see if the field is a SaveData object reference
-            for (Class<?> i : interfaces)
-                if (i == SaveData.class) isSD = true;
-
-            if (isSD) {
-                out_SDs.push(f);
-            } else {
-                out_fields.push(f);
-            }
-        }
-    }
-
-
+    }*/
+    // </editor-fold>
 }

@@ -17,13 +17,13 @@ import src.controller.Avatar;
 import src.controller.Terrain;
 
 /**
- * The map contains the map.\ THIS CLASS SHOULD NOT BE PUBLIC JUST BECAUSE - IT IS FUCKING PACKAGE PRIVATE I MADE IT PUBLIC TO TEST SOMETHING.
+ * The map contains the map.\ THIS CLASS SHOULD NOT BE PUBLIC JUST BECAUSE - IT IS PACKAGE PRIVATE I MADE IT PUBLIC TO TEST SOMETHING.
  * SENDCOMMANDTOAVATAR IS STUPID - NO ITS NOT STUPID IT REPRESENTS A NETWORK CONNECTION PASSING COMMANDS FROM USER TO MAP
  * WHAT HAVE YOU DONE!!!!!! THAT MAP IS SUPPOSED TO BE A PACKAGE PRIVATE ENTITY ONLY ACCESSIBLE VIA RELATIONS
  * YOU ARE BREAKING ENCAPSULATION!!!!!!!!!!!!!!!
  * @author John-Michael Reed
  */
-class Map implements SaveData{
+class Map {//} implements SaveData{
 
     /**
      * @author John-Michael Reed Sends a key press from a keyboard to an avatar
@@ -260,6 +260,7 @@ class Map implements SaveData{
 
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    /*
     @Override
     public String getSerTag() {
         return "MAP";
@@ -272,6 +273,6 @@ class Map implements SaveData{
     @Override
     public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> savMap) throws IOException {
         SavedGame.defaultDataWrite(this, oos, savMap);
-    }
+    }*/
     // </editor-fold>
 }

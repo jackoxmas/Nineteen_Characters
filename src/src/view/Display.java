@@ -12,7 +12,7 @@ import src.controller.Avatar;
 import src.model.MapDisplay_Relation;
 
 /**
- * Represents a single player's display
+ * Represents a single player's display. Has a static game wide message.
  *
  * @author Matthew B, JohnReedLOL
  */
@@ -21,6 +21,12 @@ public class Display implements Serializable {
     // Converts the class name into a base 35 number
 	private static String message_ = "";
 	private static int counter_ = 0;
+	/* 
+	 * Static method, sets to what is being output the given string, for counter frames
+	 * Note that is handles multiline strings, but pushes the view up for each line.
+	 * Don't abuse please
+	 * @params String m : The message string, int counter : The frames to display it for
+	 */
 	public static void setMessage(String m, int counter){
 		message_ = m;
 		counter_ = counter;
@@ -31,6 +37,9 @@ public class Display implements Serializable {
      * @author Matthew B
      * @param Viewport
      * @return Display
+     */
+    /* Constructor, requires the view to render. 
+     * A display without a view might as well not exist.
      */
     public Display(Viewport _view){
     	current_view_ = _view;
@@ -53,7 +62,9 @@ public class Display implements Serializable {
 		}
 		if(counter_ > 0){System.out.println(message_);--counter_;}
     }
-    
+    /* 
+     * Helper method to handle 'clearing' the screen
+     */
     private void clearScreen(){
     	//Create the illusion of clearing the screen.
     	for(int i = 0; i!=2*current_view_.height_;++i){

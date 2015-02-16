@@ -105,7 +105,7 @@ abstract public class Entity extends DrawableThing {
     public int equipInventoryItem() {
         if (!inventory_.isEmpty()) {
             if (equipped_item_ == null) {
-                Display.setMessage("Equipping item: " + equipped_item_.name_, 3);
+                Display.setMessage("Equipping item: " + inventory_.get(0).name_, 3);
                 DrawableThingStatsPack to_add = inventory_.get(0).getStatsPack();
                 this.stats_pack_.addOn(to_add);
                 equipped_item_ = inventory_.get(0);
@@ -115,6 +115,7 @@ abstract public class Entity extends DrawableThing {
                 return -1;
             }
         } else {
+            Display.setMessage("You don't have anything to equip!", 3);
             return -2;
         }
     }

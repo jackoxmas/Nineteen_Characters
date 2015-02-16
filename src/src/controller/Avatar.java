@@ -412,6 +412,8 @@ public final class Avatar extends Entity {
                     int error_code_D = mar.dropItem();
                     if (error_code_D != 0) {
                         System.out.println("dropItem function failed to drop an item");
+                    } else {
+                        Display.setMessage("You dropped an item!", 3);
                     }
                     break;
                 case 'E': //equip

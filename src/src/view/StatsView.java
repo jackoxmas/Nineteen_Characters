@@ -132,7 +132,10 @@ public final class StatsView extends Viewport
 
 	@Override
 	public boolean getInput(char c) {
-		// TODO Auto-generated method stub
+		if (c == 'i') {
+			avatar_reference_.switchToMapView();
+			return true;
+		}
 		return false;
 	}
 		

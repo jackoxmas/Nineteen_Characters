@@ -9,7 +9,7 @@ import src.controller.Entity;
 import src.controller.Item;
 
 /**
- *
+ * One line description
  * @author JohnReedLOL
  */
 public class MapEntity_Relation extends MapDrawableThing_Relation {

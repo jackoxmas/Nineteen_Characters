@@ -12,7 +12,7 @@ import src.controller.Avatar;
 import src.model.MapDisplay_Relation;
 
 /**
- * Represents a single player's display
+ * Represents a single player's display. Has a static game wide message.
  *
  * @author Matthew B, JohnReedLOL
  */

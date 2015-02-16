@@ -4,14 +4,14 @@
 ║                                                                              ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║                                                                              ║
-║                               Life: ♥♥♥♥♥♥♥♥♥♥    Lives Left:     ###/###    ║
-║                                      (###/###)                               ║
-║                                                   Movement Left:  ###/###    ║
+║                               Life: ♥♥♥♥♥♥♥♥♥♥    Lives Left:        /999    ║
+║                                      (   /   )                               ║
+║                                                   Movement Left:     /       ║
 ║                               Mana: ♦♦♦♦♦♦♦♦♦♦                               ║
-║    Strength:    ###                  (###/###)                               ║
-║    Agility:     ###                               Offensive Rating:   ###    ║
-║    Intellect:   ###     Experience: ★★★★★★★★★★    Defensive Rating:   ###    ║
-║    Hardiness:   ###                  (###/###)    Armor Rating:       ###    ║
+║    Strength:                         (   /   )                               ║
+║    Agility:                                       Offensive Rating:          ║
+║    Intellect:           Experience:               Defensive Rating:          ║
+║    Hardiness:                        (   /100)    Armor Rating:              ║
 ║                                                                              ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║                                                                              ║

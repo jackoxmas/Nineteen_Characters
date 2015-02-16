@@ -8,7 +8,9 @@ import src.controller.AvatarController;
 import src.controller.Item;
 import src.controller.Terrain;
 import src.model.MapMain_Relation;
-
+/*
+ * A simple testing method used early on. Should get deleted at some point.
+ */
 public class TestingMain {
 
     public TestingMain() {
@@ -57,9 +59,18 @@ public class TestingMain {
         Avatar avatar = new Avatar("avatar", '☃', 0, 0);
         avatar.setMap(mmr_);
         Item equipable = new Item("☂", '☂', true, true, false);
-        equipable.getStatsPack().offensive_rating_ += 17;
+        Item blue = new Item("blue", '☂', true, true, false);
+        Item red = new Item("red", '☂', true, true, false);
+        Item green = new Item("green", '☂', true, true, false);
+        Item brown = new Item("brown", '☂', true, true, false);
+        Item seven = new Item("seven", '☂', true, true, false);
         
         mmr_.addItem(equipable, 5, 5); // ▨
+        mmr_.addItem(blue, 6, 6); // ▨
+        mmr_.addItem(red, 7, 7); // ▨
+        mmr_.addItem(green, 8, 8); // ▨
+        mmr_.addItem(brown, 9, 9); // ▨
+        mmr_.addItem(seven, 5, 5); // ▨
         for (int y = 0; y < Viewport.height_; ++y) {
             for (int x = 0; x < Viewport.width_ / 2; ++x) {
                 Terrain obstacle = new Terrain("land", '▨', false, false);

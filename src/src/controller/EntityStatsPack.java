@@ -3,7 +3,7 @@ package src.controller;
 public final class EntityStatsPack extends DrawableThingStatsPack {
 
 // Primary stats
-    public int lives_left_ = 0; // this can change without leveling up
+    public int lives_left_ = 1; // this can change without leveling up
     public int strength_level_ = 1;
     public int agility_level_ = 1;
     public int intellect_level_ = 1;
@@ -51,6 +51,7 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
 
     public EntityStatsPack() {
         super(1, 1, 1, 1, 1);
+        
     }
 
 }

@@ -16,6 +16,8 @@ public class AreaEffectItem extends Item {
     // Alex probably didn't make serialization code for this 
     transient /* TEMPORARY */ private Effect effect_;
 
+    private boolean hasBeenActivated;
+    
     public enum Effect {
 
         HEAL, HURT, LEVEL, KILL
@@ -38,6 +40,7 @@ public class AreaEffectItem extends Item {
         super(name, representation, is_passable, goes_in_inventory, is_one_shot);
         effect_ = effect;
         power_ = power;
+        hasBeenActivated = false;
     }
 
     /**
@@ -60,6 +63,9 @@ public class AreaEffectItem extends Item {
      */
     @Override
     public void onWalkOver() {
+    	
+    	hasBeenActivated = true;
+
         System.out.println("Item: " + this.toString() + " is being walked on.");
         if (this.isOneShot() && !this.goesInInventory()) {
             this.getMapRelation().getMapTile().removeTopItem();
@@ -79,5 +85,34 @@ public class AreaEffectItem extends Item {
                 this.getMapRelation().killWithinRadius(2);
                 break;
         }
+    }
+    
+    public boolean hasBeenActivated(){
+    	return hasBeenActivated;
+    }
+    
+    public int getPower(){
+    	return power_;
+    }
+    
+    public String getEffect(){
+    	String s;
+    	switch(effect_) {
+    		case HURT:
+    			s = "HURT";
+    			break;
+    		case HEAL:
+    			s = "HEAL";
+    			break;
+    		case LEVEL:
+    			s = "LEVEL";
+    			break;
+    		case KILL:
+    			s = "KILL";
+    			break;
+    		default :
+    			s = null;
+    	}
+    	return s;
     }
 }

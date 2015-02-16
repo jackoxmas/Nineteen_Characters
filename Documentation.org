@@ -1,6 +1,6 @@
 #+AUTHOR: Nineteen_Characters!
 * Font : This game works best with the following font
-http://dejavu-fonts.org/wiki/Main_Page
+Deja Vu monospace regular font
 * Running 
 java -jar game.jar [-d [LEVEL]][-e FILE] [-l  FILE]
 

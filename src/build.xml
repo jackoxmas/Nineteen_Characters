@@ -2,7 +2,7 @@
 <!-- Configuration of the Ant build system to generate a Jar file --> 
 <project name="Ninteen" default="CreateJar">
   <target name="CreateJar" description="Create Jar file">
-        <jar jarfile="NineteenCharacters.jar" basedir="./" includes="*.class" >
+        <jar jarfile="NineteenCharacters.jar" basedir="./" includes="**/**.class" > 
   			<manifest>
   				<attribute name="Main-Class" value="src.view.TestingMain"/>
   				<attribute name="Class-Path" value="./"/>

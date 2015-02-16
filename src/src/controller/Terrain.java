@@ -12,6 +12,7 @@ import src.model.MapTerrain_Relation;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -19,7 +20,7 @@ import java.util.LinkedList;
  *
  * @author JohnReedLOL
  */
-public class Terrain extends DrawableThing {
+public class Terrain extends DrawableThing implements SaveData{
 
     // map_relationship_ is used in place of a map_referance_
     private MapTerrain_Relation map_relationship_;
@@ -124,6 +125,22 @@ public class Terrain extends DrawableThing {
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    @Override
+    public String getSerTag() {
+        return "TERRAIN";
+    }
+
+    protected void linkOther (ArrayDeque<SaveData> refs) {
+        super.linkOther(refs);
+    }
+
+    protected void readOther (ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
+        super.readOther(ois, out_rels);
+    }
+
+    protected void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
+        super.writeOther(oos, saveMap);
+    }
 
     // </editor-fold>
 }

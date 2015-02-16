@@ -5,13 +5,20 @@
  */
 package src.controller;
 
+import src.SaveData;
 import src.view.Display;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayDeque;
+import java.util.HashMap;
 
 /**
  *
  * @author JohnMichaelReed
  */
-public class AreaEffectItem extends Item {
+public class AreaEffectItem extends Item implements SaveData{
 
     // Alex probably didn't make serialization code for this
     // ^^ THAT WHAT YOU THINK! ^^
@@ -58,5 +65,21 @@ public class AreaEffectItem extends Item {
                 this.getMapRelation().killWithinRadius(2);
                 break;
         }
+    }
+
+    public String getSerTag() {
+        return "ITEM_AOE";
+    }
+
+    protected void linkOther (ArrayDeque<SaveData> refs) {
+        super.linkOther(refs);
+    }
+
+    protected void readOther (ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
+        super.readOther(ois, out_rels);
+    }
+
+    protected void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
+        super.writeOther(oos, saveMap);
     }
 }

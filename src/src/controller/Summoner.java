@@ -17,13 +17,14 @@ public final class Summoner implements Occupation
         current_stats.intellect_level_ += 1;
 
     }
-
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("OCSUMMONER", 35);
-    // </editor-fold>
     
     @Override
     public String toString() {
     	return "Summoner";
+    }
+
+    @Override
+    public String getSerTag() {
+        return "OCC_SUMMONER";
     }
 }

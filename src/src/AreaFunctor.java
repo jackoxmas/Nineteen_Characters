@@ -9,7 +9,7 @@ package src;
  *
  * @author JohnReedLOL
  */
-public abstract class AreaFunctor {
+public abstract class AreaFunctor implements SaveData{
 
     /**
      * casts an area effect
@@ -39,4 +39,8 @@ public abstract class AreaFunctor {
      * @param strength - how much to effect it by
      */
     abstract public void repeat(int x_pos, int y_pos, int strength);
+
+    public String getSerTag() {
+        return "AREA_FUNCTOR";
+    }
 }

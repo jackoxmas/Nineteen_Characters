@@ -1,5 +1,7 @@
 package src.model;
 
+import java.util.ArrayDeque;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.io.Serializable;
 import java.io.ObjectInputStream;
@@ -8,6 +10,7 @@ import java.io.IOException;
 import java.util.ListIterator;
 
 import src.SaveData;
+import src.SavedGame;
 import src.controller.Entity;
 import src.controller.Item;
 import src.controller.Terrain;
@@ -18,12 +21,12 @@ import src.controller.Terrain;
  */
 final public class MapTile implements SaveData {
 
-    public final int x_;
-    public final int y_;
+    public int x_;
+    public int y_;
 
     private Terrain terrain_;
     private Entity entity_;
-    private LinkedList<Item> items_;
+    private transient LinkedList<Item> items_;
 
     MapTile(int x, int y) {
         x_ = x;
@@ -179,9 +182,35 @@ final public class MapTile implements SaveData {
 
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private int s_itemcount;
+
+    protected MapTile() {}
+
     @Override
     public String getSerTag() {
         return "MapTile";
+    }
+
+    protected void linkOther (ArrayDeque<SaveData> refs) {
+        items_ = new LinkedList<Item>();
+        for (int i = 0; i < s_itemcount; i++) {
+            items_.add((Item)refs.pop());
+        }
+    }
+
+    protected void readOther (ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
+        s_itemcount = ois.readInt();
+        for (int i = 0; i < s_itemcount; i++) {
+            out_rels.addLast(ois.readInt());
+        }
+    }
+
+    protected void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
+        oos.writeInt(items_.size());
+        for (int i = 0; i < items_.size(); i++) {
+            oos.writeInt(SavedGame.getHash(items_.get(i)));
+            saveMap.putIfAbsent(items_.get(i), false);
+        }
     }
     // </editor-fold>
 }

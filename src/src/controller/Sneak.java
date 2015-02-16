@@ -6,24 +6,29 @@
 
 package src.controller;
 
+import src.SaveData;
+
 /**
  *
  * @author JohnReedLOL
  */
-public final class Sneak  implements Occupation
+public final class Sneak implements Occupation
 {
     public void change_stats(EntityStatsPack current_stats) {
         //for sneak
         current_stats.agility_level_ += 1;
 
     }
-
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("OCSNEAK", 35);
-    // </editor-fold>
     
     @Override
     public String toString() {
     	return "Sneak";
     }
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    @Override
+    public String getSerTag() {
+        return "OCC_SNEAK";
+    }
+    // </editor-fold>
 }

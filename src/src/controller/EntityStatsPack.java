@@ -1,6 +1,8 @@
 package src.controller;
 
-public final class EntityStatsPack extends DrawableThingStatsPack {
+import src.SaveData;
+
+public final class EntityStatsPack extends DrawableThingStatsPack implements SaveData {
 
 // Primary stats
     public int lives_left_ = 0; // this can change without leveling up
@@ -52,5 +54,8 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
     public EntityStatsPack() {
         super(1, 1, 1, 1, 1);
     }
-
+    @Override
+    public String getSerTag() {
+        return "STATSPACK_ENTITY";
+    }
 }

@@ -7,9 +7,16 @@ package src.model;
 
 import src.AreaFunctor;
 import src.SaveData;
+import src.SavedGame;
 import src.controller.Entity;
 import src.controller.EntityStatsPack;
 import src.controller.Item;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayDeque;
+import java.util.HashMap;
 
 /**
  *
@@ -208,10 +215,10 @@ public class MapDrawableThing_Relation implements SaveData {
         }
     }
 
-    private final AreaDamager areaHurtFunctor = new AreaDamager();
-    private final AreaHealer areaHealFunctor = new AreaHealer();
-    private final AreaKiller areaKillFunctor = new AreaKiller();
-    private final AreaLeveler areaLevelFunctor = new AreaLeveler();
+    private AreaDamager areaHurtFunctor = new AreaDamager();
+    private AreaHealer areaHealFunctor = new AreaHealer();
+    private AreaKiller areaKillFunctor = new AreaKiller();
+    private AreaLeveler areaLevelFunctor = new AreaLeveler();
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
@@ -251,6 +258,20 @@ public class MapDrawableThing_Relation implements SaveData {
     @Override
     public String getSerTag() {
         return "RELATION_MAP_DRAWTHING";
+    }
+
+    protected void linkOther (ArrayDeque<SaveData> refs) {
+
+    }
+
+    protected void readOther (ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
+        MapDrawableThing_Relation mdr = (MapDrawableThing_Relation)SavedGame.defaultDataRead(this.getClass(), ois, out_rels);
+        this.current_map_reference_ = mdr.current_map_reference_;
+        this.
+    }
+
+    protected void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
+        SavedGame.defaultDataWrite(this, oos, saveMap);
     }
     // </editor-fold>
 }

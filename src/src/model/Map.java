@@ -273,14 +273,25 @@ class Map implements SaveData{
         return "MAP";
     }
 
-    private void linkOther (ArrayDeque<SaveData> refs) {/*
+    private void linkOther (ArrayDeque<SaveData> refs) {
         for (int j = 0; j < map_grid_[0].length; j++) {
             for (int i = 0; i < map_grid_.length; i++) {
-                map_grid_[i][j] = MapTile.class.cast(refs.pop());
+                map_grid_[i][j] = (MapTile)(refs.pop());
             }
-        }*/
+        }
 
         int c = 0;
+
+        // AVATAR LIST
+
+        for (java.util.Map.Entry<String, Avatar> e : avatar_list_.entrySet()) {
+            e.setValue((Avatar)refs.pop());
+        }
+
+        // ENTITY LIST
+        for (java.util.Map.Entry<String, Entity> e : entity_list_.entrySet()) {
+            e.setValue((Entity)refs.pop());
+        }
 
         for (c = 0; c < s_cntItems; c++) {
             items_list_ = new LinkedList<Item>();
@@ -289,7 +300,7 @@ class Map implements SaveData{
     }
 
     private void readOther (ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
-        /*int w = ois.readInt();
+        int w = ois.readInt();
         int h = ois.readInt();
         if (w <= 0 || h <= 0)
             throw new IOException("Corrupted data");
@@ -299,17 +310,33 @@ class Map implements SaveData{
             for (int i = 0; i < w; i++) {
                 out_rels.addLast(ois.readInt());
             }
-        }*/
+        }
 
         int c = 0;
+        s_cntAvtr = ois.readInt();
+        avatar_list_ = new LinkedHashMap<String, Avatar>();
+        // AVATAR LIST
+        for (c = 0; c < s_cntAvtr; c++) {
+            avatar_list_.put(ois.readUTF(), null);
+            out_rels.addLast(ois.readInt());
+        }
 
+        s_cntEntity = ois.readInt();
+        entity_list_ = new LinkedHashMap<String, Entity>();
+        // ENTITY LIST
+        for (c = 0; c < s_cntEntity; c++) {
+            entity_list_.put(ois.readUTF(), null);
+            out_rels.addLast(ois.readInt());
+        }
+
+        s_cntItems = ois.readInt();
         // ITEM LIST
         for (c = 0; c < s_cntItems; c++) {
             out_rels.addLast(ois.readInt());
         }
     }
 
-    private void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {/*
+    private void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
         // MAP TILES
         oos.writeInt(map_grid_.length);
         if (map_grid_.length == 0)
@@ -321,7 +348,23 @@ class Map implements SaveData{
                 oos.writeInt(SavedGame.getHash(map_grid_[i][j]));
                 saveMap.putIfAbsent(map_grid_[i][j], false);
             }
-        }*/
+        }
+
+        // AVATAR LIST
+        oos.writeInt(avatar_list_.size());
+        for (java.util.Map.Entry<String, Avatar> e : avatar_list_.entrySet()) {
+            oos.writeUTF(e.getKey());
+            oos.writeInt(SavedGame.getHash(e.getValue()));
+            saveMap.putIfAbsent(e.getValue(), false);
+        }
+
+        // ENTITY LIST
+        oos.writeInt(entity_list_.size());
+        for (java.util.Map.Entry<String, Entity> e : entity_list_.entrySet()) {
+            oos.writeUTF(e.getKey());
+            oos.writeInt(SavedGame.getHash(e.getValue()));
+            saveMap.putIfAbsent(e.getValue(), false);
+        }
 
         // ITEM LIST
         oos.writeInt(items_list_.size());

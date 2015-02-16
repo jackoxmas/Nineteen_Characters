@@ -17,12 +17,16 @@ public final class Smasher implements Occupation {
 
     }
 
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("OCSMASHER", 35);
-    // </editor-fold>
-    
     @Override
     public String toString() {
     	return "Smasher";
     }
+
+
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    @Override
+    public String getSerTag() {
+        return "OCC_SMASHER";
+    }
+    // </editor-fold>
 }

@@ -391,7 +391,7 @@ public final class Avatar extends Entity {
                     mar.moveInDirection(1, 1);
                     break;
                 case 'a': //move W
-                    mar.moveInDirection(-1, 1);
+                    mar.moveInDirection(-1, 0);
                     break;
                 case 's'://Move stationary?
                     mar.moveInDirection(0, 0);

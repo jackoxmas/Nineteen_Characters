@@ -8,7 +8,7 @@ package src.controller;
 import java.io.Serializable;
 
 /**
- * Represents the eight directions plus one direction for staying in place
+ * Interface for Occupations (Smasher, Sneak, Summoner). Different Occupations have different advantages.
  * @author JohnReedLOL
  */
 public interface Occupation extends Serializable {

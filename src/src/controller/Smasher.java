@@ -6,8 +6,7 @@
 package src.controller;
 
 /**
- *
- * @author JohnReedLOL
+ * Smasher Occupation, Strength +1.
  */
 public final class Smasher implements Occupation {
 

@@ -17,7 +17,7 @@ import src.model.MapDrawableThing_Relation;
  */
 
 /**
- *
+ * Drawable things are things that may be drawn on the screen. Such as Entity/Item/etc.
  * @author JohnReedLOL
  */
 abstract public class DrawableThing {// implements SaveData {
@@ -38,6 +38,11 @@ abstract public class DrawableThing {// implements SaveData {
         single_character_representation_ = representation;
         is_viewable_ = true;
     }
+    
+    /**
+     * Set character representation.
+     * @param c
+     */
     public void setRepresentation(char c){single_character_representation_ = c;}
     
     /**
@@ -62,15 +67,26 @@ abstract public class DrawableThing {// implements SaveData {
 
     }
 
-    //representation changes for terrain with/without decal
+    /**
+     * Get character representation.
+     * @return Character being used to represent this Drawable Thing.
+     */
     public char getRepresentation() {
         return this.single_character_representation_;
     }
 
+    /**
+     * Set if Drawable is viewable
+     * @param is_viewable
+     */
     public void setViewable(boolean is_viewable) {
         is_viewable_ = is_viewable;
     }
 
+    /**
+     * Get if Drawable Thing is viewable
+     * @return boolean
+     */
     public boolean getViewable() {
         return this.is_viewable_;
     }

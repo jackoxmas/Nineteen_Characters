@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
- * Class item represents a stackable entity [Alex's definition of entity] that
+ * Class item represents a stackable entity that
  * cannot move itself.
  *
  * @author JohnReedLOL
@@ -51,19 +51,33 @@ public class Item extends DrawableThing {
                 this, goes_in_inventory, is_one_shot);
     }
 
+    /**
+     * Returns true if passable, false if not.
+     */
     @Override
     public boolean isPassable() {
         return this.is_passable_;
     }
 
+    /**
+     * Checks if item can go in Inventory.
+     * @return true if item can be put into inventory, false if not.
+     */
     public boolean goesInInventory() {
         return this.getMapRelation().goesInInventory();
     }
 
+    /**
+     * Checks if item is one shot.
+     * @return true if item is one shot, false if not.
+     */
     public boolean isOneShot() {
         return this.getMapRelation().isOneShot();
     }
 
+    /**
+     * P
+     */
     public void onWalkOver() {
         //System.out.println("Item: " + this.toString() + " is being walked on.");
         if (this.isOneShot() && !this.goesInInventory()) {
@@ -93,7 +107,7 @@ public class Item extends DrawableThing {
 
     }
 
-    boolean determineIfCanPass(Entity entity) {
+    public boolean determineIfCanPass(Entity entity) {
         if (this.is_passable_) {
             return false;
         } else {

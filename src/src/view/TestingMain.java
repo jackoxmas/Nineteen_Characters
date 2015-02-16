@@ -58,7 +58,7 @@ public class TestingMain {
         mmr_.bindToNewMapOfSize(Viewport.width_ / 2, Viewport.height_); //Can change these later if we so desire. 
         Avatar avatar = new Avatar("avatar", '☃', 0, 0);
         avatar.setMap(mmr_);
-        Item equipable = new Item("☂", '☂', true, true, false);
+        Item equipable = new Item("umbrella_0", '☂', true, true, false);
         Item blue = new Item("umbrella_1", '☂', true, true, false);
         Item red = new Item("umbrella_2", '☂', true, true, false);
         Item green = new Item("umbrella_3", '☂', true, true, false);

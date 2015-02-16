@@ -57,6 +57,8 @@ public class TestingMain {
         Avatar avatar = new Avatar("avatar", '☃', 0, 0);
         avatar.setMap(mmr_);
         Item equipable = new Item("☂", '☂', true, true, false);
+        equipable.getStatsPack().offensive_rating_ += 17;
+        
         mmr_.addItem(equipable, 5, 5); // ▨
         for (int y = 0; y < Viewport.height_; ++y) {
             for (int x = 0; x < Viewport.width_ / 2; ++x) {

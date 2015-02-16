@@ -40,6 +40,7 @@ abstract public class DrawableThing implements SaveData {
         is_viewable_ = true;
     }
     public void setRepresentation(char c){single_character_representation_ = c;}
+    
     /**
      * Use this to call functions contained within the MapDrawable relationship
      * @return map_relationship_

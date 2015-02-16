@@ -26,7 +26,6 @@ import java.util.LinkedList;
 public class Item extends DrawableThing implements SaveData {
 
     // map_relationship_ is used in place of a map_referance_
-
     private MapItem_Relation map_relationship_;
 
     /**
@@ -68,11 +67,11 @@ public class Item extends DrawableThing implements SaveData {
 
     public void onWalkOver() {
         //System.out.println("Item: " + this.toString() + " is being walked on.");
-        if (this.isOneShot() && !this.goesInInventory() ) {
+        if (this.isOneShot() && !this.goesInInventory()) {
             this.getMapRelation().getMapTile().removeTopItem();
         }
-        //Display.setMessage("Walked on Item: " + this.toString(), 3);
-        this.getMapRelation().hurtWithinRadius(10, 2);
+        // Display.setMessage("Walked on Item: " + this.toString(), 3);
+        // this.getMapRelation().hurtWithinRadius(10, 2);
     }
 
     /**
@@ -82,8 +81,8 @@ public class Item extends DrawableThing implements SaveData {
      */
     public void use(Entity target) {
         //System.out.println("Item: " + this.toString() + " is being used by entity + " + target.toString());
-        Display.setMessage("Used Item: " + this.toString()+ " Health: " + target.getStatsPack().current_life_
-        		+ "Level: " + target.getStatsPack().cached_current_level_, 3);
+        Display.setMessage("Used Item: " + this.toString() + " Health: " + target.getStatsPack().current_life_
+                + "Level: " + target.getStatsPack().cached_current_level_, 3);
     }
 
     /**

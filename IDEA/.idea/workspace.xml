@@ -2,15 +2,33 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fbc16cae-2312-42a3-a657-0f99998ac22f" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../src/NineteenCharacters.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../src/view/ASCIIART/class.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../src/view/ASCIIART/smasher.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../src/view/ASCIIART/sneaker.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../src/src/view/ASCIIART/statsview.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../src/view/ASCIIART/statsview.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../src/view/ASCIIART/summoner.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gitignore" afterPath="$PROJECT_DIR$/../.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/controller/AreaEffectItem.java" afterPath="$PROJECT_DIR$/../src/src/controller/AreaEffectItem.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/controller/Avatar.java" afterPath="$PROJECT_DIR$/../src/src/controller/Avatar.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/controller/AvatarController.java" afterPath="$PROJECT_DIR$/../src/src/controller/AvatarController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/controller/DrawableThing.java" afterPath="$PROJECT_DIR$/../src/src/controller/DrawableThing.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/controller/DrawableThingStatsPack.java" afterPath="$PROJECT_DIR$/../src/src/controller/DrawableThingStatsPack.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/controller/Entity.java" afterPath="$PROJECT_DIR$/../src/src/controller/Entity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/controller/Item.java" afterPath="$PROJECT_DIR$/../src/src/controller/Item.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/MapAvatar_Relation.java" afterPath="$PROJECT_DIR$/../src/src/model/MapAvatar_Relation.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/MapDrawableThing_Relation.java" afterPath="$PROJECT_DIR$/../src/src/model/MapDrawableThing_Relation.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/MapEntity_Relation.java" afterPath="$PROJECT_DIR$/../src/src/model/MapEntity_Relation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/MapTerrain_Relation.java" afterPath="$PROJECT_DIR$/../src/src/model/MapTerrain_Relation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/SaveData.java" afterPath="$PROJECT_DIR$/../src/src/SaveData.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/SavedGame.java" afterPath="$PROJECT_DIR$/../src/src/SavedGame.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/MapMain_Relation.java" afterPath="$PROJECT_DIR$/../src/src/model/MapMain_Relation.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/MapTile.java" afterPath="$PROJECT_DIR$/../src/src/model/MapTile.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/controller/Smasher.java" afterPath="$PROJECT_DIR$/../src/src/controller/Smasher.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/controller/Sneak.java" afterPath="$PROJECT_DIR$/../src/src/controller/Sneak.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/view/StatsView.java" afterPath="$PROJECT_DIR$/../src/src/view/StatsView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/controller/Summoner.java" afterPath="$PROJECT_DIR$/../src/src/controller/Summoner.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/view/TestingMain.java" afterPath="$PROJECT_DIR$/../src/src/view/TestingMain.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/view/Viewport.java" afterPath="$PROJECT_DIR$/../src/src/view/Viewport.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/build.xml" afterPath="$PROJECT_DIR$/../src/build.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/view/ASCIIART/note.txt" afterPath="$PROJECT_DIR$/../src/src/view/ASCIIART/note.txt" />
     </list>
     <ignored path="IDEA_Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -54,14 +72,11 @@
           <file leaf-file-name="Viewport.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../src/src/view/Viewport.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="70" max-vertical-offset="969">
-                  <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="87" max-vertical-offset="1751">
+                  <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
                   <folding>
                     <element signature="docComment;class#Viewport#0" expanded="false" />
                     <element signature="docComment;method#getAsciiArtFromFile#0;class#Viewport#0" expanded="false" />
-                    <element signature="method#getAsciiArtFromFile#0;class#Viewport#0" expanded="false" />
-                    <element signature="method#clear#0;class#Viewport#0" expanded="false" />
-                    <element signature="method#initGuard#0;class#Viewport#0" expanded="false" />
                     <element signature="docComment;method#writeStringToContents#0;class#Viewport#0" expanded="false" />
                     <element signature="method#writeStringToContents#0;class#Viewport#0" expanded="false" />
                     <element signature="docComment;method#writeStringToContents#1;class#Viewport#0" expanded="false" />
@@ -78,8 +93,8 @@
           <file leaf-file-name="MapDrawableThing_Relation.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../src/src/model/MapDrawableThing_Relation.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="342" max-vertical-offset="1241">
-                  <caret line="20" column="36" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="308" max-vertical-offset="2278">
+                  <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
                   <folding>
                     <element signature="docComment;class#MapDrawableThing_Relation#0" expanded="false" />
                     <element signature="method#initguardMap#0;class#MapDrawableThing_Relation#0" expanded="false" />
@@ -95,11 +110,6 @@
                     <element signature="method#pushEntityInDirection#0;class#MapDrawableThing_Relation#0" expanded="false" />
                     <element signature="class#AreaDamager#0;class#MapDrawableThing_Relation#0" expanded="false" />
                     <element signature="method#repeat#0;class#AreaDamager#0;class#MapDrawableThing_Relation#0" expanded="false" />
-                    <element signature="class#AreaHealer#0;class#MapDrawableThing_Relation#0" expanded="false" />
-                    <element signature="method#repeat#0;class#AreaHealer#0;class#MapDrawableThing_Relation#0" expanded="false" />
-                    <element signature="class#AreaKiller#0;class#MapDrawableThing_Relation#0" expanded="false" />
-                    <element signature="docComment;method#repeat#0;class#AreaKiller#0;class#MapDrawableThing_Relation#0" expanded="false" />
-                    <element signature="method#repeat#0;class#AreaKiller#0;class#MapDrawableThing_Relation#0" expanded="false" />
                     <element signature="class#AreaLeveler#0;class#MapDrawableThing_Relation#0" expanded="false" />
                     <element signature="docComment;method#repeat#0;class#AreaLeveler#0;class#MapDrawableThing_Relation#0" expanded="false" />
                     <element signature="method#repeat#0;class#AreaLeveler#0;class#MapDrawableThing_Relation#0" expanded="false" />
@@ -110,6 +120,7 @@
                     <element signature="method#levelUpWithinRadius#0;class#MapDrawableThing_Relation#0" expanded="false" />
                     <element signature="method#isAssociatedWithMap#0;class#MapDrawableThing_Relation#0" expanded="false" />
                     <element signature="n#!!doc;n#getSerTag#0;n#MapDrawableThing_Relation#0" expanded="true" />
+                    <marker date="1424051428597" expanded="false" signature="5812:6146" placeholder="/**...*/" />
                   </folding>
                 </state>
               </provider>
@@ -133,8 +144,8 @@
           <file leaf-file-name="DrawableThingStatsPack.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../src/src/controller/DrawableThingStatsPack.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="597" max-vertical-offset="1496">
-                  <caret line="46" column="44" selection-start-line="46" selection-start-column="44" selection-end-line="46" selection-end-column="44" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="614" max-vertical-offset="1513">
+                  <caret line="47" column="35" selection-start-line="47" selection-start-column="35" selection-end-line="47" selection-end-column="35" />
                   <folding>
                     <element signature="n#!!doc;n#getSerTag#0;n#DrawableThingStatsPack#0" expanded="true" />
                   </folding>
@@ -142,11 +153,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Entity.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="Entity.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/../src/src/controller/Entity.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="971" max-vertical-offset="2125">
-                  <caret line="297" column="45" selection-start-line="297" selection-start-column="45" selection-end-line="297" selection-end-column="45" />
+                <state vertical-scroll-proportion="-0.6829811" vertical-offset="835" max-vertical-offset="1734">
+                  <caret line="17" column="25" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="25" />
                   <folding>
                     <element signature="docComment;class#Entity#0" expanded="false" />
                     <element signature="docComment;method#getMapRelation#0;class#Entity#0" expanded="false" />
@@ -169,15 +180,16 @@
                     <element signature="method#gainEnoughExperienceTolevelUp#0;class#Entity#0" expanded="false" />
                     <element signature="docComment;method#levelUp#0;class#Entity#0" expanded="false" />
                     <element signature="method#levelUp#0;class#Entity#0" expanded="false" />
-                    <element signature="e#5384#5402#0" expanded="false" />
+                    <element signature="e#5620#5638#0" expanded="false" />
                     <element signature="docComment;method#checkHealth#0;class#Entity#0" expanded="false" />
                     <element signature="method#checkHealth#0;class#Entity#0" expanded="false" />
                     <element signature="method#commitSuicide#0;class#Entity#0" expanded="false" />
                     <element signature="docComment;method#derivedStats#0;class#Entity#0" expanded="false" />
                     <element signature="method#derivedStats#0;class#Entity#0" expanded="false" />
                     <element signature="method#toString#0;class#Entity#0" expanded="false" />
-                    <element signature="e#7682#7683#0" expanded="true" />
-                    <element signature="e#7713#7714#0" expanded="true" />
+                    <element signature="method#linkOther#0;class#Entity#0" expanded="false" />
+                    <element signature="method#readOther#0;class#Entity#0" expanded="false" />
+                    <element signature="method#writeOther#0;class#Entity#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -207,8 +219,8 @@
           <file leaf-file-name="MapTile.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../src/src/model/MapTile.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2227">
-                  <caret line="100" column="5" selection-start-line="100" selection-start-column="5" selection-end-line="100" selection-end-column="5" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="2363">
+                  <caret line="109" column="5" selection-start-line="109" selection-start-column="5" selection-end-line="109" selection-end-column="5" />
                   <folding>
                     <element signature="docComment;class#MapTile#0" expanded="false" />
                     <element signature="method#MapTile#0;class#MapTile#0" expanded="false" />
@@ -224,10 +236,10 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="MapTerrain_Relation.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="MapTerrain_Relation.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../src/src/model/MapTerrain_Relation.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.3214683" vertical-offset="0" max-vertical-offset="899">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="459">
                   <caret line="25" column="38" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
                   <folding>
                     <element signature="e#634#635#0" expanded="true" />
@@ -270,27 +282,32 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="MapMain_Relation.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="MapMain_Relation.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/../src/src/model/MapMain_Relation.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3077">
-                  <caret line="156" column="7" selection-start-line="156" selection-start-column="7" selection-end-line="156" selection-end-column="7" />
+                <state vertical-scroll-proportion="-0.021134594" vertical-offset="223" max-vertical-offset="1122">
+                  <caret line="29" column="70" selection-start-line="29" selection-start-column="70" selection-end-line="29" selection-end-column="70" />
                   <folding>
-                    <element signature="e#0#4815#0" expanded="true" />
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#1253#1254#0" expanded="true" />
-                    <element signature="e#1293#1294#0" expanded="true" />
-                    <element signature="e#2220#2221#0" expanded="true" />
-                    <element signature="e#2265#2266#0" expanded="true" />
-                    <element signature="e#2294#2295#0" expanded="true" />
-                    <element signature="e#2339#2340#0" expanded="true" />
-                    <element signature="e#3909#3910#0" expanded="true" />
-                    <element signature="e#3968#3969#0" expanded="true" />
-                    <element signature="e#4561#4562#0" expanded="true" />
-                    <element signature="e#4633#4634#0" expanded="true" />
+                    <element signature="e#944#982#0" expanded="false" />
+                    <element signature="docComment;method#MapMain_Relation#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="docComment;method#bindToNewMapOfSize#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="method#bindToNewMapOfSize#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="docComment;method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="docComment;method#addEntity#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="method#addEntity#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="docComment;method#removeAvatar#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="method#removeAvatar#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="docComment;method#removeEntity#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="method#removeEntity#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="docComment;method#addItem#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="method#addItem#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="docComment;method#removeTopItem#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="method#removeTopItem#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="docComment;method#getTile#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="method#addViewToMap#0;class#MapMain_Relation#0" expanded="false" />
+                    <element signature="docComment;method#addTerrain#0;class#MapMain_Relation#0" expanded="false" />
                     <element signature="n#!!doc;n#getSerTag#0;n#MapMain_Relation#0" expanded="true" />
-                    <element signature="e#4748#4749#0" expanded="true" />
-                    <element signature="e#4790#4791#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -299,40 +316,30 @@
           <file leaf-file-name="Item.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../src/src/controller/Item.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="1617" max-vertical-offset="2516">
-                  <caret line="116" column="73" selection-start-line="116" selection-start-column="73" selection-end-line="116" selection-end-column="73" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="1600" max-vertical-offset="2499">
+                  <caret line="115" column="73" selection-start-line="115" selection-start-column="73" selection-end-line="115" selection-end-column="73" />
                   <folding>
-                    <element signature="e#0#4035#0" expanded="true" />
+                    <element signature="e#0#4044#0" expanded="true" />
                     <element signature="imports" expanded="true" />
-                    <element signature="e#1017#1018#0" expanded="true" />
-                    <element signature="e#1057#1058#0" expanded="true" />
-                    <element signature="e#1111#1112#0" expanded="true" />
-                    <element signature="e#1148#1149#0" expanded="true" />
-                    <element signature="e#1550#1551#0" expanded="true" />
-                    <element signature="e#1590#1591#0" expanded="true" />
-                    <element signature="e#1630#1631#0" expanded="true" />
-                    <element signature="e#1692#1693#0" expanded="true" />
-                    <element signature="e#1726#1727#0" expanded="true" />
-                    <element signature="e#1782#1783#0" expanded="true" />
                     <element signature="n#!!doc;n#getSerTag#0;n#Item#0" expanded="true" />
-                    <element signature="e#3549#3550#0" expanded="true" />
-                    <element signature="e#3578#3579#0" expanded="true" />
-                    <element signature="e#3638#3639#0" expanded="true" />
-                    <element signature="e#3675#3676#0" expanded="true" />
+                    <element signature="e#3558#3559#0" expanded="true" />
+                    <element signature="e#3587#3588#0" expanded="true" />
+                    <element signature="e#3647#3648#0" expanded="true" />
+                    <element signature="e#3684#3685#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="DrawableThing.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="DrawableThing.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../src/src/controller/DrawableThing.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.2080089" vertical-offset="0" max-vertical-offset="1547">
-                  <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="1564">
+                  <caret line="23" column="22" selection-start-line="23" selection-start-column="22" selection-end-line="23" selection-end-column="22" />
                   <folding>
                     <element signature="n#!!doc;n#DrawableThing#1;n#DrawableThing#0" expanded="true" />
-                    <element signature="e#2634#2635#0" expanded="true" />
-                    <element signature="e#2698#2699#0" expanded="true" />
+                    <element signature="e#2639#2640#0" expanded="true" />
+                    <element signature="e#2703#2704#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -354,11 +361,11 @@
           <file leaf-file-name="MapEntity_Relation.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../src/src/model/MapEntity_Relation.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="631" max-vertical-offset="1530">
+                <state vertical-scroll-proportion="0.0" vertical-offset="665" max-vertical-offset="1564">
                   <caret line="89" column="5" selection-start-line="89" selection-start-column="5" selection-end-line="89" selection-end-column="5" />
                   <folding>
-                    <element signature="e#2414#2415#0" expanded="true" />
-                    <element signature="e#2458#2459#0" expanded="true" />
+                    <element signature="e#2494#2495#0" expanded="true" />
+                    <element signature="e#2538#2539#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -380,8 +387,8 @@
           <file leaf-file-name="Avatar.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../src/src/controller/Avatar.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1309">
-                  <caret line="31" column="56" selection-start-line="31" selection-start-column="56" selection-end-line="31" selection-end-column="56" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="274" max-vertical-offset="1173">
+                  <caret line="437" column="0" selection-start-line="437" selection-start-column="0" selection-end-line="437" selection-end-column="0" />
                   <folding>
                     <element signature="docComment;class#Avatar#0" expanded="false" />
                     <element signature="docComment;method#acceptKeyCommand#0;class#Avatar#0" expanded="false" />
@@ -393,7 +400,7 @@
                     <element signature="method#sendInput#0;class#Avatar#0" expanded="false" />
                     <element signature="method#toString#0;class#Avatar#0" expanded="false" />
                     <element signature="method#getInput#0;class#Avatar#0" expanded="false" />
-                    <element signature="n#!!doc;n#getSerTag#0;n#Avatar#0" expanded="true" />
+                    <element signature="method#Avatar#1;class#Avatar#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -457,18 +464,18 @@
         <option value="$PROJECT_DIR$/../src/src/model/MapItem_Relation.java" />
         <option value="$PROJECT_DIR$/../src/src/Testing.java" />
         <option value="$PROJECT_DIR$/../src/src/model/Map.java" />
-        <option value="$PROJECT_DIR$/../src/src/model/MapMain_Relation.java" />
         <option value="$PROJECT_DIR$/../src/src/view/Viewport.java" />
-        <option value="$PROJECT_DIR$/../src/src/controller/Avatar.java" />
         <option value="$PROJECT_DIR$/../src/src/SavedGame.java" />
         <option value="$PROJECT_DIR$/../src/src/controller/AreaEffectItem.java" />
         <option value="$PROJECT_DIR$/../src/src/controller/DrawableThing.java" />
         <option value="$PROJECT_DIR$/../src/src/controller/Item.java" />
-        <option value="$PROJECT_DIR$/../src/src/controller/Entity.java" />
         <option value="$PROJECT_DIR$/../src/src/SaveData.java" />
         <option value="$PROJECT_DIR$/../src/src/model/MapEntity_Relation.java" />
         <option value="$PROJECT_DIR$/../src/src/model/MapAvatar_Relation.java" />
         <option value="$PROJECT_DIR$/../src/src/model/MapTerrain_Relation.java" />
+        <option value="$PROJECT_DIR$/../src/src/controller/Avatar.java" />
+        <option value="$PROJECT_DIR$/../src/src/model/MapMain_Relation.java" />
+        <option value="$PROJECT_DIR$/../src/src/controller/Entity.java" />
       </list>
     </option>
   </component>
@@ -1028,21 +1035,26 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="442" max-vertical-offset="1649">
           <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
           <folding>
-            <element signature="e#0#4815#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="e#1253#1254#0" expanded="true" />
-            <element signature="e#1293#1294#0" expanded="true" />
-            <element signature="e#2220#2221#0" expanded="true" />
-            <element signature="e#2265#2266#0" expanded="true" />
-            <element signature="e#2294#2295#0" expanded="true" />
-            <element signature="e#2339#2340#0" expanded="true" />
-            <element signature="e#3909#3910#0" expanded="true" />
-            <element signature="e#3968#3969#0" expanded="true" />
-            <element signature="e#4561#4562#0" expanded="true" />
-            <element signature="e#4633#4634#0" expanded="true" />
+            <element signature="e#944#982#0" expanded="false" />
+            <element signature="docComment;method#MapMain_Relation#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#bindToNewMapOfSize#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#bindToNewMapOfSize#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#removeAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#removeEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#removeTopItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeTopItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#getTile#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addViewToMap#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addTerrain#0;class#MapMain_Relation#0" expanded="false" />
             <element signature="n#!!doc;n#getSerTag#0;n#MapMain_Relation#0" expanded="true" />
-            <element signature="e#4748#4749#0" expanded="true" />
-            <element signature="e#4790#4791#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1062,7 +1074,7 @@
             <element signature="method#sendInput#0;class#Avatar#0" expanded="false" />
             <element signature="method#toString#0;class#Avatar#0" expanded="false" />
             <element signature="method#getInput#0;class#Avatar#0" expanded="false" />
-            <element signature="n#!!doc;n#getSerTag#0;n#Avatar#0" expanded="true" />
+            <element signature="method#Avatar#1;class#Avatar#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1136,21 +1148,26 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="422" max-vertical-offset="1275">
           <caret line="82" column="52" selection-start-line="82" selection-start-column="52" selection-end-line="82" selection-end-column="52" />
           <folding>
-            <element signature="e#0#4815#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="e#1253#1254#0" expanded="true" />
-            <element signature="e#1293#1294#0" expanded="true" />
-            <element signature="e#2220#2221#0" expanded="true" />
-            <element signature="e#2265#2266#0" expanded="true" />
-            <element signature="e#2294#2295#0" expanded="true" />
-            <element signature="e#2339#2340#0" expanded="true" />
-            <element signature="e#3909#3910#0" expanded="true" />
-            <element signature="e#3968#3969#0" expanded="true" />
-            <element signature="e#4561#4562#0" expanded="true" />
-            <element signature="e#4633#4634#0" expanded="true" />
+            <element signature="e#944#982#0" expanded="false" />
+            <element signature="docComment;method#MapMain_Relation#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#bindToNewMapOfSize#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#bindToNewMapOfSize#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#removeAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#removeEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#removeTopItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeTopItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#getTile#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addViewToMap#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addTerrain#0;class#MapMain_Relation#0" expanded="false" />
             <element signature="n#!!doc;n#getSerTag#0;n#MapMain_Relation#0" expanded="true" />
-            <element signature="e#4748#4749#0" expanded="true" />
-            <element signature="e#4790#4791#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1170,9 +1187,6 @@
           <folding>
             <element signature="docComment;class#Viewport#0" expanded="false" />
             <element signature="docComment;method#getAsciiArtFromFile#0;class#Viewport#0" expanded="false" />
-            <element signature="method#getAsciiArtFromFile#0;class#Viewport#0" expanded="false" />
-            <element signature="method#clear#0;class#Viewport#0" expanded="false" />
-            <element signature="method#initGuard#0;class#Viewport#0" expanded="false" />
             <element signature="docComment;method#writeStringToContents#0;class#Viewport#0" expanded="false" />
             <element signature="method#writeStringToContents#0;class#Viewport#0" expanded="false" />
             <element signature="docComment;method#writeStringToContents#1;class#Viewport#0" expanded="false" />
@@ -1233,21 +1247,26 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="422" max-vertical-offset="1275">
           <caret line="82" column="52" selection-start-line="82" selection-start-column="52" selection-end-line="82" selection-end-column="52" />
           <folding>
-            <element signature="e#0#4815#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="e#1253#1254#0" expanded="true" />
-            <element signature="e#1293#1294#0" expanded="true" />
-            <element signature="e#2220#2221#0" expanded="true" />
-            <element signature="e#2265#2266#0" expanded="true" />
-            <element signature="e#2294#2295#0" expanded="true" />
-            <element signature="e#2339#2340#0" expanded="true" />
-            <element signature="e#3909#3910#0" expanded="true" />
-            <element signature="e#3968#3969#0" expanded="true" />
-            <element signature="e#4561#4562#0" expanded="true" />
-            <element signature="e#4633#4634#0" expanded="true" />
+            <element signature="e#944#982#0" expanded="false" />
+            <element signature="docComment;method#MapMain_Relation#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#bindToNewMapOfSize#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#bindToNewMapOfSize#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#removeAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#removeEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#removeTopItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeTopItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#getTile#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addViewToMap#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addTerrain#0;class#MapMain_Relation#0" expanded="false" />
             <element signature="n#!!doc;n#getSerTag#0;n#MapMain_Relation#0" expanded="true" />
-            <element signature="e#4748#4749#0" expanded="true" />
-            <element signature="e#4790#4791#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1267,9 +1286,6 @@
           <folding>
             <element signature="docComment;class#Viewport#0" expanded="false" />
             <element signature="docComment;method#getAsciiArtFromFile#0;class#Viewport#0" expanded="false" />
-            <element signature="method#getAsciiArtFromFile#0;class#Viewport#0" expanded="false" />
-            <element signature="method#clear#0;class#Viewport#0" expanded="false" />
-            <element signature="method#initGuard#0;class#Viewport#0" expanded="false" />
             <element signature="docComment;method#writeStringToContents#0;class#Viewport#0" expanded="false" />
             <element signature="method#writeStringToContents#0;class#Viewport#0" expanded="false" />
             <element signature="docComment;method#writeStringToContents#1;class#Viewport#0" expanded="false" />
@@ -1330,21 +1346,26 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="527" max-vertical-offset="901">
           <caret line="75" column="45" selection-start-line="75" selection-start-column="45" selection-end-line="75" selection-end-column="45" />
           <folding>
-            <element signature="e#0#4815#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="e#1253#1254#0" expanded="true" />
-            <element signature="e#1293#1294#0" expanded="true" />
-            <element signature="e#2220#2221#0" expanded="true" />
-            <element signature="e#2265#2266#0" expanded="true" />
-            <element signature="e#2294#2295#0" expanded="true" />
-            <element signature="e#2339#2340#0" expanded="true" />
-            <element signature="e#3909#3910#0" expanded="true" />
-            <element signature="e#3968#3969#0" expanded="true" />
-            <element signature="e#4561#4562#0" expanded="true" />
-            <element signature="e#4633#4634#0" expanded="true" />
+            <element signature="e#944#982#0" expanded="false" />
+            <element signature="docComment;method#MapMain_Relation#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#bindToNewMapOfSize#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#bindToNewMapOfSize#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#removeAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#removeEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#removeTopItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeTopItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#getTile#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addViewToMap#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addTerrain#0;class#MapMain_Relation#0" expanded="false" />
             <element signature="n#!!doc;n#getSerTag#0;n#MapMain_Relation#0" expanded="true" />
-            <element signature="e#4748#4749#0" expanded="true" />
-            <element signature="e#4790#4791#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1356,9 +1377,6 @@
           <folding>
             <element signature="docComment;class#Viewport#0" expanded="false" />
             <element signature="docComment;method#getAsciiArtFromFile#0;class#Viewport#0" expanded="false" />
-            <element signature="method#getAsciiArtFromFile#0;class#Viewport#0" expanded="false" />
-            <element signature="method#clear#0;class#Viewport#0" expanded="false" />
-            <element signature="method#initGuard#0;class#Viewport#0" expanded="false" />
             <element signature="docComment;method#writeStringToContents#0;class#Viewport#0" expanded="false" />
             <element signature="method#writeStringToContents#0;class#Viewport#0" expanded="false" />
             <element signature="docComment;method#writeStringToContents#1;class#Viewport#0" expanded="false" />
@@ -1399,6 +1417,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.17" vertical-offset="0" max-vertical-offset="900">
           <caret line="13" column="1" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1406,6 +1425,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.17" vertical-offset="0" max-vertical-offset="900">
           <caret line="13" column="1" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1428,6 +1448,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3211111" vertical-offset="0" max-vertical-offset="900">
           <caret line="21" column="67" selection-start-line="21" selection-start-column="67" selection-end-line="21" selection-end-column="67" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1500,14 +1521,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/view/Viewport.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="70" max-vertical-offset="969">
-          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="87" max-vertical-offset="1751">
+          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
           <folding>
             <element signature="docComment;class#Viewport#0" expanded="false" />
             <element signature="docComment;method#getAsciiArtFromFile#0;class#Viewport#0" expanded="false" />
-            <element signature="method#getAsciiArtFromFile#0;class#Viewport#0" expanded="false" />
-            <element signature="method#clear#0;class#Viewport#0" expanded="false" />
-            <element signature="method#initGuard#0;class#Viewport#0" expanded="false" />
             <element signature="docComment;method#writeStringToContents#0;class#Viewport#0" expanded="false" />
             <element signature="method#writeStringToContents#0;class#Viewport#0" expanded="false" />
             <element signature="docComment;method#writeStringToContents#1;class#Viewport#0" expanded="false" />
@@ -1586,50 +1604,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/controller/Avatar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1309">
-          <caret line="31" column="56" selection-start-line="31" selection-start-column="56" selection-end-line="31" selection-end-column="56" />
-          <folding>
-            <element signature="docComment;class#Avatar#0" expanded="false" />
-            <element signature="docComment;method#acceptKeyCommand#0;class#Avatar#0" expanded="false" />
-            <element signature="docComment;method#getMapRelation#0;class#Avatar#0" expanded="false" />
-            <element signature="method#Avatar#0;class#Avatar#0" expanded="false" />
-            <element signature="docComment;method#getMyView#0;class#Avatar#0" expanded="false" />
-            <element signature="method#generateMapView#0;class#Avatar#0" expanded="false" />
-            <element signature="method#setMap#0;class#Avatar#0" expanded="false" />
-            <element signature="method#sendInput#0;class#Avatar#0" expanded="false" />
-            <element signature="method#toString#0;class#Avatar#0" expanded="false" />
-            <element signature="method#getInput#0;class#Avatar#0" expanded="false" />
-            <element signature="n#!!doc;n#getSerTag#0;n#Avatar#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/model/MapMain_Relation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3077">
-          <caret line="156" column="7" selection-start-line="156" selection-start-column="7" selection-end-line="156" selection-end-column="7" />
-          <folding>
-            <element signature="e#0#4815#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="e#1253#1254#0" expanded="true" />
-            <element signature="e#1293#1294#0" expanded="true" />
-            <element signature="e#2220#2221#0" expanded="true" />
-            <element signature="e#2265#2266#0" expanded="true" />
-            <element signature="e#2294#2295#0" expanded="true" />
-            <element signature="e#2339#2340#0" expanded="true" />
-            <element signature="e#3909#3910#0" expanded="true" />
-            <element signature="e#3968#3969#0" expanded="true" />
-            <element signature="e#4561#4562#0" expanded="true" />
-            <element signature="e#4633#4634#0" expanded="true" />
-            <element signature="n#!!doc;n#getSerTag#0;n#MapMain_Relation#0" expanded="true" />
-            <element signature="e#4748#4749#0" expanded="true" />
-            <element signature="e#4790#4791#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/SaveData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="731">
@@ -1643,26 +1617,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/controller/Item.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1617" max-vertical-offset="2516">
-          <caret line="116" column="73" selection-start-line="116" selection-start-column="73" selection-end-line="116" selection-end-column="73" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1600" max-vertical-offset="2499">
+          <caret line="115" column="73" selection-start-line="115" selection-start-column="73" selection-end-line="115" selection-end-column="73" />
           <folding>
-            <element signature="e#0#4035#0" expanded="true" />
+            <element signature="e#0#4044#0" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#1017#1018#0" expanded="true" />
-            <element signature="e#1057#1058#0" expanded="true" />
-            <element signature="e#1111#1112#0" expanded="true" />
-            <element signature="e#1148#1149#0" expanded="true" />
-            <element signature="e#1550#1551#0" expanded="true" />
-            <element signature="e#1590#1591#0" expanded="true" />
-            <element signature="e#1630#1631#0" expanded="true" />
-            <element signature="e#1692#1693#0" expanded="true" />
-            <element signature="e#1726#1727#0" expanded="true" />
-            <element signature="e#1782#1783#0" expanded="true" />
             <element signature="n#!!doc;n#getSerTag#0;n#Item#0" expanded="true" />
-            <element signature="e#3549#3550#0" expanded="true" />
-            <element signature="e#3578#3579#0" expanded="true" />
-            <element signature="e#3638#3639#0" expanded="true" />
-            <element signature="e#3675#3676#0" expanded="true" />
+            <element signature="e#3558#3559#0" expanded="true" />
+            <element signature="e#3587#3588#0" expanded="true" />
+            <element signature="e#3647#3648#0" expanded="true" />
+            <element signature="e#3684#3685#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1672,8 +1636,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="631" max-vertical-offset="1530">
           <caret line="89" column="5" selection-start-line="89" selection-start-column="5" selection-end-line="89" selection-end-column="5" />
           <folding>
-            <element signature="e#2414#2415#0" expanded="true" />
-            <element signature="e#2458#2459#0" expanded="true" />
+            <element signature="e#2494#2495#0" expanded="true" />
+            <element signature="e#2538#2539#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1697,10 +1661,157 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/model/MapTile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="2363">
+          <caret line="109" column="5" selection-start-line="109" selection-start-column="5" selection-end-line="109" selection-end-column="5" />
+          <folding>
+            <element signature="docComment;class#MapTile#0" expanded="false" />
+            <element signature="method#MapTile#0;class#MapTile#0" expanded="false" />
+            <element signature="docComment;method#addTerrain#0;class#MapTile#0" expanded="false" />
+            <element signature="docComment;method#isPassable#0;class#MapTile#0" expanded="false" />
+            <element signature="docComment;method#addEntity#0;class#MapTile#0" expanded="false" />
+            <element signature="docComment;method#removeEntity#0;class#MapTile#0" expanded="false" />
+            <element signature="docComment;method#addItem#0;class#MapTile#0" expanded="false" />
+            <element signature="docComment;method#getTopCharacter#0;class#MapTile#0" expanded="false" />
+            <element signature="n#!!doc;n#getSerTag#0;n#MapTile#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/model/MapDrawableThing_Relation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="308" max-vertical-offset="2278">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding>
+            <element signature="docComment;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="method#initguardMap#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="method#initguardTile#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="docComment;method#getMyXCoordinate#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="method#getMyXCoordinate#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="docComment;method#associateWithMap#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="docComment;method#getMyYCoordinate#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="method#getMyYCoordinate#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="docComment;method#getMapTile#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="docComment;method#setMapTile#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="docComment;method#pushEntityInDirection#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="method#pushEntityInDirection#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="class#AreaDamager#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="method#repeat#0;class#AreaDamager#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="class#AreaLeveler#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="docComment;method#repeat#0;class#AreaLeveler#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="method#repeat#0;class#AreaLeveler#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="method#clone#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="method#hurtWithinRadius#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="method#healWithinRadius#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="method#killWithinRadius#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="method#levelUpWithinRadius#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="method#isAssociatedWithMap#0;class#MapDrawableThing_Relation#0" expanded="false" />
+            <element signature="n#!!doc;n#getSerTag#0;n#MapDrawableThing_Relation#0" expanded="true" />
+            <marker date="1424051428597" expanded="false" signature="5812:6146" placeholder="/**...*/" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/model/MapItem_Relation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="476" max-vertical-offset="748">
+          <caret line="32" column="34" selection-start-line="32" selection-start-column="34" selection-end-line="32" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#862#863#0" expanded="true" />
+            <element signature="e#903#904#0" expanded="true" />
+            <element signature="n#!!doc;n#getSerTag#0;n#MapItem_Relation#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/controller/DrawableThingStatsPack.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="614" max-vertical-offset="1513">
+          <caret line="47" column="35" selection-start-line="47" selection-start-column="35" selection-end-line="47" selection-end-column="35" />
+          <folding>
+            <element signature="n#!!doc;n#getSerTag#0;n#DrawableThingStatsPack#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/model/MapTerrain_Relation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="459">
+          <caret line="25" column="38" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
+          <folding>
+            <element signature="e#634#635#0" expanded="true" />
+            <element signature="e#679#680#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/controller/DrawableThing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="1564">
+          <caret line="23" column="22" selection-start-line="23" selection-start-column="22" selection-end-line="23" selection-end-column="22" />
+          <folding>
+            <element signature="n#!!doc;n#DrawableThing#1;n#DrawableThing#0" expanded="true" />
+            <element signature="e#2639#2640#0" expanded="true" />
+            <element signature="e#2703#2704#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/controller/Avatar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="274" max-vertical-offset="1173">
+          <caret line="437" column="0" selection-start-line="437" selection-start-column="0" selection-end-line="437" selection-end-column="0" />
+          <folding>
+            <element signature="docComment;class#Avatar#0" expanded="false" />
+            <element signature="docComment;method#acceptKeyCommand#0;class#Avatar#0" expanded="false" />
+            <element signature="docComment;method#getMapRelation#0;class#Avatar#0" expanded="false" />
+            <element signature="method#Avatar#0;class#Avatar#0" expanded="false" />
+            <element signature="docComment;method#getMyView#0;class#Avatar#0" expanded="false" />
+            <element signature="method#generateMapView#0;class#Avatar#0" expanded="false" />
+            <element signature="method#setMap#0;class#Avatar#0" expanded="false" />
+            <element signature="method#sendInput#0;class#Avatar#0" expanded="false" />
+            <element signature="method#toString#0;class#Avatar#0" expanded="false" />
+            <element signature="method#getInput#0;class#Avatar#0" expanded="false" />
+            <element signature="method#Avatar#1;class#Avatar#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/model/MapMain_Relation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.021134594" vertical-offset="223" max-vertical-offset="1122">
+          <caret line="29" column="70" selection-start-line="29" selection-start-column="70" selection-end-line="29" selection-end-column="70" />
+          <folding>
+            <element signature="e#944#982#0" expanded="false" />
+            <element signature="docComment;method#MapMain_Relation#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#bindToNewMapOfSize#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#bindToNewMapOfSize#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#removeAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeAvatar#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#removeEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeEntity#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#removeTopItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#removeTopItem#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#getTile#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="method#addViewToMap#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="docComment;method#addTerrain#0;class#MapMain_Relation#0" expanded="false" />
+            <element signature="n#!!doc;n#getSerTag#0;n#MapMain_Relation#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/controller/Entity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="971" max-vertical-offset="2125">
-          <caret line="297" column="45" selection-start-line="297" selection-start-column="45" selection-end-line="297" selection-end-column="45" />
+        <state vertical-scroll-proportion="-0.6829811" vertical-offset="835" max-vertical-offset="1734">
+          <caret line="17" column="25" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="25" />
           <folding>
             <element signature="docComment;class#Entity#0" expanded="false" />
             <element signature="docComment;method#getMapRelation#0;class#Entity#0" expanded="false" />
@@ -1723,117 +1834,16 @@
             <element signature="method#gainEnoughExperienceTolevelUp#0;class#Entity#0" expanded="false" />
             <element signature="docComment;method#levelUp#0;class#Entity#0" expanded="false" />
             <element signature="method#levelUp#0;class#Entity#0" expanded="false" />
-            <element signature="e#5384#5402#0" expanded="false" />
+            <element signature="e#5620#5638#0" expanded="false" />
             <element signature="docComment;method#checkHealth#0;class#Entity#0" expanded="false" />
             <element signature="method#checkHealth#0;class#Entity#0" expanded="false" />
             <element signature="method#commitSuicide#0;class#Entity#0" expanded="false" />
             <element signature="docComment;method#derivedStats#0;class#Entity#0" expanded="false" />
             <element signature="method#derivedStats#0;class#Entity#0" expanded="false" />
             <element signature="method#toString#0;class#Entity#0" expanded="false" />
-            <element signature="e#7682#7683#0" expanded="true" />
-            <element signature="e#7713#7714#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/model/MapTile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2227">
-          <caret line="100" column="5" selection-start-line="100" selection-start-column="5" selection-end-line="100" selection-end-column="5" />
-          <folding>
-            <element signature="docComment;class#MapTile#0" expanded="false" />
-            <element signature="method#MapTile#0;class#MapTile#0" expanded="false" />
-            <element signature="docComment;method#addTerrain#0;class#MapTile#0" expanded="false" />
-            <element signature="docComment;method#isPassable#0;class#MapTile#0" expanded="false" />
-            <element signature="docComment;method#addEntity#0;class#MapTile#0" expanded="false" />
-            <element signature="docComment;method#removeEntity#0;class#MapTile#0" expanded="false" />
-            <element signature="docComment;method#addItem#0;class#MapTile#0" expanded="false" />
-            <element signature="docComment;method#getTopCharacter#0;class#MapTile#0" expanded="false" />
-            <element signature="n#!!doc;n#getSerTag#0;n#MapTile#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/controller/DrawableThing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2080089" vertical-offset="0" max-vertical-offset="1547">
-          <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
-          <folding>
-            <element signature="n#!!doc;n#DrawableThing#1;n#DrawableThing#0" expanded="true" />
-            <element signature="e#2634#2635#0" expanded="true" />
-            <element signature="e#2698#2699#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/model/MapDrawableThing_Relation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="342" max-vertical-offset="1241">
-          <caret line="20" column="36" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
-          <folding>
-            <element signature="docComment;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="method#initguardMap#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="method#initguardTile#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="docComment;method#getMyXCoordinate#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="method#getMyXCoordinate#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="docComment;method#associateWithMap#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="docComment;method#getMyYCoordinate#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="method#getMyYCoordinate#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="docComment;method#getMapTile#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="docComment;method#setMapTile#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="docComment;method#pushEntityInDirection#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="method#pushEntityInDirection#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="class#AreaDamager#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="method#repeat#0;class#AreaDamager#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="class#AreaHealer#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="method#repeat#0;class#AreaHealer#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="class#AreaKiller#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="docComment;method#repeat#0;class#AreaKiller#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="method#repeat#0;class#AreaKiller#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="class#AreaLeveler#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="docComment;method#repeat#0;class#AreaLeveler#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="method#repeat#0;class#AreaLeveler#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="method#clone#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="method#hurtWithinRadius#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="method#healWithinRadius#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="method#killWithinRadius#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="method#levelUpWithinRadius#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="method#isAssociatedWithMap#0;class#MapDrawableThing_Relation#0" expanded="false" />
-            <element signature="n#!!doc;n#getSerTag#0;n#MapDrawableThing_Relation#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/model/MapItem_Relation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="476" max-vertical-offset="748">
-          <caret line="32" column="34" selection-start-line="32" selection-start-column="34" selection-end-line="32" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#862#863#0" expanded="true" />
-            <element signature="e#903#904#0" expanded="true" />
-            <element signature="n#!!doc;n#getSerTag#0;n#MapItem_Relation#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/controller/DrawableThingStatsPack.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="630" max-vertical-offset="1530">
-          <caret line="46" column="44" selection-start-line="46" selection-start-column="44" selection-end-line="46" selection-end-column="44" />
-          <folding>
-            <element signature="n#!!doc;n#getSerTag#0;n#DrawableThingStatsPack#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/model/MapTerrain_Relation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3214683" vertical-offset="0" max-vertical-offset="899">
-          <caret line="25" column="38" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
-          <folding>
-            <element signature="e#634#635#0" expanded="true" />
-            <element signature="e#679#680#0" expanded="true" />
+            <element signature="method#linkOther#0;class#Entity#0" expanded="false" />
+            <element signature="method#readOther#0;class#Entity#0" expanded="false" />
+            <element signature="method#writeOther#0;class#Entity#0" expanded="false" />
           </folding>
         </state>
       </provider>

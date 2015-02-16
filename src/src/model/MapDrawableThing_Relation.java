@@ -120,16 +120,14 @@ public class MapDrawableThing_Relation implements SaveData {
             MapTile infliction = current_map_reference_.getTile(x_pos, y_pos);
             if (infliction != null) {
                 // If there is no decal, fuck shit up
-                if(infliction.getTerrain()!= null && ! infliction.getTerrain().hasDecal() ) {
+                if (infliction.getTerrain() != null && !infliction.getTerrain().hasDecal()) {
                     infliction.getTerrain().addDecal('♨');
                 }
                 Entity to_hurt = infliction.getEntity();
                 if (to_hurt != null) {
                     EntityStatsPack s = to_hurt.getStatsPack();
                     s.current_life_ -= strength;
-                    src.view.Display.setMessage("Current Life after: " + s.current_life_,3);
-                } else {
-                    System.out.println("NULL");
+                    src.view.Display.setMessage("Current Life after: " + s.current_life_, 3);
                 }
             }
         }
@@ -141,10 +139,15 @@ public class MapDrawableThing_Relation implements SaveData {
         public void repeat(int x_pos, int y_pos, int strength) {
             MapTile infliction = current_map_reference_.getTile(x_pos, y_pos);
             if (infliction != null) {
+                // If there is no decal, fuck shit up
+                if (infliction.getTerrain() != null && !infliction.getTerrain().hasDecal()) {
+                    infliction.getTerrain().addDecal('♥');
+                }
                 Entity to_heal = infliction.getEntity();
                 if (to_heal != null) {
                     EntityStatsPack s = to_heal.getStatsPack();
                     s.current_life_ += strength;
+                    src.view.Display.setMessage("Current Life after: " + s.current_life_, 3);
                 }
             }
         }
@@ -154,7 +157,6 @@ public class MapDrawableThing_Relation implements SaveData {
 
         /**
          * Used to repeatedly apply exorbitant damage on a tile
-         *
          * @param x_pos
          * @param y_pos
          * @param num_kills This parameter is not currently used
@@ -163,9 +165,15 @@ public class MapDrawableThing_Relation implements SaveData {
         public void repeat(int x_pos, int y_pos, int num_kills) {
             MapTile infliction = current_map_reference_.getTile(x_pos, y_pos);
             if (infliction != null) {
+                // If there is no decal, fuck shit up
+                if (infliction.getTerrain() != null && !infliction.getTerrain().hasDecal()) {
+                    infliction.getTerrain().addDecal('☣');
+                }
                 Entity to_kill = infliction.getEntity();
                 if (to_kill != null) {
+                    EntityStatsPack s = to_kill.getStatsPack();
                     to_kill.commitSuicide();
+                    src.view.Display.setMessage("Lives left after: " + s.lives_left_, 3);
                 }
             }
         }
@@ -184,11 +192,17 @@ public class MapDrawableThing_Relation implements SaveData {
         public void repeat(int x_pos, int y_pos, int num_level_ups) {
             MapTile infliction = current_map_reference_.getTile(x_pos, y_pos);
             if (infliction != null) {
+                // If there is no decal, fuck shit up
+                if (infliction.getTerrain() != null && !infliction.getTerrain().hasDecal()) {
+                    infliction.getTerrain().addDecal('↑');
+                }
                 Entity to_level = infliction.getEntity();
                 if (to_level != null) {
+                    EntityStatsPack s = to_level.getStatsPack();
                     for (int i = 0; i < num_level_ups; ++i) {
                         to_level.gainEnoughExperienceTolevelUp();
                     }
+                    src.view.Display.setMessage("Current Life after: " + s.cached_current_level_, 3);
                 }
             }
         }

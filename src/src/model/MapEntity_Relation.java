@@ -27,7 +27,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation implements Sav
     private int y_respawn_point_;
 
     public void spawn(Entity toSpawn, int time_until_spawn) {
-
+    	//super.pushEntityInDirection(toSpawn, x_respawn_point_, y_respawn_point_);
     }
 
     /**
@@ -47,7 +47,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation implements Sav
 
     }
 
-    public void recieveAttack(int damage) {
+    public void receiveAttack(int damage) {
 
     }
 

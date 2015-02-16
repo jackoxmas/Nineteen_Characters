@@ -15,8 +15,8 @@ import src.SaveData;
 import src.SavedGame;
 import src.model.MapEntity_Relation;
 
-import java.io.Serializable;
 import java.util.HashMap;
+import src.view.Display;
 
 /**
  *
@@ -56,41 +56,44 @@ abstract public class Entity extends DrawableThing implements SaveData {
     private Occupation occupation_ = null;
 
     protected transient ArrayList<Item> inventory_;
-    
+
+    public ArrayList<Item> getInventory() {
+        return inventory_;
+    }
+
     /**
-     * 
-     * @return Null if list is empty 
+     *
+     * @return Null if list is empty
      */
     public Item pullFirstItemOutOfInventory() {
-        if(! inventory_.isEmpty()) {
-        return inventory_.remove(0);
+        if (!inventory_.isEmpty()) {
+            return inventory_.remove(0);
         } else {
             return null;
         }
     }
-    
+
     /**
      * Returns first Item object in Inventory
-     * 
+     *
      * @return
      */
     public Item getFirstItemInInventory() {
-        if(! inventory_.isEmpty()) {
-        return inventory_.get(0);
+        if (!inventory_.isEmpty()) {
+            return inventory_.get(0);
         } else {
             return null;
         }
     }
-    
+
     /**
-     * Uses first item in inventory
-     * Does not destroy the item
-     * 
-     * @return 0 on success, -1 on fail (no item to use) 
+     * Uses first item in inventory Does not destroy the item
+     *
+     * @return 0 on success, -1 on fail (no item to use)
      */
     public int useFirstInventoryItem() {
         Item i = getFirstItemInInventory();
-        if(i == null) {
+        if (i == null) {
             return -1;
         } else {
             i.use(this);
@@ -109,6 +112,7 @@ abstract public class Entity extends DrawableThing implements SaveData {
     public int equipInventoryItem() {
         if (!inventory_.isEmpty()) {
             if (equipped_item_ == null) {
+                Display.setMessage("Equipping item: " + equipped_item_.name_, 3);
                 DrawableThingStatsPack to_add = inventory_.get(0).getStatsPack();
                 this.stats_pack_.addOn(to_add);
                 equipped_item_ = inventory_.get(0);
@@ -121,21 +125,21 @@ abstract public class Entity extends DrawableThing implements SaveData {
             return -2;
         }
     }
-
     /**
      * @author John-Michael Reed
-     * @return error codes: -1 inventory is too full for item
-     * [not yet availible]
+     * @return error codes: -1 inventory is too full for item [not yet
+     * availible]
      */
     public int unEquipInventoryItem() {
-        if (true /* Inventory has room */) {
-                DrawableThingStatsPack to_remove = equipped_item_.getStatsPack();
-                this.stats_pack_.reduceBy(to_remove);
-                inventory_.add(equipped_item_);
-                equipped_item_ = null;
-                return 0;
-            } 
-        else {
+        if (equipped_item_ != null) {
+            Display.setMessage("Unequipping item: " + equipped_item_.name_, 3);
+            DrawableThingStatsPack to_remove = equipped_item_.getStatsPack();
+            this.stats_pack_.reduceBy(to_remove);
+            inventory_.add(equipped_item_);
+            equipped_item_ = null;
+            return 0;
+        } else {
+            Display.setMessage("No equipped item to unequip", 3);
             return -1;
         }
     }
@@ -158,9 +162,8 @@ abstract public class Entity extends DrawableThing implements SaveData {
     }
 
     /**
-     * Include stat increase from item
-     * i.e., item with stat increase is equipped 
-     * 
+     * Include stat increase from item i.e., item with stat increase is equipped
+     *
      * @param item
      */
     public void addItemStatsToMyStats(Item item) {
@@ -168,9 +171,9 @@ abstract public class Entity extends DrawableThing implements SaveData {
     }
 
     /**
-     * Removes state increase from item
-     * i.e., item with stat increase is unequipped
-     * 
+     * Removes state increase from item i.e., item with stat increase is
+     * unequipped
+     *
      * @param item
      */
     public void subtractItemStatsFromMyStats(Item item) {
@@ -242,18 +245,21 @@ abstract public class Entity extends DrawableThing implements SaveData {
 
     /**
      * returns the derived stats
+     *
      * @author Jessan
      */
-    public DrawableThingStatsPack derivedStats(){
+    public DrawableThingStatsPack derivedStats() {
         DrawableThingStatsPack temp = new DrawableThingStatsPack();
         //if no equipped item Derived Stats will be 0
-        if(equipped_item_ == null)
+        if (equipped_item_ == null) {
             return temp;
+        }
 
         temp = stats_pack_;
         temp.reduceBy(equipped_item_.getStatsPack());
         return temp;
     }
+
     public String toString() {
         String s = "Entity name: " + name_;
 

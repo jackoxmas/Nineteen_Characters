@@ -51,7 +51,7 @@ public abstract class Viewport implements Serializable {
 	 */
 	public char[][] getContents() {
 	initGuard();
-	return this.view_contents_;	
+	return view_contents_;	
 	}
 	/**
 	 * Load in ascii art from file
@@ -114,10 +114,10 @@ public abstract class Viewport implements Serializable {
 	*/
 	protected boolean writeStringToContents(int x, int y, String in) {
 		initGuard();
-		if(x+in.length()>= width_){return false;}
-		if(y>=height_) {return false;}
+		if(x+in.length()> width_){return false;}
+		if(y>height_) {return false;}
 		if(x<0 || y < 0){return false;}
-		for(int i = 0; i!=in.length();++i){view_contents_[x+i][y] = in.charAt(i);}
+		for(int i = 0; i < in.length();i++){view_contents_[x+i][y] = in.charAt(i);}
 		return true;
 	}
 	/**

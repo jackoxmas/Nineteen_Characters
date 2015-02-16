@@ -36,22 +36,20 @@ public final class StatsView extends Viewport
     	super();
     	avatar_reference_ = my_avatar;
 
-    	view_contents_= getContents();
+    	view_contents_= new char[width_][height_];
 		template_ = getAsciiArtFromFile("src/view/ASCIIART/statsview.txt");
 		renderArray();
 	}
     
 	@Override
 	public void renderToDisplay() {
-		render = new ArrayList< ArrayList<Character>>(width_);
-		for(ArrayList<Character> i : render){
-			i = new ArrayList<Character>(height_);
-		}
+		renderArray();
 	}
 	
     private void renderArray() {
-    	for (int i = 0; i < template_.size(); i++)
-    		writeStringToContents(0, 0, template_.get(i));
+    	for (int i = 0; i < template_.size(); i++) {
+    		writeStringToContents(0, 0+i, template_.get(i));
+    	}
     	renderStats();
     	renderInventory();
     }
@@ -75,7 +73,7 @@ public final class StatsView extends Viewport
     	writeStringToContents(18, 10, rightAlign(3, "" + avatar_reference_.getStatsPack().strength_level_));
     	writeStringToContents(18, 11, rightAlign(3, "" + avatar_reference_.getStatsPack().agility_level_));
     	writeStringToContents(18, 12, rightAlign(3, "" + avatar_reference_.getStatsPack().intellect_level_));
-    	writeStringToContents(18, 12, rightAlign(3, "" + avatar_reference_.getStatsPack().hardiness_level_));
+    	writeStringToContents(18, 13, rightAlign(3, "" + avatar_reference_.getStatsPack().hardiness_level_));
     	
     	StringBuilder hearts = new StringBuilder();
     	for (int i = 0; i < (avatar_reference_.getStatsPack().current_life_/avatar_reference_.getStatsPack().life_)*10; i++)
@@ -88,22 +86,22 @@ public final class StatsView extends Viewport
     	for (int i = 0; i < avatar_reference_.getStatsPack().current_mana_/avatar_reference_.getStatsPack().mana_*10; i++)
     		diamonds.append("♦");
     	writeStringToContents(38, 9, rightAlign(10, diamonds.toString()));
-    	writeStringToContents(40, 9, rightAlign(3, "" + avatar_reference_.getStatsPack().current_mana_));
-    	writeStringToContents(44, 9, rightAlign(3, "" + avatar_reference_.getStatsPack().mana_));
+    	writeStringToContents(40, 10, rightAlign(3, "" + avatar_reference_.getStatsPack().current_mana_));
+    	writeStringToContents(44, 10, rightAlign(3, "" + avatar_reference_.getStatsPack().mana_));
 
     	StringBuilder spades = new StringBuilder();
     	for (int i = 0; i < (avatar_reference_.getStatsPack().quantity_of_experience_
     			- ((avatar_reference_.getStatsPack().cached_current_level_-1)*100))/10; i++)
     		spades.append("♠");
     	writeStringToContents(38, 12, rightAlign(10, spades.toString()));
-    	writeStringToContents(44, 9, "" + 100);
+    	writeStringToContents(44, 13, "" + 100);
 
-    	writeStringToContents(6, 68, rightAlign(3, "" + avatar_reference_.getStatsPack().lives_left_));
-    	writeStringToContents(8, 68, rightAlign(3, "" + avatar_reference_.getStatsPack().moves_left_in_turn_));
-    	writeStringToContents(8, 72, rightAlign(3, "" + avatar_reference_.getStatsPack().movement_level_));
-    	writeStringToContents(11, 72, rightAlign(3, "" + avatar_reference_.getStatsPack().offensive_rating_));
-    	writeStringToContents(12, 72, rightAlign(3, "" + avatar_reference_.getStatsPack().defensive_rating_));
-    	writeStringToContents(13, 72, rightAlign(3, "" + avatar_reference_.getStatsPack().current_armor_rating_));
+    	writeStringToContents(68, 6, rightAlign(3, "" + avatar_reference_.getStatsPack().lives_left_));
+    	writeStringToContents(68, 8, rightAlign(3, "" + avatar_reference_.getStatsPack().moves_left_in_turn_));
+    	writeStringToContents(72, 6, rightAlign(3, "" + avatar_reference_.getStatsPack().movement_level_));
+    	writeStringToContents(72, 11, rightAlign(3, "" + avatar_reference_.getStatsPack().offensive_rating_));
+    	writeStringToContents(72, 12, rightAlign(3, "" + avatar_reference_.getStatsPack().defensive_rating_));
+    	writeStringToContents(72, 13, rightAlign(3, "" + avatar_reference_.getStatsPack().current_armor_rating_));
     }
 
     private void renderInventory() {

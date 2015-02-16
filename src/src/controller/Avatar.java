@@ -279,6 +279,7 @@ public final class Avatar extends Entity {
 					case 'S': // Save the game
 						break;
 					case 'i':
+						System.out.println("hurrah");
 						switchToStatsView();
 						break;
 					case 'u': // Uses item
@@ -374,6 +375,7 @@ public final class Avatar extends Entity {
                 case 'v': //Open stats
                     break;
                 case 'i': //Use item in direction
+                	switchToStatsView();
                     break;
                 case 'u': //Use item in inventory
                     int error_code_u = this.useFirstInventoryItem();

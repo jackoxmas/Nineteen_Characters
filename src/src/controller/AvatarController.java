@@ -7,6 +7,7 @@
 package src.controller;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 import src.model.MapAvatar_Relation;
 import src.view.Display;
@@ -22,18 +23,18 @@ public final class AvatarController
         my_avatar_ = avatar;
     }
     
-    public void runTheGame() throws Exception {
-    	
-    	BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-    	int input = -1;
+    public void runTheGame() {
+    	Scanner sc = new Scanner(System.in);
+    	char input = '`';
     	Display _display = new Display(my_avatar_.getMyView());
-    	while ( (input = in.read() ) != -1 ) {
+    	while ( (input = sc.next().charAt(0) ) != '`' ) {
+    		System.out.println("this should only happen once");
 			my_avatar_.getInput((char)input);
 			_display.setView(my_avatar_.getMyView());
             _display.printView();
     	}
     	
-    	in.close();
+    	sc.close();
     	
     }
     

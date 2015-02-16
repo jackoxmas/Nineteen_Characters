@@ -53,6 +53,7 @@ public class Display implements Serializable {
 		}
 		if(counter_ > 0){System.out.println(message_);--counter_;}
     }
+    
     private void clearScreen(){
     	//Create the illusion of clearing the screen.
     	for(int i = 0; i!=2*current_view_.height_;++i){

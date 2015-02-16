@@ -71,12 +71,7 @@ public class TestingMain {
         System.out.println("☠ and ★ and ✚");
         Display.setMessage("test",3);
         AvatarController AC = new AvatarController(avatar);
-        try {
-			AC.runTheGame();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		AC.runTheGame();
 
 
     }

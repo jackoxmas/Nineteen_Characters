@@ -79,13 +79,13 @@ public final class Avatar extends Entity {
 
     /**
      * Used to return the current view of the Avatar
-     * 
+     *
      * @return
      */
     public Viewport getMyView() {
         return this.current_viewport_;
     }
-    
+
     public void switchToMapView() {
         current_viewport_ = map_view_;
     }
@@ -107,202 +107,200 @@ public final class Avatar extends Entity {
         map_main.addViewToMap(map_view_);
         map_main.addAvatar(this, 0, 0);
     }
-    
-	/* determine if input is not important
-	 * or if we already did something
-	 * then if true
-	 * 
-	 * storedInput = '~';
-	 */
-	public void sendInput( char current ) {
-		if (map_relationship_ == null) {
-			System.out.println("Avatar cannot be controlled without a MapAvatar_Relation");
-			return;
-		}
-		else if (current_viewport_ != map_view_) {
-	    	current_viewport_.getInput(current);
-    		current_viewport_.renderToDisplay(); //See lower comment, maybe avatar should have a Display also to print it's views?
-		}
-		else {
-			map_view_.setCenter(map_relationship_.getMyXCoordinate(),map_relationship_.getMyYCoordinate());
-			if (storedInput == 'p') {
-    			int error_code = 0;
-				switch (current) {
-					case '1':
-						error_code = map_relationship_.pickUpItemInDirection(0, -1);
-						break;
-					case '2':
-						error_code = map_relationship_.pickUpItemInDirection(0, -1);
-						break;
-					case '3':
-						error_code = map_relationship_.pickUpItemInDirection(1, -1);
-						break;
-					case '4':
-						error_code = map_relationship_.pickUpItemInDirection(-1, 0);
-						break;
-					case '5':
-						error_code = map_relationship_.pickUpItemInDirection(0, 0);
-						break;
-					case '6':
-						error_code = map_relationship_.pickUpItemInDirection(1, 0);
-						break;
-					case '7':
-						error_code = map_relationship_.pickUpItemInDirection(-1, 1);
-						break;
-					case '8':
-						error_code = map_relationship_.pickUpItemInDirection(0, 1);
-						break;
-					case '9':
-						error_code = map_relationship_.pickUpItemInDirection(1, 1);
-						break;
-				}
-				storedInput = '~';
-				if (error_code != -1)
-					System.out.println("pickUpItem function failed to get an item");
-			} else if (storedInput == 'u') {
-				switch (current) {
-	    			case '1':
-						map_relationship_.sendAttack(0, -1);
-						break;
-					case '2':
-						map_relationship_.sendAttack(0, -1);
-						break;
-					case '3':
-						map_relationship_.sendAttack(1, -1);
-						break;
-					case '4':
-						map_relationship_.sendAttack(-1, 0);
-						break;
-					case '5':
-						map_relationship_.sendAttack(0, 0);
-						break;
-					case '6':
-						map_relationship_.sendAttack(1, 0);
-						break;
-					case '7':
-						map_relationship_.sendAttack(-1, 1);
-						break;
-					case '8':
-						map_relationship_.sendAttack(0, 1);
-						break;
-					case '9':
-						map_relationship_.sendAttack(1, 1);
-						break;
-				}
-			} else if (storedInput == ' ') {
-				switch (current) {
-	    			case '1':
-						map_relationship_.sendAttack(0, -1);
-						break;
-					case '2':
-						map_relationship_.sendAttack(0, -1);
-						break;
-					case '3':
-						map_relationship_.sendAttack(1, -1);
-						break;
-					case '4':
-						map_relationship_.sendAttack(-1, 0);
-						break;
-					case '5':
-						map_relationship_.sendAttack(0, 0);
-						break;
-					case '6':
-						map_relationship_.sendAttack(1, 0);
-						break;
-					case '7':
-						map_relationship_.sendAttack(-1, 1);
-						break;
-					case '8':
-						map_relationship_.sendAttack(0, 1);
-						break;
-					case '9':
-						map_relationship_.sendAttack(1, 1);
-						break;
-				}
-				storedInput = '~';
-			} else if (storedInput == '~') {
-				switch (current) {
-	    			case '1':
-						map_relationship_.moveInDirection(0, -1);
-						break;
-					case '2':
-						map_relationship_.moveInDirection(0, -1);
-						break;
-					case '3':
-						map_relationship_.moveInDirection(1, -1);
-						break;
-					case '4':
-						map_relationship_.moveInDirection(-1, 0);
-						break;
-					case '5':
-						map_relationship_.moveInDirection(0, 0);
-						break;
-					case '6':
-						map_relationship_.moveInDirection(1, 0);
-						break;
-					case '7':
-						map_relationship_.moveInDirection(-1, 1);
-						break;
-					case '8':
-						map_relationship_.moveInDirection(0, 1);
-						break;
-					case '9':
-						map_relationship_.moveInDirection(1, 1);
-						break;
-					case 'z':
-						map_relationship_.moveInDirection(0, -1);
-						break;
-					case 'x':
-						map_relationship_.moveInDirection(0, -1);
-						break;
-					case 'c':
-						map_relationship_.moveInDirection(1, -1);
-						break;
-					case 'a':
-						map_relationship_.moveInDirection(-1, 0);
-						break;
-					case 's':
-						map_relationship_.moveInDirection(0, 0);
-						break;
-					case 'd':
-						map_relationship_.moveInDirection(1, 0);
-						break;
-					case 'q':
-						map_relationship_.moveInDirection(-1, 1);
-						break;
-					case 'w':
-						map_relationship_.moveInDirection(0, 1);
-						break;
-					case 'e':
-						map_relationship_.moveInDirection(1, 1);
-						break;
-					case 'S': // Save the game
-						break;
-					case 'i':
-						System.out.println("hurrah");
-						switchToStatsView();
-						break;
-					case 'u': // Uses item
-						break;
-					case 'D':
-						int error_code_D = map_relationship_.dropItem();
-						if(error_code_D != 0) {
-							System.out.println("dropItem function failed to drop an item");
-						}
-						break;
-					case ' ': // Attack in next direction
-						storedInput = ' ';
-						break;
-					case 'p': // Pick up in next direction
-						storedInput = 'p';
-						break;
-					default:
-						break;
-				}
-			}
-    		current_viewport_.renderToDisplay();
-		}
-	}
+
+    /* determine if input is not important
+     * or if we already did something
+     * then if true
+     * 
+     * storedInput = '~';
+     */
+    public void sendInput(char current) {
+        if (map_relationship_ == null) {
+            System.out.println("Avatar cannot be controlled without a MapAvatar_Relation");
+            return;
+        } else if (current_viewport_ != map_view_) {
+            current_viewport_.getInput(current);
+            current_viewport_.renderToDisplay(); //See lower comment, maybe avatar should have a Display also to print it's views?
+        } else {
+            map_view_.setCenter(map_relationship_.getMyXCoordinate(), map_relationship_.getMyYCoordinate());
+            if (storedInput == 'p') {
+                int error_code = 0;
+                switch (current) {
+                    case '1':
+                        error_code = map_relationship_.pickUpItemInDirection(0, -1);
+                        break;
+                    case '2':
+                        error_code = map_relationship_.pickUpItemInDirection(0, -1);
+                        break;
+                    case '3':
+                        error_code = map_relationship_.pickUpItemInDirection(1, -1);
+                        break;
+                    case '4':
+                        error_code = map_relationship_.pickUpItemInDirection(-1, 0);
+                        break;
+                    case '5':
+                        error_code = map_relationship_.pickUpItemInDirection(0, 0);
+                        break;
+                    case '6':
+                        error_code = map_relationship_.pickUpItemInDirection(1, 0);
+                        break;
+                    case '7':
+                        error_code = map_relationship_.pickUpItemInDirection(-1, 1);
+                        break;
+                    case '8':
+                        error_code = map_relationship_.pickUpItemInDirection(0, 1);
+                        break;
+                    case '9':
+                        error_code = map_relationship_.pickUpItemInDirection(1, 1);
+                        break;
+                }
+                storedInput = '~';
+                if (error_code != -1) {
+                    System.out.println("pickUpItem function failed to get an item");
+                }
+            } else if (storedInput == 'u') {
+                switch (current) {
+                    case '1':
+                        map_relationship_.sendAttack(0, -1);
+                        break;
+                    case '2':
+                        map_relationship_.sendAttack(0, -1);
+                        break;
+                    case '3':
+                        map_relationship_.sendAttack(1, -1);
+                        break;
+                    case '4':
+                        map_relationship_.sendAttack(-1, 0);
+                        break;
+                    case '5':
+                        map_relationship_.sendAttack(0, 0);
+                        break;
+                    case '6':
+                        map_relationship_.sendAttack(1, 0);
+                        break;
+                    case '7':
+                        map_relationship_.sendAttack(-1, 1);
+                        break;
+                    case '8':
+                        map_relationship_.sendAttack(0, 1);
+                        break;
+                    case '9':
+                        map_relationship_.sendAttack(1, 1);
+                        break;
+                }
+            } else if (storedInput == ' ') {
+                switch (current) {
+                    case '1':
+                        map_relationship_.sendAttack(0, -1);
+                        break;
+                    case '2':
+                        map_relationship_.sendAttack(0, -1);
+                        break;
+                    case '3':
+                        map_relationship_.sendAttack(1, -1);
+                        break;
+                    case '4':
+                        map_relationship_.sendAttack(-1, 0);
+                        break;
+                    case '5':
+                        map_relationship_.sendAttack(0, 0);
+                        break;
+                    case '6':
+                        map_relationship_.sendAttack(1, 0);
+                        break;
+                    case '7':
+                        map_relationship_.sendAttack(-1, 1);
+                        break;
+                    case '8':
+                        map_relationship_.sendAttack(0, 1);
+                        break;
+                    case '9':
+                        map_relationship_.sendAttack(1, 1);
+                        break;
+                }
+                storedInput = '~';
+            } else if (storedInput == '~') {
+                switch (current) {
+                    case '1':
+                        map_relationship_.moveInDirection(0, -1);
+                        break;
+                    case '2':
+                        map_relationship_.moveInDirection(0, -1);
+                        break;
+                    case '3':
+                        map_relationship_.moveInDirection(1, -1);
+                        break;
+                    case '4':
+                        map_relationship_.moveInDirection(-1, 0);
+                        break;
+                    case '5':
+                        map_relationship_.moveInDirection(0, 0);
+                        break;
+                    case '6':
+                        map_relationship_.moveInDirection(1, 0);
+                        break;
+                    case '7':
+                        map_relationship_.moveInDirection(-1, 1);
+                        break;
+                    case '8':
+                        map_relationship_.moveInDirection(0, 1);
+                        break;
+                    case '9':
+                        map_relationship_.moveInDirection(1, 1);
+                        break;
+                    case 'z':
+                        map_relationship_.moveInDirection(0, -1);
+                        break;
+                    case 'x':
+                        map_relationship_.moveInDirection(0, -1);
+                        break;
+                    case 'c':
+                        map_relationship_.moveInDirection(1, -1);
+                        break;
+                    case 'a':
+                        map_relationship_.moveInDirection(-1, 0);
+                        break;
+                    case 's':
+                        map_relationship_.moveInDirection(0, 0);
+                        break;
+                    case 'd':
+                        map_relationship_.moveInDirection(1, 0);
+                        break;
+                    case 'q':
+                        map_relationship_.moveInDirection(-1, 1);
+                        break;
+                    case 'w':
+                        map_relationship_.moveInDirection(0, 1);
+                        break;
+                    case 'e':
+                        map_relationship_.moveInDirection(1, 1);
+                        break;
+                    case 'S': // Save the game
+                        break;
+                    case 'i':
+                        switchToStatsView();
+                        break;
+                    case 'u': // Uses item
+                        break;
+                    case 'D':
+                        int error_code_D = map_relationship_.dropItem();
+                        if (error_code_D != 0) {
+                            System.out.println("dropItem function failed to drop an item");
+                        }
+                        break;
+                    case ' ': // Attack in next direction
+                        storedInput = ' ';
+                        break;
+                    case 'p': // Pick up in next direction
+                        storedInput = 'p';
+                        break;
+                    default:
+                        break;
+                }
+            }
+            current_viewport_.renderToDisplay();
+        }
+    }
 
     @Override
     public String toString() {
@@ -379,7 +377,7 @@ public final class Avatar extends Entity {
                     break;
                 case 'u': //Use item in inventory
                     int error_code_u = this.useFirstInventoryItem();
-                    if(error_code_u != 0) {
+                    if (error_code_u != 0) {
                         System.out.println("Use item in inventory with key u failed.");
                     }
                     break;
@@ -393,7 +391,7 @@ public final class Avatar extends Entity {
                     mar.moveInDirection(1, 1);
                     break;
                 case 'a': //move W
-                    mar.moveInDirection(-1, 1);
+                    mar.moveInDirection(-1, 0);
                     break;
                 case 's'://Move stationary?
                     mar.moveInDirection(0, 0);
@@ -412,13 +410,19 @@ public final class Avatar extends Entity {
                     break;
                 case 'D': //drop item
                     int error_code_D = mar.dropItem();
-                    if(error_code_D != 0) {
+                    if (error_code_D != 0) {
                         System.out.println("dropItem function failed to drop an item");
                     }
                     break;
+                case 'E': //equip
+                    this.equipInventoryItem();
+                    break;
+                case 'U':
+                    unEquipInventoryItem();
+                    break;
                 case 'p'://pickup item
                     int error_code_p = mar.pickUpItemInDirection(0, 0);
-                    if(error_code_p != 0) {
+                    if (error_code_p != 0) {
                         System.out.println("pickUpItem function failed to get an item");
                     }
                     break;
@@ -432,7 +436,6 @@ public final class Avatar extends Entity {
         }
 
     }
-
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
 
     // </editor-fold>

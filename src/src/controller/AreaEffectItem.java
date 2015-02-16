@@ -23,14 +23,14 @@ public class AreaEffectItem extends Item {
 
     transient private int power_ = 10;
 
-    AreaEffectItem(String name, char representation, boolean is_passable,
+    public AreaEffectItem(String name, char representation, boolean is_passable,
             boolean goes_in_inventory, boolean is_one_shot, Effect effect, int power) {
         super(name, representation, is_passable, goes_in_inventory, is_one_shot);
         effect_ = effect;
         power_ = power;
     }
 
-    AreaEffectItem(String name, char representation, boolean is_passable,
+    public AreaEffectItem(String name, char representation, boolean is_passable,
             boolean goes_in_inventory, boolean is_one_shot, Effect effect) {
         super(name, representation, is_passable, goes_in_inventory, is_one_shot);
         effect_ = effect;
@@ -44,10 +44,10 @@ public class AreaEffectItem extends Item {
         }
         Display.setMessage("Walked on Item: " + this.toString(), 3);
         switch (effect_) {
-            case HEAL:
+            case HURT:
                 this.getMapRelation().hurtWithinRadius(power_, 2);
                 break;
-            case HURT:
+            case HEAL:
                 this.getMapRelation().healWithinRadius(power_, 2);
                 break;
             case LEVEL:

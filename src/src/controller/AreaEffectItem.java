@@ -66,11 +66,11 @@ public class AreaEffectItem extends Item {
     	
     	hasBeenActivated = true;
 
-        System.out.println("Item: " + this.toString() + " is being walked on.");
+       // System.out.println("Item: " + this.toString() + " is being walked on.");
         if (this.isOneShot() && !this.goesInInventory()) {
             this.getMapRelation().getMapTile().removeTopItem();
         }
-        Display.setMessage("Walked on Item: " + this.toString(), 3);
+        //Display.setMessage("Walked on Item: " + this.toString(), 3);
         switch (effect_) {
             case HURT:
                 this.getMapRelation().hurtWithinRadius(power_, 2);

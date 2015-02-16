@@ -174,7 +174,6 @@ public class Main
 			
 			String item_x_string;
 			while ((item_x_string = br.readLine()) != null) {
-				System.out.println(item_x_string);
 				int item_x = Integer.parseInt(item_x_string);
 				int item_y = Integer.parseInt(br.readLine());
 				boolean item_isoneshot = br.readLine().equals("true") ? true : false;
@@ -193,28 +192,34 @@ public class Main
 					br.readLine();
 				}
 				String item_name = br.readLine();
-				System.out.println(item_name);
 				char item_rep = br.readLine().charAt(0);
 				boolean item_viewable = (br.readLine().equals("true") ? true : false);
 				boolean item_passable = (br.readLine().equals("true") ? true : false);
 				boolean item_pickupable = (br.readLine().equals("true") ? true : false);
-				if (aoe_activated) {
+				if (is_aoe_item) {
+					AreaEffectItem aoe_item = null;
 					switch (aoe_item_effect) {
 						case "HURT":
-							mmr_.addItem(new AreaEffectItem(item_name, item_rep, item_passable, item_pickupable, true, AreaEffectItem.Effect.HURT, aoe_power), item_x, item_y);
+							aoe_item = new AreaEffectItem(item_name, item_rep, item_passable, item_pickupable, true, AreaEffectItem.Effect.HURT, aoe_power);
+							mmr_.addItem(aoe_item, item_x, item_y);
 							break;
 						case "HEAL":
-							mmr_.addItem(new AreaEffectItem(item_name, item_rep, item_passable, item_pickupable, true, AreaEffectItem.Effect.HEAL, aoe_power), item_x, item_y);
+							aoe_item = new AreaEffectItem(item_name, item_rep, item_passable, item_pickupable, true, AreaEffectItem.Effect.HEAL, aoe_power);
+							mmr_.addItem(aoe_item, item_x, item_y);
 							break;
 						case "LEVEL":
-							mmr_.addItem(new AreaEffectItem(item_name, item_rep, item_passable, item_pickupable, true, AreaEffectItem.Effect.LEVEL, aoe_power), item_x, item_y);
+							aoe_item = new AreaEffectItem(item_name, item_rep, item_passable, item_pickupable, true, AreaEffectItem.Effect.LEVEL, aoe_power);
+							mmr_.addItem(aoe_item, item_x, item_y);
 							break;
 						case "KILL":
-							mmr_.addItem(new AreaEffectItem(item_name, item_rep, item_passable, item_pickupable, true, AreaEffectItem.Effect.KILL, aoe_power), item_x, item_y);
+							aoe_item = new AreaEffectItem(item_name, item_rep, item_passable, item_pickupable, true, AreaEffectItem.Effect.KILL, aoe_power);
+							mmr_.addItem(aoe_item, item_x, item_y);
 							break;
 						default:
 							break;
 					}
+					if (aoe_activated)
+						aoe_item.onWalkOver();
 					br.readLine();
 					br.readLine();
 					br.readLine();

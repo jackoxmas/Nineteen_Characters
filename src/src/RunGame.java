@@ -301,7 +301,7 @@ public class RunGame
         mmr_.addItem(area_level, 11, 5);
         
 
-        Terrain obstacle = new Terrain("boulder", '■', true, false);
+        Terrain obstacle = new Terrain("boulder", '▲', true, false);
         mmr_.addTerrain(obstacle, 2, 2);
     }
     private static void startGame(){

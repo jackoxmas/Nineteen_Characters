@@ -4,6 +4,7 @@ import java.util.Scanner;
 import src.controller.AreaEffectItem;
 
 import src.controller.Avatar;
+import src.controller.AvatarController;
 import src.controller.Item;
 import src.controller.Terrain;
 import src.model.MapMain_Relation;
@@ -70,7 +71,7 @@ public class TestingMain {
         mmr_.addItem(inflict_pain, 8, 3);
         
         AreaEffectItem area_heal = new AreaEffectItem("area_heal", '♥', true, false,
-                true, AreaEffectItem.Effect.HURT, 10);
+                false, AreaEffectItem.Effect.HURT, 10);
         mmr_.addItem(area_heal, 9, 9);
         
         AreaEffectItem area_kill = new AreaEffectItem("area_kill", '☣', true, false,
@@ -86,20 +87,14 @@ public class TestingMain {
         Terrain obstacle = new Terrain("boulder", '■', true, false);
         mmr_.addTerrain(obstacle, 2, 2);
         System.out.println("☠ and ★ and ✚");
-        Display.setMessage("test", 3);
-        Scanner sc = new Scanner(System.in);
-        while (true) {
-            char c;
-            c = sc.next().charAt(0);
-            if (c == '5') {
-                return;
-            }
-            avatar.getInput(c);
-            _display.setView(avatar.getMyView());
-            _display.printView();
-
-        }
-
+        Display.setMessage("test",3);
+        AvatarController AC = new AvatarController(avatar);
+        try {
+			AC.runTheGame();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 }

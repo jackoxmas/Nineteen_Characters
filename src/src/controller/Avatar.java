@@ -383,6 +383,7 @@ public final class Avatar extends Entity {
                     mar.moveInDirection(1, 1);
                     break;
                 case 'S': //Save game
+                	saveGame();
                     break;
                 case 'v': //Open stats
                     break;
@@ -450,7 +451,13 @@ public final class Avatar extends Entity {
             current_viewport_.getInput(c);
             current_viewport_.renderToDisplay();//Although printing with display already calls this, might just want to move the display into avatar or something, not really sure
         }
+        
 
+    }
+    
+    private void saveGame() {
+        SavedGame saveGame = new SavedGame("save.dave");
+        saveGame.saveGame(this);
     }
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
 

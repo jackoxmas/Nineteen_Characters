@@ -111,7 +111,7 @@ public class AreaEffectItem extends Item {
     			s = "KILL";
     			break;
     		default :
-    			s = null;
+    			s = "null";
     	}
     	return s;
     }

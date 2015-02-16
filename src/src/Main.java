@@ -4,17 +4,30 @@
  */
 package src;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 
 import src.controller.AreaEffectItem;
+import src.controller.AreaEffectItem.Effect;
 import src.controller.Avatar;
 import src.controller.AvatarController;
 import src.controller.Item;
+import src.controller.Smasher;
+import src.controller.Sneak;
+import src.controller.Summoner;
 import src.controller.Terrain;
+import src.model.Map;
 import src.model.MapMain_Relation;
+import src.model.MapTile;
 import src.view.Display;
 import src.view.Viewport;
 
@@ -34,6 +47,9 @@ public class Main
 
     public static void main(String[] args) {
         //parseArgs(args); // Parse command line arguments
+    		if (args.length != 0) {
+    			loadGame("save.dave");
+    		}
         initialize(); // Initialize any data we need to before loading
         populateMap();//Add stuff into the map
         startGame(); // Begin the avatarcontroller loop
@@ -47,6 +63,182 @@ public class Main
         //initializeEverything();
     }
 
+    private static void loadGame(String file_path) {
+        saveGame_ = null;
+        mmr_ = new MapMain_Relation();
+        mmr_.bindToNewMapOfSize(Viewport.width_ / 2, Viewport.height_); //Can change these later if we so desire. 
+    	
+    	BufferedReader br = null;
+    	try {
+    		br = new BufferedReader( new FileReader( file_path ));
+    		
+    		String line;
+    		
+    		String name = br.readLine();
+    		int x = Integer.parseInt(br.readLine());
+    		int y = Integer.parseInt(br.readLine());
+            Avatar avatar = new Avatar(name, '☃', 0, 0);
+            avatar.setMap(mmr_);
+            avatar_ = avatar;
+            avatar.switchToMapView();
+            avatar.getMapRelation().moveInDirection(x, y);
+            avatar.sendInput('5');
+    		
+    		String occupation = br.readLine();
+			if (occupation.equals("Smasher"))
+    			avatar_.setOccupation(new Smasher());
+			if (occupation.equals("Summoner"))
+				avatar_.setOccupation(new Summoner());
+			if (occupation.equals("Sneak"))
+				avatar_.setOccupation(new Sneak());
+			avatar_.setRepresentation(br.readLine().charAt(0));
+			
+			avatar.getStatsPack().life_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().mana_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().offensive_rating_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().defensive_rating_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().armor_rating_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().lives_left_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().strength_level_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().agility_level_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().intellect_level_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().hardiness_level_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().quantity_of_experience_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().movement_level_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().moves_left_in_turn_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().cached_current_level_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().current_life_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().current_mana_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().current_offensive_rating_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().current_defensive_rating_ = Integer.parseInt(br.readLine());
+			avatar.getStatsPack().current_armor_rating_ = Integer.parseInt(br.readLine());
+			
+			String hasEquipped = br.readLine();
+			if (hasEquipped.equals("true")) {
+				String equip_name = br.readLine();
+				char equip_rep = br.readLine().charAt(0);
+				boolean equip_passable = (br.readLine().equals("true") ? true : false);
+				Item equipped = new Item(equip_name, equip_rep, equip_passable, true, false);
+				equipped.getStatsPack().life_ = Integer.parseInt(br.readLine());
+				equipped.getStatsPack().mana_ = Integer.parseInt(br.readLine());
+				equipped.getStatsPack().offensive_rating_ = Integer.parseInt(br.readLine());
+				equipped.getStatsPack().defensive_rating_ = Integer.parseInt(br.readLine());
+				equipped.getStatsPack().armor_rating_ = Integer.parseInt(br.readLine());
+				avatar_.equipInventoryItem(equipped);
+			} else {
+				br.readLine();
+				br.readLine();
+				br.readLine();
+				br.readLine();
+				br.readLine();
+				br.readLine();
+				br.readLine();
+				br.readLine();
+			}
+			
+			String next_name;
+			while (!(next_name = br.readLine()).equals("map")) {
+				char item_rep = br.readLine().charAt(0);
+				boolean item_passable = (br.readLine() == "true" ? true : false);
+				Item item = new Item(next_name, item_rep, item_passable, true, false);
+				item.getStatsPack().life_ = Integer.parseInt(br.readLine());
+				item.getStatsPack().mana_ = Integer.parseInt(br.readLine());
+				item.getStatsPack().offensive_rating_ = Integer.parseInt(br.readLine());
+				item.getStatsPack().defensive_rating_ = Integer.parseInt(br.readLine());
+				item.getStatsPack().armor_rating_ = Integer.parseInt(br.readLine());
+				avatar.addItemToInventory(item);
+			}
+			
+			MapTile[][] map_grid = mmr_.getMyMap().getMapGrid();
+			for (int i = 0; i < map_grid.length; i++)
+				for (int j = 0; j < map_grid[i].length; j++) {
+					int tile_x = Integer.parseInt(br.readLine());
+					int tile_y = Integer.parseInt(br.readLine());
+					String tile_name = br.readLine();
+					char tile_rep = br.readLine().charAt(0);
+					String tile_decal_string;
+					char tile_decal = ' ';
+					boolean has_decal = false;
+					if (!(tile_decal_string = br.readLine()).equals("null")) {
+						tile_decal = tile_decal_string.charAt(0);
+						has_decal = true;
+					}
+					boolean has_water = (br.readLine()).equals("true") ? true : false;
+					boolean has_mountain = (br.readLine()).equals("true") ? true : false;
+					if (has_decal) {
+						mmr_.addTerrain( new Terrain(tile_name, tile_rep, has_mountain, has_water, tile_decal), tile_x, tile_y );
+					} else {
+						mmr_.addTerrain( new Terrain(tile_name, tile_rep, has_mountain, has_water), tile_x, tile_y);						
+					}
+				}
+			
+			String item_x_string;
+			while ((item_x_string = br.readLine()) != null) {
+				System.out.println(item_x_string);
+				int item_x = Integer.parseInt(item_x_string);
+				int item_y = Integer.parseInt(br.readLine());
+				boolean item_isoneshot = br.readLine().equals("true") ? true : false;
+				boolean is_aoe_item = false;
+				String aoe_item_effect = "null";
+				int aoe_power = 0;
+				boolean aoe_activated = false;
+				if (br.readLine().equals("true")) {
+					is_aoe_item = true;
+					aoe_item_effect = br.readLine();
+					aoe_power = Integer.parseInt(br.readLine());
+					aoe_activated = br.readLine().equals("true") ? true : false;
+				} else {
+					br.readLine();
+					br.readLine();
+					br.readLine();
+				}
+				String item_name = br.readLine();
+				System.out.println(item_name);
+				char item_rep = br.readLine().charAt(0);
+				boolean item_viewable = (br.readLine().equals("true") ? true : false);
+				boolean item_passable = (br.readLine().equals("true") ? true : false);
+				boolean item_pickupable = (br.readLine().equals("true") ? true : false);
+				if (aoe_activated) {
+					switch (aoe_item_effect) {
+						case "HURT":
+							mmr_.addItem(new AreaEffectItem(item_name, item_rep, item_passable, item_pickupable, true, AreaEffectItem.Effect.HURT, aoe_power), item_x, item_y);
+							break;
+						case "HEAL":
+							mmr_.addItem(new AreaEffectItem(item_name, item_rep, item_passable, item_pickupable, true, AreaEffectItem.Effect.HEAL, aoe_power), item_x, item_y);
+							break;
+						case "LEVEL":
+							mmr_.addItem(new AreaEffectItem(item_name, item_rep, item_passable, item_pickupable, true, AreaEffectItem.Effect.LEVEL, aoe_power), item_x, item_y);
+							break;
+						case "KILL":
+							mmr_.addItem(new AreaEffectItem(item_name, item_rep, item_passable, item_pickupable, true, AreaEffectItem.Effect.KILL, aoe_power), item_x, item_y);
+							break;
+						default:
+							break;
+					}
+					br.readLine();
+					br.readLine();
+					br.readLine();
+					br.readLine();
+					br.readLine();
+				} else {
+					Item item = new Item(item_name, item_rep, item_passable, item_pickupable, item_isoneshot);
+					item.getStatsPack().life_ = Integer.parseInt(br.readLine());
+					item.getStatsPack().mana_ = Integer.parseInt(br.readLine());
+					item.getStatsPack().offensive_rating_ = Integer.parseInt(br.readLine());
+					item.getStatsPack().defensive_rating_ = Integer.parseInt(br.readLine());
+					item.getStatsPack().armor_rating_ = Integer.parseInt(br.readLine());
+					mmr_.addItem(item, item_x, item_y);
+				}
+			}
+			
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+
+        Display _display = new Display(avatar_.getMyView());
+        _display.printView();
+        startGame();
+    }
 
     // <editor-fold desc="GAME METHODS" defaultstate="collapsed">
     private static void exitGame() {

@@ -56,7 +56,11 @@ public class SavedGame {
     		bw = new BufferedWriter( new FileWriter( file_path_ ) );
     		StringBuilder sb = new StringBuilder();
     		
+    		sb.append(my_avatar.name_ + "\n");
+    		sb.append(my_avatar.getMapRelation().getMyXCoordinate() + "\n");
+    		sb.append(my_avatar.getMapRelation().getMyYCoordinate() + "\n");
     		sb.append(my_avatar.getOccupation().toString() + "\n");
+    		sb.append(my_avatar.getRepresentation() + "\n");
     		sb.append(my_avatar.getStatsPack().life_ + "\n");
     		sb.append(my_avatar.getStatsPack().mana_ + "\n");
     		sb.append(my_avatar.getStatsPack().offensive_rating_ + "\n");
@@ -81,18 +85,19 @@ public class SavedGame {
     			sb.append("true\n");
     			sb.append(equipped.name_ + "\n");
     			sb.append(equipped.getRepresentation() + "\n");
+    			sb.append(equipped.isPassable() ? "true\n" : "false\n");
     			sb.append(equipped.getStatsPack().life_ + "\n");
     			sb.append(equipped.getStatsPack().mana_  + "\n");
     			sb.append(equipped.getStatsPack().offensive_rating_ + "\n");
     			sb.append(equipped.getStatsPack().defensive_rating_ + "\n");
     			sb.append(equipped.getStatsPack().armor_rating_ + "\n");
-    			sb.append(equipped.isPassable() ? "true\n" : "false\n");
     		} else
-    			sb.append("false\n\n\n\n\n\n\n\n\n");
+    			sb.append("false\nnull\nnull\nnull\nnull\nnull\nnull\nnull\nnull\n");
     		ArrayList<Item> inventory = my_avatar.getInventory();
     		for (Item item : inventory) {
     			sb.append(item.name_ + "\n");
     			sb.append(item.getRepresentation() + "\n");
+    			sb.append(item.isPassable() ? "true\n" : "false\n");
     			sb.append(item.getStatsPack().life_ + "\n");
     			sb.append(item.getStatsPack().mana_  + "\n");
     			sb.append(item.getStatsPack().offensive_rating_ + "\n");
@@ -109,7 +114,7 @@ public class SavedGame {
     				sb.append(tile.y_ + "\n");
     				sb.append(tile.getTerrain().name_ + "\n");
     				sb.append(tile.getTerrain().getRepresentation() + "\n");
-    				sb.append(tile.getTerrain().getDecal() + "\n");
+    				sb.append(tile.getTerrain().hasDecal() ? tile.getTerrain().getDecal()+"\n" : "null\n");
     				sb.append(tile.getTerrain().hasWater() + "\n");
     				sb.append(tile.getTerrain().hasMountain() + "\n");
     			}
@@ -121,28 +126,32 @@ public class SavedGame {
     			sb.append(item.isOneShot() ? "true\n" : "false\n");
     			if (item instanceof AreaEffectItem) {
     				sb.append("true\n");
-    				sb.append(item.getEffect() + "\n");
-    				sb.append(item.getPower() + "\n");
-    				sb.append(item.hasBeenActivated() ? "true\n" : "false\n");
+    				sb.append(((AreaEffectItem)item).getEffect() + "\n");
+    				sb.append(((AreaEffectItem)item).getPower() + "\n");
+    				sb.append(((AreaEffectItem)item).hasBeenActivated() ? "true\n" : "false\n");
     			} else
-    				sb.append("false\n\n\n\n");
+    				sb.append("false\n0\n0\n0\n");
     			sb.append(item.name_ + "\n");
     			sb.append(item.getRepresentation() + "\n");
 				sb.append(item.getViewable() ? "true\n" : "false\n");
 				sb.append(item.isPassable() ? "true\n" : "false\n");
+    			sb.append(item.goesInInventory() ? "true\n" : "false\n");
     			sb.append(item.getStatsPack().life_ + "\n");
     			sb.append(item.getStatsPack().mana_  + "\n");
     			sb.append(item.getStatsPack().offensive_rating_ + "\n");
     			sb.append(item.getStatsPack().defensive_rating_ + "\n");
     			sb.append(item.getStatsPack().armor_rating_ + "\n");
-    			sb.append(item.goesInInventory() ? "true\n" : "false\n");
     		}
     		bw.write(sb.toString());
     		bw.close();
     	} catch (Exception e) {
     		e.printStackTrace();
     	} finally {
-    		bw.close();
+    		try {
+				bw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
     	}
     	
         return 0;

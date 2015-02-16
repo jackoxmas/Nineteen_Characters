@@ -61,7 +61,7 @@ abstract public class Entity extends DrawableThing {
 
     private Occupation occupation_ = null;
 
-    protected final ArrayList<Item> inventory_;
+    protected ArrayList<Item> inventory_;
 
     /**
      * Gets the Inventory of Entity.
@@ -137,6 +137,18 @@ abstract public class Entity extends DrawableThing {
             return -2;
         }
     }
+    
+
+    /**
+     * Equip Item at position 0 of the Inventory ArrayList.
+     * @author John-Michael Reed
+     * @return error codes: -2, inventory has no item; -1, cannot equip another
+     * item
+     */
+    public void equipInventoryItem(Item equipped) {
+    	equipped_item_ = equipped;
+    }
+    
     /**
      * @author John-Michael Reed
      * @return error codes: -1 inventory is too full for item [not yet

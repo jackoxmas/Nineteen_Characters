@@ -165,6 +165,7 @@ public class Map {//} implements SaveData{
         if (error_code == 0) {
             i.getMapRelation().associateWithMap(this);
         }
+        items_list_.add(i);
         return error_code;
     }
 

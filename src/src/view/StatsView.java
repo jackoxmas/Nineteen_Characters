@@ -44,6 +44,7 @@ public final class StatsView extends Viewport
 	@Override
 	public void renderToDisplay() {
 		renderArray();
+		Display.setMessage("render to display", 5);
 	}
 	/*
 	 * Helper method to handle bulk of rendering, keeps renderToDisplay pure
@@ -61,7 +62,7 @@ public final class StatsView extends Viewport
     private void renderStats() {
     	if (avatar_reference_.getOccupation() == null)
     		return;
-    	
+    		
     	writeStringToContents(5, 6, avatar_reference_.name_ + ",");
     	
     	int level = avatar_reference_.getStatsPack().cached_current_level_;

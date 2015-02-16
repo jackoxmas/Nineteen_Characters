@@ -30,12 +30,9 @@ public class TestingMain {
     public static void oldtest() {
         MapMain_Relation mmr_ = new MapMain_Relation();
         mmr_.bindToNewMapOfSize(Viewport.width_, Viewport.height_); //Can change these later if we so desire. 
-<<<<<<< HEAD
 		Avatar avatar = new Avatar("avatar", '@', 0, 0);
 		avatar.setMap(mmr_);
 		Display _display = new Display(avatar.getMyView());
-		avatar.getMyView().messageBox("This is a test of the emergency broadcasting system.",1);
-		_display.printView();
 		_display.printView();
 		Terrain obstacle = new Terrain("boulder", 'O', true, false);
 		mmr_.addTerrain(obstacle, 2, 2);
@@ -48,14 +45,7 @@ public class TestingMain {
 			avatar.sendInput(c);
 			_display.setView(avatar.getMyView());
 			_display.printView();
-=======
-        Avatar avatar = new Avatar("avatar", 'x', 0, 0);
-        avatar.setMap(mmr_);
-        ViewPortTester Tester = new ViewPortTester();
-        printArray(Tester);
-        System.out.println("Done with viewportTester, ccviewtime!");
-        Display _display = new Display(new AvatarCreationView(avatar));
-        _display.printView();
+		}
     }
 
     public static void main(String[] args) {
@@ -89,7 +79,6 @@ public class TestingMain {
             avatar.getInput(c);
             _display.setView(avatar.getMyView());
             _display.printView();
->>>>>>> db3c72c8903e6b29a07a2c14d2aa08a4ce725d5f
 
         }
 

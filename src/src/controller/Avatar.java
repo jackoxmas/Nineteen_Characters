@@ -35,7 +35,7 @@ public final class Avatar extends Entity {
     private MapAvatar_Relation map_relationship_;
 
     // holds the views
-    private Viewport current_view_;
+    private Viewport current_viewport_;
     private final MapView map_view_;
     private final StatsView stats_view_;
     private char storedInput;
@@ -74,7 +74,7 @@ public final class Avatar extends Entity {
         map_relationship_ = new MapAvatar_Relation(this, x_respawn_point, y_respawn_point);
         map_view_ = generateMapView();
         stats_view_ = generateStatsView();
-        current_view_ = new AvatarCreationView(this);
+        current_viewport_ = new AvatarCreationView(this);
     }
 
     /**
@@ -83,15 +83,15 @@ public final class Avatar extends Entity {
      * @return
      */
     public Viewport getMyView() {
-        return this.current_view_;
+        return this.current_viewport_;
     }
     
     public void switchToMapView() {
-        current_view_ = map_view_;
+        current_viewport_ = map_view_;
     }
 
     public void switchToStatsView() {
-        current_view_ = stats_view_;
+        current_viewport_ = stats_view_;
     }
 
     private MapView generateMapView() {
@@ -119,9 +119,9 @@ public final class Avatar extends Entity {
 			System.out.println("Avatar cannot be controlled without a MapAvatar_Relation");
 			return;
 		}
-		else if (current_view_ != map_view_) {
-	    	current_view_.getInput(current);
-    		current_view_.renderToDisplay(); //See lower comment, maybe avatar should have a Display also to print it's views?
+		else if (current_viewport_ != map_view_) {
+	    	current_viewport_.getInput(current);
+    		current_viewport_.renderToDisplay(); //See lower comment, maybe avatar should have a Display also to print it's views?
 		}
 		else {
 			map_view_.setCenter(map_relationship_.getMyXCoordinate(),map_relationship_.getMyYCoordinate());
@@ -299,11 +299,7 @@ public final class Avatar extends Entity {
 						break;
 				}
 			}
-<<<<<<< HEAD
     		current_viewport_.renderToDisplay();
-=======
-    		current_view_.renderToDisplay(); //See lower comment, maybe avatar should have a Display also to print it's views?
->>>>>>> db3c72c8903e6b29a07a2c14d2aa08a4ce725d5f
 		}
 	}
 
@@ -340,7 +336,7 @@ public final class Avatar extends Entity {
      */
 
     public void getInput(char c) {
-        if (current_view_ == map_view_) {//If we currently have our mapview equipped(check by reference)
+        if (current_viewport_ == map_view_) {//If we currently have our mapview equipped(check by reference)
 
             MapAvatar_Relation mar = this.getMapRelation();
             if (mar == null) {
@@ -427,10 +423,10 @@ public final class Avatar extends Entity {
                 default: //no valid input
                     break;
             }
-            current_view_.renderToDisplay(); //See lower comment, maybe avatar should have a Display also to print it's views?
+            current_viewport_.renderToDisplay(); //See lower comment, maybe avatar should have a Display also to print it's views?
         } else {
-            current_view_.getInput(c);
-            current_view_.renderToDisplay();//Although printing with display already calls this, might just want to move the display into avatar or something, not really sure
+            current_viewport_.getInput(c);
+            current_viewport_.renderToDisplay();//Although printing with display already calls this, might just want to move the display into avatar or something, not really sure
         }
 
     }

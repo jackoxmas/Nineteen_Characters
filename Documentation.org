@@ -72,8 +72,10 @@ After having saved a game, to load it back in, simply start the game, supplying 
 
 ** While the map is visible
 *** Items
-- Hit u to uses item
-- Hit p pick up, then a direction key
+- Hit p pick up
+- Hit E to equip item
+- Hit U to unequip
+- Hit D to drop 
 *** View Switching
 - Hit i to open the stats and inventory screen
 
@@ -92,11 +94,5 @@ SW   S   SE
 - A Save File will be created
 - Format : yyMMdd_<number>.sav
 ** In the Inventory screen
-- Hit u to toggle the use option on
-- Hit d to toggle the drop option on
-- Hit e for toggle equip
-- Proceed to hit the number of the item you wish to apply the action to
-- Finally, select a direction
-- If the action cannot be done on the item, nothing happens
 *** View Switching
 Hit i to return to the map

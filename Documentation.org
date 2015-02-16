@@ -92,7 +92,7 @@ NW   N   NE
 SW   S   SE
 #+END_SRC
 *** Save Game
-- Hit v
+- Hit S
 - A Save File will be created
 - There is one save file, named save.dave
 # - Format : yyMMdd_<number>.sav

@@ -77,19 +77,19 @@ public class TestingMain {
         // boolean goes_in_inventory, boolean is_one_shot, Effect effect, int power
         AreaEffectItem inflict_pain = new AreaEffectItem("inflict_pain", '♨', true, false,
                 true, AreaEffectItem.Effect.HURT, 10);
-        mmr_.addItem(inflict_pain, 8, 3);
+        mmr_.addItem(inflict_pain, 16, 7);
         
         AreaEffectItem area_heal = new AreaEffectItem("area_heal", '♥', true, false,
-                false, AreaEffectItem.Effect.HURT, 10);
-        mmr_.addItem(area_heal, 9, 9);
+                false, AreaEffectItem.Effect.HEAL, 10);
+        mmr_.addItem(area_heal, 12, 12);
         
         AreaEffectItem area_kill = new AreaEffectItem("area_kill", '☣', true, false,
-                true, AreaEffectItem.Effect.HURT, 10);
-        mmr_.addItem(area_kill, 2, 4);
+                true, AreaEffectItem.Effect.KILL, 10);
+        mmr_.addItem(area_kill, 3, 11);
         
         AreaEffectItem area_level = new AreaEffectItem("area_level", '↑', true, false,
-                true, AreaEffectItem.Effect.HURT, 10);
-        mmr_.addItem(area_level, 7, 1);
+                true, AreaEffectItem.Effect.LEVEL, 10);
+        mmr_.addItem(area_level, 11, 5);
         
         Display _display = new Display(avatar.getMyView());
         _display.printView();

@@ -44,10 +44,10 @@ public class AreaEffectItem extends Item {
         }
         Display.setMessage("Walked on Item: " + this.toString(), 3);
         switch (effect_) {
-            case HEAL:
+            case HURT:
                 this.getMapRelation().hurtWithinRadius(power_, 2);
                 break;
-            case HURT:
+            case HEAL:
                 this.getMapRelation().healWithinRadius(power_, 2);
                 break;
             case LEVEL:

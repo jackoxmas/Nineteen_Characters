@@ -8,7 +8,7 @@ package src.controller;
 import src.view.Display;
 
 /**
- *
+ * Item that has an area of effect.
  * @author JohnMichaelReed
  */
 public class AreaEffectItem extends Item {
@@ -23,6 +23,16 @@ public class AreaEffectItem extends Item {
 
     transient private int power_ = 10;
 
+    /**
+     * Constructor: Contains extra parameter, power, which gives the item a strength.
+     * @param name
+     * @param representation
+     * @param is_passable
+     * @param goes_in_inventory
+     * @param is_one_shot
+     * @param effect
+     * @param power
+     */
     public AreaEffectItem(String name, char representation, boolean is_passable,
             boolean goes_in_inventory, boolean is_one_shot, Effect effect, int power) {
         super(name, representation, is_passable, goes_in_inventory, is_one_shot);
@@ -30,12 +40,24 @@ public class AreaEffectItem extends Item {
         power_ = power;
     }
 
+    /**
+     * Constructor: Does not contain power parameter.
+     * @param name
+     * @param representation
+     * @param is_passable
+     * @param goes_in_inventory
+     * @param is_one_shot
+     * @param effect
+     */
     public AreaEffectItem(String name, char representation, boolean is_passable,
             boolean goes_in_inventory, boolean is_one_shot, Effect effect) {
         super(name, representation, is_passable, goes_in_inventory, is_one_shot);
         effect_ = effect;
     }
-
+    
+    /**
+     * Item performs action (HURT, HEAL, LEVEL, KILL)
+     */
     @Override
     public void onWalkOver() {
         System.out.println("Item: " + this.toString() + " is being walked on.");

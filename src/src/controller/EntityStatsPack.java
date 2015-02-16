@@ -1,5 +1,7 @@
 package src.controller;
-
+/**
+ * Stats Pack for an Entity. Inherits from DrawableThingStatsPack. 
+ */
 public final class EntityStatsPack extends DrawableThingStatsPack {
 
 // Primary stats
@@ -48,7 +50,10 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
                 + "current_defensive_rating_: " + current_defensive_rating_ + "\n"
                 + "current_armor_rating_: " + current_armor_rating_ + "\n";
     }
-
+    
+    /**
+     * Constructor: sets values to 1. 
+     */
     public EntityStatsPack() {
         super(1, 1, 1, 1, 1);
         

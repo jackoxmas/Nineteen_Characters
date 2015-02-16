@@ -19,10 +19,17 @@ public final class AvatarController
 {
     private final Avatar my_avatar_;
     
+    /**
+     * AvatarController Constructor
+     * @param avatar
+     */
     public AvatarController(Avatar avatar) {
         my_avatar_ = avatar;
     }
     
+    /**
+     * Runs the game.
+     */
     public void runTheGame() {
     	Scanner sc = new Scanner(System.in);
     	char input = '`';

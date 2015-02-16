@@ -16,8 +16,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
- *
- * @author JohnReedLOL
+ * Terrain for MapTile.
  */
 public class Terrain extends DrawableThing {
 
@@ -52,6 +51,10 @@ public class Terrain extends DrawableThing {
     Color color_;
     private char decal_ = '\u0000'; // null character
 
+    /**
+     * Checks if terrain has decal.
+     * @return true if terrain has decal. False if not.
+     */
     public boolean hasDecal() {
         if (decal_ == '\u0000' || decal_ == ' ') {
             return false;
@@ -60,6 +63,10 @@ public class Terrain extends DrawableThing {
         }
     }
 
+    /**
+     * Sets Terrain's decal.
+     * @param decal
+     */
     public void addDecal(char decal) {
         decal_ = decal;
     }
@@ -71,6 +78,9 @@ public class Terrain extends DrawableThing {
         decal_ = ' ';
     }
     
+    /**
+     * Gets char that represents terrain on map.
+     */
     @Override
     public char getRepresentation() {
         if(this.hasDecal()) {
@@ -80,6 +90,14 @@ public class Terrain extends DrawableThing {
         }
     }
 
+    /**
+     * Contains extra parameter, decal. 
+     * @param name
+     * @param representation
+     * @param contains_mountain
+     * @param contains_water
+     * @param decal - Character that will represent terrain on map.
+     */
     public Terrain(String name, char representation, boolean contains_mountain,
             boolean contains_water, char decal) {
         super(name, representation);
@@ -90,6 +108,13 @@ public class Terrain extends DrawableThing {
         initializeMapRelationship();
     }
 
+    /**
+     * Constructor for Terrain. Decal set to null.
+     * @param name
+     * @param representation
+     * @param contains_mountain
+     * @param contains_water
+     */
     public Terrain(String name, char representation, boolean contains_mountain,
             boolean contains_water) {
         super(name, representation);

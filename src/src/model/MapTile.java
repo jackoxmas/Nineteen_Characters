@@ -1,28 +1,30 @@
 package src.model;
 
 import java.util.LinkedList;
-import java.io.Serializable;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.IOException;
 import java.util.ListIterator;
 import src.controller.Entity;
 import src.controller.Item;
 import src.controller.Terrain;
 
 /**
- *
- * @author JohnReedLOL
+ * This class represents a single unit of logical area on the Map. It relates the Terrain, Entities, and Items who
+ * share that space.
  */
-final public class MapTile implements Serializable {
+final public class MapTile {
 
-    public final int x_;
-    public final int y_;
+    public final int x_;    // the x coordinate of this area unit
+    public final int y_;    // the y coordinate of this area unit
 
-    private Terrain terrain_;
-    private Entity entity_;
-    private LinkedList<Item> items_;
+    private Terrain terrain_;   // the Terrain at this space
+    private Entity entity_;     // the single Entity occupying this space
+    private LinkedList<Item> items_;    // the collection of Items in this space
 
+    /**
+     * Create a new MapTile object
+     * <p>This method does not link this MapTile to any Terrain, Entities, or Items</p>
+     * @param x The x position of the MapTile on the Map
+     * @param y The y position of the MapTile on the Map
+     */
     MapTile(int x, int y) {
         x_ = x;
         y_ = y;

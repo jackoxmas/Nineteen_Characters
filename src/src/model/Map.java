@@ -23,7 +23,7 @@ import src.controller.Terrain;
  * YOU ARE BREAKING ENCAPSULATION!!!!!!!!!!!!!!!
  * @author John-Michael Reed
  */
-class Map implements SaveData{
+class Map {//} implements SaveData{
 
     /**
      * @author John-Michael Reed Sends a key press from a keyboard to an avatar
@@ -260,6 +260,7 @@ class Map implements SaveData{
 
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    /*
     @Override
     public String getSerTag() {
         return "MAP";
@@ -272,6 +273,6 @@ class Map implements SaveData{
     @Override
     public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> savMap) throws IOException {
         SavedGame.defaultDataWrite(this, oos, savMap);
-    }
+    }*/
     // </editor-fold>
 }

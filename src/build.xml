@@ -6,7 +6,7 @@
 	 encoding="UTF-8"
          destdir="bin"
          debug="on"
-         source="1.6"
+         source="1.7"
 	 />
         <jar jarfile="NineteenCharacters.jar" basedir="./bin" includes="**/**.class">
 	  <fileset dir="view/ASCIIART">

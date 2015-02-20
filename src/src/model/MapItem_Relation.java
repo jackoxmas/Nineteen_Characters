@@ -16,16 +16,19 @@ public class MapItem_Relation extends MapDrawableThing_Relation implements Seria
 
     private final Item item_;
 
-    public MapItem_Relation(Item item,
-            boolean goes_in_inventory, boolean is_one_shot) {
+    public MapItem_Relation(Map m, Item item,
+            boolean is_passable, boolean is_one_shot) {
+        super(m);
         item_ = item;
-        goes_in_inventory_ = goes_in_inventory;
+        is_passable_ = is_passable;
         is_one_shot_ = is_one_shot;
     }
-    private final boolean goes_in_inventory_;
+    
+    private final boolean is_passable_;
     private final boolean is_one_shot_;
-    public boolean goesInInventory() {
-        return goes_in_inventory_;
+    
+    public boolean isPassable() {
+        return is_one_shot_;
     }
     public boolean isOneShot() {
         return is_one_shot_;

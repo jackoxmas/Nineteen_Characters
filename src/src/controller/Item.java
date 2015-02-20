@@ -41,22 +41,12 @@ public class Item extends DrawableThing {
         map_relationship_ = i;
     }
 
-    private boolean is_passable_;
-
-    public Item(String name, char representation, boolean is_passable,
-            boolean goes_in_inventory, boolean is_one_shot) {
+    private boolean goes_in_inventory_;
+    
+    public Item(String name, char representation,
+            boolean goes_in_inventory) {
         super(name, representation);
-        is_passable_ = is_passable;
-        map_relationship_ = new MapItem_Relation(
-                this, goes_in_inventory, is_one_shot);
-    }
-
-    /**
-     * Returns true if passable, false if not.
-     */
-    @Override
-    public boolean isPassable() {
-        return this.is_passable_;
+        goes_in_inventory_ = goes_in_inventory;
     }
 
     /**
@@ -64,7 +54,7 @@ public class Item extends DrawableThing {
      * @return true if item can be put into inventory, false if not.
      */
     public boolean goesInInventory() {
-        return this.getMapRelation().goesInInventory();
+        return this.goes_in_inventory_;
     }
 
     /**
@@ -105,9 +95,17 @@ public class Item extends DrawableThing {
     public void use(Item target) {
 
     }
+    
+    /**
+     * Returns false because Entities are not passable.
+     */
+    @Override
+    public boolean isPassable() {
+        return this.getMapRelation().isPassable();
+    }
 
     public boolean determineIfCanPass(Entity entity) {
-        if (this.is_passable_) {
+        if (this.getMapRelation().isPassable() ) {
             return false;
         } else {
             return true;
@@ -116,7 +114,6 @@ public class Item extends DrawableThing {
 
     public String toString() {
         String s = "Item name: " + name_;
-        s += "\n is_passable_: " + is_passable_;
 
         s += "\n map_relationship_: ";
         if (map_relationship_ == null) {

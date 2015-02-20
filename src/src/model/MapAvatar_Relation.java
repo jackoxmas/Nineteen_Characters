@@ -16,7 +16,7 @@ import java.io.Serializable;
  */
 public class MapAvatar_Relation extends MapEntity_Relation implements Serializable {
 
-    private Avatar avatar_;
+    private final Avatar avatar_;
 
     /**
      * MapAvatar_Relation constructor. Inherits from MapEntity_Relation.
@@ -24,9 +24,9 @@ public class MapAvatar_Relation extends MapEntity_Relation implements Serializab
      * @param x_respawn_point
      * @param y_respawn_point
      */
-    public MapAvatar_Relation(Avatar avatar,
+    public MapAvatar_Relation(Map m, Avatar avatar,
             int x_respawn_point, int y_respawn_point) {
-        super(avatar, x_respawn_point, y_respawn_point);
+        super(m, avatar, x_respawn_point, y_respawn_point);
         avatar_ = avatar;
     }
 

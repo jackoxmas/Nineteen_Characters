@@ -11,12 +11,15 @@ import src.controller.EntityStatsPack;
 import src.controller.Item;
 
 /**
- *
+ * This should be abstract because you can't make drawable things
  * @author JohnMichaelReed
  */
 public class MapDrawableThing_Relation {
 
-    protected Map current_map_reference_ = null;
+    protected final Map current_map_reference_;
+    public MapDrawableThing_Relation(Map m) {
+        current_map_reference_ = m;
+    }
     private MapTile my_tile_ = null;
 
     private void initguardMap() {
@@ -40,13 +43,6 @@ public class MapDrawableThing_Relation {
     public int getMyXCoordinate() {
         initguardTile();
         return my_tile_.x_;
-    }
-
-    /**
-     * This function must be called to associate a map_relation with a map.
-     */
-    public void associateWithMap(Map m) {
-        current_map_reference_ = m;
     }
 
     /**

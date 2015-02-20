@@ -16,7 +16,8 @@ public class MapTerrain_Relation extends MapDrawableThing_Relation implements Se
 
     private final Terrain terrain_;
 
-    public MapTerrain_Relation(Terrain terrain) {
+    public MapTerrain_Relation(Map m, Terrain terrain) {
+        super(m);
         terrain_ = terrain;
     }
 

@@ -35,9 +35,9 @@ public class AreaEffectItem extends Item {
      * @param effect
      * @param power
      */
-    public AreaEffectItem(String name, char representation, boolean is_passable,
-            boolean goes_in_inventory, boolean is_one_shot, Effect effect, int power) {
-        super(name, representation, is_passable, goes_in_inventory, is_one_shot);
+    public AreaEffectItem(String name, char representation,
+            boolean goes_in_inventory, Effect effect, int power) {
+        super(name, representation, goes_in_inventory);
         effect_ = effect;
         power_ = power;
         hasBeenActivated = false;
@@ -54,7 +54,7 @@ public class AreaEffectItem extends Item {
      */
     public AreaEffectItem(String name, char representation, boolean is_passable,
             boolean goes_in_inventory, boolean is_one_shot, Effect effect) {
-        super(name, representation, is_passable, goes_in_inventory, is_one_shot);
+        super(name, representation, goes_in_inventory);
         effect_ = effect;
     }
     

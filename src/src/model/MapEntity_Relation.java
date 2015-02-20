@@ -14,16 +14,17 @@ import src.controller.Item;
  */
 public class MapEntity_Relation extends MapDrawableThing_Relation {
 
-    private Entity entity_;
+    private final Entity entity_;
 
-    public MapEntity_Relation(Entity entity,
+    public MapEntity_Relation(Map m, Entity entity,
             int x_respawn_point, int y_respawn_point) {
+        super(m);
         entity_ = entity;
         x_respawn_point_ = x_respawn_point;
         y_respawn_point_ = y_respawn_point;
     }
-    private int x_respawn_point_;
-    private int y_respawn_point_;
+    private final int x_respawn_point_;
+    private final int y_respawn_point_;
 
     public void spawn(Entity toSpawn, int time_until_spawn) {
     	//super.pushEntityInDirection(toSpawn, x_respawn_point_, y_respawn_point_);
@@ -75,7 +76,8 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     public int dropItem() {
         Item itemToBeDropped = entity_.pullFirstItemOutOfInventory();
         if (itemToBeDropped != null) {
-            current_map_reference_.addItem(itemToBeDropped, this.getMapTile().x_, this.getMapTile().y_);
+            current_map_reference_.addItem(itemToBeDropped, this.getMapTile().x_, this.getMapTile().y_,
+            itemToBeDropped.getMapRelation().isPassable(), itemToBeDropped.getMapRelation().isOneShot());
             src.view.Display.setMessage("Dropped item: " + itemToBeDropped.name_, 3);
             return 0;
         } else {

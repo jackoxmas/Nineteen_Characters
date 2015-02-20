@@ -37,14 +37,6 @@ public class Terrain extends DrawableThing {
         map_relationship_ = t;
     }
 
-    /**
-     * This function is necessary because the constructor cannot safely build
-     * the map_relationship. Make sure that this function uses a subclass this.
-     */
-    private void initializeMapRelationship() {
-        this.map_relationship_ = new MapTerrain_Relation(this);
-    }
-
     public enum Color {
         GREEN, BLUE, GRAY //grass, water, mountain
     }
@@ -105,7 +97,6 @@ public class Terrain extends DrawableThing {
         contains_water_ = contains_water;
         contains_mountain_ = contains_mountain;
         decal_ = decal;
-        initializeMapRelationship();
     }
 
     /**
@@ -121,7 +112,6 @@ public class Terrain extends DrawableThing {
         //color_ = color;
         contains_water_ = contains_water;
         contains_mountain_ = contains_mountain;
-        initializeMapRelationship();
     }
 
     @Override

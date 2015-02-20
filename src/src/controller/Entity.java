@@ -52,13 +52,9 @@ abstract public class Entity extends DrawableThing {
      *
      * @param name
      * @param representation - What will represent the Entity on the screen.
-     * @param x_respawn_point
-     * @param y_respawn_point
      */
-    public Entity(String name, char representation,
-            int x_respawn_point, int y_respawn_point) {
+    public Entity(String name, char representation) {
         super(name, representation);
-        map_relationship_ = new MapEntity_Relation(this, x_respawn_point, y_respawn_point);
         inventory_ = new ArrayList<Item>();
     }
 
@@ -129,7 +125,7 @@ abstract public class Entity extends DrawableThing {
     }
 
     // Only 1 equipped item in iteration 1
-    protected Item equipped_item_;
+    private Item equipped_item_;
 
     /**
      * Equip Item at position 0 of the Inventory ArrayList.

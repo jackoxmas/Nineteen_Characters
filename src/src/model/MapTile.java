@@ -10,7 +10,7 @@ import src.controller.Terrain;
  * This class represents a single unit of logical area on the Map. It relates the Terrain, Entities, and Items who
  * share that space.
  */
-final public class MapTile {
+public final class MapTile {
 
     public final int x_;    // the x coordinate of this area unit
     public final int y_;    // the y coordinate of this area unit

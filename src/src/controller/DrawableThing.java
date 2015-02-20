@@ -24,7 +24,7 @@ abstract public class DrawableThing {// implements SaveData {
 
     // names of items and terrain should be non-unique.
     // names of entities should be unique to fit in a hashmap.
-    public String name_;
+    public final String name_;
 
     // For things that take up only  1 tile or need to appear on a minimap
     private char single_character_representation_;

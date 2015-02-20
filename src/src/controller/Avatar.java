@@ -9,7 +9,6 @@ import src.SaveData;
 import src.SavedGame;
 import src.model.MapAvatar_Relation;
 import src.model.MapDrawableThing_Relation;
-import src.model.MapMain_Relation;
 import src.view.Display;
 import src.view.AvatarCreationView;
 import src.view.MapView;
@@ -72,9 +71,8 @@ public final class Avatar extends Entity {
      * 
      */
 
-    public Avatar(String name, char representation, int x_respawn_point, int y_respawn_point) {
-        super(name, representation, x_respawn_point, y_respawn_point);
-        map_relationship_ = new MapAvatar_Relation(this, x_respawn_point, y_respawn_point);
+    public Avatar(String name, char representation) {
+        super(name, representation);
         map_view_ = generateMapView();
         stats_view_ = generateStatsView();
         current_viewport_ = new AvatarCreationView(this);
@@ -110,15 +108,6 @@ public final class Avatar extends Entity {
 
     private StatsView generateStatsView() {
         return new StatsView(this);
-    }
-
-    /**
-     * Sets Map.
-     * @param map_main
-     */
-    public void setMap(MapMain_Relation map_main) {
-        map_main.addViewToMap(map_view_);
-        map_main.addAvatar(this, 0, 0);
     }
 
    /** determine if input is not important
@@ -318,12 +307,6 @@ public final class Avatar extends Entity {
     @Override
     public String toString() {
         String s = "Avatar name: " + name_;
-
-        if (!(equipped_item_ == null)) {
-            s += "\n equppied item: " + equipped_item_.name_;
-        } else {
-            s += "\n equppied item: null";
-        }
 
         s += "\n Inventory " + "(" + inventory_.size() + ")" + ":";
         for (int i = 0; i < inventory_.size(); ++i) {

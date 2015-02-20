@@ -13,7 +13,6 @@ import src.controller.Entity;
 import src.controller.Smasher;
 import src.controller.Sneak;
 import src.controller.Summoner;
-import src.model.MapMain_Relation;
 /**
  * Players see the AvatarCreationView when they chose their occupation.
  *Generates the view, loads the ascii art, and then gives it to display to print

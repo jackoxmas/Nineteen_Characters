@@ -286,6 +286,14 @@ public class Map implements MapViewable {//} implements SaveData{
             return tile_at_x_y.getTopCharacter();
         }
     }
+/**
+ * @param Terrain, int x, int y. These are the terrain to add and the cords
+ * @return void
+ */
+public void addTerrain(Terrain obstacle, int x, int y) {
+	  MapTile tile_at_x_y = this.getTile(x, y);
+	  tile_at_x_y.addTerrain(obstacle);
+}
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     /*

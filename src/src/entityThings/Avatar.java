@@ -9,6 +9,7 @@ package src.entityThings;
 import src.SavedGame;
 import src.model.MapAvatar_Relation;
 import src.model.MapDrawableThing_Relation;
+import src.model.MapViewable;
 import src.userIO.AvatarCreationView;
 import src.userIO.Display;
 import src.userIO.MapView;
@@ -29,6 +30,15 @@ import java.util.LinkedList;
  */
 public final class Avatar extends Entity {
 
+    // map_relationship_ is used in place of a map_referance_
+    private MapAvatar_Relation map_relationship_;
+
+    // holds the views
+    private Viewport current_viewport_;
+    private MapView map_view_;
+    private StatsView stats_view_;
+    private char storedInput;
+    private char storedChoice;
     /**
      * Accepts a key command from the map
      *
@@ -41,8 +51,8 @@ public final class Avatar extends Entity {
 
     public Avatar(String name, char representation) {
         super(name, representation);
-        map_view_ = generateMapView();
-        stats_view_ = generateStatsView();
+        map_view_ = null;
+        generateStatsView();//Statsview done
         current_viewport_ = new AvatarCreationView(this);
     }
 
@@ -180,15 +190,16 @@ public final class Avatar extends Entity {
      * 
      */
     
-    private final MapView map_view_;
-    private MapView generateMapView() {
-        MapView map_view = new MapView();
-        return map_view;
-    }
-
     private void saveGame() {
         SavedGame saveGame = new SavedGame("save.dave");
         saveGame.saveGame(this);
+    public void generateMapView(MapViewable _map) {
+        map_view_ = new MapView(_map);
+      
+    }
+
+    private void generateStatsView() {
+        stats_view_ = new StatsView(this);
     }
     
    /** determine if input is not important
@@ -385,12 +396,6 @@ public final class Avatar extends Entity {
         }
     }
 
-    private final StatsView stats_view_;
-
-    private StatsView generateStatsView() {
-        return new StatsView(this);
-    }
-    
     private char storedChoice;
     private char storedInput;
     

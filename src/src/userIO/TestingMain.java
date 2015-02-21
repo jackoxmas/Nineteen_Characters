@@ -8,6 +8,7 @@ import src.entityThings.Avatar;
 import src.entityThings.AvatarController;
 import src.entityThings.Item;
 import src.entityThings.Terrain;
+import src.model.Map;
 /*
  * A simple testing method used early on. Should get deleted at some point, but might be useful at some point.
  */
@@ -33,10 +34,9 @@ public class TestingMain {
     }
 
     public static void oldtest() {
-        MapMain_Relation mmr_ = new MapMain_Relation();
-        mmr_.bindToNewMapOfSize(Viewport.width_, Viewport.height_); //Can change these later if we so desire. 
-		Avatar avatar = new Avatar("avatar", '@', 0, 0);
-		avatar.setMap(mmr_);
+        Map map = new Map(Viewport.width_, Viewport.height_);
+		Avatar avatar = new Avatar("avatar", '@');
+		avatar.generateMapView(map);
 		Display _display = new Display(avatar.getMyView());
 		_display.printView();
 		Terrain obstacle = new Terrain("boulder", 'O', true, false);

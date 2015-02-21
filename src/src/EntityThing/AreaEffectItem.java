@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package src.controller;
+package src.EntityThing;
 
-import src.view.Display;
+import src.userIO.Display;
 
 /**
  * Item that has an area of effect.

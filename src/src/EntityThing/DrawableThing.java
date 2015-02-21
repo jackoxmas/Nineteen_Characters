@@ -1,4 +1,4 @@
-package src.controller;
+package src.EntityThing;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

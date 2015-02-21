@@ -1,10 +1,10 @@
 package src;
-import src.controller.Avatar;
-import src.controller.Item;
-import src.controller.Terrain;
+import src.EntityThing.Avatar;
+import src.EntityThing.Item;
+import src.EntityThing.Terrain;
 import src.model.Map;
-import src.view.Display;
-import src.view.MapView;
+import src.userIO.Display;
+import src.userIO.MapView;
 /*
 * To change this license header, choose License Headers in Project Properties.
 * To change this template file, choose Tools | Templates

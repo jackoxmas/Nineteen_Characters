@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 
-package src.controller;
+package src.EntityThing;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
 import src.model.MapAvatar_Relation;
-import src.view.Display;
+import src.userIO.Display;
 /**
  * Uses keyboard input to control the avatar
  * @author JohnReedLOL

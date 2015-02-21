@@ -5,8 +5,8 @@
  */
 package src.model;
 
-import src.controller.Avatar;
-import src.controller.Occupation;
+import src.EntityThing.Avatar;
+import src.EntityThing.Occupation;
 
 import java.io.Serializable;
 

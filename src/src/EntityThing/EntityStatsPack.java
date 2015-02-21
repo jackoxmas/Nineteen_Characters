@@ -1,4 +1,4 @@
-package src.controller;
+package src.EntityThing;
 /**
  * Stats Pack for an Entity. Inherits from DrawableThingStatsPack. 
  */

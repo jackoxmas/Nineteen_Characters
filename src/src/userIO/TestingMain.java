@@ -1,12 +1,13 @@
-package src.view;
+package src.userIO;
 
 import java.util.Scanner;
-import src.controller.AreaEffectItem;
 
-import src.controller.Avatar;
-import src.controller.AvatarController;
-import src.controller.Item;
-import src.controller.Terrain;
+import src.EntityThing.AreaEffectItem;
+import src.EntityThing.Avatar;
+import src.EntityThing.AvatarController;
+import src.EntityThing.Item;
+import src.EntityThing.Terrain;
+
 import src.model.MapMain_Relation;
 /*
  * A simple testing method used early on. Should get deleted at some point, but might be useful at some point.

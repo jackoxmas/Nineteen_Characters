@@ -3,25 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package src.controller;
+
+package src.EntityThing;
 
 /**
- * Smasher Occupation, Strength +1.
+ * Sneak Occupation, agility +1.
  */
-public final class Smasher implements Occupation {
-
+public final class Sneak  implements Occupation
+{
     public void change_stats(EntityStatsPack current_stats) {
-        //for smasher
-        current_stats.strength_level_ += 1;
+        //for sneak
+        current_stats.agility_level_ += 1;
 
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("OCSMASHER", 35);
+    private static final long serialVersionUID = Long.parseLong("OCSNEAK", 35);
     // </editor-fold>
     
     @Override
     public String toString() {
-    	return "Smasher";
+    	return "Sneak";
     }
 }

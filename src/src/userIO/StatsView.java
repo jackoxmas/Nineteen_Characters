@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 
-package src.view;
+package src.userIO;
 import java.util.*;
 
-import src.controller.Avatar;
-import src.controller.Entity;
-import src.controller.EntityStatsPack;
-import src.controller.Item;
+import src.EntityThing.Avatar;
+import src.EntityThing.Entity;
+import src.EntityThing.EntityStatsPack;
+import src.EntityThing.Item;
 
 import java.lang.Character;
 /**

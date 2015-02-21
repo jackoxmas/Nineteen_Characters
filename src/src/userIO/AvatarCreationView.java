@@ -4,15 +4,15 @@
  * and open the template in the editor.
  */
 
-package src.view;
+package src.userIO;
 
 import java.util.ArrayList;
 
-import src.controller.Avatar;
-import src.controller.Entity;
-import src.controller.Smasher;
-import src.controller.Sneak;
-import src.controller.Summoner;
+import src.EntityThing.Avatar;
+import src.EntityThing.Entity;
+import src.EntityThing.Smasher;
+import src.EntityThing.Sneak;
+import src.EntityThing.Summoner;
 /**
  * Players see the AvatarCreationView when they chose their occupation.
  *Generates the view, loads the ascii art, and then gives it to display to print
@@ -97,7 +97,7 @@ public final class AvatarCreationView extends Viewport
                  break;
         case 'W': avatar_reference_.setOccupation(new Summoner());
         		  avatar_reference_.setRepresentation('☃');
-        		  src.view.Display.setMessage("Put on my robe and wizard hat",4);
+        		  src.userIO.Display.setMessage("Put on my robe and wizard hat",4);
         		break;
         case 'S': avatar_reference_.setOccupation(new Smasher());
         			avatar_reference_.setRepresentation('⚔');

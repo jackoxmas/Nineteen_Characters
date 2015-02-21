@@ -17,9 +17,9 @@ import java.util.*;
 
 import src.model.Map;
 import src.model.MapTile;
-import src.controller.AreaEffectItem;
-import src.controller.Avatar;
-import src.controller.Item;
+import src.EntityThing.AreaEffectItem;
+import src.EntityThing.Avatar;
+import src.EntityThing.Item;
 import src.model.MapMain_Relation;
 
 /**

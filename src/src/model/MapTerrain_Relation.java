@@ -5,7 +5,8 @@
  */
 package src.model;
 
-import src.controller.Terrain;
+import src.EntityThing.Terrain;
+
 import java.io.Serializable;
 
 /**

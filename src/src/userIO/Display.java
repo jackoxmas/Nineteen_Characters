@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 import src.entityThings.Avatar;
-import src.model.MapDisplay_Relation;
 
 /**
  * Represents a single player's display. Has a static game wide message.

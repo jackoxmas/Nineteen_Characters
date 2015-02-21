@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.io.Serializable;
 
 import src.RunGame;
-import src.SaveData;
 import src.SavedGame;
 import src.entityThings.Avatar;
 import src.entityThings.Entity;
@@ -26,7 +25,7 @@ import src.entityThings.Terrain;
  *
  * @author John-Michael Reed
  */
-public class Map {//} implements SaveData{
+public class Map implements MapViewable {//} implements SaveData{
 
     /**
      * @author John-Michael Reed Sends a key press from a keyboard to an avatar

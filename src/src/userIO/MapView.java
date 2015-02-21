@@ -6,6 +6,7 @@
 package src.userIO;
 
 import src.entityThings.Avatar;
+import src.model.MapViewable;
 
 /**
  * Players see the MapView while they are interacting with the map
@@ -22,6 +23,7 @@ public final class MapView extends Viewport {
     private char[][] view_contents_;
     private int x_;
     private int y_;//Set these to center via avatar later.
+    private MapViewable map_;
 
 	@Override
 	public void renderToDisplay() {
@@ -31,11 +33,12 @@ public final class MapView extends Viewport {
 	/*
 	 * Constructor, inits center to (0,0)
 	 */
-	public MapView(){
+	public MapView(MapViewable _map){
 		super();
 		view_contents_ = getContents();
 		x_=0;
 		y_=0;
+		map_ = _map;
 	}
 	/*
 	 * Set the center to render the view from
@@ -53,7 +56,7 @@ public final class MapView extends Viewport {
 		makeSquare(0, 0,width_-1,height_-1);
 		for(int i = 1;i!=width_-1;++i){
 			for(int j = 1;j!=height_-1;++j){
-				view_contents_[i][j] = map_relationship_.getTileRepresentation(i-width_/2+x_,height_/2-j+y_);
+				view_contents_[i][j] = map_.getTileRepresentation(i-width_/2+x_,height_/2-j+y_);
 			}
 
 		}

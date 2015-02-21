@@ -6,9 +6,9 @@
 package src.model;
 
 import src.AreaFunctor;
-import src.controller.Entity;
-import src.controller.EntityStatsPack;
-import src.controller.Item;
+import src.EntityThing.Entity;
+import src.EntityThing.EntityStatsPack;
+import src.EntityThing.Item;
 
 /**
  * This should be abstract because you can't make drawable things
@@ -128,7 +128,7 @@ public class MapDrawableThing_Relation {
                     EntityStatsPack s = to_hurt.getStatsPack();
                     // s.current_life_ -= strength;
                     to_hurt.receiveAttack(strength, null); // kills avatar if health is negative
-                    src.view.Display.setMessage("Current Life after: " + s.current_life_, 3);
+                    src.userIO.Display.setMessage("Current Life after: " + s.current_life_, 3);
                 }
             }
         }
@@ -148,7 +148,7 @@ public class MapDrawableThing_Relation {
                 if (to_heal != null) {
                     EntityStatsPack s = to_heal.getStatsPack();
                     s.current_life_ += strength;
-                    src.view.Display.setMessage("Current Life after: " + s.current_life_, 3);
+                    src.userIO.Display.setMessage("Current Life after: " + s.current_life_, 3);
                 }
             }
         }
@@ -174,7 +174,7 @@ public class MapDrawableThing_Relation {
                 if (to_kill != null) {
                     EntityStatsPack s = to_kill.getStatsPack();
                     to_kill.commitSuicide();
-                    src.view.Display.setMessage("Lives left after: " + s.lives_left_, 3);
+                    src.userIO.Display.setMessage("Lives left after: " + s.lives_left_, 3);
                 }
             }
         }
@@ -203,7 +203,7 @@ public class MapDrawableThing_Relation {
                     for (int i = 0; i < num_level_ups; ++i) {
                         to_level.gainEnoughExperienceTolevelUp();
                     }
-                    src.view.Display.setMessage("Current Level after: " + s.cached_current_level_, 3);
+                    src.userIO.Display.setMessage("Current Level after: " + s.cached_current_level_, 3);
                 }
             }
         }

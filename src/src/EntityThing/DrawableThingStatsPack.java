@@ -1,4 +1,4 @@
-package src.controller;
+package src.EntityThing;
 
 /**
  * Stats Pack for Drawable Things.

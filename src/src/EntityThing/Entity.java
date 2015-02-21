@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package src.controller;
+package src.EntityThing;
 
 import java.util.ArrayList;
 import src.model.MapEntity_Relation;
 
 import java.io.Serializable;
-import src.view.Display;
+
+import src.userIO.Display;
 
 /**
  * Entity inherits from DrawableThing. Entity is a DrawableThing that can move

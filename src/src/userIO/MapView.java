@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package src.view;
+package src.userIO;
 
-import src.controller.Avatar;
+import src.EntityThing.Avatar;
 
 /**
  * Players see the MapView while they are interacting with the map

@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package src.view;
+package src.userIO;
 
 import java.io.Serializable;
 import java.util.Arrays;
 
-import src.controller.Avatar;
+import src.EntityThing.Avatar;
 import src.model.MapDisplay_Relation;
 
 /**

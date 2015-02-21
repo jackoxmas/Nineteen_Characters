@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package src.controller;
+package src.EntityThing;
 
 import src.SaveData;
 import src.SavedGame;
 import src.model.MapAvatar_Relation;
 import src.model.MapDrawableThing_Relation;
-import src.view.Display;
-import src.view.AvatarCreationView;
-import src.view.MapView;
-import src.view.StatsView;
-import src.view.Viewport;
+import src.userIO.AvatarCreationView;
+import src.userIO.Display;
+import src.userIO.MapView;
+import src.userIO.StatsView;
+import src.userIO.Viewport;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

@@ -5,8 +5,8 @@
  */
 package src.model;
 
-import src.controller.Entity;
-import src.controller.Item;
+import src.EntityThing.Entity;
+import src.EntityThing.Item;
 
 /**
  * One line description
@@ -61,10 +61,10 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         Item itemToBePickedUp = current_map_reference_.removeTopItem(x + getMyXCoordinate(), y + getMyYCoordinate());
         if (itemToBePickedUp != null) {
             entity_.addItemToInventory(itemToBePickedUp);
-            src.view.Display.setMessage("Picked up item: " + itemToBePickedUp.name_, 3);
+            src.userIO.Display.setMessage("Picked up item: " + itemToBePickedUp.name_, 3);
             error_code = 0;
         } else {
-            src.view.Display.setMessage("There is nothing here to pick up.", 3);
+            src.userIO.Display.setMessage("There is nothing here to pick up.", 3);
         }
 
         return error_code;
@@ -78,10 +78,10 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         if (itemToBeDropped != null) {
             current_map_reference_.addItem(itemToBeDropped, this.getMapTile().x_, this.getMapTile().y_,
             itemToBeDropped.getMapRelation().isPassable(), itemToBeDropped.getMapRelation().isOneShot());
-            src.view.Display.setMessage("Dropped item: " + itemToBeDropped.name_, 3);
+            src.userIO.Display.setMessage("Dropped item: " + itemToBeDropped.name_, 3);
             return 0;
         } else {
-            src.view.Display.setMessage("You have no items to drop.", 3);
+            src.userIO.Display.setMessage("You have no items to drop.", 3);
             return -1;
         }
     }

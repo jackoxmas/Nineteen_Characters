@@ -11,10 +11,10 @@ import java.io.Serializable;
 import src.RunGame;
 import src.SaveData;
 import src.SavedGame;
-import src.controller.Entity;
-import src.controller.Item;
-import src.controller.Avatar;
-import src.controller.Terrain;
+import src.EntityThing.Avatar;
+import src.EntityThing.Entity;
+import src.EntityThing.Item;
+import src.EntityThing.Terrain;
 
 /**
  * The map contains the map.\ THIS CLASS SHOULD NOT BE PUBLIC JUST BECAUSE - IT

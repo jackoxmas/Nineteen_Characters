@@ -16,20 +16,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
-import src.controller.AreaEffectItem;
-import src.controller.AreaEffectItem.Effect;
-import src.controller.Avatar;
-import src.controller.AvatarController;
-import src.controller.Item;
-import src.controller.Smasher;
-import src.controller.Sneak;
-import src.controller.Summoner;
-import src.controller.Terrain;
+import src.EntityThing.AreaEffectItem;
+import src.EntityThing.Avatar;
+import src.EntityThing.AvatarController;
+import src.EntityThing.Item;
+import src.EntityThing.Smasher;
+import src.EntityThing.Sneak;
+import src.EntityThing.Summoner;
+import src.EntityThing.Terrain;
+import src.EntityThing.AreaEffectItem.Effect;
 import src.model.Map;
 import src.model.MapMain_Relation;
 import src.model.MapTile;
-import src.view.Display;
-import src.view.Viewport;
+import src.userIO.Display;
+import src.userIO.Viewport;
 
 /**
  * Initializes, opens the program.

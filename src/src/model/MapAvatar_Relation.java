@@ -5,8 +5,8 @@
  */
 package src.model;
 
-import src.EntityThing.Avatar;
-import src.EntityThing.Occupation;
+import src.entityThings.Avatar;
+import src.entityThings.Occupation;
 
 import java.io.Serializable;
 

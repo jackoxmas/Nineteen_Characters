@@ -8,7 +8,7 @@ package src.userIO;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import src.EntityThing.Avatar;
+import src.entityThings.Avatar;
 import src.model.MapDisplay_Relation;
 
 /**

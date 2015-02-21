@@ -7,10 +7,10 @@
 package src.userIO;
 import java.util.*;
 
-import src.EntityThing.Avatar;
-import src.EntityThing.Entity;
-import src.EntityThing.EntityStatsPack;
-import src.EntityThing.Item;
+import src.entityThings.Avatar;
+import src.entityThings.Entity;
+import src.entityThings.EntityStatsPack;
+import src.entityThings.Item;
 
 import java.lang.Character;
 /**

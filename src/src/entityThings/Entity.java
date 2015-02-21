@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package src.EntityThing;
+package src.entityThings;
 
 import java.util.ArrayList;
 import src.model.MapEntity_Relation;

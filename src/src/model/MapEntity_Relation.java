@@ -5,8 +5,8 @@
  */
 package src.model;
 
-import src.EntityThing.Entity;
-import src.EntityThing.Item;
+import src.entityThings.Entity;
+import src.entityThings.Item;
 
 /**
  * One line description

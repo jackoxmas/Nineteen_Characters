@@ -5,7 +5,7 @@
  */
 package src.model;
 
-import src.EntityThing.Item;
+import src.entityThings.Item;
 
 import java.io.Serializable;
 

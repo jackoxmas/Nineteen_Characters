@@ -3,18 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package src.EntityThing;
+package src.entityThings;
 
-import src.SaveData;
+
 import src.model.MapItem_Relation;
 import src.userIO.Display;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.LinkedList;
 
 /**
  * Class item represents a stackable entity that

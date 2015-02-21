@@ -8,11 +8,11 @@ package src.userIO;
 
 import java.util.ArrayList;
 
-import src.EntityThing.Avatar;
-import src.EntityThing.Entity;
-import src.EntityThing.Smasher;
-import src.EntityThing.Sneak;
-import src.EntityThing.Summoner;
+import src.entityThings.Avatar;
+import src.entityThings.Entity;
+import src.entityThings.Smasher;
+import src.entityThings.Sneak;
+import src.entityThings.Summoner;
 /**
  * Players see the AvatarCreationView when they chose their occupation.
  *Generates the view, loads the ascii art, and then gives it to display to print

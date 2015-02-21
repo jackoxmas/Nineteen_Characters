@@ -4,25 +4,25 @@
  * and open the template in the editor.
  */
 
-package src.EntityThing;
+package src.entityThings;
 
 /**
- * Summoner Occupation, intellect +1.
+ * Sneak Occupation, agility +1.
  */
-public final class Summoner implements Occupation
+public final class Sneak  implements Occupation
 {
     public void change_stats(EntityStatsPack current_stats) {
         //for sneak
-        current_stats.intellect_level_ += 1;
+        current_stats.agility_level_ += 1;
 
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("OCSUMMONER", 35);
+    private static final long serialVersionUID = Long.parseLong("OCSNEAK", 35);
     // </editor-fold>
     
     @Override
     public String toString() {
-    	return "Summoner";
+    	return "Sneak";
     }
 }

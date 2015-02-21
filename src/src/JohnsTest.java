@@ -1,7 +1,7 @@
 package src;
-import src.EntityThing.Avatar;
-import src.EntityThing.Item;
-import src.EntityThing.Terrain;
+import src.entityThings.Avatar;
+import src.entityThings.Item;
+import src.entityThings.Terrain;
 import src.model.Map;
 import src.userIO.Display;
 import src.userIO.MapView;

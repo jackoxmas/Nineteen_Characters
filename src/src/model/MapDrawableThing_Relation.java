@@ -6,9 +6,9 @@
 package src.model;
 
 import src.AreaFunctor;
-import src.EntityThing.Entity;
-import src.EntityThing.EntityStatsPack;
-import src.EntityThing.Item;
+import src.entityThings.Entity;
+import src.entityThings.EntityStatsPack;
+import src.entityThings.Item;
 
 /**
  * This should be abstract because you can't make drawable things

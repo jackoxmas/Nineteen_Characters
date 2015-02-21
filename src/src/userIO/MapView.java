@@ -5,7 +5,7 @@
  */
 package src.userIO;
 
-import src.EntityThing.Avatar;
+import src.entityThings.Avatar;
 
 /**
  * Players see the MapView while they are interacting with the map

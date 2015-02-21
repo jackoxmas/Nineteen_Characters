@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package src.EntityThing;
+package src.entityThings;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Scanner;

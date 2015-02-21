@@ -3,9 +3,9 @@ package src.model;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import src.EntityThing.Entity;
-import src.EntityThing.Item;
-import src.EntityThing.Terrain;
+import src.entityThings.Entity;
+import src.entityThings.Item;
+import src.entityThings.Terrain;
 
 /**
  * This class represents a single unit of logical area on the Map. It relates the Terrain, Entities, and Items who

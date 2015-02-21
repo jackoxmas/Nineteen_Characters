@@ -4,7 +4,7 @@
  */
 package src;
 
-import src.EntityThing.Avatar;
+import src.entityThings.Avatar;
 import src.model.*;
 import java.lang.reflect.Field;
 

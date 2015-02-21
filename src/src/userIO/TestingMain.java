@@ -39,8 +39,7 @@ public class TestingMain {
     	Map map = new Map(Viewport.width_/2, Viewport.height_);
 		Avatar avatar = new Avatar("avatar", '☃');
 		avatar.generateMapView(map);
-		MapAvatar_Relation mavatar = new MapAvatar_Relation(map,avatar,0,0);
-		avatar.setMapRelation(mavatar);
+		map.addAvatar(avatar, 0, 0);
         Item blue = new Item("umbrella_1", '☂', true);
         Item red = new Item("umbrella_2", '☂', true);
         Item green = new Item("umbrella_3", '☂', true);

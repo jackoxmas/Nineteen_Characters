@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.io.Serializable;
 
 import src.RunGame;
-import src.SaveData;
 import src.SavedGame;
 import src.entityThings.Avatar;
 import src.entityThings.Entity;

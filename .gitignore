@@ -135,3 +135,14 @@
 /src/src/model/IO_Package.class
 /src/src/userIO/TestingMain.class
 /src/src/userIO/TestingMain.class
+/src/src/entityThings/AreaEffectItem.class
+/.gitignore
+/src/src/entityThings/Avatar.java
+/src/src/entityThings/AvatarController.class
+/src/src/entityThings/DrawableThing.class
+/src/src/entityThings/DrawableThingStatsPack.class
+/src/src/entityThings/Entity.class
+/src/src/entityThings/EntityStatsPack.class
+/src/src/entityThings/Item.class
+/src/src/entityThings/Terrain$Color.class
+/src/src/entityThings/Terrain.class

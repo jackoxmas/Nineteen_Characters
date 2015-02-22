@@ -129,6 +129,7 @@
 /src/src/RunGame$ProgramOpts.class
 /src/src/RunGame.class
 /src/src/model/MapViewable.class
+<<<<<<< HEAD
 /src/src/entityThings/Avatar.class
 /src/src/entityThings/Avatar.class
 /src/src/userIO/TestingMain.class
@@ -146,3 +147,7 @@
 /src/src/entityThings/Item.class
 /src/src/entityThings/Terrain$Color.class
 /src/src/entityThings/Terrain.class
+=======
+>>>>>>> 7d4062c930faf8d27e612a1fb901bd1004193e7b
+/src/src/userIO/TestingMain.class
+/src/src/entityThings/Avatar.class

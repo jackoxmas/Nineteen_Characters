@@ -1,5 +1,6 @@
 package src.model;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -33,12 +34,13 @@ public class Map {//} implements SaveData{
      * MAP_KEYBOARD_RELATION
      * @param name - Name of avatar to command
      * @param command - signal to send to avatar
-     * @return zero if avatar accepts the command, non-zero if they do not
+     * @return IO_Package of stuff that can be displayed.
      */
-    public int sendCommandToAvatarByName(String name, char command) {
+    public IO_Package sendCommandToAvatarByName(String name, char command) {
         Avatar to_recieve_command = this.getAvatarByName(name);
         int error_code = to_recieve_command.acceptKeyCommand(command);
-        return error_code;
+        IO_Package return_package = null;
+        return return_package;
     }
 
     public static final int MAX_NUMBER_OF_WORLDS = 1;

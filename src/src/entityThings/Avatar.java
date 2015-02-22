@@ -9,6 +9,7 @@ package src.entityThings;
 import src.SavedGame;
 import src.model.MapAvatar_Relation;
 import src.model.MapDrawableThing_Relation;
+import src.model.MapViewable;
 import src.userIO.AvatarCreationView;
 import src.userIO.Display;
 import src.userIO.MapView;
@@ -28,7 +29,7 @@ import java.util.LinkedList;
  * @author JohnReedLOL
  */
 public final class Avatar extends Entity {
-
+    
     /**
      * Accepts a key command from the map
      *
@@ -41,8 +42,8 @@ public final class Avatar extends Entity {
 
     public Avatar(String name, char representation) {
         super(name, representation);
-        map_view_ = generateMapView();
-        stats_view_ = generateStatsView();
+        map_view_ = null;
+        generateStatsView();//Statsview done
         current_viewport_ = new AvatarCreationView(this);
     }
 
@@ -181,8 +182,8 @@ public final class Avatar extends Entity {
      */
     
     private final MapView map_view_;
-    private MapView generateMapView() {
-        MapView map_view = new MapView();
+    private MapView generateMapView(MapViewable _map) {
+        MapView map_view = new MapView(_map);
         return map_view;
     }
 
@@ -388,7 +389,7 @@ public final class Avatar extends Entity {
     private final StatsView stats_view_;
 
     private StatsView generateStatsView() {
-        return new StatsView(this);
+        stats_view_ = new StatsView(this);
     }
     
     private char storedChoice;

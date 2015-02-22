@@ -1,5 +1,6 @@
 package src.model;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -9,7 +10,6 @@ import java.util.LinkedList;
 import java.io.Serializable;
 
 import src.RunGame;
-import src.SaveData;
 import src.SavedGame;
 import src.entityThings.Avatar;
 import src.entityThings.Entity;
@@ -26,7 +26,7 @@ import src.entityThings.Terrain;
  *
  * @author John-Michael Reed
  */
-public class Map {//} implements SaveData{
+public class Map implements MapViewable {//} implements SaveData{
 
     /**
      * @author John-Michael Reed Sends a key press from a keyboard to an avatar
@@ -34,12 +34,13 @@ public class Map {//} implements SaveData{
      * MAP_KEYBOARD_RELATION
      * @param name - Name of avatar to command
      * @param command - signal to send to avatar
-     * @return zero if avatar accepts the command, non-zero if they do not
+     * @return IO_Package of stuff that can be displayed.
      */
-    public int sendCommandToAvatarByName(String name, char command) {
+    public IO_Package sendCommandToAvatarByName(String name, char command) {
         Avatar to_recieve_command = this.getAvatarByName(name);
         int error_code = to_recieve_command.acceptKeyCommand(command);
-        return error_code;
+        IO_Package return_package = null;
+        return return_package;
     }
 
     public static final int MAX_NUMBER_OF_WORLDS = 1;
@@ -187,7 +188,7 @@ public class Map {//} implements SaveData{
      * @param y - y position for tile
      * @return error code
      */
-    public int initializeTerrain(Terrain t, int x, int y) {
+    public int addTerrain(Terrain t, int x, int y) {
         t.setMapRelation(new MapTerrain_Relation(this, t));
         int error_code = this.map_grid_[y][x].addTerrain(t);
         if (error_code == 0) {
@@ -287,6 +288,11 @@ public class Map {//} implements SaveData{
             return tile_at_x_y.getTopCharacter();
         }
     }
+/**
+ * @param Terrain, int x, int y. These are the terrain to add and the cords
+ * @return void
+ */
+
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     /*

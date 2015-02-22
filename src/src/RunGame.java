@@ -26,7 +26,6 @@ import src.entityThings.Summoner;
 import src.entityThings.Terrain;
 import src.entityThings.AreaEffectItem.Effect;
 import src.model.Map;
-import src.model.MapMain_Relation;
 import src.model.MapTile;
 import src.userIO.Display;
 import src.userIO.Viewport;
@@ -42,7 +41,7 @@ public class RunGame
     private static SavedGame saveGame_;
     private static Avatar avatar_;
 
-    private static MapMain_Relation mmr_;
+    
 
 
     public static void main(String[] args) {

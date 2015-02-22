@@ -12,7 +12,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import src.Vector2;
-import src.model.MapDisplay_Relation;
 import src.model.MapDrawableThing_Relation;
 
 /**
@@ -29,19 +28,9 @@ public abstract class Viewport implements Serializable {
 	private char[][] view_contents_;
 	public abstract boolean getInput(char c);
 	public Viewport(){
-		map_relationship_ = new MapDisplay_Relation(this);
 		view_contents_ = new char[width_][height_];
-	}
-	protected MapDisplay_Relation map_relationship_;
+		}
 	    
-	    /**
-	     * Use this to call functions contained within the MapDrawable relationship
-	     * @return map_relationship_
-	     * @author M Bregg
-	     */
-    public MapDisplay_Relation getMapRelation() {
-        return map_relationship_;
-    }
 	/**
 	 * Tells the view to update it's array contents. 
 	 */

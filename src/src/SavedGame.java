@@ -20,7 +20,7 @@ import src.entityThings.Avatar;
 import src.entityThings.Item;
 import src.model.Map;
 import src.model.MapTile;
-import src.model.MapMain_Relation;
+
 
 /**
  * This class manages a saved game object. A saved game has a file path and 
@@ -157,9 +157,7 @@ public class SavedGame {
         return 0;
     }
 
-    public MapMain_Relation loadGame() {
-        return null;
-    }
+
 
     /**
      * Generates a new SavedGame object with the file path set to the next available save game file path in the current

@@ -26,7 +26,7 @@ import src.entityThings.Terrain;
  *
  * @author John-Michael Reed
  */
-public class Map {//} implements SaveData{
+public class Map implements MapViewable {//} implements SaveData{
 
     /**
      * @author John-Michael Reed Sends a key press from a keyboard to an avatar
@@ -188,7 +188,7 @@ public class Map {//} implements SaveData{
      * @param y - y position for tile
      * @return error code
      */
-    public int initializeTerrain(Terrain t, int x, int y) {
+    public int addTerrain(Terrain t, int x, int y) {
         t.setMapRelation(new MapTerrain_Relation(this, t));
         int error_code = this.map_grid_[y][x].addTerrain(t);
         if (error_code == 0) {
@@ -288,6 +288,11 @@ public class Map {//} implements SaveData{
             return tile_at_x_y.getTopCharacter();
         }
     }
+/**
+ * @param Terrain, int x, int y. These are the terrain to add and the cords
+ * @return void
+ */
+
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     /*

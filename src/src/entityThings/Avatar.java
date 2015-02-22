@@ -9,6 +9,7 @@ package src.entityThings;
 import src.SavedGame;
 import src.model.MapAvatar_Relation;
 import src.model.MapDrawableThing_Relation;
+import src.model.MapViewable;
 import src.userIO.AvatarCreationView;
 import src.userIO.Display;
 import src.userIO.MapView;
@@ -34,8 +35,8 @@ public final class Avatar extends Entity {
 
     // holds the views
     private Viewport current_viewport_;
-    private final MapView map_view_;
-    private final StatsView stats_view_;
+    private MapView map_view_;
+    private StatsView stats_view_;
     private char storedInput;
     private char storedChoice;
 
@@ -73,8 +74,8 @@ public final class Avatar extends Entity {
 
     public Avatar(String name, char representation) {
         super(name, representation);
-        map_view_ = generateMapView();
-        stats_view_ = generateStatsView();
+        map_view_ = null;
+        generateStatsView();//Statsview done
         current_viewport_ = new AvatarCreationView(this);
     }
 
@@ -101,13 +102,13 @@ public final class Avatar extends Entity {
         current_viewport_ = stats_view_;
     }
 
-    private MapView generateMapView() {
-        MapView map_view = new MapView();
-        return map_view;
+    public void generateMapView(MapViewable _map) {
+        map_view_ = new MapView(_map);
+      
     }
 
-    private StatsView generateStatsView() {
-        return new StatsView(this);
+    private void generateStatsView() {
+        stats_view_ = new StatsView(this);
     }
 
    /** determine if input is not important

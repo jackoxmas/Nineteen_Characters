@@ -30,7 +30,7 @@ public class MapDrawableThing_Relation {
     }
 
     private void initguardTile() {
-        if (current_map_reference_ == null) {
+        if (my_tile_ == null) {
             System.err.println("Empty tile reference, "
                     + "and attempted to access map. Perhaps avatar was never passed a map, or mapview was never passed a map");
         }

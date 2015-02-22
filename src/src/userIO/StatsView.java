@@ -37,7 +37,7 @@ public final class StatsView extends Viewport
     	avatar_reference_ = my_avatar;
 
     	view_contents_= new char[width_][height_];
-		template_ = getAsciiArtFromFile("src/view/ASCIIART/statsview.txt");
+		template_ = getAsciiArtFromFile("src/ASCIIART/statsview.txt");
 		renderArray();
 	}
     

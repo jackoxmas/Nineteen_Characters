@@ -79,10 +79,10 @@ public final class AvatarCreationView extends Viewport
     	avatar_reference_ = my_avatar;
 
     	view_contents_=new char[width_][height_];
-		title_ = getAsciiArtFromFile("src/view/ASCIIART/class.txt");
-		smasherArt_ = getAsciiArtFromFile("src/view/ASCIIART/smasher.txt");
-		sneakerArt_ = getAsciiArtFromFile("src/view/ASCIIART/sneaker.txt");
-		summonerArt_ = getAsciiArtFromFile("src/view/ASCIIART/summoner.txt");
+		title_ = getAsciiArtFromFile("src/ASCIIART/class.txt");
+		smasherArt_ = getAsciiArtFromFile("src/ASCIIART/smasher.txt");
+		sneakerArt_ = getAsciiArtFromFile("src/ASCIIART/sneaker.txt");
+		summonerArt_ = getAsciiArtFromFile("src/ASCIIART/summoner.txt");
 		renderArray();
     	
     }

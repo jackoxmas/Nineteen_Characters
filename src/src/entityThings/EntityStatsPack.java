@@ -27,6 +27,14 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
     public int current_defensive_rating_ = 1;
     public int current_armor_rating_ = 1;
 
+    /**
+     * Constructor: sets values to 1. 
+     */
+    public EntityStatsPack() {
+        super(1, 1, 1, 1, 1);
+        
+    }
+    
     @Override
     public String toString() {
         return super.toString()
@@ -49,14 +57,6 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
                 + "current_offensive_rating_: " + current_offensive_rating_ + "\n"
                 + "current_defensive_rating_: " + current_defensive_rating_ + "\n"
                 + "current_armor_rating_: " + current_armor_rating_ + "\n";
-    }
-    
-    /**
-     * Constructor: sets values to 1. 
-     */
-    public EntityStatsPack() {
-        super(1, 1, 1, 1, 1);
-        
     }
 
 }

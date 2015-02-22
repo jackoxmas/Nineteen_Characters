@@ -58,6 +58,35 @@ public class AreaEffectItem extends Item {
         effect_ = effect;
     }
     
+    public int getPower(){
+    	return power_;
+    }
+    
+    public String getEffect(){
+    	String s;
+    	switch(effect_) {
+    		case HURT:
+    			s = "HURT";
+    			break;
+    		case HEAL:
+    			s = "HEAL";
+    			break;
+    		case LEVEL:
+    			s = "LEVEL";
+    			break;
+    		case KILL:
+    			s = "KILL";
+    			break;
+    		default :
+    			s = "null";
+    	}
+    	return s;
+    }
+
+    public boolean hasBeenActivated(){
+    	return hasBeenActivated;
+    }
+    
     /**
      * Item performs action (HURT, HEAL, LEVEL, KILL)
      */
@@ -85,34 +114,5 @@ public class AreaEffectItem extends Item {
                 this.getMapRelation().killWithinRadius(2);
                 break;
         }
-    }
-    
-    public boolean hasBeenActivated(){
-    	return hasBeenActivated;
-    }
-    
-    public int getPower(){
-    	return power_;
-    }
-    
-    public String getEffect(){
-    	String s;
-    	switch(effect_) {
-    		case HURT:
-    			s = "HURT";
-    			break;
-    		case HEAL:
-    			s = "HEAL";
-    			break;
-    		case LEVEL:
-    			s = "LEVEL";
-    			break;
-    		case KILL:
-    			s = "KILL";
-    			break;
-    		default :
-    			s = "null";
-    	}
-    	return s;
     }
 }

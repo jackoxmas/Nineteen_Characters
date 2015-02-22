@@ -29,16 +29,6 @@ import java.util.LinkedList;
  */
 public final class Avatar extends Entity {
 
-    // map_relationship_ is used in place of a map_referance_
-    private MapAvatar_Relation map_relationship_;
-
-    // holds the views
-    private Viewport current_viewport_;
-    private final MapView map_view_;
-    private final StatsView stats_view_;
-    private char storedInput;
-    private char storedChoice;
-
     /**
      * Accepts a key command from the map
      *
@@ -48,6 +38,125 @@ public final class Avatar extends Entity {
     public int acceptKeyCommand(char command) {
         return 0;
     }
+
+    public Avatar(String name, char representation) {
+        super(name, representation);
+        map_view_ = generateMapView();
+        stats_view_ = generateStatsView();
+        current_viewport_ = new AvatarCreationView(this);
+    }
+
+    // holds the views
+    private Viewport current_viewport_;
+    /**
+     * Used to return the current view of the Avatar
+     *
+     * @return
+     */
+    public Viewport getMyView() {
+        return this.current_viewport_;
+    }
+
+    /**
+     * Handles Avatar input.
+     * @param c
+     */
+    public void getInput(char c) {
+        if (current_viewport_ == map_view_) {//If we currently have our mapview equipped(check by reference)
+
+            MapAvatar_Relation mar = this.getMapRelation();
+            if (mar == null) {
+                System.out.println("Avatar cannot be controlled without a MapAvatar_Relation");
+                return;
+            }//If the avatar is not on the map, it can't really do anything.
+            map_view_.setCenter(mar.getMyXCoordinate(), mar.getMyYCoordinate());
+            switch (c) {
+                case '1'://Move SW
+                    mar.moveInDirection(-1, -1);
+                    break;
+                case '2'://Move S
+                    mar.moveInDirection(0, -1);
+                    break;
+                case '3'://Move SE
+                    mar.moveInDirection(1, -1);
+                    break;
+                case '4': // Move W
+                    mar.moveInDirection(-1, 0);
+                    break;
+                case '6'://Move E
+                    mar.moveInDirection(1, 0);
+                    break;
+                case '7'://Move NW
+                    mar.moveInDirection(-1, 1);
+                    break;
+                case '8'://Move N
+                    mar.moveInDirection(0, 1);
+                    break;
+                case '9': //Move NE
+                    mar.moveInDirection(1, 1);
+                    break;
+                case 'S': //Save game
+                	saveGame();
+                    break;
+                case 'v': //Open stats
+                    break;
+                case 'i': //Use item in direction
+                	switchToStatsView();
+                    break;
+                case 'u': //Use item in inventory
+                    int error_code_u = this.useFirstInventoryItem();
+                    break;
+                case 'q'://move NW
+                    mar.moveInDirection(-1, 1);
+                    break;
+                case 'w': //move N
+                    mar.moveInDirection(0, 1);
+                    break;
+                case 'e'://move NE
+                    mar.moveInDirection(1, 1);
+                    break;
+                case 'a': //move W
+                    mar.moveInDirection(-1, 0);
+                    break;
+                case 's'://Move stationary?
+                    mar.moveInDirection(0, 0);
+                    break;
+                case 'd'://Move E
+                    mar.moveInDirection(1, 0);
+                    break;
+                case 'z'://Move SW
+                    mar.moveInDirection(-1, -1);
+                    break;
+                case 'x'://move s
+                    mar.moveInDirection(0, -1);
+                    break;
+                case 'c'://move SE
+                    mar.moveInDirection(1, -1);
+                    break;
+                case 'D': //drop item
+                    int error_code_D = mar.dropItem();
+                    break;
+                case 'E': // equip
+                    this.equipInventoryItem();
+                    break;
+                case 'U': // unEquip
+                    unEquipInventoryItem();
+                    break;
+                case 'p'://pickup item
+                    int error_code_p = mar.pickUpItemInDirection(0, 0);
+                    break;
+                default: //no valid input
+                    break;
+            }
+            current_viewport_.renderToDisplay(); //See lower comment, maybe avatar should have a Display also to print it's views?
+        } else {
+            current_viewport_.getInput(c);
+            current_viewport_.renderToDisplay();//Although printing with display already calls this, might just want to move the display into avatar or something, not really sure
+        }
+    }
+
+    // map_relationship_ is used in place of a map_referance_
+    private MapAvatar_Relation map_relationship_;
 
     /**
      * Use this to call functions contained within the MapAvatar relationship
@@ -70,46 +179,18 @@ public final class Avatar extends Entity {
     /* Make sure to call set map after this!
      * 
      */
-
-    public Avatar(String name, char representation) {
-        super(name, representation);
-        map_view_ = generateMapView();
-        stats_view_ = generateStatsView();
-        current_viewport_ = new AvatarCreationView(this);
-    }
-
-    /**
-     * Used to return the current view of the Avatar
-     *
-     * @return
-     */
-    public Viewport getMyView() {
-        return this.current_viewport_;
-    }
-
-    /**
-     * Switches to Map View.
-     */
-    public void switchToMapView() {
-        current_viewport_ = map_view_;
-    }
-
-    /**
-     * Switches to Stats View.
-     */
-    public void switchToStatsView() {
-        current_viewport_ = stats_view_;
-    }
-
+    
+    private final MapView map_view_;
     private MapView generateMapView() {
         MapView map_view = new MapView();
         return map_view;
     }
 
-    private StatsView generateStatsView() {
-        return new StatsView(this);
+    private void saveGame() {
+        SavedGame saveGame = new SavedGame("save.dave");
+        saveGame.saveGame(this);
     }
-
+    
    /** determine if input is not important
      * or if we already did something
      * then if true
@@ -304,6 +385,29 @@ public final class Avatar extends Entity {
         }
     }
 
+    private final StatsView stats_view_;
+
+    private StatsView generateStatsView() {
+        return new StatsView(this);
+    }
+    
+    private char storedChoice;
+    private char storedInput;
+    
+    /**
+     * Switches to Map View.
+     */
+    public void switchToMapView() {
+        current_viewport_ = map_view_;
+    }
+
+    /**
+     * Switches to Stats View.
+     */
+    public void switchToStatsView() {
+        current_viewport_ = stats_view_;
+    }
+    
     @Override
     public String toString() {
         String s = "Avatar name: " + name_;
@@ -326,111 +430,7 @@ public final class Avatar extends Entity {
 
         return s;
     }
-    
-    /**
-     * Handles Avatar input.
-     * @param c
-     */
-    public void getInput(char c) {
-        if (current_viewport_ == map_view_) {//If we currently have our mapview equipped(check by reference)
-
-            MapAvatar_Relation mar = this.getMapRelation();
-            if (mar == null) {
-                System.out.println("Avatar cannot be controlled without a MapAvatar_Relation");
-                return;
-            }//If the avatar is not on the map, it can't really do anything.
-            map_view_.setCenter(mar.getMyXCoordinate(), mar.getMyYCoordinate());
-            switch (c) {
-                case '1'://Move SW
-                    mar.moveInDirection(-1, -1);
-                    break;
-                case '2'://Move S
-                    mar.moveInDirection(0, -1);
-                    break;
-                case '3'://Move SE
-                    mar.moveInDirection(1, -1);
-                    break;
-                case '4': // Move W
-                    mar.moveInDirection(-1, 0);
-                    break;
-                case '6'://Move E
-                    mar.moveInDirection(1, 0);
-                    break;
-                case '7'://Move NW
-                    mar.moveInDirection(-1, 1);
-                    break;
-                case '8'://Move N
-                    mar.moveInDirection(0, 1);
-                    break;
-                case '9': //Move NE
-                    mar.moveInDirection(1, 1);
-                    break;
-                case 'S': //Save game
-                	saveGame();
-                    break;
-                case 'v': //Open stats
-                    break;
-                case 'i': //Use item in direction
-                	switchToStatsView();
-                    break;
-                case 'u': //Use item in inventory
-                    int error_code_u = this.useFirstInventoryItem();
-                    break;
-                case 'q'://move NW
-                    mar.moveInDirection(-1, 1);
-                    break;
-                case 'w': //move N
-                    mar.moveInDirection(0, 1);
-                    break;
-                case 'e'://move NE
-                    mar.moveInDirection(1, 1);
-                    break;
-                case 'a': //move W
-                    mar.moveInDirection(-1, 0);
-                    break;
-                case 's'://Move stationary?
-                    mar.moveInDirection(0, 0);
-                    break;
-                case 'd'://Move E
-                    mar.moveInDirection(1, 0);
-                    break;
-                case 'z'://Move SW
-                    mar.moveInDirection(-1, -1);
-                    break;
-                case 'x'://move s
-                    mar.moveInDirection(0, -1);
-                    break;
-                case 'c'://move SE
-                    mar.moveInDirection(1, -1);
-                    break;
-                case 'D': //drop item
-                    int error_code_D = mar.dropItem();
-                    break;
-                case 'E': // equip
-                    this.equipInventoryItem();
-                    break;
-                case 'U': // unEquip
-                    unEquipInventoryItem();
-                    break;
-                case 'p'://pickup item
-                    int error_code_p = mar.pickUpItemInDirection(0, 0);
-                    break;
-                default: //no valid input
-                    break;
-            }
-            current_viewport_.renderToDisplay(); //See lower comment, maybe avatar should have a Display also to print it's views?
-        } else {
-            current_viewport_.getInput(c);
-            current_viewport_.renderToDisplay();//Although printing with display already calls this, might just want to move the display into avatar or something, not really sure
-        }
         
-
-    }
-    
-    private void saveGame() {
-        SavedGame saveGame = new SavedGame("save.dave");
-        saveGame.saveGame(this);
-    }
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
 
     // </editor-fold>

@@ -16,10 +16,48 @@ import src.userIO.Display;
  * @author JohnReedLOL
  */
 public class Item extends DrawableThing {
+	
+	public boolean determineIfCanPass(Entity entity) {
+        if (this.getMapRelation().isPassable() ) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+	
+	private boolean goes_in_inventory_;
+    /**
+     * Checks if item can go in Inventory.
+     * @return true if item can be put into inventory, false if not.
+     */
+    public boolean goesInInventory() {
+        return this.goes_in_inventory_;
+    }
+	    
+    /**
+     * Returns false because Entities are not passable.
+     */
+    @Override
+    public boolean isPassable() {
+        return this.getMapRelation().isPassable();
+    }
+
+    /**
+     * Checks if item is one shot.
+     * @return true if item is one shot, false if not.
+     */
+    public boolean isOneShot() {
+        return this.getMapRelation().isOneShot();
+    }
+
+    public Item(String name, char representation,
+            boolean goes_in_inventory) {
+        super(name, representation);
+        goes_in_inventory_ = goes_in_inventory;
+    }
 
     // map_relationship_ is used in place of a map_referance_
     private MapItem_Relation map_relationship_;
-
     /**
      * Use this to call functions contained within the MapItem relationship
      *
@@ -34,32 +72,8 @@ public class Item extends DrawableThing {
         map_relationship_ = i;
     }
 
-    private boolean goes_in_inventory_;
-    
-    public Item(String name, char representation,
-            boolean goes_in_inventory) {
-        super(name, representation);
-        goes_in_inventory_ = goes_in_inventory;
-    }
-
     /**
-     * Checks if item can go in Inventory.
-     * @return true if item can be put into inventory, false if not.
-     */
-    public boolean goesInInventory() {
-        return this.goes_in_inventory_;
-    }
-
-    /**
-     * Checks if item is one shot.
-     * @return true if item is one shot, false if not.
-     */
-    public boolean isOneShot() {
-        return this.getMapRelation().isOneShot();
-    }
-
-    /**
-     * P
+     * 
      */
     public void onWalkOver() {
         //System.out.println("Item: " + this.toString() + " is being walked on.");
@@ -68,6 +82,21 @@ public class Item extends DrawableThing {
         }
         // Display.setMessage("Walked on Item: " + this.toString(), 3);
         // this.getMapRelation().hurtWithinRadius(10, 2);
+    }
+
+    public String toString() {
+        String s = "Item name: " + name_;
+
+        s += "\n map_relationship_: ";
+        if (map_relationship_ == null) {
+            s += "null";
+        } else {
+            s += "Not null";
+        }
+
+        s += "\n associated with map: " + map_relationship_.isAssociatedWithMap();
+
+        return s;
     }
 
     /**
@@ -87,37 +116,6 @@ public class Item extends DrawableThing {
      */
     public void use(Item target) {
 
-    }
-    
-    /**
-     * Returns false because Entities are not passable.
-     */
-    @Override
-    public boolean isPassable() {
-        return this.getMapRelation().isPassable();
-    }
-
-    public boolean determineIfCanPass(Entity entity) {
-        if (this.getMapRelation().isPassable() ) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public String toString() {
-        String s = "Item name: " + name_;
-
-        s += "\n map_relationship_: ";
-        if (map_relationship_ == null) {
-            s += "null";
-        } else {
-            s += "Not null";
-        }
-
-        s += "\n associated with map: " + map_relationship_.isAssociatedWithMap();
-
-        return s;
     }
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">

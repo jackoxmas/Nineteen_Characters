@@ -17,35 +17,52 @@ import src.userIO.Display;
  * on the map.
  */
 abstract public class Entity extends DrawableThing {
-
-    // map_relationship_ is used in place of a map_referance_
-    private MapEntity_Relation map_relationship_;
+	
+	private static final int experience_between_levels = 100;
 
     /**
-     * Use this to call functions contained within the MapEntity relationship
+     * Include stat increase from item i.e., item with stat increase is equipped
      *
-     * @return map_relationship_
-     * @author Reed, John
+     * @param item
      */
-    public MapEntity_Relation getMapRelation() {
-        return map_relationship_;
+    public void addItemStatsToMyStats(Item item) {
+        stats_pack_.addOn(item.getStatsPack());
     }
 
     /**
-     * Set MapEntity_Relation
-     *
-     * @param e - MapEntity_Relation
+     * Entities should check their health after they are damaged.
      */
-    public void setMapRelation(MapEntity_Relation e) {
-        map_relationship_ = e;
+    public void checkHealth() {
+        if (stats_pack_.current_life_ < 1) {
+            commitSuicide();
+        }
     }
 
     /**
-     * Returns false because Entities are not passable.
+     * Entity dies, Game Over.
      */
-    @Override
-    public boolean isPassable() {
-        return false;
+    public void commitSuicide() {
+        --stats_pack_.lives_left_;
+        if (stats_pack_.lives_left_ < 0) {
+            System.out.println("game over");
+        }
+    }
+
+    /**
+     * returns the derived stats
+     *
+     * @author Jessan
+     */
+    public DrawableThingStatsPack derivedStats() {
+        DrawableThingStatsPack temp = new DrawableThingStatsPack();
+        //if no equipped item Derived Stats will be 0
+        if (equipped_item_ == null) {
+            return temp;
+        }
+
+        temp = stats_pack_;
+        temp.reduceBy(equipped_item_.getStatsPack());
+        return temp;
     }
 
     /**
@@ -58,75 +75,16 @@ abstract public class Entity extends DrawableThing {
         super(name, representation);
         inventory_ = new ArrayList<Item>();
     }
-
-    private Occupation occupation_ = null;
-
-    protected ArrayList<Item> inventory_;
-
-    /**
-     * Gets the Inventory of Entity.
-     *
-     * @return ArrayList of Items that are in the Entities Inventory
-     */
-    public ArrayList<Item> getInventory() {
-        return inventory_;
-    }
-
-    /**
-     * Gets first Item in Inventory. In the 0 position of the arrayList.
-     *
-     * @return Null if list is empty
-     */
-    public Item pullFirstItemOutOfInventory() {
-        if (!inventory_.isEmpty()) {
-            return inventory_.remove(0);
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Returns first Item object in Inventory
-     *
-     * @return Item
-     */
-    public Item getFirstItemInInventory() {
-        if (!inventory_.isEmpty()) {
-            return inventory_.get(0);
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Uses first item in inventory Does not destroy the item
-     *
-     * @return 0 on success, -1 on fail (no item to use)
-     */
-    public int useFirstInventoryItem() {
-        Item i = getFirstItemInInventory();
-        if (i == null) {
-            Display.setMessage("You have no items to use.", 3);
-            return -1;
-        } else {
-            i.use(this);
-            return 0;
-        }
-    }
-
-    public void receiveAttack(int damage, Occupation occupation) {
-        if(occupation == null) {
-            this.stats_pack_.current_life_ -= damage;
-            if(this.stats_pack_.current_life_ <= 0) {
-                this.commitSuicide();
-            }
-        } else {
-            // ...
-        }
-    }
-
+    
     // Only 1 equipped item in iteration 1
     private Item equipped_item_;
+
+    public Item getEquipped() {
+        if (equipped_item_ != null) {
+            return equipped_item_;
+        }
+        return null;
+    }
 
     /**
      * Equip Item at position 0 of the Inventory ArrayList.
@@ -183,61 +141,6 @@ abstract public class Entity extends DrawableThing {
         }
     }
 
-    public boolean hasEquipped() {
-        if (equipped_item_ != null) {
-            return true;
-        }
-        return false;
-    }
-
-    public Item getEquipped() {
-        if (equipped_item_ != null) {
-            return equipped_item_;
-        }
-        return null;
-    }
-
-    //private final int max_level_;
-    private EntityStatsPack stats_pack_ = new EntityStatsPack();
-
-    /**
-     * Get Entities StatsPack.
-     */
-    public EntityStatsPack getStatsPack() {
-        return stats_pack_;
-    }
-
-    /**
-     * Adds default stats to item stats and updates my_stats_after_powerups
-     *
-     * @author Jessan
-     */
-    private void recalculateStats() {
-        //my_stats_after_powerups_.equals(my_stats_after_powerups_.add(equipped_item_.get_stats_pack_()));
-
-    }
-
-    /**
-     * Include stat increase from item i.e., item with stat increase is equipped
-     *
-     * @param item
-     */
-    public void addItemStatsToMyStats(Item item) {
-        stats_pack_.addOn(item.getStatsPack());
-    }
-
-    /**
-     * Removes state increase from item i.e., item with stat increase is
-     * unequipped
-     *
-     * @param item
-     */
-    public void subtractItemStatsFromMyStats(Item item) {
-        stats_pack_.reduceBy(item.getStatsPack());
-    }
-
-    private static final int experience_between_levels = 100;
-
     /**
      * this function levels up an entity Modified to make it "gain enough
      * experience to level up"
@@ -249,6 +152,82 @@ abstract public class Entity extends DrawableThing {
         stats_pack_.quantity_of_experience_
                 = ((stats_pack_.quantity_of_experience_ / 100) * 100) + 100;
         this.levelUp();
+    }
+    
+    public boolean hasEquipped() {
+        if (equipped_item_ != null) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Returns false because Entities are not passable.
+     */
+    @Override
+    public boolean isPassable() {
+        return false;
+    }
+
+    protected ArrayList<Item> inventory_;
+    /**
+     * Add item to the inventory.
+     *
+     * @param item
+     */
+    public void addItemToInventory(Item item) {
+        inventory_.add(item);
+    }
+
+    /**
+     * Returns first Item object in Inventory
+     *
+     * @return Item
+     */
+    public Item getFirstItemInInventory() {
+        if (!inventory_.isEmpty()) {
+            return inventory_.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Gets the Inventory of Entity.
+     *
+     * @return ArrayList of Items that are in the Entities Inventory
+     */
+    public ArrayList<Item> getInventory() {
+        return inventory_;
+    }
+
+    /**
+     * Gets first Item in Inventory. In the 0 position of the arrayList.
+     *
+     * @return Null if list is empty
+     */
+    public Item pullFirstItemOutOfInventory() {
+        if (!inventory_.isEmpty()) {
+            return inventory_.remove(0);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Uses first item in inventory Does not destroy the item
+     *
+     * @return 0 on success, -1 on fail (no item to use)
+     */
+    public int useFirstInventoryItem() {
+        Item i = getFirstItemInInventory();
+        if (i == null) {
+            Display.setMessage("You have no items to use.", 3);
+            return -1;
+        } else {
+            i.use(this);
+            return 0;
+        }
     }
 
     /**
@@ -271,23 +250,37 @@ abstract public class Entity extends DrawableThing {
         //recalculateStats();
     }
 
+    // map_relationship_ is used in place of a map_referance_
+    private MapEntity_Relation map_relationship_;
+
     /**
-     * Entities should check their health after they are damaged.
+     * Use this to call functions contained within the MapEntity relationship
+     *
+     * @return map_relationship_
+     * @author Reed, John
      */
-    public void checkHealth() {
-        if (stats_pack_.current_life_ < 1) {
-            commitSuicide();
-        }
+    public MapEntity_Relation getMapRelation() {
+        return map_relationship_;
     }
 
     /**
-     * Entity dies, Game Over.
+     * Set MapEntity_Relation
+     *
+     * @param e - MapEntity_Relation
      */
-    public void commitSuicide() {
-        --stats_pack_.lives_left_;
-        if (stats_pack_.lives_left_ < 0) {
-            System.out.println("game over");
-        }
+    public void setMapRelation(MapEntity_Relation e) {
+        map_relationship_ = e;
+    }
+
+    private Occupation occupation_ = null;
+    
+    /**
+     * Get the Entities occupation.
+     *
+     * @return Occupation of Entity
+     */
+    public Occupation getOccupation() {
+        return occupation_;
     }
 
     /**
@@ -300,40 +293,46 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     * Get the Entities occupation.
-     *
-     * @return Occupation of Entity
-     */
-    public Occupation getOccupation() {
-        return occupation_;
-    }
-
-    /**
-     * Add item to the inventory.
-     *
-     * @param item
-     */
-    public void addItemToInventory(Item item) {
-        inventory_.add(item);
-    }
-
-    /**
-     * returns the derived stats
+     * Adds default stats to item stats and updates my_stats_after_powerups
      *
      * @author Jessan
      */
-    public DrawableThingStatsPack derivedStats() {
-        DrawableThingStatsPack temp = new DrawableThingStatsPack();
-        //if no equipped item Derived Stats will be 0
-        if (equipped_item_ == null) {
-            return temp;
-        }
+    private void recalculateStats() {
+        //my_stats_after_powerups_.equals(my_stats_after_powerups_.add(equipped_item_.get_stats_pack_()));
 
-        temp = stats_pack_;
-        temp.reduceBy(equipped_item_.getStatsPack());
-        return temp;
     }
 
+    public void receiveAttack(int damage, Occupation occupation) {
+        if(occupation == null) {
+            this.stats_pack_.current_life_ -= damage;
+            if(this.stats_pack_.current_life_ <= 0) {
+                this.commitSuicide();
+            }
+        } else {
+            // ...
+        }
+    }
+
+    //private final int max_level_;
+    private EntityStatsPack stats_pack_ = new EntityStatsPack();
+
+    /**
+     * Get Entities StatsPack.
+     */
+    public EntityStatsPack getStatsPack() {
+        return stats_pack_;
+    }
+
+    /**
+     * Removes state increase from item i.e., item with stat increase is
+     * unequipped
+     *
+     * @param item
+     */
+    public void subtractItemStatsFromMyStats(Item item) {
+        stats_pack_.reduceBy(item.getStatsPack());
+    }
+    
     public String toString() {
         String s = "Entity name: " + name_;
 

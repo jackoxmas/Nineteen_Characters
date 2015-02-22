@@ -17,8 +17,7 @@ import src.userIO.Display;
  */
 public final class AvatarController
 {
-    private final Avatar my_avatar_;
-    
+
     /**
      * AvatarController Constructor
      * @param avatar
@@ -26,6 +25,8 @@ public final class AvatarController
     public AvatarController(Avatar avatar) {
         my_avatar_ = avatar;
     }
+
+    private final Avatar my_avatar_;
     
     /**
      * Runs the game.

@@ -22,34 +22,12 @@ import src.model.MapDrawableThing_Relation;
  */
 abstract public class DrawableThing {// implements SaveData {
 
-    // names of items and terrain should be non-unique.
-    // names of entities should be unique to fit in a hashmap.
-    public final String name_;
-
-    // For things that take up only  1 tile or need to appear on a minimap
-    private char single_character_representation_;
-
-    private boolean is_viewable_;
-
-    private DrawableThingStatsPack stats_pack_ = new DrawableThingStatsPack();
-
     protected DrawableThing(String name, char representation) {
         name_ = name;
         single_character_representation_ = representation;
         is_viewable_ = true;
     }
     
-    /**
-     * Set character representation.
-     * @param c
-     */
-    public void setRepresentation(char c){single_character_representation_ = c;}
-    
-    /**
-     * Use this to call functions contained within the MapDrawable relationship
-     * @return map_relationship_
-     * @author Reed, John
-     */
     abstract public MapDrawableThing_Relation getMapRelation();
 
     /**
@@ -62,17 +40,15 @@ abstract public class DrawableThing {// implements SaveData {
     }
 
     abstract public boolean isPassable();
-
-    public void onTurn() {
-
-    }
+    
+    private boolean is_viewable_;
 
     /**
-     * Get character representation.
-     * @return Character being used to represent this Drawable Thing.
+     * Get if Drawable Thing is viewable
+     * @return boolean
      */
-    public char getRepresentation() {
-        return this.single_character_representation_;
+    public boolean getViewable() {
+        return this.is_viewable_;
     }
 
     /**
@@ -82,14 +58,29 @@ abstract public class DrawableThing {// implements SaveData {
     public void setViewable(boolean is_viewable) {
         is_viewable_ = is_viewable;
     }
+    
+    // names of items and terrain should be non-unique.
+    // names of entities should be unique to fit in a hashmap.
+    public final String name_;
+
+    // For things that take up only  1 tile or need to appear on a minimap
+    private char single_character_representation_;
+    
+    /**
+     * Get character representation.
+     * @return Character being used to represent this Drawable Thing.
+     */
+    public char getRepresentation() {
+        return this.single_character_representation_;
+    }
 
     /**
-     * Get if Drawable Thing is viewable
-     * @return boolean
+     * Set character representation.
+     * @param c
      */
-    public boolean getViewable() {
-        return this.is_viewable_;
-    }
+    public void setRepresentation(char c){single_character_representation_ = c;}
+
+    private DrawableThingStatsPack stats_pack_ = new DrawableThingStatsPack();
 
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     // </editor-fold>

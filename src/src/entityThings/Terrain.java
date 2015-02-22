@@ -20,6 +20,92 @@ import java.util.LinkedList;
  */
 public class Terrain extends DrawableThing {
 
+    void activate() {
+
+    }
+
+    void applyTerrainEffect(Entity entity) {
+
+    }
+	
+    public enum Color {
+        GREEN, BLUE, GRAY //grass, water, mountain
+    }
+    Color color_;
+
+    private boolean contains_water_;
+    private boolean contains_mountain_;
+
+    private char decal_ = '\u0000'; // null character
+    /**
+     * Sets Terrain's decal.
+     * @param decal
+     */
+    public void addDecal(char decal) {
+        decal_ = decal;
+    }
+    
+    public char getDecal() {
+    	return decal_;
+    }
+    
+    /**
+     * Checks if terrain has decal.
+     * @return true if terrain has decal. False if not.
+     */
+    public boolean hasDecal() {
+        if (decal_ == '\u0000' || decal_ == ' ') {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void removeDecal(char decal) {
+        decal_ = ' ';
+    }
+
+    //potential duplicate of isPassable
+    boolean determineIfCanPass(Entity entity) {
+        if (contains_water_ || contains_mountain_) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    /**
+     * Gets char that represents terrain on map.
+     */
+    @Override
+    public char getRepresentation() {
+        if(this.hasDecal()) {
+            return decal_;
+        } else {
+            return super.getRepresentation();
+        }
+    }
+    
+    public String hasMountain() {
+    	if (contains_mountain_)
+    		return "true";
+    	return "false";
+    }
+    
+    public String hasWater() {
+    	if (contains_water_)
+    		return "true";
+    	return "false";
+    }
+
+    @Override
+    public boolean isPassable() {
+        if (contains_water_ || contains_mountain_) {
+            return false;
+        }
+        return true;
+    }
+
     // map_relationship_ is used in place of a map_referance_
     private MapTerrain_Relation map_relationship_;
 
@@ -35,51 +121,6 @@ public class Terrain extends DrawableThing {
 
     public void setMapRelation(MapTerrain_Relation t) {
         map_relationship_ = t;
-    }
-
-    public enum Color {
-        GREEN, BLUE, GRAY //grass, water, mountain
-    }
-    Color color_;
-    private char decal_ = '\u0000'; // null character
-
-    /**
-     * Checks if terrain has decal.
-     * @return true if terrain has decal. False if not.
-     */
-    public boolean hasDecal() {
-        if (decal_ == '\u0000' || decal_ == ' ') {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Sets Terrain's decal.
-     * @param decal
-     */
-    public void addDecal(char decal) {
-        decal_ = decal;
-    }
-
-    private boolean contains_water_;
-    private boolean contains_mountain_;
-    
-    public void removeDecal(char decal) {
-        decal_ = ' ';
-    }
-    
-    /**
-     * Gets char that represents terrain on map.
-     */
-    @Override
-    public char getRepresentation() {
-        if(this.hasDecal()) {
-            return decal_;
-        } else {
-            return super.getRepresentation();
-        }
     }
 
     /**
@@ -113,47 +154,7 @@ public class Terrain extends DrawableThing {
         contains_water_ = contains_water;
         contains_mountain_ = contains_mountain;
     }
-
-    @Override
-    public boolean isPassable() {
-        if (contains_water_ || contains_mountain_) {
-            return false;
-        }
-        return true;
-    }
-
-    void activate() {
-
-    }
-
-    void applyTerrainEffect(Entity entity) {
-
-    }
     
-    public String hasWater() {
-    	if (contains_water_)
-    		return "true";
-    	return "false";
-    }
-    
-    public char getDecal() {
-    	return decal_;
-    }
-    
-    public String hasMountain() {
-    	if (contains_mountain_)
-    		return "true";
-    	return "false";
-    }
-
-    boolean determineIfCanPass(Entity entity) {
-        if (contains_water_ || contains_mountain_) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
 
     // </editor-fold>

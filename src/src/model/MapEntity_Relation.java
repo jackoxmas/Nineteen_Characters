@@ -14,6 +14,23 @@ import src.entityThings.Item;
  */
 public class MapEntity_Relation extends MapDrawableThing_Relation {
 
+    /**
+     * @author John-Michael Reed
+     * @return -1 if no item can be dropped (inventory empty)
+     */
+    public int dropItem() {
+        Item itemToBeDropped = entity_.pullFirstItemOutOfInventory();
+        if (itemToBeDropped != null) {
+            current_map_reference_.addItem(itemToBeDropped, this.getMapTile().x_, this.getMapTile().y_,
+            itemToBeDropped.getMapRelation().isPassable(), itemToBeDropped.getMapRelation().isOneShot());
+            src.userIO.Display.setMessage("Dropped item: " + itemToBeDropped.name_, 3);
+            return 0;
+        } else {
+            src.userIO.Display.setMessage("You have no items to drop.", 3);
+            return -1;
+        }
+    }
+	
     private final Entity entity_;
 
     public MapEntity_Relation(Map m, Entity entity,
@@ -22,12 +39,6 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         entity_ = entity;
         x_respawn_point_ = x_respawn_point;
         y_respawn_point_ = y_respawn_point;
-    }
-    private final int x_respawn_point_;
-    private final int y_respawn_point_;
-
-    public void spawn(Entity toSpawn, int time_until_spawn) {
-    	//super.pushEntityInDirection(toSpawn, x_respawn_point_, y_respawn_point_);
     }
 
     /**
@@ -41,10 +52,6 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      */
     public int moveInDirection(int x, int y) {
         return super.pushEntityInDirection(entity_, x, y);
-    }
-
-    public void sendAttack(int x, int y) {
-
     }
 
     /**
@@ -69,23 +76,18 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
 
         return error_code;
     }
-    /**
-     * @author John-Michael Reed
-     * @return -1 if no item can be dropped (inventory empty)
-     */
-    public int dropItem() {
-        Item itemToBeDropped = entity_.pullFirstItemOutOfInventory();
-        if (itemToBeDropped != null) {
-            current_map_reference_.addItem(itemToBeDropped, this.getMapTile().x_, this.getMapTile().y_,
-            itemToBeDropped.getMapRelation().isPassable(), itemToBeDropped.getMapRelation().isOneShot());
-            src.userIO.Display.setMessage("Dropped item: " + itemToBeDropped.name_, 3);
-            return 0;
-        } else {
-            src.userIO.Display.setMessage("You have no items to drop.", 3);
-            return -1;
-        }
+    
+    public void sendAttack(int x, int y) {
+
+    }
+    
+    public void spawn(Entity toSpawn, int time_until_spawn) {
+    	//super.pushEntityInDirection(toSpawn, x_respawn_point_, y_respawn_point_);
     }
 
+    private final int x_respawn_point_;
+    private final int y_respawn_point_;
+    
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     // </editor-fold>
 }

@@ -15,6 +15,18 @@ import java.io.Serializable;
  */
 public class MapItem_Relation extends MapDrawableThing_Relation implements Serializable {
 
+    private final boolean is_one_shot_;
+    
+    public boolean isOneShot() {
+        return is_one_shot_;
+    }
+
+    private final boolean is_passable_;
+    
+    public boolean isPassable() {
+        return is_one_shot_;
+    }
+    
     private final Item item_;
 
     public MapItem_Relation(Map m, Item item,
@@ -25,15 +37,6 @@ public class MapItem_Relation extends MapDrawableThing_Relation implements Seria
         is_one_shot_ = is_one_shot;
     }
     
-    private final boolean is_passable_;
-    private final boolean is_one_shot_;
-    
-    public boolean isPassable() {
-        return is_one_shot_;
-    }
-    public boolean isOneShot() {
-        return is_one_shot_;
-    }
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     private static final long serialVersionUID = 53142515L; // Long.parseLong("re_mi", 35);
     // </editor-fold>

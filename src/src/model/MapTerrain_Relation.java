@@ -15,14 +15,14 @@ import java.io.Serializable;
  */
 public class MapTerrain_Relation extends MapDrawableThing_Relation implements Serializable {
 
-    private final Terrain terrain_;
-
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private static final long serialVersionUID = Long.parseLong("RELATIONMT", 35);
+    // </editor-fold>
+	
     public MapTerrain_Relation(Map m, Terrain terrain) {
         super(m);
         terrain_ = terrain;
     }
-
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("RELATIONMT", 35);
-    // </editor-fold>
+    
+    private final Terrain terrain_;
 }

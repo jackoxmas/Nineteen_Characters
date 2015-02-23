@@ -16,103 +16,6 @@ import src.entityThings.Item;
  */
 public class MapDrawableThing_Relation {
 
-    protected final Map current_map_reference_;
-    public MapDrawableThing_Relation(Map m) {
-        current_map_reference_ = m;
-    }
-    private MapTile my_tile_ = null;
-
-    private void initguardMap() {
-        if (current_map_reference_ == null) {
-            System.err.println("Empty map reference, "
-                    + "and attempted to access map. Perhaps avatar was never passed a map, or mapview was never passed a map");
-        }
-    }
-
-    private void initguardTile() {
-        if (my_tile_ == null) {
-            System.err.println("Empty tile reference, "
-                    + "and attempted to access map. Perhaps avatar was never passed a map, or mapview was never passed a map");
-        }
-    }
-
-    /**
-     * 
-     * @return x coordinate of tile drawable thing (avatar/entity/item/etc.) is on.
-     */
-    public int getMyXCoordinate() {
-        initguardTile();
-        return my_tile_.x_;
-    }
-
-    /**
-     * 
-     * @return y coordinate of tile drawable thing (avatar/entity/item/etc.) is on.
-     */
-    public int getMyYCoordinate() {
-        initguardTile();
-        return my_tile_.y_;
-    }
-
-    /**
-     * 
-     * @return MapTile associated with drawable thing (avatar/entity/item/etc.).
-     */
-    public MapTile getMapTile() {
-        return my_tile_;
-    }
-
-    /**
-     * Set MapTile that drawable thing (avatar/entity/item/etc.) is on.
-     * @param new_tile 
-     */
-    public void setMapTile(MapTile new_tile) {
-        my_tile_ = new_tile;
-    }
-    
-    /**
-     * Get map reference
-     */
-    public Map getMap() {
-    	return current_map_reference_;
-    }
-
-    /**
-     * Moves an entity without removing it from the list of entities
-     *
-     * @param: entity The entity to be moved
-     * @param: x - distance to push in the x direction
-     * @param: y - distance to push in the y direction
-     * @return error codes: -1 if tile is taken, -2 if entity is null, -3 if
-     * entity cannot be found, -4 if tile is off the map
-     * @author John-Michael Reed
-     */
-    public int pushEntityInDirection(Entity e, int delta_x, int delta_y) {
-        if (e == null) {
-            return -2;
-        }
-        int old_x = e.getMapRelation().getMyXCoordinate();
-        int old_y = e.getMapRelation().getMyYCoordinate();
-        Entity toMove = current_map_reference_.getTile(old_x, old_y).getEntity();
-        if (toMove == e) {
-            current_map_reference_.getTile(old_x, old_y).removeEntity();
-            MapTile move_tile = current_map_reference_.getTile(old_x + delta_x, old_y + delta_y);
-            if (move_tile == null || move_tile.isPassable() == false) { // put the entity back in its place
-                current_map_reference_.getTile(old_x, old_y).addEntity(e);
-                return -4;
-            } else { // move the entity
-                int error_code = move_tile.addEntity(e);
-                Item walked_on_item = move_tile.viewTopItem();
-                if (walked_on_item != null) { // make the item walked on do stuff
-                    walked_on_item.onWalkOver();
-                }
-                return error_code;
-            }
-        } else {
-            return -3;
-        }
-    }
-
     public final class AreaDamager extends AreaFunctor {
 
         @Override
@@ -209,25 +112,20 @@ public class MapDrawableThing_Relation {
         }
     }
 
-    private final AreaDamager areaHurtFunctor = new AreaDamager();
     private final AreaHealer areaHealFunctor = new AreaHealer();
+    private final AreaDamager areaHurtFunctor = new AreaDamager();
     private final AreaKiller areaKillFunctor = new AreaKiller();
     private final AreaLeveler areaLevelFunctor = new AreaLeveler();
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone(); //To change body of generated methods, choose Tools | Templates.
-    }
-
     //area effects
-    public void hurtWithinRadius(int damage, int radius) {
-        AreaDamager a = new AreaDamager();
-        a.effectArea(this.getMyXCoordinate(), this.getMyYCoordinate(), radius, damage);
-    }
-
     public void healWithinRadius(int heal_quantity, int radius) {
         AreaHealer a = new AreaHealer();
         a.effectArea(this.getMyXCoordinate(), this.getMyYCoordinate(), radius, heal_quantity);
+    }
+    
+    public void hurtWithinRadius(int damage, int radius) {
+        AreaDamager a = new AreaDamager();
+        a.effectArea(this.getMyXCoordinate(), this.getMyYCoordinate(), radius, damage);
     }
 
     public void killWithinRadius(/*boolean will_kill_players, boolean will_kill_npcs, */int radius) {
@@ -239,12 +137,116 @@ public class MapDrawableThing_Relation {
         AreaLeveler a = new AreaLeveler();
         a.effectArea(this.getMyXCoordinate(), this.getMyYCoordinate(), radius, 1);
     }
+    
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone(); //To change body of generated methods, choose Tools | Templates.
+    }
 
+    protected final Map current_map_reference_;
+    
+    /**
+     * Get map reference
+     */
+    public Map getMap() {
+    	return current_map_reference_;
+    }
+    
+    public MapDrawableThing_Relation(Map m) {
+        current_map_reference_ = m;
+    }
+
+    private void initguardMap() {
+        if (current_map_reference_ == null) {
+            System.err.println("Empty map reference, "
+                    + "and attempted to access map. Perhaps avatar was never passed a map, or mapview was never passed a map");
+        }
+    }
+
+    private void initguardTile() {
+        if (my_tile_ == null) {
+            System.err.println("Empty tile reference, "
+                    + "and attempted to access map. Perhaps avatar was never passed a map, or mapview was never passed a map");
+        }
+    }
+    
     public boolean isAssociatedWithMap() {
         if (current_map_reference_ == null) {
             return false;
         } else {
             return true;
+        }
+    }
+    
+    private MapTile my_tile_ = null;
+
+    /**
+     * 
+     * @return MapTile associated with drawable thing (avatar/entity/item/etc.).
+     */
+    public MapTile getMapTile() {
+        return my_tile_;
+    }
+
+    /**
+     * Set MapTile that drawable thing (avatar/entity/item/etc.) is on.
+     * @param new_tile 
+     */
+    public void setMapTile(MapTile new_tile) {
+        my_tile_ = new_tile;
+    }
+
+    /**
+     * 
+     * @return x coordinate of tile drawable thing (avatar/entity/item/etc.) is on.
+     */
+    public int getMyXCoordinate() {
+        initguardTile();
+        return my_tile_.x_;
+    }
+
+    /**
+     * 
+     * @return y coordinate of tile drawable thing (avatar/entity/item/etc.) is on.
+     */
+    public int getMyYCoordinate() {
+        initguardTile();
+        return my_tile_.y_;
+    }
+
+    /**
+     * Moves an entity without removing it from the list of entities
+     *
+     * @param: entity The entity to be moved
+     * @param: x - distance to push in the x direction
+     * @param: y - distance to push in the y direction
+     * @return error codes: -1 if tile is taken, -2 if entity is null, -3 if
+     * entity cannot be found, -4 if tile is off the map
+     * @author John-Michael Reed
+     */
+    public int pushEntityInDirection(Entity e, int delta_x, int delta_y) {
+        if (e == null) {
+            return -2;
+        }
+        int old_x = e.getMapRelation().getMyXCoordinate();
+        int old_y = e.getMapRelation().getMyYCoordinate();
+        Entity toMove = current_map_reference_.getTile(old_x, old_y).getEntity();
+        if (toMove == e) {
+            current_map_reference_.getTile(old_x, old_y).removeEntity();
+            MapTile move_tile = current_map_reference_.getTile(old_x + delta_x, old_y + delta_y);
+            if (move_tile == null || move_tile.isPassable() == false) { // put the entity back in its place
+                current_map_reference_.getTile(old_x, old_y).addEntity(e);
+                return -4;
+            } else { // move the entity
+                int error_code = move_tile.addEntity(e);
+                Item walked_on_item = move_tile.viewTopItem();
+                if (walked_on_item != null) { // make the item walked on do stuff
+                    walked_on_item.onWalkOver();
+                }
+                return error_code;
+            }
+        } else {
+            return -3;
         }
     }
 

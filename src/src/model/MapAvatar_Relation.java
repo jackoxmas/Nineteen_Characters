@@ -16,7 +16,19 @@ import java.io.Serializable;
  */
 public class MapAvatar_Relation extends MapEntity_Relation implements Serializable {
 
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private static final long serialVersionUID = Long.parseLong("RELATIONMA", 35);
+    // </editor-fold>
+    
     private final Avatar avatar_;
+
+    /**
+     * Gets Avatar associated with the relation.
+     * @return avatar
+     */
+    public Avatar getAvatar() {
+        return avatar_;
+    }
 
     /**
      * MapAvatar_Relation constructor. Inherits from MapEntity_Relation.
@@ -29,16 +41,4 @@ public class MapAvatar_Relation extends MapEntity_Relation implements Serializab
         super(m, avatar, x_respawn_point, y_respawn_point);
         avatar_ = avatar;
     }
-
-    /**
-     * Gets Avatar associated with the relation.
-     * @return avatar
-     */
-    public Avatar getAvatar() {
-        return avatar_;
-    }
-
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("RELATIONMA", 35);
-    // </editor-fold>
 }

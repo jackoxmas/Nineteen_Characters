@@ -35,6 +35,8 @@ public final class AvatarController
     	Display _display = new Display(my_avatar_.getMyView());
     	while ( (input = sc.next().charAt(0) ) != '`' ) {
 			my_avatar_.getInput((char)input);
+			//my_avatar_.getMapRelation().getSimpleAngle();//Example of simpleangle
+			//my_avatar_.getMapRelation().getAngle();//Example of how to use getAngle
 			_display.setView(my_avatar_.getMyView());
             _display.printView();
     	}

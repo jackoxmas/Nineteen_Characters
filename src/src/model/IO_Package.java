@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 package src.model;
-import src.entityThings.Item;
-import src.entityThings.EntityStatsPack;
-import src.model.MapTile;
+import src.model.map.constructs.Item;
+import src.model.map.constructs.EntityStatsPack;
+import src.model.map.MapTile;
 /**
  * Contains contents of data for IO to user.
  * @author JohnReedLOL

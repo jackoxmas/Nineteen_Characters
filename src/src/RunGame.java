@@ -5,30 +5,24 @@
 package src;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 
-import src.entityThings.AreaEffectItem;
-import src.entityThings.Avatar;
-import src.entityThings.AvatarController;
-import src.entityThings.Item;
-import src.entityThings.Smasher;
-import src.entityThings.Sneak;
-import src.entityThings.Summoner;
-import src.entityThings.Terrain;
-import src.entityThings.AreaEffectItem.Effect;
-import src.model.Map;
-import src.model.MapTile;
-import src.userIO.Display;
-import src.userIO.Viewport;
+import src.model.map.constructs.AreaEffectItem;
+import src.model.map.constructs.Avatar;
+import src.io.controller.AvatarController;
+import src.model.map.constructs.Item;
+import src.model.map.constructs.Smasher;
+import src.model.map.constructs.Sneak;
+import src.model.map.constructs.Summoner;
+import src.model.map.constructs.Terrain;
+import src.model.map.MapTile;
+import src.io.view.Display;
+import src.io.view.Viewport;
 
 /**
  * Initializes, opens the program.

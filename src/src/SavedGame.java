@@ -5,21 +5,16 @@
 package src;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.lang.reflect.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import src.entityThings.AreaEffectItem;
-import src.entityThings.Avatar;
-import src.entityThings.Item;
-import src.model.Map;
-import src.model.MapTile;
+import src.model.map.constructs.AreaEffectItem;
+import src.model.map.constructs.Avatar;
+import src.model.map.constructs.Item;
+import src.model.map.Map;
+import src.model.map.MapTile;
 
 
 /**

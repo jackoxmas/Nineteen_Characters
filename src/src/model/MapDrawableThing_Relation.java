@@ -213,7 +213,7 @@ public class MapDrawableThing_Relation {
         initguardTile();
         return my_tile_.y_;
     }
-    double angle_ = 0; //Init angle to 0
+    private double angle_ = 0; //Init angle to 0
     /**
      * Moves an entity without removing it from the list of entities
      *

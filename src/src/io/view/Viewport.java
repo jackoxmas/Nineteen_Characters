@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import src.SaveData;
 import src.model.Vector2;
 
 /**
@@ -16,7 +15,7 @@ import src.model.Vector2;
  * Contains some basic drawing functions, and a map relation.
  * @author Matthew B, JohnReedLOL
  */
-public abstract class Viewport implements SaveData {
+public abstract class Viewport {
 
     public static final int height_=40;
     public static final int width_=80;
@@ -164,8 +163,5 @@ public abstract class Viewport implements SaveData {
   }
 
     // TODO: add fold
-    @Override
-    public String getSerTag() {
-        return "VIEWPORT";
-    }
+
 }

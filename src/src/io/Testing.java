@@ -1,6 +1,7 @@
 package src.io;
 
 
+import src.model.map.Map;
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Item;
 import src.model.map.constructs.Terrain;

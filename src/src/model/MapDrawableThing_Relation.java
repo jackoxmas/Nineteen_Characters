@@ -228,8 +228,8 @@ public class MapDrawableThing_Relation {
         if (e == null) {
             return -2;
         }
-        angle = Math.toDegrees(Math.atan2(delta_y,delta_x));
-        int old_x = e.getMapRelation().getMyXCoordinate();
+        angle = Math.toDegrees(Math.atan2(delta_y,delta_x)); //Move this to determine angle behevaior, if an entity should face where it attempted, or suceeded in moving
+        int old_x = e.getMapRelation().getMyXCoordinate(); //Current directions say attempted
         int old_y = e.getMapRelation().getMyYCoordinate();
         Entity toMove = current_map_reference_.getTile(old_x, old_y).getEntity();
         if (toMove == e) {

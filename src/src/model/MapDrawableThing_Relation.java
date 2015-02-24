@@ -213,7 +213,7 @@ public class MapDrawableThing_Relation {
         initguardTile();
         return my_tile_.y_;
     }
-
+    double angle = 0; //Init angle to 0
     /**
      * Moves an entity without removing it from the list of entities
      *
@@ -228,6 +228,7 @@ public class MapDrawableThing_Relation {
         if (e == null) {
             return -2;
         }
+        angle = Math.toDegrees(Math.atan2(delta_y,delta_x));
         int old_x = e.getMapRelation().getMyXCoordinate();
         int old_y = e.getMapRelation().getMyYCoordinate();
         Entity toMove = current_map_reference_.getTile(old_x, old_y).getEntity();
@@ -249,7 +250,13 @@ public class MapDrawableThing_Relation {
             return -3;
         }
     }
-
+    /* 
+     * @return the angle the thing is currently at
+     * 
+     */
+    public int getAngle(){
+    	return (int) (angle);
+    }
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     // </editor-fold>
 }

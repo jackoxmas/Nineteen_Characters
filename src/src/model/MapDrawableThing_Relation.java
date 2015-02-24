@@ -213,7 +213,7 @@ public class MapDrawableThing_Relation {
         initguardTile();
         return my_tile_.y_;
     }
-    double angle = 0; //Init angle to 0
+    double angle_ = 0; //Init angle to 0
     /**
      * Moves an entity without removing it from the list of entities
      *
@@ -228,7 +228,7 @@ public class MapDrawableThing_Relation {
         if (e == null) {
             return -2;
         }
-        angle = Math.toDegrees(Math.atan2(delta_y,delta_x)); //Move this to determine angle behevaior, if an entity should face where it attempted, or suceeded in moving
+        angle_ = Math.toDegrees(Math.atan2(delta_y,delta_x)); //Move this to determine angle behevaior, if an entity should face where it attempted, or suceeded in moving
         int old_x = e.getMapRelation().getMyXCoordinate(); //Current directions say attempted
         int old_y = e.getMapRelation().getMyYCoordinate();
         Entity toMove = current_map_reference_.getTile(old_x, old_y).getEntity();
@@ -255,7 +255,22 @@ public class MapDrawableThing_Relation {
      * 
      */
     public int getAngle(){
-    	return (int) (angle);
+    	return (int) (angle_);
+    }
+    /*
+     * @returns a string with angle, either "N", "S", "E","W","NW","NE","SE","SW"
+     */
+    public String getSimpleAngle(){
+    	if(angle_ >= -22.5 && angle_ <= 22.5){return "E";}
+    	if(angle_ >=22.5 && angle_ <= 67.5){return "NE";}
+    	if(angle_ >=67.5 && angle_ <= 112.5){return "N";}
+    	if(angle_ >= 112.5 && angle_ <= 157.5){return "NW";}
+    	if(angle_ >= 157.5 && angle_ <= 180){return "W";}
+    	if(angle_ >= -180 && angle_ <= -157.5){return "W";}//rollover point
+    	if(angle_ >= -157.5 && angle_ <= -112.5){return "SW";}
+    	if(angle_ >= -112.5 && angle_ <= -67.5){return "S";}
+    	if(angle_ >= -67.5 && angle_ <= -22.5){return "SE";}
+    	return "ERR";
     }
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     // </editor-fold>

@@ -27,7 +27,7 @@ import src.entityThings.Terrain;
  *
  * @author John-Michael Reed
  */
-public class Map implements MapViewable {//} implements SaveData{
+public class Map implements MapViewable {
 
     public static final int MAX_NUMBER_OF_WORLDS = 1;
     private static int number_of_worlds_generated_ = 0;
@@ -292,21 +292,4 @@ public class Map implements MapViewable {//} implements SaveData{
     
     // The map has a clock
     private int time_measured_in_turns;
-    
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    /*
-     @Override
-     public String getSerTag() {
-     return "MAP";
-     }
-
-     private void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
-     Main.dbgOut("FOUND IT!");
-     }
-
-     @Override
-     public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> savMap) throws IOException {
-     SavedGame.defaultDataWrite(this, oos, savMap);
-     }*/
-    // </editor-fold>
 }

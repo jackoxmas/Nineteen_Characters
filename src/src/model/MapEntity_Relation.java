@@ -12,7 +12,7 @@ import src.entityThings.Item;
  * One line description
  * @author JohnReedLOL
  */
-public class MapEntity_Relation extends MapDrawableThing_Relation implements SaveData {
+public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     /**
      * @author John-Michael Reed
@@ -87,10 +87,4 @@ public class MapEntity_Relation extends MapDrawableThing_Relation implements Sav
 
     private final int x_respawn_point_;
     private final int y_respawn_point_;
-    
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    public String getSerTag() {
-        return "RELATION_MAP_ENTITY";
-    }
-    // </editor-fold>
 }

@@ -13,13 +13,7 @@ import java.io.Serializable;
  *
  * @author JohnMichaelReed
  */
-public class MapTerrain_Relation extends MapDrawableThing_Relation implements SaveData {
-
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    public String getSerTag() {
-        return "RELATION_MAP_TERRAIN";
-    }
-    // </editor-fold>
+public class MapTerrain_Relation extends MapDrawableThing_Relation {
 	
     public MapTerrain_Relation(Map m, Terrain terrain) {
         super(m);

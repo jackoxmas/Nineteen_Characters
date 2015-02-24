@@ -1,7 +1,5 @@
 package src.model;
 
-import java.util.ArrayDeque;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -14,19 +12,6 @@ import src.entityThings.Terrain;
  * share that space.
  */
 public final class MapTile {
-
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    // Converts the class name into a base 35 number
-    private static final long serialVersionUID = Long.parseLong("MAPTILE", 35);
-    /*
-     private void readObject (ObjectInputStream is) throws ClassNotFoundException, IOException {
-     is.defaultReadObject();
-     }
-    
-     private void writeObject (ObjectOutputStream oos) throws IOException {
-     oos.defaultWriteObject();
-     }*/
-    // </editor-fold>
     
     private Entity entity_;     // the single Entity occupying this space
     /**

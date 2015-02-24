@@ -10,17 +10,13 @@ import src.entityThings.Entity;
 import src.entityThings.EntityStatsPack;
 import src.entityThings.Item;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayDeque;
-import java.util.HashMap;
 
 /**
  * This should be abstract because you can't make drawable things
  * @author JohnMichaelReed
  */
-public class MapDrawableThing_Relation implements SaveData {
+public class MapDrawableThing_Relation {
 
     public final class AreaDamager extends AreaFunctor {
 
@@ -255,25 +251,4 @@ public class MapDrawableThing_Relation implements SaveData {
             return -3;
         }
     }
-
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    @Override
-    public String getSerTag() {
-        return "RELATION_MAP_DRAWTHING";
-    }
-
-    protected void linkOther (ArrayDeque<SaveData> refs) {
-
-    }
-
-    protected void readOther (ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
-        MapDrawableThing_Relation mdr = (MapDrawableThing_Relation)SavedGame.defaultDataRead(this.getClass(), ois, out_rels);
-        this.current_map_reference_ = mdr.current_map_reference_;
-        this.
-    }
-
-    protected void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
-        SavedGame.defaultDataWrite(this, oos, saveMap);
-    }
-    // </editor-fold>
 }

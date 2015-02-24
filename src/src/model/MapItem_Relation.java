@@ -7,14 +7,11 @@ package src.model;
 
 import src.entityThings.Item;
 
-import java.io.Serializable;
-import java.util.HashMap;
-
 /**
  *
  * @author JohnReedLOL
  */
-public class MapItem_Relation extends MapDrawableThing_Relation implements SaveData {
+public class MapItem_Relation extends MapDrawableThing_Relation {
 
     private final boolean is_one_shot_;
     
@@ -37,11 +34,4 @@ public class MapItem_Relation extends MapDrawableThing_Relation implements SaveD
         is_passable_ = is_passable;
         is_one_shot_ = is_one_shot;
     }
-    
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    @Override
-    public String getSerTag() {
-        return "RELATION_MAP_ITEM";
-    }
-    // </editor-fold>
 }

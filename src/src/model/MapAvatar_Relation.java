@@ -19,11 +19,7 @@ import java.util.HashMap;
  * Handles interactions between map + avatar that neither should otherwise be othered from.
  * @author JohnMichaelReed
  */
-public class MapAvatar_Relation extends MapEntity_Relation implements SaveData {
-
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    private static final long serialVersionUID = Long.parseLong("RELATIONMA", 35);
-    // </editor-fold>
+public class MapAvatar_Relation extends MapEntity_Relation {
     
     private final Avatar avatar_;
 

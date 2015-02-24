@@ -7,7 +7,7 @@ import src.model.map.constructs.Terrain;
 import src.io.controller.AvatarController;
 import src.io.view.Display;
 import src.io.view.Viewport;
-import src.model.map.Map;
+import src.model.*;
 
 /*
  * A simple testing method used early on. Should get deleted at some point, but might be useful at some point.

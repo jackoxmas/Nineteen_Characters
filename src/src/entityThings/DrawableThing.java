@@ -21,7 +21,7 @@ import src.model.MapDrawableThing_Relation;
  * Drawable things are things that may be drawn on the screen. Such as Entity/Item/etc.
  * @author JohnReedLOL
  */
-abstract public class DrawableThing implements SaveData {
+abstract public class DrawableThing {
 
     protected DrawableThing(String name, char representation) {
         name_ = name;
@@ -82,32 +82,4 @@ abstract public class DrawableThing implements SaveData {
     public void setRepresentation(char c){single_character_representation_ = c;}
 
     private DrawableThingStatsPack stats_pack_ = new DrawableThingStatsPack();
-
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    protected DrawableThing() {}
-
-    @Override
-    public String getSerTag() {
-        return "DRAWABLETHING";
-    }
-
-    protected void readOther (ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
-        name_ = ois.readUTF();
-        single_character_representation_ = ois.readChar();
-        is_viewable_ = ois.readBoolean();
-        out_rels.addLast(ois.readInt());
-    }
-
-    protected void linkOther (ArrayDeque<SaveData> refs) {
-        stats_pack_ = (DrawableThingStatsPack)refs.pop();
-    }
-
-    protected void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
-        oos.writeUTF(name_);
-        oos.writeChar(single_character_representation_);
-        oos.writeBoolean(is_viewable_);
-        oos.writeInt(SavedGame.getHash(stats_pack_));
-        saveMap.putIfAbsent(stats_pack_, false);
-    }
-    // </editor-fold>
 }

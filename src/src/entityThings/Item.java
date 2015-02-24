@@ -117,23 +117,4 @@ public class Item extends DrawableThing {
     public void use(Item target) {
 
     }
-
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    @Override
-    public String getSerTag() {
-        return "ITEM";
-    }
-
-    protected void linkOther (ArrayDeque<SaveData> refs) {
-        super.linkOther(refs);
-    }
-
-    protected void readOther (ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
-        super.readOther(ois, out_rels);
-    }
-
-    protected void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
-        super.writeOther(oos, saveMap);
-    }
-    // </editor-fold>
 }

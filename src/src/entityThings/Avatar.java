@@ -28,7 +28,7 @@ import java.util.LinkedList;
  *
  * @author JohnReedLOL
  */
-public final class Avatar extends Entity implements SaveData{
+public final class Avatar extends Entity {
 
     // map_relationship_ is used in place of a map_referance_
 
@@ -432,16 +432,4 @@ public final class Avatar extends Entity implements SaveData{
 
         return s;
     }
-        
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    @Override
-    public String getSerTag() {
-        return "AVATAR";
-    }
-
-    protected Avatar() {
-        map_view_ = null;
-        stats_view_= null;
-    }
-    // </editor-fold>
 }

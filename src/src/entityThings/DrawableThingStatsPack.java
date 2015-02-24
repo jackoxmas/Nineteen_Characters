@@ -95,5 +95,4 @@ armor_rating_ - other.armor_rating_
 				"Defense: " + defensive_rating_ + "\n" +
 				"Armor: " + armor_rating_ + "\n";
 	}
-
 }

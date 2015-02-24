@@ -21,9 +21,4 @@ public final class Summoner implements Occupation
     public String toString() {
     	return "Summoner";
     }
-
-    @Override
-    public String getSerTag() {
-        return "OCC_SUMMONER";
-    }
 }

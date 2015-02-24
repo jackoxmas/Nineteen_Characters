@@ -6,8 +6,6 @@
 
 package src.entityThings;
 
-import src.SaveData;
-
 /**
  * Sneak Occupation, agility +1.
  */
@@ -23,11 +21,4 @@ public final class Sneak implements Occupation
     public String toString() {
     	return "Sneak";
     }
-
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    @Override
-    public String getSerTag() {
-        return "OCC_SNEAK";
-    }
-    // </editor-fold>
 }

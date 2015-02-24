@@ -20,12 +20,4 @@ public final class Smasher implements Occupation {
     public String toString() {
     	return "Smasher";
     }
-
-
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    @Override
-    public String getSerTag() {
-        return "OCC_SMASHER";
-    }
-    // </editor-fold>
 }

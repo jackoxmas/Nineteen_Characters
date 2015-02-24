@@ -5,12 +5,10 @@
  */
 package src.entityThings;
 
-import src.SaveData;
-
 /**
  * Interface for Occupations (Smasher, Sneak, Summoner). Different Occupations have different advantages.
  * @author JohnReedLOL
  */
-public interface Occupation extends SaveData {
+public interface Occupation {
     public void change_stats(EntityStatsPack current_stats);
 }

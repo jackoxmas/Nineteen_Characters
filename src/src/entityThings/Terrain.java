@@ -19,7 +19,7 @@ import java.util.LinkedList;
 /**
  * Terrain for MapTile.
  */
-public class Terrain extends DrawableThing implements SaveData{
+public class Terrain extends DrawableThing {
 
     void activate() {
 
@@ -155,24 +155,4 @@ public class Terrain extends DrawableThing implements SaveData{
         contains_water_ = contains_water;
         contains_mountain_ = contains_mountain;
     }
-    
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    @Override
-    public String getSerTag() {
-        return "TERRAIN";
-    }
-
-    protected void linkOther (ArrayDeque<SaveData> refs) {
-        super.linkOther(refs);
-    }
-
-    protected void readOther (ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
-        super.readOther(ois, out_rels);
-    }
-
-    protected void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
-        super.writeOther(oos, saveMap);
-    }
-
-    // </editor-fold>
 }

@@ -1,23 +1,19 @@
 /**
 * Implementor: Alex Stewart
-* Last Access: 15-02-13
 */
 package src;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+
 /**
 * Vector2 objects represent a 2 dimensional, mathematical, integer vector or -
 * more abstractly - 2 integer numbers.
-* <p><strong>Implements:</strong> Comparable, Serializable</p>
 *
 * This class is based off of the XNA game framework Vector2 implementation
 * @author Alex Stewart
 */
-public class Vector2 implements Comparable, Serializable {
+public class Vector2 implements Comparable{
 // Class private values
 private Integer x_, y_;
+
 // <editor-fold desc="CONSTRUCTORS" defaultstate="collapsed">
 /**
 * Constructs a new Vector2 object
@@ -45,6 +41,7 @@ x_ = x;
 y_ = y;
 }
 // </editor-fold>
+
 // <editor-fold desc="CLASS ATTRIBUTES" defaultstate="collapsed">
 /**
 * GET a COPY of this vector's values
@@ -116,6 +113,7 @@ public void setY(Integer y) {
 y_ = y;
 }
 // </editor-fold>
+
 // <editor-fold desc="PUBLIC METHODS" defaultstate="collapsed">
 /**
 * Adds the two supplied Vector2 values and returns the result as a new
@@ -215,6 +213,7 @@ public static Vector2 zero() {
 return new Vector2(0,0);
 }
 // </editor-fold>
+
 // <editor-fold desc="INTERFACE IMPLEMENTATIONS" defaultstate="collapsed">
 /* COMPARABLE */
 // Floating point precision to use when comparing vectors

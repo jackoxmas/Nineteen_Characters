@@ -11,12 +11,6 @@ import src.model.*;
 import src.model.map.constructs.MapViewable;
 
 /**
- * The map contains the map.\ THIS CLASS SHOULD NOT BE PUBLIC JUST BECAUSE - IT
- * IS PACKAGE PRIVATE I MADE IT PUBLIC TO TEST SOMETHING. SENDCOMMANDTOAVATAR IS
- * STUPID - NO ITS NOT STUPID IT REPRESENTS A NETWORK CONNECTION PASSING
- * COMMANDS FROM USER TO MAP WHAT HAVE YOU DONE!!!!!! THAT MAP IS SUPPOSED TO BE
- * A PACKAGE PRIVATE ENTITY ONLY ACCESSIBLE VIA RELATIONS YOU ARE BREAKING
- * ENCAPSULATION!!!!!!!!!!!!!!!
  *
  * @author John-Michael Reed
  */
@@ -226,7 +220,7 @@ public class Map implements MapViewable {
     /**
      * Map Constructor, creates new x by y Map.
      *
-     * @param x - Lenght of Map
+     * @param x - Length of Map
      * @param y - Height of Map
      */
     public Map(int x, int y) {

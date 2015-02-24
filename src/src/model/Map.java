@@ -116,9 +116,6 @@ public class Map implements MapViewable {
         } else {
             e.setMapRelation(null);
         }
-
-        // push to the local item list
-        items_list_.push(i);
         return error_code;
     }
 

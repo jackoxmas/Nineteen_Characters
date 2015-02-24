@@ -5,18 +5,8 @@
  */
 package src.entityThings;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-
-import src.SaveData;
-import src.SavedGame;
 import src.model.MapEntity_Relation;
-
-import java.io.Serializable;
-
 import src.userIO.Display;
 
 /**

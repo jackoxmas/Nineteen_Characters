@@ -121,3 +121,32 @@
 /src/bin/src/view/TestingMain.class
 /src/bin/src/view/ViewPortTester.class
 /src/bin/src/view/Viewport.class
+/src/buildtet.xml
+/COP 4331 2015 Iteration 1 Nineteen_Characters~
+/instructions.txt~
+/src/src/JohnsTest.class
+/src/src/Repeatable.class
+/src/src/RunGame$ProgramOpts.class
+/src/src/RunGame.class
+/src/src/model/MapViewable.class
+<<<<<<< HEAD
+/src/src/entityThings/Avatar.class
+/src/src/entityThings/Avatar.class
+/src/src/userIO/TestingMain.class
+/src/src/model/IO_Package.class
+/src/src/userIO/TestingMain.class
+/src/src/userIO/TestingMain.class
+/src/src/entityThings/AreaEffectItem.class
+/src/src/entityThings/Avatar.java
+/src/src/entityThings/AvatarController.class
+/src/src/entityThings/DrawableThing.class
+/src/src/entityThings/DrawableThingStatsPack.class
+/src/src/entityThings/Entity.class
+/src/src/entityThings/EntityStatsPack.class
+/src/src/entityThings/Item.class
+/src/src/entityThings/Terrain$Color.class
+/src/src/entityThings/Terrain.class
+>>>>>>> 7d4062c930faf8d27e612a1fb901bd1004193e7b
+/src/src/userIO/TestingMain.class
+/src/src/entityThings/Avatar.class
+*.class

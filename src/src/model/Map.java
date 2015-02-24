@@ -1,5 +1,6 @@
 package src.model;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -9,178 +10,27 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.io.Serializable;
 
-import src.Main;
-import src.SaveData;
+import src.RunGame;
 import src.SavedGame;
-import src.controller.Entity;
-import src.controller.Item;
-import src.controller.Avatar;
-import src.controller.Terrain;
+import src.entityThings.Avatar;
+import src.entityThings.Entity;
+import src.entityThings.Item;
+import src.entityThings.Terrain;
 
 /**
- * The map contains the map.\ THIS CLASS SHOULD NOT BE PUBLIC JUST BECAUSE - IT IS FUCKING PACKAGE PRIVATE I MADE IT PUBLIC TO TEST SOMETHING.
- * SENDCOMMANDTOAVATAR IS STUPID - NO ITS NOT STUPID IT REPRESENTS A NETWORK CONNECTION PASSING COMMANDS FROM USER TO MAP
- * WHAT HAVE YOU DONE!!!!!! THAT MAP IS SUPPOSED TO BE A PACKAGE PRIVATE ENTITY ONLY ACCESSIBLE VIA RELATIONS
- * YOU ARE BREAKING ENCAPSULATION!!!!!!!!!!!!!!!
+ * The map contains the map.\ THIS CLASS SHOULD NOT BE PUBLIC JUST BECAUSE - IT
+ * IS PACKAGE PRIVATE I MADE IT PUBLIC TO TEST SOMETHING. SENDCOMMANDTOAVATAR IS
+ * STUPID - NO ITS NOT STUPID IT REPRESENTS A NETWORK CONNECTION PASSING
+ * COMMANDS FROM USER TO MAP WHAT HAVE YOU DONE!!!!!! THAT MAP IS SUPPOSED TO BE
+ * A PACKAGE PRIVATE ENTITY ONLY ACCESSIBLE VIA RELATIONS YOU ARE BREAKING
+ * ENCAPSULATION!!!!!!!!!!!!!!!
+ *
  * @author John-Michael Reed
  */
-class Map implements SaveData{
+public class Map implements MapViewable {//} implements SaveData{
 
-    /**
-     * @author John-Michael Reed Sends a key press from a keyboard to an avatar
-     * whose name is name. THIS FUNCTION SHOULD ONLY BE ACCESSIBLE VIA A
-     * MAP_KEYBOARD_RELATION
-     * @param name - Name of avatar to command
-     * @param command - signal to send to avatar
-     * @return zero if avatar accepts the command, non-zero if they do not
-     */
-    public int sendCommandToAvatarByName(String name, char command) {
-        Avatar to_recieve_command = this.getAvatarByName(name);
-        int error_code = to_recieve_command.acceptKeyCommand(command);
-        return error_code;
-    }
-
-    // The map has a clock
-    private int time_measured_in_turns;
-
-    /* MAP DATA OBJECTS */
-    // 2d array of tiles.
-    private transient MapTile map_grid_[][];
-    // String is the avatar's name. The avatar name must be unqiue or else bugs will occur.
-    private transient LinkedHashMap<String, Avatar> avatar_list_;
-    // String is the entity's name. The entity name must be unqiue or else bugs will occur.
-    private transient LinkedHashMap<String, Entity> entity_list_;
-    // Item is the address of an item in memory. Location is its xy coordinates on the grid.
-    private transient LinkedList<Item> items_list_;
-
-    //public static boolean NDEBUG_ = true;
-    // MAP MUST BE SQUARE
-    public int height_;
-    public int width_;
-
-    // This should never get called
-    private Map() {//throws Exception {
-        height_ = 0;
-        width_ = 0; /*
-         Exception e = new Exception("Do not use this constructor");
-         throw e;*/
-
-    }
-
-    /**
-     * Map Constructor, creates new x by y Map.
-     * @param x - Lenght of Map
-     * @param y - Height of Map
-     */
-    public Map(int x, int y) {
-        //if (NDEBUG_) {
-        height_ = y;
-        width_ = x;
-
-        map_grid_ = new MapTile[height_][width_];
-        for (int i = 0; i < height_; ++i) {
-            for (int j = 0; j < width_; ++j) {
-                map_grid_[i][j] = new MapTile(j, i); //switch rows and columns
-            }
-        }
-        /*} else {
-         map_grid_ = new MapTile[map_height_][map_width_];
-         for (int i = 0; i < map_height_; ++i) {
-         for (int j = 0; j < map_width_; ++j) {
-         map_grid_[i][j] = new MapTile(j, i); //switch rows and columns
-         }
-         }
-         }
-         */
-        avatar_list_ = new LinkedHashMap();
-        entity_list_ = new LinkedHashMap();
-        items_list_ = new LinkedList<Item>();
-        time_measured_in_turns = 0;
-    }
-
-    private void initializeGrid(int x, int y) {
-
-    }
-
-    // MapModel.map_model_ is static because there is only one map_model_  
-    //private static final Map the_map_ = new Map();
-
-    /*
-     public static Map getMyReferanceToTheMapGrid(MapDisplay_Relation m) {
-     return Map.the_map_;
-     }
-
-     public static Map getMyReferanceToTheMap(MapDrawableThing_Relation d) {
-     return Map.the_map_;
-     }
-
-     public static Map getMyReferanceToTheMap(MapMain_Relation m) {
-     return Map.the_map_;
-     }
-     */
-     
-    /**
-     * Adds an avatar to the map.
-     * @param a - Avatar to be added
-     * @param x - x position of where you want to add Avatar
-     * @param y - y posiition of where you want to add Avatar
-     * @return -1 on fail, 0 on success
-     */
-    public int addAvatar(Avatar a, int x, int y) {
-        int error_code = this.map_grid_[y][x].addEntity(a);
-        if (error_code == 0) {
-            this.avatar_list_.put(a.name_, a);
-            a.getMapRelation().associateWithMap(this);
-            return 0;
-        } else {
-            return error_code;
-        }
-    }
-
-    /**
-     * Adds an entity to the map.
-     * @param e - Entity to be added
-     * @param x - x position of where you want to add entity
-     * @param y - y posiition of where you want to add entity
-     * @return -1 on fail, 0 on success
-     */
-    public int addEntity(Entity e, int x, int y) {
-        int error_code = this.map_grid_[y][x].addEntity(e);
-        if (error_code == 0) {
-            this.entity_list_.put(e.name_, e);
-            e.getMapRelation().associateWithMap(this);
-        }
-        return error_code;
-
-    }
-
-    /**
-     * Adds an item to the map.
-     * @param i - Item to be added
-     * @param x - x position of where you want to add item
-     * @param y - y posiition of where you want to add item
-     * @return -1 on fail, 0 on success
-     */
-    public int addItem(Item i, int x, int y) {
-        int error_code = this.map_grid_[y][x].addItem(i);
-        if (error_code == 0) {
-            i.getMapRelation().associateWithMap(this);
-        }
-
-        // push to the local item list
-        items_list_.push(i);
-        return error_code;
-    }
-
-    /**
-     * Removes top item from tile in position (x,y).
-     * @param x - x position of tile
-     * @param y - y position of tile
-     * @return Top item from tile (x,y)
-     */
-    public Item removeTopItem(int x, int y) {
-        return this.map_grid_[y][x].removeTopItem();
-    }
+    public static final int MAX_NUMBER_OF_WORLDS = 1;
+    private static int number_of_worlds_generated_ = 0;
 
     /**
      * Once a tile has terrain, that terrain is constant.
@@ -190,28 +40,95 @@ class Map implements SaveData{
      * @param y - y position for tile
      * @return error code
      */
-    public int initializeTerrain(Terrain t, int x, int y) {
+    public int addTerrain(Terrain t, int x, int y) {
+        t.setMapRelation(new MapTerrain_Relation(this, t));
         int error_code = this.map_grid_[y][x].addTerrain(t);
         if (error_code == 0) {
-            t.getMapRelation().associateWithMap(this);
             t.getMapRelation().setMapTile(this.map_grid_[y][x]);
+        } else {
+            t.setMapRelation(null);
+        }
+        return error_code;
+    }
+
+    // String is the avatar's name. The avatar name must be unqiue or else bugs will occur.
+    private transient LinkedHashMap<String, Avatar> avatar_list_;
+    /**
+     * Adds an avatar to the map.
+     *
+     * @param a - Avatar to be added
+     * @param x - x position of where you want to add Avatar
+     * @param y - y posiition of where you want to add Avatar
+     * @return -1 on fail, 0 on success
+     */
+    public int addAvatar(Avatar a, int x, int y) {
+        a.setMapRelation(new MapAvatar_Relation(this, a, x, y));
+        int error_code = this.map_grid_[y][x].addEntity(a);
+        if (error_code == 0) {
+            this.avatar_list_.put(a.name_, a);
+        } else {
+            a.setMapRelation(null);
         }
         return error_code;
     }
 
     /**
+     *
+     * @param name - name of Avatar
+     * @return Avatar with the name of of input.
+     */
+    public Avatar getAvatarByName(String name) {
+        return this.avatar_list_.get(name);
+    }
+    
+    /**
      * Removes and Avatar from map.
+     *
      * @param a - Avatar to be removed.
-     * @return  -1 if the entity to be removed does not exist.
+     * @return -1 if the entity to be removed does not exist.
      */
     public int removeAvatar(Avatar a) {
         this.avatar_list_.remove(a.name_);
         if (this.map_grid_[a.getMapRelation().getMyXCoordinate()][a.getMapRelation().getMyYCoordinate()].getEntity() == a) {
             this.map_grid_[a.getMapRelation().getMyXCoordinate()][a.getMapRelation().getMyYCoordinate()].removeEntity();
+            a.setMapRelation(null);
             return 0;
         } else {
             return -1;
         }
+    }
+
+    // String is the entity's name. The entity name must be unqiue or else bugs will occur.
+    private transient LinkedHashMap<String, Entity> entity_list_;
+    /**
+     * Adds an entity to the map.
+     *
+     * @param e - Entity to be added
+     * @param x - x position of where you want to add entity
+     * @param y - y posiition of where you want to add entity
+     * @return -1 on fail, 0 on success
+     */
+    public int addEntity(Entity e, int x, int y) {
+        e.setMapRelation(new MapEntity_Relation(this, e, x, y));
+        int error_code = this.map_grid_[y][x].addEntity(e);
+        if (error_code == 0) {
+            this.entity_list_.put(e.name_, e);
+        } else {
+            e.setMapRelation(null);
+        }
+
+        // push to the local item list
+        items_list_.push(i);
+        return error_code;
+    }
+
+    /**
+     *
+     * @param name - name of Entity
+     * @return Entity with the name of of input.
+     */
+    public Entity getEntityByName(String name) {
+        return this.entity_list_.get(name);
     }
 
     /**
@@ -224,27 +141,10 @@ class Map implements SaveData{
         this.avatar_list_.remove(e.name_);
         if (this.map_grid_[e.getMapRelation().getMyXCoordinate()][e.getMapRelation().getMyYCoordinate()].getEntity() == e) {
             this.map_grid_[e.getMapRelation().getMyXCoordinate()][e.getMapRelation().getMyYCoordinate()].removeEntity();
+            e.setMapRelation(null);
             return 0;
         }
         return -1;
-    }
-
-    /**
-     * 
-     * @param name - name of Avatar
-     * @return Avatar with the name of of input.
-     */
-    public Avatar getAvatarByName(String name) {
-        return this.avatar_list_.get(name);
-    }
-
-    /**
-     * 
-     * @param name - name of Entity
-     * @return Entity with the name of of input.
-     */
-    public Entity getEntityByName(String name) {
-        return this.entity_list_.get(name);
     }
 
     /**
@@ -260,118 +160,153 @@ class Map implements SaveData{
         }
         return map_grid_[y_pos][x_pos];
     }
-
-
-
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    protected transient int s_cntItems;
-    protected transient int s_cntAvtr;
-    protected transient int s_cntEntity;
-
-    @Override
-    public String getSerTag() {
-        return "MAP";
+    
+   /**
+     * Gets the character representation of a tile
+     *
+     * @author John-Michael Reed
+     * @param x
+     * @param y
+     * @return error code: returns empty space if the tile is off the map
+     */
+    public char getTileRepresentation(int x, int y) {
+        MapTile tile_at_x_y = this.getTile(x, y);
+        if (tile_at_x_y == null) {
+            return ' ';
+        } else {
+            return tile_at_x_y.getTopCharacter();
+        }
     }
 
-    private void linkOther (ArrayDeque<SaveData> refs) {
-        for (int j = 0; j < map_grid_[0].length; j++) {
-            for (int i = 0; i < map_grid_.length; i++) {
-                map_grid_[i][j] = (MapTile)(refs.pop());
+    // Item is the address of an item in memory. Location is its xy coordinates on the grid.
+    private transient LinkedList<Item> items_list_;
+    /**
+     * Adds an item to the map.
+     *
+     * @param i - Item to be added
+     * @param x - x position of where you want to add item
+     * @param y - y posiition of where you want to add item
+     * @return -1 on fail, 0 on success
+     */
+    public int addItem(Item i, int x, int y, boolean goes_in_inventory, boolean is_one_shot) {
+        i.setMapRelation(new MapItem_Relation(this, i, goes_in_inventory, is_one_shot));
+        int error_code = this.map_grid_[y][x].addItem(i);
+        if (error_code == 0) {
+            items_list_.add(i);
+        } else {
+            i.setMapRelation(null);
+        }
+        return error_code;
+    }
+
+    public LinkedList<Item> getItemsList() {
+        return items_list_;
+    }
+
+    /**
+     * Removes top item from tile in position (x,y).
+     *
+     * @param x - x position of tile
+     * @param y - y position of tile
+     * @return Top item from tile (x,y)
+     */
+    public Item removeTopItem(int x, int y) {
+        Item item = this.map_grid_[y][x].removeTopItem();
+        items_list_.remove(item);
+        return item;
+    }
+    
+  //public static boolean NDEBUG_ = true;
+    // MAP MUST BE SQUARE
+    //TODO:if Map has to be square, why have two different variables that will always be equivalent?
+    public int height_;
+    public int width_;
+
+    // This should never get called
+    private Map() {//throws Exception {
+        height_ = 0;
+        width_ = 0;
+        System.exit(-1);
+        /*
+         Exception e = new Exception("Do not use this constructor");
+         throw e;*/
+
+    }
+
+    /**
+     * Map Constructor, creates new x by y Map.
+     *
+     * @param x - Lenght of Map
+     * @param y - Height of Map
+     */
+    public Map(int x, int y) {
+        if (number_of_worlds_generated_ >= MAX_NUMBER_OF_WORLDS) {
+            System.err.println("Number of world allowed: "
+                    + MAX_NUMBER_OF_WORLDS);
+            System.err.println("Number of worlds already in existence: "
+                    + number_of_worlds_generated_);
+            System.err.println("Please don't make more than "
+                    + MAX_NUMBER_OF_WORLDS + " worlds.");
+            System.exit(-1);
+
+        } else {
+            ++number_of_worlds_generated_;
+
+            height_ = y;
+            width_ = x;
+
+            map_grid_ = new MapTile[height_][width_];
+            for (int i = 0; i < height_; ++i) {
+                for (int j = 0; j < width_; ++j) {
+                    map_grid_[i][j] = new MapTile(j, i); //switch rows and columns
+                }
             }
-        }
-
-        int c = 0;
-
-        // AVATAR LIST
-
-        for (java.util.Map.Entry<String, Avatar> e : avatar_list_.entrySet()) {
-            e.setValue((Avatar)refs.pop());
-        }
-
-        // ENTITY LIST
-        for (java.util.Map.Entry<String, Entity> e : entity_list_.entrySet()) {
-            e.setValue((Entity)refs.pop());
-        }
-
-        for (c = 0; c < s_cntItems; c++) {
+            avatar_list_ = new LinkedHashMap();
+            entity_list_ = new LinkedHashMap();
             items_list_ = new LinkedList<Item>();
-            items_list_.push(Item.class.cast(refs.pop()));
+            time_measured_in_turns = 0;
         }
     }
 
-    private void readOther (ObjectInputStream ois, ArrayDeque<Integer> out_rels) throws IOException, ClassNotFoundException {
-        int w = ois.readInt();
-        int h = ois.readInt();
-        if (w <= 0 || h <= 0)
-            throw new IOException("Corrupted data");
+    // 2d array of tiles.
+    private transient MapTile map_grid_[][];
 
-        MapTile new_tBuff[][] = new MapTile[w][h];
-        for (int j = 0; j < h; j++) {
-            for (int i = 0; i < w; i++) {
-                out_rels.addLast(ois.readInt());
-            }
-        }
-
-        int c = 0;
-        s_cntAvtr = ois.readInt();
-        avatar_list_ = new LinkedHashMap<String, Avatar>();
-        // AVATAR LIST
-        for (c = 0; c < s_cntAvtr; c++) {
-            avatar_list_.put(ois.readUTF(), null);
-            out_rels.addLast(ois.readInt());
-        }
-
-        s_cntEntity = ois.readInt();
-        entity_list_ = new LinkedHashMap<String, Entity>();
-        // ENTITY LIST
-        for (c = 0; c < s_cntEntity; c++) {
-            entity_list_.put(ois.readUTF(), null);
-            out_rels.addLast(ois.readInt());
-        }
-
-        s_cntItems = ois.readInt();
-        // ITEM LIST
-        for (c = 0; c < s_cntItems; c++) {
-            out_rels.addLast(ois.readInt());
-        }
+    public MapTile[][] getMapGrid() {
+        return map_grid_;
     }
 
-    private void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
-        // MAP TILES
-        oos.writeInt(map_grid_.length);
-        if (map_grid_.length == 0)
-            oos.writeInt(-1);   // errcode for 0 dimension 2 length
-        else
-            oos.writeInt(map_grid_[0].length);
-        for (int j = 0; j < map_grid_[0].length; j++) {
-            for (int i = 0; i < map_grid_.length; i++) {
-                oos.writeInt(SavedGame.getHash(map_grid_[i][j]));
-                saveMap.putIfAbsent(map_grid_[i][j], false);
-            }
-        }
-
-        // AVATAR LIST
-        oos.writeInt(avatar_list_.size());
-        for (java.util.Map.Entry<String, Avatar> e : avatar_list_.entrySet()) {
-            oos.writeUTF(e.getKey());
-            oos.writeInt(SavedGame.getHash(e.getValue()));
-            saveMap.putIfAbsent(e.getValue(), false);
-        }
-
-        // ENTITY LIST
-        oos.writeInt(entity_list_.size());
-        for (java.util.Map.Entry<String, Entity> e : entity_list_.entrySet()) {
-            oos.writeUTF(e.getKey());
-            oos.writeInt(SavedGame.getHash(e.getValue()));
-            saveMap.putIfAbsent(e.getValue(), false);
-        }
-
-        // ITEM LIST
-        oos.writeInt(items_list_.size());
-        for (Item i : items_list_) {
-            oos.writeInt(SavedGame.getHash(i));
-            saveMap.putIfAbsent(i, false);
-        }
+    /**
+     * @author John-Michael Reed Sends a key press from a keyboard to an avatar
+     * whose name is name. THIS FUNCTION SHOULD ONLY BE ACCESSIBLE VIA A
+     * MAP_KEYBOARD_RELATION
+     * @param name - Name of avatar to command
+     * @param command - signal to send to avatar
+     * @return IO_Package of stuff that can be displayed.
+     */
+    public IO_Package sendCommandToAvatarByName(String name, char command) {
+        Avatar to_recieve_command = this.getAvatarByName(name);
+        int error_code = to_recieve_command.acceptKeyCommand(command);
+        IO_Package return_package = null;
+        return return_package;
     }
+    
+    // The map has a clock
+    private int time_measured_in_turns;
+    
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    /*
+     @Override
+     public String getSerTag() {
+     return "MAP";
+     }
+
+     private void writeOther (ObjectOutputStream oos, HashMap<SaveData, Boolean> saveMap) throws IOException {
+     Main.dbgOut("FOUND IT!");
+     }
+
+     @Override
+     public void serialize(ObjectOutputStream oos, HashMap<SaveData, Boolean> savMap) throws IOException {
+     SavedGame.defaultDataWrite(this, oos, savMap);
+     }*/
     // </editor-fold>
 }

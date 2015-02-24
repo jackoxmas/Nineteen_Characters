@@ -5,9 +5,8 @@
  */
 package src.model;
 
-import src.SaveData;
-import src.controller.Avatar;
-import src.controller.Occupation;
+import src.entityThings.Avatar;
+import src.entityThings.Occupation;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,24 +16,16 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 
 /**
- *
+ * Handles interactions between map + avatar that neither should otherwise be othered from.
  * @author JohnMichaelReed
  */
 public class MapAvatar_Relation extends MapEntity_Relation implements SaveData {
 
-    private Avatar avatar_;
-
-    /**
-     * MapAvatar_Relation constructor. Inherits from MapEntity_Relation.
-     * @param avatar
-     * @param x_respawn_point
-     * @param y_respawn_point
-     */
-    public MapAvatar_Relation(Avatar avatar,
-            int x_respawn_point, int y_respawn_point) {
-        super(avatar, x_respawn_point, y_respawn_point);
-        avatar_ = avatar;
-    }
+    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
+    private static final long serialVersionUID = Long.parseLong("RELATIONMA", 35);
+    // </editor-fold>
+    
+    private final Avatar avatar_;
 
     /**
      * Gets Avatar associated with the relation.
@@ -44,9 +35,15 @@ public class MapAvatar_Relation extends MapEntity_Relation implements SaveData {
         return avatar_;
     }
 
-    // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
-    public String getSerTag() {
-        return "RELATION_MAP_AVATAR";
+    /**
+     * MapAvatar_Relation constructor. Inherits from MapEntity_Relation.
+     * @param avatar
+     * @param x_respawn_point
+     * @param y_respawn_point
+     */
+    public MapAvatar_Relation(Map m, Avatar avatar,
+            int x_respawn_point, int y_respawn_point) {
+        super(m, avatar, x_respawn_point, y_respawn_point);
+        avatar_ = avatar;
     }
-    // </editor-fold>
 }

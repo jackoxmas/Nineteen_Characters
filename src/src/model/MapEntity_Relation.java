@@ -5,29 +5,40 @@
  */
 package src.model;
 
-import src.SaveData;
-import src.controller.Entity;
-import src.controller.Item;
+import src.entityThings.Entity;
+import src.entityThings.Item;
 
 /**
- *
+ * One line description
  * @author JohnReedLOL
  */
 public class MapEntity_Relation extends MapDrawableThing_Relation implements SaveData {
 
-    private Entity entity_;
+    /**
+     * @author John-Michael Reed
+     * @return -1 if no item can be dropped (inventory empty)
+     */
+    public int dropItem() {
+        Item itemToBeDropped = entity_.pullFirstItemOutOfInventory();
+        if (itemToBeDropped != null) {
+            current_map_reference_.addItem(itemToBeDropped, this.getMapTile().x_, this.getMapTile().y_,
+            itemToBeDropped.getMapRelation().isPassable(), itemToBeDropped.getMapRelation().isOneShot());
+            src.userIO.Display.setMessage("Dropped item: " + itemToBeDropped.name_, 3);
+            return 0;
+        } else {
+            src.userIO.Display.setMessage("You have no items to drop.", 3);
+            return -1;
+        }
+    }
+	
+    private final Entity entity_;
 
-    public MapEntity_Relation(Entity entity,
+    public MapEntity_Relation(Map m, Entity entity,
             int x_respawn_point, int y_respawn_point) {
+        super(m);
         entity_ = entity;
         x_respawn_point_ = x_respawn_point;
         y_respawn_point_ = y_respawn_point;
-    }
-    private int x_respawn_point_;
-    private int y_respawn_point_;
-
-    public void spawn(Entity toSpawn, int time_until_spawn) {
-    	//super.pushEntityInDirection(toSpawn, x_respawn_point_, y_respawn_point_);
     }
 
     /**
@@ -43,18 +54,10 @@ public class MapEntity_Relation extends MapDrawableThing_Relation implements Sav
         return super.pushEntityInDirection(entity_, x, y);
     }
 
-    public void sendAttack(int x, int y) {
-
-    }
-
-    public void receiveAttack(int damage) {
-
-    }
-
     /**
      * An item underneath you can be picked up using the parameters 0,0. 0 if
      * item is picked up successfully, -1 if no item is on the specified tile.
-     *
+     * @author John-Michael Reed
      * @param x
      * @param y
      * @return error_code
@@ -65,25 +68,26 @@ public class MapEntity_Relation extends MapDrawableThing_Relation implements Sav
         Item itemToBePickedUp = current_map_reference_.removeTopItem(x + getMyXCoordinate(), y + getMyYCoordinate());
         if (itemToBePickedUp != null) {
             entity_.addItemToInventory(itemToBePickedUp);
+            src.userIO.Display.setMessage("Picked up item: " + itemToBePickedUp.name_, 3);
             error_code = 0;
+        } else {
+            src.userIO.Display.setMessage("There is nothing here to pick up.", 3);
         }
 
         return error_code;
     }
-    /**
-     * 
-     * @return -1 if no item can be dropped (inventory empty)
-     */
-    public int dropItem() {
-        Item itemToBeDropped = entity_.pullFirstItemOutOfInventory();
-        if (itemToBeDropped != null) {
-            current_map_reference_.addItem(itemToBeDropped, this.getMapTile().x_, this.getMapTile().y_);
-            return 0;
-        } else {
-            return -1;
-        }
+    
+    public void sendAttack(int x, int y) {
+
+    }
+    
+    public void spawn(Entity toSpawn, int time_until_spawn) {
+    	//super.pushEntityInDirection(toSpawn, x_respawn_point_, y_respawn_point_);
     }
 
+    private final int x_respawn_point_;
+    private final int y_respawn_point_;
+    
     // <editor-fold desc="SERIALIZATION" defaultstate="collapsed">
     public String getSerTag() {
         return "RELATION_MAP_ENTITY";

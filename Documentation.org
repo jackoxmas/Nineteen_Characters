@@ -1,18 +1,22 @@
 #+AUTHOR: Nineteen_Characters!
-* 
-java -jar game.jar [-d [LEVEL]][-e FILE] [-l  FILE]
+* Font : This game works best with the following font
+Deja Vu monospace regular font
+* Running 
+Add any command line arguments to attempt to load a game.
+# * Running 
+# java -jar game.jar [-d [LEVEL]][-e FILE] [-l  FILE]
 
-	-d [LEVEL], --debug [LEVEL]
-		Activates debug mode, where debug outputs are sent to the error stream. Error stream may 
-		be redirected, as per the --err-out option. LEVEL is an integer number representing the level of 
-		detail requested in the debug output. If no value is specified, the default is level 1.
+# 	-d [LEVEL], --debug [LEVEL]
+# 		Activates debug mode, where debug outputs are sent to the error stream. Error stream may 
+# 		be redirected, as per the --err-out option. LEVEL is an integer number representing the level of 
+# 		detail requested in the debug output. If no value is specified, the default is level 1.
 		
-	-e FILE, --err-out FILE
-		Redirects STDERR messages to the given file
+# 	-e FILE, --err-out FILE
+# 		Redirects STDERR messages to the given file
 		
-	-l FILE, --load FILE
-		Immediately attempts to load the given file as a saved game. If the game cannot be loaded, 
-		a new game is started instead.
+# 	-l FILE, --load FILE
+# 		Immediately attempts to load the given file as a saved game. If the game cannot be loaded, 
+# 		a new game is started instead.
 		
 * Loading a game
 After having saved a game, to load it back in, simply start the game, supplying the path to the file as a parameter. 
@@ -70,8 +74,10 @@ After having saved a game, to load it back in, simply start the game, supplying 
 
 ** While the map is visible
 *** Items
-- Hit u to uses item
-- Hit p pick up, then a direction key
+- Hit p pick up
+- Hit E to equip item
+- Hit U to unequip
+- Hit D to drop 
 *** View Switching
 - Hit i to open the stats and inventory screen
 
@@ -86,15 +92,10 @@ NW   N   NE
 SW   S   SE
 #+END_SRC
 *** Save Game
-- Hit v
+- Hit S
 - A Save File will be created
-- Format : yyMMdd_<number>.sav
+- There is one save file, named save.dave
+# - Format : yyMMdd_<number>.sav
 ** In the Inventory screen
-- Hit u to toggle the use option on
-- Hit d to toggle the drop option on
-- Hit e for toggle equip
-- Proceed to hit the number of the item you wish to apply the action to
-- Finally, select a direction
-- If the action cannot be done on the item, nothing happens
 *** View Switching
 Hit i to return to the map

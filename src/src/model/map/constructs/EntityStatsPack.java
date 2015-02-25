@@ -8,25 +8,25 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
 
     public static final int NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL = 100;
 
-// Primary stats
-    private int lives_left_ = 1; // this can change without leveling up
-    private int strength_level_ = 1;
-    private int agility_level_ = 1;
-    private int intellect_level_ = 1;
-    private int hardiness_level_ = 1;
-    private int quantity_of_experience_ = 1;
-    private int movement_level_ = 1;
+// Primary stats - SHOULD ALL BE PRIVATE!!!!!!!!!!!
+    public int lives_left_ = 1; // this can change without leveling up
+    public int strength_level_ = 1;
+    public int agility_level_ = 1;
+    public int intellect_level_ = 1;
+    public int hardiness_level_ = 1;
+    public int quantity_of_experience_ = 1;
+    public int movement_level_ = 1;
 
 // Gets decremented every time an entity moves
-    private int moves_left_in_turn_ = 1;
+    public int moves_left_in_turn_ = 1;
 
 // Constant Secondary Stats
-    private int cached_current_level_ = 1;
+    public int cached_current_level_ = 1;
 
 // Modifiable Secondary Stats
 // These secondary stats can be modified without leveling up
-    private int current_life_ = 1;
-    private int current_mana_ = 1;
+    public int current_life_ = 1;
+    public int current_mana_ = 1;
     // public int current_offensive_rating_ = 1;
     // public int current_defensive_rating_ = 1;
     // public int current_armor_rating_ = 1;

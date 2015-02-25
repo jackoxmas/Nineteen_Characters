@@ -6,15 +6,16 @@ package src.model.map.constructs;
  */
 public class DrawableThingStatsPack {
 
-	protected int max_life_ = 0;
+    /* SHOULD ALL BE PRIVATE!!! */
+	public int max_life_ = 0;
 
-	protected int max_mana_ = 0;
+	public int max_mana_ = 0;
 
-	protected int offensive_rating_;
+	public int offensive_rating_;
 
-	protected int defensive_rating_ = 0;
+	public int defensive_rating_ = 0;
 
-	protected int armor_rating_;
+	public int armor_rating_;
 
     public int getMax_life_() {
         return max_life_;

@@ -102,8 +102,9 @@ public final class StatsView extends Viewport
     	writeStringToContents(68, 8, rightAlign(3, "" + avatar_reference_.getStatsPack().moves_left_in_turn_));
     	writeStringToContents(72, 8, rightAlign(3, "" + avatar_reference_.getStatsPack().movement_level_));
     	writeStringToContents(72, 11, rightAlign(3, "" + avatar_reference_.getStatsPack().offensive_rating_));
-    	writeStringToContents(72, 12, rightAlign(3, "" + avatar_reference_.getStatsPack().current_defensive_rating_));
-    	writeStringToContents(72, 13, rightAlign(3, "" + avatar_reference_.getStatsPack().current_armor_rating_));
+        // Replacing current_defensive_rating with defensive_rating
+    	writeStringToContents(72, 12, rightAlign(3, "" + avatar_reference_.getStatsPack().defensive_rating_));
+    	writeStringToContents(72, 13, rightAlign(3, "" + avatar_reference_.getStatsPack().armor_rating_));
     }
 /*
  * Helps renderToDisplay

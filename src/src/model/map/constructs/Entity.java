@@ -315,6 +315,13 @@ abstract public class Entity extends DrawableThing {
     private EntityStatsPack stats_pack_ = new EntityStatsPack();
 
     /**
+     * Get Entities StatsPack - only to be used by the view for displaying stats.
+     */
+    public EntityStatsPack getStatsPack() {
+        return stats_pack_;
+    }
+
+    /**
      * Removes state increase from item i.e., item with stat increase is
      * unequipped
      *

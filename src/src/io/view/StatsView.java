@@ -78,18 +78,18 @@ public final class StatsView extends Viewport
     	writeStringToContents(18, 13, rightAlign(3, "" + avatar_reference_.getStatsPack().hardiness_level_));
     	
     	StringBuilder hearts = new StringBuilder();
-    	for (int i = 0; i < (avatar_reference_.getStatsPack().current_life_/avatar_reference_.getStatsPack().life_)*10; i++)
+    	for (int i = 0; i < (avatar_reference_.getStatsPack().current_life_/avatar_reference_.getStatsPack().max_life_)*10; i++)
     		hearts.append("♥");
     	writeStringToContents(38, 6, rightAlign(10, hearts.toString()));
     	writeStringToContents(40, 7, rightAlign(3, "" + avatar_reference_.getStatsPack().current_life_));
-    	writeStringToContents(44, 7, rightAlign(3, "" + avatar_reference_.getStatsPack().life_));
+    	writeStringToContents(44, 7, rightAlign(3, "" + avatar_reference_.getStatsPack().max_life_));
 
     	StringBuilder diamonds = new StringBuilder();
-    	for (int i = 0; i < avatar_reference_.getStatsPack().current_mana_/avatar_reference_.getStatsPack().mana_*10; i++)
+    	for (int i = 0; i < avatar_reference_.getStatsPack().current_mana_/avatar_reference_.getStatsPack().max_mana_*10; i++)
     		diamonds.append("♦");
     	writeStringToContents(38, 9, rightAlign(10, diamonds.toString()));
     	writeStringToContents(40, 10, rightAlign(3, "" + avatar_reference_.getStatsPack().current_mana_));
-    	writeStringToContents(44, 10, rightAlign(3, "" + avatar_reference_.getStatsPack().mana_));
+    	writeStringToContents(44, 10, rightAlign(3, "" + avatar_reference_.getStatsPack().max_mana_));
 
     	StringBuilder spades = new StringBuilder();
     	for (int i = 0; i < (avatar_reference_.getStatsPack().quantity_of_experience_
@@ -102,8 +102,9 @@ public final class StatsView extends Viewport
     	writeStringToContents(68, 8, rightAlign(3, "" + avatar_reference_.getStatsPack().moves_left_in_turn_));
     	writeStringToContents(72, 8, rightAlign(3, "" + avatar_reference_.getStatsPack().movement_level_));
     	writeStringToContents(72, 11, rightAlign(3, "" + avatar_reference_.getStatsPack().offensive_rating_));
-    	writeStringToContents(72, 12, rightAlign(3, "" + avatar_reference_.getStatsPack().current_defensive_rating_));
-    	writeStringToContents(72, 13, rightAlign(3, "" + avatar_reference_.getStatsPack().current_armor_rating_));
+        // Replacing current_defensive_rating with defensive_rating
+    	writeStringToContents(72, 12, rightAlign(3, "" + avatar_reference_.getStatsPack().defensive_rating_));
+    	writeStringToContents(72, 13, rightAlign(3, "" + avatar_reference_.getStatsPack().armor_rating_));
     }
 /*
  * Helps renderToDisplay

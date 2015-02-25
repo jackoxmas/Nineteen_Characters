@@ -45,7 +45,7 @@ public class Testing {
         Item green = new Item("umbrella_3", '☂', true);
         Item brown = new Item("umbrella_4", '☂', true);
         Item seven = new Item("umbrella_5", '☂', true);
-        seven.getStatsPack().offensive_rating_ = 17;
+        //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
         
         map.addItem(blue, 6, 6,true,true); // ▨
         map.addItem(red, 7, 7,true,true); // ▨

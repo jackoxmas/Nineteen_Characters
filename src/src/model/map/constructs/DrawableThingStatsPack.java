@@ -7,9 +7,9 @@ package src.model.map.constructs;
 public class DrawableThingStatsPack {
 
     /* SHOULD ALL BE PRIVATE!!! */
-	public int max_life_ = 0;
+	public int max_life_ = 1;
 
-	public int max_mana_ = 0;
+	public int max_mana_ = 1;
 
 	public int offensive_rating_;
 

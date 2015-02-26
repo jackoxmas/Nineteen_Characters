@@ -5,8 +5,11 @@
  */
 package src.model.map.constructs;
 
+import src.Effect;
+
 /**
  * Item that has an area of effect.
+ *
  * @author JohnMichaelReed
  */
 public class AreaEffectItem extends Item {
@@ -15,16 +18,13 @@ public class AreaEffectItem extends Item {
     transient /* TEMPORARY */ private Effect effect_;
 
     private boolean hasBeenActivated;
-    
-    public enum Effect {
-
-        HEAL, HURT, LEVEL, KILL
-    }
 
     transient private int power_ = 10;
 
     /**
-     * Constructor: Contains extra parameter, power, which gives the item a strength.
+     * Constructor: Contains extra parameter, power, which gives the item a
+     * strength.
+     *
      * @param name
      * @param representation
      * @param is_passable
@@ -43,6 +43,7 @@ public class AreaEffectItem extends Item {
 
     /**
      * Constructor: Does not contain power parameter.
+     *
      * @param name
      * @param representation
      * @param is_passable
@@ -55,62 +56,49 @@ public class AreaEffectItem extends Item {
         super(name, representation, goes_in_inventory);
         effect_ = effect;
     }
-    
-    public int getPower(){
-    	return power_;
-    }
-    
-    public String getEffect(){
-    	String s;
-    	switch(effect_) {
-    		case HURT:
-    			s = "HURT";
-    			break;
-    		case HEAL:
-    			s = "HEAL";
-    			break;
-    		case LEVEL:
-    			s = "LEVEL";
-    			break;
-    		case KILL:
-    			s = "KILL";
-    			break;
-    		default :
-    			s = "null";
-    	}
-    	return s;
+
+    public int getPower() {
+        return power_;
     }
 
-    public boolean hasBeenActivated(){
-    	return hasBeenActivated;
+    public String getEffect() {
+        String s;
+        switch (effect_) {
+            case HURT:
+                s = "HURT";
+                break;
+            case HEAL:
+                s = "HEAL";
+                break;
+            case LEVEL:
+                s = "LEVEL";
+                break;
+            case KILL:
+                s = "KILL";
+                break;
+            default:
+                s = "null";
+        }
+        return s;
     }
-    
+
+    public boolean hasBeenActivated() {
+        return hasBeenActivated;
+    }
+
     /**
      * Item performs action (HURT, HEAL, LEVEL, KILL)
      */
     @Override
     public void onWalkOver() {
-    	
-    	hasBeenActivated = true;
 
-       // System.out.println("Item: " + this.toString() + " is being walked on.");
+        hasBeenActivated = true;
+
+        // System.out.println("Item: " + this.toString() + " is being walked on.");
         if (this.isOneShot() && !this.goesInInventory()) {
             this.getMapRelation().getMapTile().removeTopItem();
         }
-        //Display.setMessage("Walked on Item: " + this.toString(), 3);
-        switch (effect_) {
-            case HURT:
-                this.getMapRelation().hurtWithinRadius(power_, 2);
-                break;
-            case HEAL:
-                this.getMapRelation().healWithinRadius(power_, 2);
-                break;
-            case LEVEL:
-                this.getMapRelation().levelUpWithinRadius(2);
-                break;
-            case KILL:
-                this.getMapRelation().killWithinRadius(2);
-                break;
-        }
+        this.getMapRelation().areaEffectFunctor.
+                effectAreaWithinRadius(2, power_, effect_);
     }
 }

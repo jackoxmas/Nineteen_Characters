@@ -5,6 +5,7 @@
  */
 package src.model.map;
 
+import src.FacingDirection;
 import src.model.map.constructs.Entity;
 import src.model.map.constructs.Item;
 import src.io.view.Display;
@@ -52,6 +53,25 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      * @author John-Michael Reed
      */
     public int moveInDirection(int x, int y) {
+        if(x==0 && y == 0) {
+            //nothing
+        } else if(x == 0 && y > 0) {
+            entity_.setFacingDirection(FacingDirection.UP);
+        } else if(x == 0 && y < 0) {
+            entity_.setFacingDirection(FacingDirection.DOWN);
+        } else if(x > 0 && y == 0) {
+            entity_.setFacingDirection(FacingDirection.RIGHT);
+        } else if(x < 0 && y == 0) {
+            entity_.setFacingDirection(FacingDirection.LEFT);
+        } else if(x > 0 && y > 0) {
+            entity_.setFacingDirection(FacingDirection.UP_RIGHT);
+        } else if(x > 0 && y < 0) {
+            entity_.setFacingDirection(FacingDirection.DOWN_RIGHT);
+        } else if(x < 0 && y > 0) {
+            entity_.setFacingDirection(FacingDirection.UP_LEFT);
+        } else if(x < 0 && y > 0) {
+            entity_.setFacingDirection(FacingDirection.DOWN_LEFT);
+        }
         return super.pushEntityInDirection(entity_, x, y);
     }
 

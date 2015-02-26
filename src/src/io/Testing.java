@@ -1,6 +1,8 @@
 package src.io;
 
 
+import src.Effect;
+import src.FacingDirection;
 import src.model.map.Map;
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Item;
@@ -71,10 +73,21 @@ public class Testing {
         
         Display _display = new Display(avatar.getMyView());
         _display.printView();
-        Terrain obstacle = new Terrain("boulder", '■', true, false);
-        map.addTerrain(obstacle, 2, 2);
+        Terrain obstacle = new Terrain("boulder_terrain", 'T', true, false);
+        map.addTerrain(obstacle, 20, 2);
+        Item obstacle2 = new Item("boulder_item", '■', false);
+        map.addItem(obstacle2, 2, 2, false, false);
         System.out.println("☠ and ★ and ✚");
         Display.setMessage("test",3);
+        avatar.getMapRelation().moveInDirection(15, 0);
+        avatar.getMapRelation().moveInDirection(0, 9);
+        avatar.getMapRelation().areaEffectFunctor.effectAreaWithinLine(5, 20, Effect.HEAL);
+        avatar.getMapRelation().moveInDirection(0, 1);
+        avatar.setFacingDirection(FacingDirection.RIGHT);
+        avatar.getMapRelation().areaEffectFunctor.effectAreaWithinArc(3, 20, Effect.HURT);
+        avatar.setFacingDirection(FacingDirection.DOWN_LEFT);
+        avatar.getMapRelation().areaEffectFunctor.effectAreaWithinArc(3, 1, Effect.KILL);
+        //avatar.getMapRelation().areaEffectFunctor.effectAreaWithinArc(10, 20, Effect.HURT);
         AvatarController AC = new AvatarController(avatar);
 		AC.runTheGame();
 

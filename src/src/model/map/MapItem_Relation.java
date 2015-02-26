@@ -22,7 +22,7 @@ public class MapItem_Relation extends MapDrawableThing_Relation {
     private final boolean is_passable_;
     
     public boolean isPassable() {
-        return is_one_shot_;
+        return is_passable_;
     }
     
     private final Item item_;

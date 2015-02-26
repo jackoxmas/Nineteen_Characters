@@ -172,8 +172,8 @@ public class Map implements MapViewable {
      * @param y - y posiition of where you want to add item
      * @return -1 on fail, 0 on success
      */
-    public int addItem(Item i, int x, int y, boolean goes_in_inventory, boolean is_one_shot) {
-        i.setMapRelation(new MapItem_Relation(this, i, goes_in_inventory, is_one_shot));
+    public int addItem(Item i, int x, int y, boolean is_passable, boolean is_one_shot) {
+        i.setMapRelation(new MapItem_Relation(this, i, is_passable, is_one_shot));
         int error_code = this.map_grid_[y][x].addItem(i);
         if (error_code == 0) {
             items_list_.add(i);

@@ -17,7 +17,7 @@ import src.FacingDirection;
  */
 abstract public class Entity extends DrawableThing {
     
-    private FacingDirection direction_ = FacingDirection.DIRECTIONLESS;
+    private FacingDirection direction_ = FacingDirection.UP;
     public FacingDirection getFacingDirection() {
         return direction_;
     }

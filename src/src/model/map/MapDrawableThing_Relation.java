@@ -11,6 +11,7 @@ import src.model.map.constructs.Entity;
 import src.model.map.constructs.EntityStatsPack;
 import src.model.map.constructs.Item;
 import src.io.view.Display;
+import java.math.*;
 
 /**
  * This should be abstract because you can't make drawable things
@@ -19,7 +20,7 @@ import src.io.view.Display;
  */
 public class MapDrawableThing_Relation {
 
-    public final class AreaEffect {
+    public class MapDrawableAreaEffect {
 
         /**
          * casts an area effect. Set symbol to empty space for no effect on map
@@ -37,17 +38,17 @@ public class MapDrawableThing_Relation {
             int bottom = getMyYCoordinate() - radius;
             for (int i = top; i >= bottom; --i) {
                 for (int j = left_edge; j <= right_edge; ++j) {
-                    repeat(j, i, strength, effect);
+
+                    int reduction = 0;
+                    if (effect == Effect.HEAL || effect == Effect.HURT) {
+                        int damage_reduction_x = Math.abs(getMyXCoordinate() - j);
+                        int damage_reduction_y = Math.abs(getMyXCoordinate() - i);
+                        reduction = damage_reduction_x + damage_reduction_y;
+                    }
+
+                    repeat(j, i, strength - reduction, effect);
                 }
             }
-        }
-
-        public void effectAreaWithinArc(int how_far, int strength, Effect effect) {
-
-        }
-
-        public void effectAreaWithinLine(int how_far, int strength, Effect effect) {
-
         }
 
         public void repeat(int x_pos, int y_pos, int strength, Effect effect) {
@@ -86,7 +87,7 @@ public class MapDrawableThing_Relation {
      *
      * @author John-Michael Reed
      */
-    public final AreaEffect areaEffectFunctor = new AreaEffect();
+    public final MapDrawableAreaEffect areaEffectFunctor = new MapDrawableAreaEffect();
 
     @Override
     protected Object clone() throws CloneNotSupportedException {

@@ -6,16 +6,24 @@
 package src.model.map.constructs;
 
 import java.util.ArrayList;
+import src.FacingDirection;
 
 import src.model.map.MapEntity_Relation;
 import src.io.view.Display;
-
+import src.FacingDirection;
 /**
  * Entity inherits from DrawableThing. Entity is a DrawableThing that can move
  * on the map.
  */
 abstract public class Entity extends DrawableThing {
-
+    
+    private FacingDirection direction_ = FacingDirection.UP;
+    public FacingDirection getFacingDirection() {
+        return direction_;
+    }
+    public void setFacingDirection(FacingDirection dir) {
+        direction_ = dir;
+    }
     private static final int experience_between_levels = 100;
 
     /**

@@ -2,6 +2,7 @@ package src.model.map.constructs;
 
 /**
  * Stats Pack for an Entity. Inherits from DrawableThingStatsPack.
+ *
  * @author John-Michael Reed
  */
 public final class EntityStatsPack extends DrawableThingStatsPack {
@@ -18,9 +19,8 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
     protected int movement_level_ = 1;
     protected int max_life_ = 1;
     protected int max_mana_ = 1;
-	
-	
-	public int getMax_life_() {
+
+    public int getMax_life_() {
         return max_life_;
     }
 
@@ -38,9 +38,6 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
 // These secondary stats can be modified without leveling up
     public int current_life_ = 1;
     public int current_mana_ = 1;
-    // public int current_offensive_rating_ = 1;
-    // public int current_defensive_rating_ = 1;
-    // public int current_armor_rating_ = 1;
 
     public int getLives_left_() {
         return lives_left_;
@@ -135,7 +132,7 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
     }
 
     /**
-     * 
+     *
      * @param increase
      */
     public void increaseQuantityOfExperienceBy(int increase) {
@@ -161,32 +158,32 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
         ++movement_level_;
         ++moves_left_in_turn_;
     }
+
     /**
-     * 
-     * @return -1 if moves left is less than or equal to zero 
+     *
+     * @return -1 if moves left is less than or equal to zero
      */
     public int decreaseMovesLeftByOne() {
-        if(moves_left_in_turn_ <= 0) {
+        if (moves_left_in_turn_ <= 0) {
             return -1;
         } else {
-        --moves_left_in_turn_;
-        return 0;
+            --moves_left_in_turn_;
+            return 0;
         }
     }
-    
+
     public boolean hasMovesLeft() {
         if (moves_left_in_turn_ <= 0) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
 
     /**
-     * 
+     *
      * @param amount
-     * @return -1 if your health ran out, 0 if you did not 
+     * @return -1 if your health ran out, 0 if you did not
      */
     public int deductCurrentLifeBy(int amount) {
         if (amount < 0) {
@@ -204,7 +201,7 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
     }
 
     /**
-     * 
+     *
      * @param amount
      * @return -1 if your health maxed out, 0 if you did not
      */
@@ -222,9 +219,9 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
     }
 
     /**
-     * 
+     *
      * @param amount
-     * @return -1 if your mana ran out, 0 if it did not 
+     * @return -1 if your mana ran out, 0 if it did not
      */
     public int deductCurrentManaBy(int amount) {
         if (amount < 0) {
@@ -240,7 +237,7 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
     }
 
     /**
-     * 
+     *
      * @param amount
      * @return -1 if your mana maxed out, 0 if it did not
      */

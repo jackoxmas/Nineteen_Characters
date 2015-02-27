@@ -8,12 +8,13 @@ import src.model.map.constructs.Item;
 import src.model.map.constructs.Terrain;
 
 /**
- * This class represents a single unit of logical area on the Map. It relates the Terrain, Entities, and Items who
- * share that space.
+ * This class represents a single unit of logical area on the Map. It relates
+ * the Terrain, Entities, and Items who share that space.
  */
 public final class MapTile {
-    
+
     private Entity entity_;     // the single Entity occupying this space
+
     /**
      * Only works if there in no entity there already.
      *
@@ -29,7 +30,7 @@ public final class MapTile {
             return -1;
         }
     }
-    
+
     public Entity getEntity() {
         return this.entity_;
     }
@@ -57,13 +58,11 @@ public final class MapTile {
      * @author Reed, John
      */
     public char getTopCharacter() {
-    	if (entity_ != null) {
+        if (entity_ != null) {
             return entity_.getRepresentation();
-    	}
-         else if (!items_.isEmpty()) {
-             return items_.peekLast().getRepresentation();
-         }
-         else if (terrain_ != null) {
+        } else if (!items_.isEmpty()) {
+            return items_.peekLast().getRepresentation();
+        } else if (terrain_ != null) {
             return terrain_.getRepresentation();
         } else {
             return '▩';
@@ -72,16 +71,17 @@ public final class MapTile {
 
     /**
      * Checks the tile for obstacles
+     *
      * @author Reed, John
      * @return whether or not this tile is passable
      */
     public boolean isPassable() {
         if (terrain_ != null && !terrain_.isPassable()) {
             return false;
-        } 
+        }
         if (entity_ != null && !entity_.isPassable()) {
             return false;
-        } 
+        }
         if (items_ != null && items_.peekLast() != null) {
             for (int i = 0; i < items_.size(); ++i) {
                 if (!items_.get(i).isPassable()) {
@@ -91,7 +91,7 @@ public final class MapTile {
         }
         return true;
     }
-    
+
     private LinkedList<Item> items_;    // the collection of Items in this space
 
     /**
@@ -120,6 +120,25 @@ public final class MapTile {
 
     /**
      * Removes top item of tile.
+     * @author John-Michael Reed
+     * @return -2 if there are no items, -1 if item cannot be found
+     */
+    public int removeSpecificItem(Item i) {
+        if (!this.items_.isEmpty()) {
+            boolean found = this.items_.remove(i);
+            if( !found ) {
+                return -2;
+            } else {
+                return 0;
+            }
+        } else {
+            return -1;
+        }
+    }
+
+    /**
+     * Removes top item of tile.
+     *
      * @return Item on top of tile. Removes it from tile.
      */
     public Item removeTopItem() {
@@ -129,9 +148,10 @@ public final class MapTile {
             return null;
         }
     }
-    
+
     /**
      * Peeks at (does not remove) top item on tile.
+     *
      * @return Item on top of the tile. Does not remove item from tile.
      */
     public Item viewTopItem() {
@@ -144,7 +164,10 @@ public final class MapTile {
 
     /**
      * Create a new MapTile object
-     * <p>This method does not link this MapTile to any Terrain, Entities, or Items</p>
+     * <p>
+     * This method does not link this MapTile to any Terrain, Entities, or
+     * Items</p>
+     *
      * @param x The x position of the MapTile on the Map
      * @param y The y position of the MapTile on the Map
      */
@@ -155,8 +178,9 @@ public final class MapTile {
         entity_ = null;
         items_ = new LinkedList<Item>();
     }
-    
+
     private Terrain terrain_;   // the Terrain at this space
+
     /**
      * Returns 0 on success, returns -1 if terrain is already set.
      *
@@ -174,7 +198,7 @@ public final class MapTile {
     public Terrain getTerrain() {
         return this.terrain_;
     }
-    
+
     public final int x_;    // the x coordinate of this area unit
     public final int y_;    // the y coordinate of this area unit
 }

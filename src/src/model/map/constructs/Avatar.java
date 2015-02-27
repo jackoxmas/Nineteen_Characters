@@ -100,7 +100,7 @@ public final class Avatar extends Entity {
                 	switchToStatsView();
                     break;
                 case 'u': //Use item in inventory
-                    int error_code_u = this.useFirstInventoryItem();
+                    int error_code_u = this.useLastInventoryItem();
                     break;
                 case 'q'://move NW
                     mar.moveInDirection(-1, 1);

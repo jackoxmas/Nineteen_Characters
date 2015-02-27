@@ -52,13 +52,13 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                             repeat(x_start - i, y_start + width, strength - reduction, effect);
                             break;
                         case UP_RIGHT:
-                            repeat(x_start - width + i, y_start + width + i, strength - reduction, effect);
+                            repeat(x_start + width + i, y_start - width + i, strength - reduction, effect);
                             break;
                         case UP_LEFT:
-                            repeat(x_start - width - i, y_start + width + i, strength - reduction, effect);
+                            repeat(x_start - width - i, y_start - width + i, strength - reduction, effect);
                             break;
                         case DOWN_RIGHT:
-                            repeat(x_start - width + i, y_start + width - i, strength - reduction, effect);
+                            repeat(x_start + width + i, y_start + width - i, strength - reduction, effect);
                             break;
                         case DOWN_LEFT:
                             repeat(x_start - width - i, y_start + width - i, strength - reduction, effect);

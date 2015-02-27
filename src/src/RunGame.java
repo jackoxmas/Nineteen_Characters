@@ -1,6 +1,5 @@
 /**
- * Implementor: Alex Stewart
- * Last Update: 15-02-13
+ * Implementor: Alex Stewart Last Update: 15-02-13
  */
 package src;
 
@@ -27,39 +26,34 @@ import src.io.view.Viewport;
 
 /**
  * Initializes, opens the program.
+ *
  * @author JohnReedLOL, Alex Stewart
  */
-public class RunGame
-{
-    
+public class RunGame {
+
     private static ProgramOpts pOpts_ = null;
     private static SavedGame saveGame_;
     private static Avatar avatar_;
     private static Map map_;
 
-    
-
-
     public static void main(String[] args) {
         //parseArgs(args); // Parse command line arguments
-    		if (args.length != 0) {
-    			loadGame("save.dave");
-    		}
+        if (args.length != 0) {
+            loadGame("save.dave");
+        }
         initialize(); // Initialize any data we need to before loading
         populateMap();//Add stuff into the map
         startGame(); // Begin the avatarcontroller loop
         //handleArgs(args);
-        
 
         // testing
         //saveGameToDisk();
-
         //exitGame();
         //initializeEverything();
     }
 
     private static void loadGame(String file_path) {
-       
+
     }
 
     // <editor-fold desc="GAME METHODS" defaultstate="collapsed">
@@ -69,28 +63,28 @@ public class RunGame
 
     private static void initialize() {
         saveGame_ = null;
-        map_ = new Map(Viewport.width_/2, Viewport.height_);
-		avatar_ = new Avatar("avatar", '☃');
-		avatar_.generateMapView(map_);
-		map_.addAvatar(avatar_, 0, 0);
+        map_ = new Map(Viewport.width_ / 2, Viewport.height_);
+        avatar_ = new Avatar("avatar", '☃');
+        avatar_.generateMapView(map_);
+        map_.addAvatar(avatar_, 0, 0);
         Display _display = new Display(avatar_.getMyView());
         _display.printView();
 
-
     }
-    private static void populateMap(){
-    	Item blue = new Item("umbrella_1", '☂', true);
+
+    private static void populateMap() {
+        Item blue = new Item("umbrella_1", '☂', true);
         Item red = new Item("umbrella_2", '☂', true);
         Item green = new Item("umbrella_3", '☂', true);
         Item brown = new Item("umbrella_4", '☂', true);
         Item seven = new Item("umbrella_5", '☂', true);
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
-        
-        map_.addItem(blue, 6, 6,true,true); // ▨
-        map_.addItem(red, 7, 7,true,true); // ▨
-        map_.addItem(green, 8, 8,true,true); // ▨
-        map_.addItem(brown, 9, 9,true,true); // ▨
-        map_.addItem(seven, 5, 5,true,true); // ▨
+
+        map_.addItem(blue, 6, 6, true, true); // ▨
+        map_.addItem(red, 7, 7, true, true); // ▨
+        map_.addItem(green, 8, 8, true, true); // ▨
+        map_.addItem(brown, 9, 9, true, true); // ▨
+        map_.addItem(seven, 5, 5, true, true); // ▨
         for (int y = 0; y < Viewport.height_; ++y) {
             for (int x = 0; x < Viewport.width_ / 2; ++x) {
                 Terrain obstacle = new Terrain("land", '▨', false, false);
@@ -106,24 +100,35 @@ public class RunGame
                 map_.addTerrain(obstacle, x, y);
             }
         }
-       
-        
+
         Terrain obstacle = new Terrain("boulder", '■', true, false);
         map_.addTerrain(obstacle, 2, 2);
 
+        avatar_.getMapRelation().moveInDirection(18, 0);
+        avatar_.getMapRelation().moveInDirection(0, 12);
+        avatar_.getMapRelation().areaEffectFunctor.effectAreaWithinLine(5, 20, Effect.HEAL);
+        avatar_.getMapRelation().moveInDirection(0, 1);
+        avatar_.setFacingDirection(FacingDirection.LEFT);
+        avatar_.getMapRelation().areaEffectFunctor.effectAreaWithinArc(3, 20, Effect.HURT);
+        avatar_.setFacingDirection(FacingDirection.DOWN_RIGHT);
+        avatar_.getMapRelation().areaEffectFunctor.effectAreaWithinArc(3, 1, Effect.KILL);
+
     }
-    private static void startGame(){
-    	AvatarController AC = new AvatarController(avatar_);
-    	AC.runTheGame();
+
+    private static void startGame() {
+        AvatarController AC = new AvatarController(avatar_);
+        AC.runTheGame();
     }
+
     private static void saveGameToDisk() {
         if (saveGame_ == null) {
             saveGame_ = SavedGame.newSavedGame();
         }
         Exception e = null;
 
-        if (e != null)
+        if (e != null) {
             errOut(e);
+        }
     }
 
     // TODO: complete
@@ -138,11 +143,13 @@ public class RunGame
 
     /**
      * This class holds information about optional program utilities which may
-     * be triggered via command line arguments. Reference {@link #parseArgs}
-     * for parsing implementation.
+     * be triggered via command line arguments. Reference {@link #parseArgs} for
+     * parsing implementation.
      */
     private static class ProgramOpts {
+
         // Debug Mode
+
         String[] dbg_match = {"-d", "--debug"};
         boolean dbg_flag = false;
         int dbg_level = 1;
@@ -159,33 +166,47 @@ public class RunGame
     }
 
     /**
-     * Writes the provided String to the errOut stream with the prefix: (DEBUG|0).
+     * Writes the provided String to the errOut stream with the prefix:
+     * (DEBUG|0).
+     *
      * @param s The String to write.
      */
     public static void dbgOut(String s) {
-        if (s == null) s = "NULL";
-        if (pOpts_.dbg_flag)
+        if (s == null) {
+            s = "NULL";
+        }
+        if (pOpts_.dbg_flag) {
             errOut("(DEBUG|0) " + s);
+        }
     }
 
     /**
-     * Writes the provided String to the errOut stream with the prefix: (DEBUG|X) where X is the debug level of the
-     * output. If the provided debug level is greater (larger number) than the debug level option set in
+     * Writes the provided String to the errOut stream with the prefix:
+     * (DEBUG|X) where X is the debug level of the output. If the provided debug
+     * level is greater (larger number) than the debug level option set in
      * {@link ProgramOpts}, the debug string will not be output.
+     *
      * @param s The debug string to write
      * @param dLevel The debug level of the output
      */
     public static void dbgOut(String s, int dLevel) {
-        if (dLevel > pOpts_.dbg_level)
+        if (dLevel > pOpts_.dbg_level) {
             return;
-        if (s == null) s = "NULL";
-        if (pOpts_.dbg_flag)
+        }
+        if (s == null) {
+            s = "NULL";
+        }
+        if (pOpts_.dbg_flag) {
             errOut("(DEBUG|" + dLevel + ") " + s);
+        }
     }
 
     /**
-     * Writes the provided Exception to the errOut stream with the prefix: "ERROR:" and WITHOUT a stack trace called.
-     * If you wish to print the stack tace, call {@link #errOut(Exception, boolean)} with printTrace set to TRUE.
+     * Writes the provided Exception to the errOut stream with the prefix:
+     * "ERROR:" and WITHOUT a stack trace called. If you wish to print the stack
+     * tace, call {@link #errOut(Exception, boolean)} with printTrace set to
+     * TRUE.
+     *
      * @param e The Exception to write
      */
     public static void errOut(Exception e) {
@@ -193,17 +214,21 @@ public class RunGame
     }
 
     /**
-     * Writes the provided Exception to the errOut stream with the prefix: "ERROR:"
+     * Writes the provided Exception to the errOut stream with the prefix:
+     * "ERROR:"
+     *
      * @param e The Exception object to write
-     * @param printTrace whether or not to print the Exception's stack trace below the error output
+     * @param printTrace whether or not to print the Exception's stack trace
+     * below the error output
      */
     public static void errOut(Exception e, boolean printTrace) {
         if (e == null) {
             errOut("errOut called with null Exception");
         }
         errOut("ERROR: " + e.toString());
-        if (!printTrace)
+        if (!printTrace) {
             return;
+        }
         for (StackTraceElement elem : e.getStackTrace()) {
             errOut("TRACE: " + elem.toString());
         }
@@ -211,16 +236,21 @@ public class RunGame
 
     /**
      * Writes the provided String to the errOut stream.
+     *
      * @param s The message to write out.
      */
     public static void errOut(String s) {
-        if (s == null) s = "NULL";
+        if (s == null) {
+            s = "NULL";
+        }
         System.err.println("[" + errDateFormat_.format(new Date()) + "] " + s);
     }
 
     /**
      * Commits the changes specified by the current {@link ProgramOpts}.
-     * @param args The command line arguments that were given to this program (not used in this method)
+     *
+     * @param args The command line arguments that were given to this program
+     * (not used in this method)
      */
     protected static void handleArgs(String[] args) {
         if (pOpts_.err_flag) {
@@ -239,18 +269,20 @@ public class RunGame
             Exception e = null;
             //int s = saveGame_.loadFile(mmr_, e);
             /*
-            if (s == 0) { // the saved game load has failed
-                errOut(e);  // print out error
-                if (startNewGame() == 0) {
-                    errOut(e);
-                    exitGame();
-                }
-            }*/
+             if (s == 0) { // the saved game load has failed
+             errOut(e);  // print out error
+             if (startNewGame() == 0) {
+             errOut(e);
+             exitGame();
+             }
+             }*/
         }
     }
 
     /**
-     * Parses an array of String objects for program options and sets their appropriate values in {@link ProgramOpts}.
+     * Parses an array of String objects for program options and sets their
+     * appropriate values in {@link ProgramOpts}.
+     *
      * @param args The command line arguments that were given to this program
      */
     protected static void parseArgs(String[] args) {
@@ -261,9 +293,10 @@ public class RunGame
             for (String m : pOpts_.dbg_match) {
                 if (m.equals(args[a])) {
                     if (args.length > a + 1) {
-                        int temp = Integer.parseInt(args[a+1]);
-                        if (temp > 0)
+                        int temp = Integer.parseInt(args[a + 1]);
+                        if (temp > 0) {
                             pOpts_.dbg_level = temp;
+                        }
                     }
                     pOpts_.dbg_flag = true;
                     break;

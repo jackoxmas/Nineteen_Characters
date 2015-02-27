@@ -79,8 +79,8 @@ public class Testing {
         map.addItem(obstacle2, 2, 2, false, false);
         System.out.println("☠ and ★ and ✚");
         Display.setMessage("test",3);
-        avatar.getMapRelation().moveInDirection(15, 0);
-        avatar.getMapRelation().moveInDirection(0, 9);
+        avatar.getMapRelation().moveInDirection(18, 0);
+        avatar.getMapRelation().moveInDirection(0, 12);
         avatar.getMapRelation().areaEffectFunctor.effectAreaWithinLine(5, 20, Effect.HEAL);
         avatar.getMapRelation().moveInDirection(0, 1);
         avatar.setFacingDirection(FacingDirection.RIGHT);

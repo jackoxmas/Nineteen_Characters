@@ -53,7 +53,7 @@ abstract public class Entity extends DrawableThing {
     public void commitSuicide() {
         int health_left = stats_pack_.getCurrent_life_();
         stats_pack_.deductCurrentLifeBy(health_left);
-        // SPAWN!!!!!!!!!!!
+        getMapRelation().respawn();
         if (stats_pack_.getLives_left_() < 0) {
             gameOver();
         }
@@ -280,7 +280,10 @@ abstract public class Entity extends DrawableThing {
     }
 
     public void receiveAttack(int damage) {
-        this.stats_pack_.deductCurrentLifeBy(damage);
+        int did_I_run_out_of_health = stats_pack_.deductCurrentLifeBy(damage - stats_pack_.getDefensive_rating_() - stats_pack_.getArmor_rating_() );
+        if(did_I_run_out_of_health != 0) {
+            getMapRelation().respawn();
+        }
         if (stats_pack_.getLives_left_() < 0) {
             gameOver();
         }
@@ -288,6 +291,23 @@ abstract public class Entity extends DrawableThing {
 
     public void receiveHeal(int strength) {
         this.stats_pack_.increaseCurrentLifeBy(strength);
+    }
+    
+    // reply(greeting, this);
+    public String reply(String recieved_text, Entity speaker) {
+        String reply = "";
+        if(recieved_text == "hello") {
+            reply = "goodbye";
+            return speaker.reply(reply, this);
+        } else if (recieved_text == "goodbye") {
+            reply = "";
+            return speaker.reply(reply, this);
+        }
+        else if (recieved_text == "") {
+            return "";
+        } else {
+            return "";
+        }
     }
 
     //private final int max_level_;

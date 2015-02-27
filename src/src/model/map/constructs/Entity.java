@@ -11,16 +11,19 @@ import src.FacingDirection;
 import src.model.map.MapEntity_Relation;
 import src.io.view.Display;
 import src.FacingDirection;
+
 /**
  * Entity inherits from DrawableThing. Entity is a DrawableThing that can move
  * on the map.
  */
 abstract public class Entity extends DrawableThing {
-    
+
     private FacingDirection direction_ = FacingDirection.UP;
+
     public FacingDirection getFacingDirection() {
         return direction_;
     }
+
     public void setFacingDirection(FacingDirection dir) {
         direction_ = dir;
     }
@@ -61,23 +64,6 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     * returns the derived stats
-     *
-     * @author Jessan
-     */
-    public DrawableThingStatsPack derivedStats() {
-        DrawableThingStatsPack temp = new DrawableThingStatsPack();
-        //if no equipped item Derived Stats will be 0
-        if (equipped_item_ == null) {
-            return temp;
-        }
-
-        temp = stats_pack_;
-        temp.reduceBy(equipped_item_.getStatsPack());
-        return temp;
-    }
-
-    /**
      * Entity Constructor
      *
      * @param name
@@ -99,21 +85,25 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     * Equip Item at position 0 of the Inventory ArrayList.
+     * Equip Item at final position in the Inventory ArrayList.
      *
      * @author John-Michael Reed
      * @return error codes: -2, inventory has no item; -1, cannot equip another
-     * item
+     * item; -3 inventory is empty;
      */
     public int equipInventoryItem() {
         if (!inventory_.isEmpty()) {
             if (equipped_item_ == null) {
-                Display.setMessage("Equipping item: " + inventory_.get(0).name_, 3);
-                DrawableThingStatsPack to_add = inventory_.get(0).getStatsPack();
-                this.stats_pack_.addOn(to_add);
-                equipped_item_ = inventory_.get(0);
-                inventory_.remove(0); // Very inefficient for large number of items
-                return 0;
+                if (!inventory_.isEmpty()) {
+                    Item last = inventory_.get(inventory_.size()-1);
+                    DrawableThingStatsPack to_add = last.getStatsPack();
+                    this.stats_pack_.addOn(to_add);
+                    equipped_item_ = last; 
+                    inventory_.remove(inventory_.size()-1);
+                    return 0;
+                } else {
+                    return -3;
+                }
             } else {
                 return -1;
             }
@@ -121,17 +111,6 @@ abstract public class Entity extends DrawableThing {
             Display.setMessage("You don't have anything to equip!", 3);
             return -2;
         }
-    }
-
-    /**
-     * Equip Item at position 0 of the Inventory ArrayList.
-     *
-     * @author John-Michael Reed
-     * @return error codes: -2, inventory has no item; -1, cannot equip another
-     * item
-     */
-    public void equipInventoryItem(Item equipped) {
-        equipped_item_ = equipped;
     }
 
     /**
@@ -194,9 +173,9 @@ abstract public class Entity extends DrawableThing {
      *
      * @return Item
      */
-    public Item getFirstItemInInventory() {
+    public Item getLastItemInInventory() {
         if (!inventory_.isEmpty()) {
-            return inventory_.get(0);
+            return inventory_.get(inventory_.size()-1);
         } else {
             return null;
         }
@@ -212,13 +191,13 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     * Gets first Item in Inventory. In the 0 position of the arrayList.
+     * Gets last Item in Inventory. In the 0 position of the arrayList.
      *
      * @return Null if list is empty
      */
-    public Item pullFirstItemOutOfInventory() {
+    public Item pullLastItemOutOfInventory() {
         if (!inventory_.isEmpty()) {
-            return inventory_.remove(0);
+            return inventory_.remove(inventory_.size()-1);
         } else {
             return null;
         }
@@ -229,8 +208,8 @@ abstract public class Entity extends DrawableThing {
      *
      * @return 0 on success, -1 on fail (no item to use)
      */
-    public int useFirstInventoryItem() {
-        Item i = getFirstItemInInventory();
+    public int useLastInventoryItem() {
+        Item i = getLastItemInInventory();
         if (i == null) {
             Display.setMessage("You have no items to use.", 3);
             return -1;
@@ -300,30 +279,23 @@ abstract public class Entity extends DrawableThing {
 
     }
 
-    public void receiveAttack(int damage, Occupation occupation) {
-        if (occupation == null) {
-            this.stats_pack_.deductCurrentLifeBy(damage);
-            if (stats_pack_.getLives_left_() < 0) {
-                gameOver();
-            }
-        } else {
-            // ...
+    public void receiveAttack(int damage) {
+        this.stats_pack_.deductCurrentLifeBy(damage);
+        if (stats_pack_.getLives_left_() < 0) {
+            gameOver();
         }
     }
 
-    public void receiveHeal(int strength, Occupation occupation) {
-        if (occupation == null) {
-            this.stats_pack_.increaseCurrentLifeBy(strength);
-        } else {
-            // ...
-        }
+    public void receiveHeal(int strength) {
+        this.stats_pack_.increaseCurrentLifeBy(strength);
     }
 
     //private final int max_level_;
     private EntityStatsPack stats_pack_ = new EntityStatsPack();
 
     /**
-     * Get Entities StatsPack - only to be used by the view for displaying stats.
+     * Get Entities StatsPack - only to be used by the view for displaying
+     * stats.
      */
     public EntityStatsPack getStatsPack() {
         return stats_pack_;

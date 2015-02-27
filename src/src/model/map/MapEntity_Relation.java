@@ -81,7 +81,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             for (int i = 1; i <= length; ++i) {
                 int reduction = 0;
                 if (effect == Effect.HEAL || effect == Effect.HURT) {
-                    reduction = i-1;
+                    reduction = i - 1;
                 }
                 switch (attack_direction) {
                     case UP:
@@ -125,7 +125,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      * @return -1 if no item can be dropped (inventory empty)
      */
     public int dropItem() {
-        Item itemToBeDropped = entity_.pullFirstItemOutOfInventory();
+        Item itemToBeDropped = entity_.pullLastItemOutOfInventory();
         if (itemToBeDropped != null) {
             current_map_reference_.addItem(itemToBeDropped, this.getMapTile().x_, this.getMapTile().y_,
                     itemToBeDropped.getMapRelation().isPassable(), itemToBeDropped.getMapRelation().isOneShot());
@@ -209,6 +209,36 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     public void spawn(Entity toSpawn, int time_until_spawn) {
         //super.pushEntityInDirection(toSpawn, x_respawn_point_, y_respawn_point_);
+    }
+
+    /**
+     * @author John-Michael Reed
+     *
+     * @param x - x coordinate of tele-port
+     * @param y - y coordinate of tele-port
+     * @return -1 if an entity is already there, -2 if tele-port location is invalid, 
+     * -4 if destination is impassable
+     */
+    public int teleportTo(int new_x, int new_y) {
+        MapTile destination = current_map_reference_.getTile(new_x, new_y);
+        if (destination == null) {
+            return -2;
+        } else {
+            int old_x = this.getMyXCoordinate();
+            int old_y = this.getMyYCoordinate();
+            current_map_reference_.getTile(old_x, old_y).removeEntity();
+            if (destination.isPassable() == false) { // put the entity back in its place
+                current_map_reference_.getTile(old_x, old_y).addEntity(entity_);
+                return -4;
+            } else { // move the entity
+                int error_code = destination.addEntity(entity_);
+                Item landed_on_item = destination.viewTopItem();
+                if (landed_on_item != null) { // make the item walked on do stuff
+                    landed_on_item.onWalkOver();
+                }
+                return error_code;
+            }
+        }
     }
 
     private final int x_respawn_point_;

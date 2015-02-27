@@ -12,6 +12,7 @@ import src.model.map.constructs.EntityStatsPack;
 import src.model.map.constructs.Item;
 import src.io.view.Display;
 import java.math.*;
+import src.model.map.constructs.DrawableThing;
 
 /**
  * This should be abstract because you can't make drawable things
@@ -69,9 +70,9 @@ public class MapDrawableThing_Relation {
                 Entity to_effect = infliction.getEntity();
                 if (to_effect != null) {
                     if (effect == Effect.HURT) {
-                        to_effect.receiveAttack(strength, null); // kills avatar if health is negative
+                        to_effect.receiveAttack(strength); // kills avatar if health is negative
                     } else if (effect == Effect.HEAL) {
-                        to_effect.receiveHeal(strength, null);
+                        to_effect.receiveHeal(strength);
                     } else if (effect == Effect.LEVEL) {
                         to_effect.commitSuicide();
                     } else if (effect == Effect.KILL) {
@@ -203,5 +204,4 @@ public class MapDrawableThing_Relation {
             return -3;
         }
     }
-
 }

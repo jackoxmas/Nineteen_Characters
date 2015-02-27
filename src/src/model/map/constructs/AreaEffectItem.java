@@ -14,8 +14,7 @@ import src.Effect;
  */
 public class AreaEffectItem extends Item {
 
-    // Alex probably didn't make serialization code for this 
-    transient /* TEMPORARY */ private Effect effect_;
+    private Effect effect_;
 
     private boolean hasBeenActivated;
 

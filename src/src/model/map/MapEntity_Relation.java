@@ -18,7 +18,7 @@ import src.io.view.Display;
  */
 public class MapEntity_Relation extends MapDrawableThing_Relation {
 
-    protected class EntityAreaEffect extends MapDrawableAreaEffect {
+    public class AreaEffect extends MapDrawableThing_Relation.AreaEffect {
 
         /**
          * Casts a 90 degree wide area effect
@@ -26,46 +26,49 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
          * @author Reed, John-Michael
          */
         public void effectAreaWithinArc(int length, int strength, Effect effect) {
+            if(length < 0 || strength < 0) {
+                System.exit(-1);
+            }
             FacingDirection attack_direction = entity_.getFacingDirection();
             final int x_start = entity_.getMapRelation().getMyXCoordinate();
             final int y_start = entity_.getMapRelation().getMyYCoordinate();
-            for (int len = 1; len <= length; ++len) {
+            for (int i = 1; i <= length; ++i) {
                 int reduction = 0;
                 if (effect == Effect.HEAL || effect == Effect.HURT) {
-                    reduction = len - 1;
+                    reduction = i-1;
                 }
-                for (int width = -len; width >= len; ++width) {
+                for (int width = -i + 1; width <= i - 1; ++width) {
                     switch (attack_direction) {
                         case UP:
-                            repeat(x_start + width, y_start + length, strength - reduction, effect);
+                            repeat(x_start + width, y_start + i, strength - reduction, effect);
                             break;
                         case DOWN:
-                            repeat(x_start + width, y_start - length, strength - reduction, effect);
+                            repeat(x_start + width, y_start - i, strength - reduction, effect);
                             break;
                         case RIGHT:
-                            repeat(x_start + length, y_start + width, strength - reduction, effect);
+                            repeat(x_start + i, y_start + width, strength - reduction, effect);
                             break;
                         case LEFT:
-                            repeat(x_start - length, y_start + width, strength - reduction, effect);
+                            repeat(x_start - i, y_start + width, strength - reduction, effect);
                             break;
                         case UP_RIGHT:
-                            repeat(x_start + width + length, y_start + width + length, strength - reduction, effect);
+                            repeat(x_start - width + i, y_start + width + i, strength - reduction, effect);
                             break;
                         case UP_LEFT:
-                            repeat(x_start + width - length, y_start + width + length, strength - reduction, effect);
+                            repeat(x_start - width - i, y_start + width + i, strength - reduction, effect);
                             break;
                         case DOWN_RIGHT:
-                            repeat(x_start + width + length, y_start + width - length, strength - reduction, effect);
+                            repeat(x_start - width + i, y_start + width - i, strength - reduction, effect);
                             break;
                         case DOWN_LEFT:
-                            repeat(x_start + width - length, y_start + width - length, strength - reduction, effect);
+                            repeat(x_start - width - i, y_start + width - i, strength - reduction, effect);
+                            
                             break;
                     }
 
                 }
             }
         }
-
         /**
          * Does area damage in a line
          *
@@ -109,6 +112,13 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             }
         }
     };
+    
+    /**
+     * This object is actually a function used to call area effects
+     *
+     * @author John-Michael Reed
+     */
+    public final AreaEffect areaEffectFunctor = new MapEntity_Relation.AreaEffect();
 
     /**
      * @author John-Michael Reed

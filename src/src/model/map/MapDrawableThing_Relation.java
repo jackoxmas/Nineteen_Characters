@@ -21,7 +21,7 @@ import src.model.map.constructs.DrawableThing;
  */
 public class MapDrawableThing_Relation {
 
-    public class MapDrawableAreaEffect {
+    public class AreaEffect {
 
         /**
          * casts an area effect. Set symbol to empty space for no effect on map
@@ -62,9 +62,9 @@ public class MapDrawableThing_Relation {
                     } else if (effect == Effect.HEAL) {
                         infliction.getTerrain().addDecal('♥');
                     } else if (effect == Effect.LEVEL) {
-                        infliction.getTerrain().addDecal('☣');
-                    } else if (effect == Effect.KILL) {
                         infliction.getTerrain().addDecal('↑');
+                    } else if (effect == Effect.KILL) {
+                        infliction.getTerrain().addDecal('☣');
                     }
                 }
                 Entity to_effect = infliction.getEntity();
@@ -88,7 +88,7 @@ public class MapDrawableThing_Relation {
      *
      * @author John-Michael Reed
      */
-    public final MapDrawableAreaEffect areaEffectFunctor = new MapDrawableAreaEffect();
+    public final AreaEffect areaEffectFunctor = new MapDrawableThing_Relation.AreaEffect();
 
     @Override
     protected Object clone() throws CloneNotSupportedException {

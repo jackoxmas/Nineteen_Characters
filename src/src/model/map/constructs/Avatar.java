@@ -71,7 +71,7 @@ public final class Avatar extends Entity {
         if (num_skillpoints_ <= 0) {
             return -2;
         }
-        Occupation to_increment = this.getOccupation();
+        Occupation occupation = this.getOccupation();
         switch (skill) {
             case BIND_WOUNDS:
                 ++bind_wounds_;
@@ -86,37 +86,37 @@ public final class Avatar extends Entity {
                 --num_skillpoints_;
                 return 0;
             case OCCUPATION_SKILL_1:
-                if (to_increment == null) {
+                if (occupation == null) {
                     return -1;
                 }
-                int error_code = to_increment.incrementSkill(skill);
+                int error_code = occupation.incrementSkill(skill);
                 if (error_code == 0) {
                     --num_skillpoints_;
                 }
                 return error_code;
             case OCCUPATION_SKILL_2:
-                if (to_increment == null) {
+                if (occupation == null) {
                     return -1;
                 }
-                int error_code2 = to_increment.incrementSkill(skill);
+                int error_code2 = occupation.incrementSkill(skill);
                 if (error_code2 == 0) {
                     --num_skillpoints_;
                 }
                 return error_code2;
             case OCCUPATION_SKILL_3:
-                if (to_increment == null) {
+                if (occupation == null) {
                     return -1;
                 }
-                int error_code3 = to_increment.incrementSkill(skill);
+                int error_code3 = occupation.incrementSkill(skill);
                 if (error_code3 == 0) {
                     --num_skillpoints_;
                 }
                 return error_code3;
             case OCCUPATION_SKILL_4:
-                if (to_increment == null) {
+                if (occupation == null) {
                     return -1;
                 }
-                int error_code4 = to_increment.incrementSkill(skill);
+                int error_code4 = occupation.incrementSkill(skill);
                 if (error_code4 == 0) {
                     --num_skillpoints_;
                 }

@@ -268,11 +268,34 @@ abstract public class Entity extends DrawableThing {
 
     /**
      * Sets Entities Occupation.
-     *
      * @param occupation
      */
     public void setOccupation(Occupation occupation) {
         occupation_ = occupation;
+    }
+    
+        /**
+     * Sets Entities Occupation to smasher. Resets stats
+     */
+    public int becomeSmasher() {
+        occupation_ = new Smasher(this);
+        return 0;
+    }
+    
+            /**
+     * Sets Entities Occupation to smasher. Resets stats
+     */
+    public int becomeSummoner() {
+        occupation_ = new Summoner(this);
+        return 0;
+    }
+    
+            /**
+     * Sets Entities Occupation to smasher. Resets stats
+     */
+    public int becomeSneak() {
+        occupation_ = new Sneak(this);
+        return 0;
     }
 
     /**

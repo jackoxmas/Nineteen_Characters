@@ -213,7 +213,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             entity_.setFacingDirection(FacingDirection.DOWN_RIGHT);
         } else if (x < 0 && y > 0) {
             entity_.setFacingDirection(FacingDirection.UP_LEFT);
-        } else if (x < 0 && y > 0) {
+        } else if (x < 0 && y < 0) {
             entity_.setFacingDirection(FacingDirection.DOWN_LEFT);
         } else {
             System.exit(-1); // Impossible

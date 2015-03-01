@@ -1,5 +1,7 @@
 package src.model.map.constructs;
 
+import src.SkillEnum;
+
 /**
  * Stats Pack for an Entity. Inherits from DrawableThingStatsPack.
  *
@@ -83,11 +85,18 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
         return current_mana_;
     }
 
+    private EntityStatsPack() {
+        owner_ = null;
+    }
+
+    private final Entity owner_;
+
     /**
      * Constructor: sets values to 1.
      */
-    public EntityStatsPack() {
+    public EntityStatsPack(Entity master) {
         super(1, 1, 1, 1, 1);
+        this.owner_ = master;
     }
 
     public void increaseCurrentLevelByOne() {
@@ -96,8 +105,16 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
         ++current_life_;
         ++max_mana_;
         ++current_mana_;
+        
         super.incrementOffensive_rating_();
         super.incrementDefensive_rating_();
+
+        increaseHardinessLevelByOne();
+        increaseMovementLevelByOne();
+        increaseLivesLeftByOne();
+        increaseStrengthLevelByOne();
+        increaseAgilityLevelByOne();
+        increaseIntellectLevelByOne();
     }
 
     public void decreaseLivesLeftByOne() {
@@ -134,18 +151,22 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
     /**
      *
      * @param increase
+     * @return 0 if leveled up zero times, 1 if leveled up 1 time, etc.
      */
-    public void increaseQuantityOfExperienceBy(int increase) {
+    public int increaseQuantityOfExperienceBy(int increase) {
         if (increase < 0) {
             System.exit(1);
         }
+        int num_level_ups = 0;
         int old_experience = quantity_of_experience_;
         quantity_of_experience_ += increase;
         int diff = quantity_of_experience_ - old_experience;
         while (diff >= NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL) {
             increaseCurrentLevelByOne();
+            ++num_level_ups;
             diff -= NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL;
         }
+        return num_level_ups;
     }
 
     public void increaseQuantityOfExperienceToNextLevel() {

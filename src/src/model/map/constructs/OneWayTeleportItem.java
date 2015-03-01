@@ -14,7 +14,7 @@ public class OneWayTeleportItem extends Item {
     final int x_destination_;
     final int y_destination_;
 
-    OneWayTeleportItem(String name, char representation, int x_destination, int y_destination) {
+    public OneWayTeleportItem(String name, char representation, int x_destination, int y_destination) {
         super(name, representation, false);
         x_destination_ = x_destination;
         y_destination_ = y_destination;

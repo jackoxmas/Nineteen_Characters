@@ -23,6 +23,7 @@ import src.model.map.Map;
 import src.model.map.MapTile;
 import src.io.view.Display;
 import src.io.view.Viewport;
+import src.model.map.constructs.OneWayTeleportItem;
 
 /**
  * Initializes, opens the program.
@@ -78,6 +79,7 @@ public class RunGame {
         Item green = new Item("umbrella_3", '☂', true);
         Item brown = new Item("umbrella_4", '☂', true);
         Item seven = new Item("umbrella_5", '☂', true);
+        Item teleport = new OneWayTeleportItem("tele", 'T', 0, 0);
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
 
         map_.addItem(blue, 6, 6, true, true); // ▨
@@ -85,6 +87,7 @@ public class RunGame {
         map_.addItem(green, 8, 8, true, true); // ▨
         map_.addItem(brown, 9, 9, true, true); // ▨
         map_.addItem(seven, 5, 5, true, true); // ▨
+        map_.addItem(teleport, 2, 4, true, true);
         for (int y = 0; y < Viewport.height_; ++y) {
             for (int x = 0; x < Viewport.width_ / 2; ++x) {
                 Terrain obstacle = new Terrain("land", '▨', false, false);

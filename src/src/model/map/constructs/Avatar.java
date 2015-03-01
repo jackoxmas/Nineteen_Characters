@@ -5,8 +5,8 @@
  */
 package src.model.map.constructs;
 
-
 import src.SavedGame;
+import src.SkillEnum;
 import src.model.map.MapAvatar_Relation;
 import src.io.view.AvatarCreationView;
 import src.io.view.MapView;
@@ -21,9 +21,111 @@ import src.io.view.Viewport;
 public final class Avatar extends Entity {
 
     // map_relationship_ is used in place of a map_referance_
-
     private MapView map_view_;
     private StatsView stats_view_;
+
+    private int num_skillpoints_ = 1;
+
+    public int getNum_skillpoints_() {
+        return num_skillpoints_;
+    }
+
+    /**
+     *
+     * @param amount
+     * @return number of level ups;
+     */
+    @Override
+    public int gainExperiencePoints(int amount) {
+        final int num_level_ups = super.gainExperiencePoints(amount);
+        num_skillpoints_ += num_level_ups;
+        return num_level_ups;
+    }
+
+    /**
+     * this function levels up an entity Modified to make it "gain enough
+     * experience to level up"
+     *
+     * @author John
+     */
+    @Override
+    public void gainEnoughExperienceTolevelUp() {
+        super.gainEnoughExperienceTolevelUp();
+        ++num_skillpoints_; // gain a skillpoint on level up
+    }
+
+    // Non-occupation specific skills
+    private int bind_wounds_ = 1;
+    private int bargain_ = 1;
+    private int observation_ = 1;
+
+    /**
+     * Designates a skill point towards a skill.
+     *
+     * @author John-Michael Reed
+     * @param skill
+     * @return -2 if no skill points, -1 if skill cannot be spent [invalid
+     * occupation]
+     */
+    public int spendSkillpointOn(SkillEnum skill) {
+        if (num_skillpoints_ <= 0) {
+            return -2;
+        }
+        Occupation to_increment = this.getOccupation();
+        switch (skill) {
+            case BIND_WOUNDS:
+                ++bind_wounds_;
+                --num_skillpoints_;
+                return 0;
+            case BARGAIN:
+                ++bargain_;
+                --num_skillpoints_;
+                return 0;
+            case OBSERVATION:
+                ++observation_;
+                --num_skillpoints_;
+                return 0;
+            case OCCUPATION_SKILL_1:
+                if (to_increment == null) {
+                    return -1;
+                }
+                int error_code = to_increment.incrementSkill(skill);
+                if (error_code == 0) {
+                    --num_skillpoints_;
+                }
+                return error_code;
+            case OCCUPATION_SKILL_2:
+                if (to_increment == null) {
+                    return -1;
+                }
+                int error_code2 = to_increment.incrementSkill(skill);
+                if (error_code2 == 0) {
+                    --num_skillpoints_;
+                }
+                return error_code2;
+            case OCCUPATION_SKILL_3:
+                if (to_increment == null) {
+                    return -1;
+                }
+                int error_code3 = to_increment.incrementSkill(skill);
+                if (error_code3 == 0) {
+                    --num_skillpoints_;
+                }
+                return error_code3;
+            case OCCUPATION_SKILL_4:
+                if (to_increment == null) {
+                    return -1;
+                }
+                int error_code4 = to_increment.incrementSkill(skill);
+                if (error_code4 == 0) {
+                    --num_skillpoints_;
+                }
+                return error_code4;
+            default:
+                System.exit(-1); // should never happen
+                return -3;
+        }
+    }
 
     /**
      * Accepts a key command from the map
@@ -44,6 +146,7 @@ public final class Avatar extends Entity {
 
     // holds the views
     private Viewport current_viewport_;
+
     /**
      * Used to return the current view of the Avatar
      *
@@ -55,6 +158,7 @@ public final class Avatar extends Entity {
 
     /**
      * Handles Avatar input.
+     *
      * @param c
      */
     public void getInput(char c) {
@@ -92,12 +196,12 @@ public final class Avatar extends Entity {
                     mar.moveInDirection(1, 1);
                     break;
                 case 'S': //Save game
-                	saveGame();
+                    saveGame();
                     break;
                 case 'v': //Open stats
                     break;
                 case 'i': //Use item in direction
-                	switchToStatsView();
+                    switchToStatsView();
                     break;
                 case 'u': //Use item in inventory
                     int error_code_u = this.useLastInventoryItem();
@@ -167,6 +271,7 @@ public final class Avatar extends Entity {
 
     /**
      * Sets MapAvatar_Relation
+     *
      * @param a
      */
     public void setMapRelation(MapAvatar_Relation a) {
@@ -175,24 +280,25 @@ public final class Avatar extends Entity {
     /* Make sure to call set map after this!
      * 
      */
-    
+
     private void saveGame() {
         SavedGame saveGame = new SavedGame("save.dave");
         saveGame.saveGame(this);
     }
+
     public void generateMapView(MapViewable _map) {
         map_view_ = new MapView(_map);
-      
+
     }
 
     private void generateStatsView() {
         stats_view_ = new StatsView(this);
     }
-    
-   /** determine if input is not important
-     * or if we already did something
-     * then if true
-     * 
+
+    /**
+     * determine if input is not important or if we already did something then
+     * if true
+     *
      * storedInput = '~';
      */
     public void sendInput(char current) {
@@ -385,7 +491,7 @@ public final class Avatar extends Entity {
 
     private char storedChoice;
     private char storedInput;
-    
+
     /**
      * Switches to Map View.
      */
@@ -399,7 +505,7 @@ public final class Avatar extends Entity {
     public void switchToStatsView() {
         current_viewport_ = stats_view_;
     }
-    
+
     @Override
     public String toString() {
         String s = "Avatar name: " + name_;

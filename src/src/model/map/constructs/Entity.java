@@ -219,8 +219,14 @@ abstract public class Entity extends DrawableThing {
         }
     }
 
-    public void gainExperiencePoints(int amount) {
-        stats_pack_.increaseQuantityOfExperienceBy(amount);
+    /**
+     * 
+     * @param amount 
+     * @return number of level ups;
+     */
+    public int gainExperiencePoints(int amount) {
+        int num_level_ups = stats_pack_.increaseQuantityOfExperienceBy(amount);
+        return num_level_ups;
     }
 
     public int checkLevel() {
@@ -311,7 +317,7 @@ abstract public class Entity extends DrawableThing {
     }
 
     //private final int max_level_;
-    private EntityStatsPack stats_pack_ = new EntityStatsPack();
+    private EntityStatsPack stats_pack_ = new EntityStatsPack(this);
 
     /**
      * Get Entities StatsPack - only to be used by the view for displaying

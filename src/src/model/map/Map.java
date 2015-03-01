@@ -231,7 +231,7 @@ public class Map implements MapViewable {
                     + number_of_worlds_generated_);
             System.err.println("Please don't make more than "
                     + MAX_NUMBER_OF_WORLDS + " worlds.");
-            System.exit(-1);
+            System.exit(-4);
 
         } else {
             ++number_of_worlds_generated_;

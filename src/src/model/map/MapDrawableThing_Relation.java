@@ -52,6 +52,13 @@ public class MapDrawableThing_Relation {
             }
         }
 
+        /**
+         * For damage coming from non-entities
+         * @param x_pos - x coordinate of effect
+         * @param y_pos - y coordinate of effect
+         * @param strength - how much effect
+         * @param effect - which effect
+         */
         public void repeat(int x_pos, int y_pos, int strength, Effect effect) {
             MapTile infliction = current_map_reference_.getTile(x_pos, y_pos);
             if (infliction != null) {
@@ -70,7 +77,7 @@ public class MapDrawableThing_Relation {
                 Entity to_effect = infliction.getEntity();
                 if (to_effect != null) {
                     if (effect == Effect.HURT) {
-                        to_effect.receiveAttack(strength); // kills avatar if health is negative
+                        to_effect.receiveAttack(strength, null); // kills avatar if health is negative
                     } else if (effect == Effect.HEAL) {
                         to_effect.receiveHeal(strength);
                     } else if (effect == Effect.LEVEL) {

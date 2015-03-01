@@ -294,6 +294,23 @@ public final class Avatar extends Entity {
     private void generateStatsView() {
         stats_view_ = new StatsView(this);
     }
+    
+    /**
+     * Avatars automatically do nothing when attacked
+     *
+     * @author John-Michael Reed
+     * @param attacker
+     * @return 0 if reply succeeded, non-zero otherwise [ex. if entity is null
+     * or off the map]
+     */
+    @Override
+    public int replyToAttackFrom(Entity attacker) {
+        if (attacker == null) {
+            return -1;
+        }
+        // return this.getMapRelation().sendAttack(attacker);
+        return 0;
+    }
 
     /**
      * determine if input is not important or if we already did something then

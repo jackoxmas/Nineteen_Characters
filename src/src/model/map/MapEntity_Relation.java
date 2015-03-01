@@ -20,6 +20,44 @@ import java.util.regex.*;
 public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     public class AreaEffect extends MapDrawableThing_Relation.AreaEffect {
+        
+        /**
+         * For damage coming from entities
+         * @param x_pos - x coordinate of effect
+         * @param y_pos - y coordinate of effect
+         * @param strength - how much effect
+         * @param effect - which effect
+         */
+        @Override
+        public void repeat(int x_pos, int y_pos, int strength, Effect effect) {
+            MapTile infliction = current_map_reference_.getTile(x_pos, y_pos);
+            if (infliction != null) {
+                // If there is no decal, fuck shit up
+                if (infliction.getTerrain() != null && !infliction.getTerrain().hasDecal()) {
+                    if (effect == Effect.HURT) {
+                        infliction.getTerrain().addDecal('♨');
+                    } else if (effect == Effect.HEAL) {
+                        infliction.getTerrain().addDecal('♥');
+                    } else if (effect == Effect.LEVEL) {
+                        infliction.getTerrain().addDecal('↑');
+                    } else if (effect == Effect.KILL) {
+                        infliction.getTerrain().addDecal('☣');
+                    }
+                }
+                Entity to_effect = infliction.getEntity();
+                if (to_effect != null) {
+                    if (effect == Effect.HURT) {
+                        to_effect.receiveAttack(strength, entity_); // kills avatar if health is negative
+                    } else if (effect == Effect.HEAL) {
+                        to_effect.receiveHeal(strength);
+                    } else if (effect == Effect.LEVEL) {
+                        to_effect.commitSuicide();
+                    } else if (effect == Effect.KILL) {
+                        to_effect.gainEnoughExperienceTolevelUp();
+                    }
+                }
+            }
+        }
 
         /**
          * Casts a 90 degree wide area effect
@@ -177,6 +215,8 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             entity_.setFacingDirection(FacingDirection.UP_LEFT);
         } else if (x < 0 && y > 0) {
             entity_.setFacingDirection(FacingDirection.DOWN_LEFT);
+        } else {
+            System.exit(-1); // Impossible
         }
         return super.pushEntityInDirection(entity_, x, y);
     }
@@ -240,10 +280,25 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             if (target_entity == null) {
                 return -2;
             } else {
-                target_entity.receiveAttack(3 + entity_.getStatsPack().getOffensive_rating_());
+                target_entity.receiveAttack(3 + entity_.getStatsPack().getOffensive_rating_(), entity_);
                 return 0;
             }
         }
+    }
+
+    /**
+     * Sends an attack to an entity.
+     * @author John-Michael Reed
+     * @param target - entity to hit
+     * @return -1 if target is null, 0 if success
+     */
+    public int sendAttack(Entity target_entity) {
+            if (target_entity == null) {
+                return -1;
+            } else {
+                target_entity.receiveAttack(3 + entity_.getStatsPack().getOffensive_rating_(), entity_);
+                return 0;
+            }
     }
 
     /**
@@ -295,7 +350,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         String reply = "";
         if (target != null) {
             reply = target.reply(greeting, this.entity_);
-        } 
+        }
         return reply;
     }
 

@@ -95,11 +95,11 @@ abstract public class Entity extends DrawableThing {
         if (!inventory_.isEmpty()) {
             if (equipped_item_ == null) {
                 if (!inventory_.isEmpty()) {
-                    Item last = inventory_.get(inventory_.size()-1);
+                    Item last = inventory_.get(inventory_.size() - 1);
                     DrawableThingStatsPack to_add = last.getStatsPack();
                     this.stats_pack_.addOn(to_add);
-                    equipped_item_ = last; 
-                    inventory_.remove(inventory_.size()-1);
+                    equipped_item_ = last;
+                    inventory_.remove(inventory_.size() - 1);
                     return 0;
                 } else {
                     return -3;
@@ -175,7 +175,7 @@ abstract public class Entity extends DrawableThing {
      */
     public Item getLastItemInInventory() {
         if (!inventory_.isEmpty()) {
-            return inventory_.get(inventory_.size()-1);
+            return inventory_.get(inventory_.size() - 1);
         } else {
             return null;
         }
@@ -197,7 +197,7 @@ abstract public class Entity extends DrawableThing {
      */
     public Item pullLastItemOutOfInventory() {
         if (!inventory_.isEmpty()) {
-            return inventory_.remove(inventory_.size()-1);
+            return inventory_.remove(inventory_.size() - 1);
         } else {
             return null;
         }
@@ -220,8 +220,8 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     * 
-     * @param amount 
+     *
+     * @param amount
      * @return number of level ups;
      */
     public int gainExperiencePoints(int amount) {
@@ -268,29 +268,30 @@ abstract public class Entity extends DrawableThing {
 
     /**
      * Sets Entities Occupation.
+     *
      * @param occupation
      */
     public void setOccupation(Occupation occupation) {
         occupation_ = occupation;
     }
-    
-        /**
+
+    /**
      * Sets Entities Occupation to smasher. Resets stats
      */
     public int becomeSmasher() {
         occupation_ = new Smasher(this);
         return 0;
     }
-    
-            /**
+
+    /**
      * Sets Entities Occupation to smasher. Resets stats
      */
     public int becomeSummoner() {
         occupation_ = new Summoner(this);
         return 0;
     }
-    
-            /**
+
+    /**
      * Sets Entities Occupation to smasher. Resets stats
      */
     public int becomeSneak() {
@@ -308,36 +309,55 @@ abstract public class Entity extends DrawableThing {
 
     }
 
-    public void receiveAttack(int damage) {
-        int did_I_run_out_of_health = stats_pack_.deductCurrentLifeBy(damage - stats_pack_.getDefensive_rating_() - stats_pack_.getArmor_rating_() );
-        if(did_I_run_out_of_health != 0) {
+    /**
+     * Specify null if the attacker is not an entity that can be attacked.
+     * @param damage - damage received
+     * @param attacker - who the attack is coming from
+     */
+    public void receiveAttack(int damage, Entity attacker) {
+        int did_I_run_out_of_health = stats_pack_.deductCurrentLifeBy(damage - stats_pack_.getDefensive_rating_() - stats_pack_.getArmor_rating_());
+        if (did_I_run_out_of_health != 0) {
             getMapRelation().respawn();
-        }
-        if (stats_pack_.getLives_left_() < 0) {
-            gameOver();
+            if (stats_pack_.getLives_left_() < 0) {
+                gameOver();
+            }
+        } else {
+            if (attacker != null) {
+                this.replyToAttackFrom(attacker);
+            }
         }
     }
 
     public void receiveHeal(int strength) {
         this.stats_pack_.increaseCurrentLifeBy(strength);
     }
-    
+
     // reply(greeting, this);
     public String reply(String recieved_text, Entity speaker) {
         String reply = "";
-        if(recieved_text == "hello") {
+        if (recieved_text == "hello") {
             reply = "goodbye";
             return speaker.reply(reply, this);
         } else if (recieved_text == "goodbye") {
             reply = "";
             return speaker.reply(reply, this);
-        }
-        else if (recieved_text == "") {
+        } else if (recieved_text == "") {
             return "";
         } else {
             return "";
         }
     }
+
+    /**
+     * Called by an entity that was attacked by another entity. Override for
+     * monster/villager.
+     *
+     * @author John-Michael Reed
+     * @param attacker
+     * @return 0 if reply succeeded, non-zero otherwise [ex. if entity is null
+     * or off the map]
+     */
+    public abstract int replyToAttackFrom(Entity attacker);
 
     //private final int max_level_;
     private EntityStatsPack stats_pack_ = new EntityStatsPack(this);

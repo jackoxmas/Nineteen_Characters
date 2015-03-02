@@ -10,6 +10,9 @@ import src.model.map.constructs.Terrain;
 import src.model.*;
 import src.model.map.constructs.MapViewable;
 
+import java.io.*;
+import java.net.*;
+import java.util.*;
 /**
  *
  * @author John-Michael Reed
@@ -40,6 +43,7 @@ public class Map implements MapViewable {
 
     // String is the avatar's name. The avatar name must be unqiue or else bugs will occur.
     private transient LinkedHashMap<String, Avatar> avatar_list_;
+
     /**
      * Adds an avatar to the map.
      *
@@ -67,7 +71,7 @@ public class Map implements MapViewable {
     public Avatar getAvatarByName(String name) {
         return this.avatar_list_.get(name);
     }
-    
+
     /**
      * Removes and Avatar from map.
      *
@@ -87,6 +91,7 @@ public class Map implements MapViewable {
 
     // String is the entity's name. The entity name must be unqiue or else bugs will occur.
     private transient LinkedHashMap<String, Entity> entity_list_;
+
     /**
      * Adds an entity to the map.
      *
@@ -144,8 +149,8 @@ public class Map implements MapViewable {
         }
         return map_grid_[y_pos][x_pos];
     }
-    
-   /**
+
+    /**
      * Gets the character representation of a tile
      *
      * @author John-Michael Reed
@@ -164,6 +169,7 @@ public class Map implements MapViewable {
 
     // Item is the address of an item in memory. Location is its xy coordinates on the grid.
     private transient LinkedList<Item> items_list_;
+
     /**
      * Adds an item to the map.
      *
@@ -199,8 +205,8 @@ public class Map implements MapViewable {
         items_list_.remove(item);
         return item;
     }
-    
-  //public static boolean NDEBUG_ = true;
+
+    //public static boolean NDEBUG_ = true;
     // MAP MUST BE SQUARE
     //TODO:if Map has to be square, why have two different variables that will always be equivalent?
     public int height_;
@@ -210,7 +216,7 @@ public class Map implements MapViewable {
     private Map() {//throws Exception {
         height_ = 0;
         width_ = 0;
-        System.exit(-1);
+        System.exit(-777);
         /*
          Exception e = new Exception("Do not use this constructor");
          throw e;*/
@@ -231,7 +237,7 @@ public class Map implements MapViewable {
                     + number_of_worlds_generated_);
             System.err.println("Please don't make more than "
                     + MAX_NUMBER_OF_WORLDS + " worlds.");
-            System.exit(-1);
+            System.exit(-4);
 
         } else {
             ++number_of_worlds_generated_;
@@ -245,13 +251,18 @@ public class Map implements MapViewable {
                     map_grid_[i][j] = new MapTile(j, i); //switch rows and columns
                 }
             }
-            avatar_list_ = new LinkedHashMap();
-            entity_list_ = new LinkedHashMap();
+            avatar_list_ = new LinkedHashMap<String, Avatar>();
+            entity_list_ = new LinkedHashMap<String, Entity>();
             items_list_ = new LinkedList<Item>();
             time_measured_in_turns = 0;
+            /*
+            try {
+            new MapInputThread().start();
+            } catch(IOException e) {}
+            */
         }
     }
-
+    
     // 2d array of tiles.
     private transient MapTile map_grid_[][];
 
@@ -273,7 +284,7 @@ public class Map implements MapViewable {
         IO_Package return_package = null;
         return return_package;
     }
-    
+
     // The map has a clock
     private int time_measured_in_turns;
 }

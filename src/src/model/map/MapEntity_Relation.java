@@ -10,6 +10,7 @@ import src.FacingDirection;
 import src.model.map.constructs.Entity;
 import src.model.map.constructs.Item;
 import src.io.view.Display;
+import java.util.regex.*;
 
 /**
  * One line description
@@ -19,6 +20,44 @@ import src.io.view.Display;
 public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     public class AreaEffect extends MapDrawableThing_Relation.AreaEffect {
+        
+        /**
+         * For damage coming from entities
+         * @param x_pos - x coordinate of effect
+         * @param y_pos - y coordinate of effect
+         * @param strength - how much effect
+         * @param effect - which effect
+         */
+        @Override
+        public void repeat(int x_pos, int y_pos, int strength, Effect effect) {
+            MapTile infliction = current_map_reference_.getTile(x_pos, y_pos);
+            if (infliction != null) {
+                // If there is no decal, fuck shit up
+                if (infliction.getTerrain() != null && !infliction.getTerrain().hasDecal()) {
+                    if (effect == Effect.HURT) {
+                        infliction.getTerrain().addDecal('♨');
+                    } else if (effect == Effect.HEAL) {
+                        infliction.getTerrain().addDecal('♥');
+                    } else if (effect == Effect.LEVEL) {
+                        infliction.getTerrain().addDecal('↑');
+                    } else if (effect == Effect.KILL) {
+                        infliction.getTerrain().addDecal('☣');
+                    }
+                }
+                Entity to_effect = infliction.getEntity();
+                if (to_effect != null) {
+                    if (effect == Effect.HURT) {
+                        to_effect.receiveAttack(strength, entity_); // kills avatar if health is negative
+                    } else if (effect == Effect.HEAL) {
+                        to_effect.receiveHeal(strength);
+                    } else if (effect == Effect.LEVEL) {
+                        to_effect.commitSuicide();
+                    } else if (effect == Effect.KILL) {
+                        to_effect.gainEnoughExperienceTolevelUp();
+                    }
+                }
+            }
+        }
 
         /**
          * Casts a 90 degree wide area effect
@@ -26,7 +65,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
          * @author Reed, John-Michael
          */
         public void effectAreaWithinArc(int length, int strength, Effect effect) {
-            if(length < 0 || strength < 0) {
+            if (length < 0 || strength < 0) {
                 System.exit(-1);
             }
             FacingDirection attack_direction = entity_.getFacingDirection();
@@ -35,7 +74,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             for (int i = 1; i <= length; ++i) {
                 int reduction = 0;
                 if (effect == Effect.HEAL || effect == Effect.HURT) {
-                    reduction = i-1;
+                    reduction = i - 1;
                 }
                 for (int width = -i + 1; width <= i - 1; ++width) {
                     switch (attack_direction) {
@@ -62,13 +101,14 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                             break;
                         case DOWN_LEFT:
                             repeat(x_start - width - i, y_start + width - i, strength - reduction, effect);
-                            
+
                             break;
                     }
 
                 }
             }
         }
+
         /**
          * Does area damage in a line
          *
@@ -112,7 +152,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             }
         }
     };
-    
+
     /**
      * This object is actually a function used to call area effects
      *
@@ -173,8 +213,10 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             entity_.setFacingDirection(FacingDirection.DOWN_RIGHT);
         } else if (x < 0 && y > 0) {
             entity_.setFacingDirection(FacingDirection.UP_LEFT);
-        } else if (x < 0 && y > 0) {
+        } else if (x < 0 && y < 0) {
             entity_.setFacingDirection(FacingDirection.DOWN_LEFT);
+        } else {
+            System.exit(-1); // Impossible
         }
         return super.pushEntityInDirection(entity_, x, y);
     }
@@ -203,12 +245,188 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         return error_code;
     }
 
-    public void sendAttack(int x, int y) {
-
+    /**
+     * Causes an entity to tele-port to the place where it was spawned
+     *
+     * @param toSpawn
+     * @return -1 if respawn point is occupied
+     */
+    public int respawn() {
+        //super.pushEntityInDirection(toSpawn, x_respawn_point_, y_respawn_point_);
+        int error_code = this.teleportTo(x_respawn_point_, x_respawn_point_);
+        if (error_code != 0) {
+            error_code = this.teleportTo(x_respawn_point_ + 1, x_respawn_point_);
+            if (error_code != 0) {
+                return this.teleportTo(x_respawn_point_, x_respawn_point_ + 1);
+            }
+        }
+        return 0;
     }
 
-    public void spawn(Entity toSpawn, int time_until_spawn) {
-        //super.pushEntityInDirection(toSpawn, x_respawn_point_, y_respawn_point_);
+    /**
+     * Sends an attack over x and up y.
+     *
+     * @author John-Michael Reed
+     * @param x - x position of attack relative to sender
+     * @param y - y position of attack relative to sender
+     * @return -1 if tile is off the map, -2 if entity does not exist
+     */
+    public int sendAttack(int x, int y) {
+        MapTile target_tile = this.current_map_reference_.getTile(x, y);
+        if (target_tile == null) {
+            return -1;
+        } else {
+            Entity target_entity = target_tile.getEntity();
+            if (target_entity == null) {
+                return -2;
+            } else {
+                target_entity.receiveAttack(3 + entity_.getStatsPack().getOffensive_rating_(), entity_);
+                return 0;
+            }
+        }
+    }
+
+    /**
+     * Sends an attack to an entity.
+     * @author John-Michael Reed
+     * @param target - entity to hit
+     * @return -1 if target is null, 0 if success
+     */
+    public int sendAttack(Entity target_entity) {
+            if (target_entity == null) {
+                return -1;
+            } else {
+                target_entity.receiveAttack(3 + entity_.getStatsPack().getOffensive_rating_(), entity_);
+                return 0;
+            }
+    }
+
+    /**
+     * Sends an attack in the direction the entity is facing.
+     *
+     * @author John-Michael Reed
+     * @return -1 if tile is off the map, -2 if entity does not exist
+     */
+    public int sendAttack() {
+        int error_code = 0;
+        FacingDirection f = entity_.getFacingDirection();
+        switch (f) {
+            case UP:
+                error_code = sendAttack(0, 1);
+                break;
+            case DOWN:
+                error_code = sendAttack(0, -1);
+                break;
+            case LEFT:
+                error_code = sendAttack(-1, 0);
+                break;
+            case RIGHT:
+                error_code = sendAttack(1, 0);
+                break;
+            case UP_RIGHT:
+                error_code = sendAttack(1, 1);
+                break;
+            case UP_LEFT:
+                error_code = sendAttack(-1, 1);
+                break;
+            case DOWN_RIGHT:
+                error_code = sendAttack(1, -1);
+                break;
+            case DOWN_LEFT:
+                error_code = sendAttack(-1, -1);
+                break;
+        }
+        return error_code;
+    }
+
+    /**
+     * Sends a greeting to an enrirt.
+     *
+     * @author John-Michael Reed
+     * @return reply string
+     */
+    public String sendGreeting(Entity target) {
+        String greeting = "hello";
+        String reply = "";
+        if (target != null) {
+            reply = target.reply(greeting, this.entity_);
+        }
+        return reply;
+    }
+
+    /**
+     * Sends a greeting in the direction the entity is facing.
+     *
+     * @author John-Michael Reed
+     * @return reply string
+     */
+    public String sendGreeting() {
+        int error_code = 0;
+        String greeting = "hello";
+        String reply = "";
+        FacingDirection f = entity_.getFacingDirection();
+        final int x = this.getMyXCoordinate();
+        final int y = this.getMyYCoordinate();
+        MapTile target_tile = null;
+        switch (f) {
+            case UP:
+                target_tile = current_map_reference_.getTile(x, y + 1);
+                if (target_tile != null) {
+                    Entity target = target_tile.getEntity();
+                    reply = sendGreeting(target);
+                }
+                break;
+            case DOWN:
+                target_tile = current_map_reference_.getTile(x, y - 1);
+                if (target_tile != null) {
+                    Entity target = target_tile.getEntity();
+                    reply = sendGreeting(target);
+                }
+                break;
+            case RIGHT:
+                target_tile = current_map_reference_.getTile(x + 1, y);
+                if (target_tile != null) {
+                    Entity target = target_tile.getEntity();
+                    reply = sendGreeting(target);
+                }
+                break;
+            case LEFT:
+                target_tile = current_map_reference_.getTile(x - 1, y);
+                if (target_tile != null) {
+                    Entity target = target_tile.getEntity();
+                    reply = sendGreeting(target);
+                }
+                break;
+            case UP_RIGHT:
+                target_tile = current_map_reference_.getTile(x + 1, y + 1);
+                if (target_tile != null) {
+                    Entity target = target_tile.getEntity();
+                    reply = sendGreeting(target);
+                }
+                break;
+            case UP_LEFT:
+                target_tile = current_map_reference_.getTile(x - 1, y + 1);
+                if (target_tile != null) {
+                    Entity target = target_tile.getEntity();
+                    reply = sendGreeting(target);
+                }
+                break;
+            case DOWN_RIGHT:
+                target_tile = current_map_reference_.getTile(x + 1, y - 1);
+                if (target_tile != null) {
+                    Entity target = target_tile.getEntity();
+                    reply = sendGreeting(target);
+                }
+                break;
+            case DOWN_LEFT:
+                target_tile = current_map_reference_.getTile(x - 1, y - 1);
+                if (target_tile != null) {
+                    Entity target = target_tile.getEntity();
+                    reply = sendGreeting(target);
+                }
+                break;
+        }
+        return reply;
     }
 
     /**
@@ -216,8 +434,8 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      *
      * @param x - x coordinate of tele-port
      * @param y - y coordinate of tele-port
-     * @return -1 if an entity is already there, -2 if tele-port location is invalid, 
-     * -4 if destination is impassable
+     * @return -1 if an entity is already there, -2 if tele-port location is
+     * invalid, -4 if destination is impassable
      */
     public int teleportTo(int new_x, int new_y) {
         MapTile destination = current_map_reference_.getTile(new_x, new_y);

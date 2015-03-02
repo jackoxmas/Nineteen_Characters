@@ -1,5 +1,7 @@
 package src.model.map.constructs;
 
+import src.SkillEnum;
+
 /**
  * Stats Pack for an Entity. Inherits from DrawableThingStatsPack.
  *
@@ -10,15 +12,15 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
     public static final int NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL = 100;
 
 // Primary stats - SHOULD ALL BE PRIVATE!!!!!!!!!!!
-    protected int lives_left_ = 1; // this can change without leveling up
-    protected int strength_level_ = 1;
-    protected int agility_level_ = 1;
-    protected int intellect_level_ = 1;
-    protected int hardiness_level_ = 1;
-    protected int quantity_of_experience_ = 1;
-    protected int movement_level_ = 1;
-    protected int max_life_ = 1;
-    protected int max_mana_ = 1;
+    private int lives_left_ = 1; // this can change without leveling up
+    private int strength_level_ = 1;
+    private int agility_level_ = 1;
+    private int intellect_level_ = 1;
+    private int hardiness_level_ = 1;
+    private int quantity_of_experience_ = 1;
+    private int movement_level_ = 1;
+    private int max_life_ = 1;
+    private int max_mana_ = 1;
 
     public int getMax_life_() {
         return max_life_;
@@ -83,11 +85,18 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
         return current_mana_;
     }
 
+    private EntityStatsPack() {
+        owner_ = null;
+    }
+
+    private final Entity owner_;
+
     /**
      * Constructor: sets values to 1.
      */
-    public EntityStatsPack() {
+    public EntityStatsPack(Entity master) {
         super(1, 1, 1, 1, 1);
+        this.owner_ = master;
     }
 
     public void increaseCurrentLevelByOne() {
@@ -96,8 +105,16 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
         ++current_life_;
         ++max_mana_;
         ++current_mana_;
-        ++offensive_rating_;
-        ++defensive_rating_;
+        
+        super.incrementOffensive_rating_();
+        super.incrementDefensive_rating_();
+
+        increaseHardinessLevelByOne();
+        increaseMovementLevelByOne();
+        increaseLivesLeftByOne();
+        increaseStrengthLevelByOne();
+        increaseAgilityLevelByOne();
+        increaseIntellectLevelByOne();
     }
 
     public void decreaseLivesLeftByOne() {
@@ -110,12 +127,12 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
 
     public void increaseStrengthLevelByOne() {
         ++strength_level_;
-        ++offensive_rating_;
+        super.incrementOffensive_rating_();
     }
 
     public void increaseAgilityLevelByOne() {
         ++agility_level_;
-        ++defensive_rating_;
+        super.incrementDefensive_rating_();
     }
 
     public void increaseIntellectLevelByOne() {
@@ -128,24 +145,28 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
         ++hardiness_level_;
         ++max_life_;
         ++current_life_;
-        ++armor_rating_;
+        super.incrementtArmor_rating_();
     }
 
     /**
      *
      * @param increase
+     * @return 0 if leveled up zero times, 1 if leveled up 1 time, etc.
      */
-    public void increaseQuantityOfExperienceBy(int increase) {
+    public int increaseQuantityOfExperienceBy(int increase) {
         if (increase < 0) {
             System.exit(1);
         }
+        int num_level_ups = 0;
         int old_experience = quantity_of_experience_;
         quantity_of_experience_ += increase;
         int diff = quantity_of_experience_ - old_experience;
         while (diff >= NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL) {
             increaseCurrentLevelByOne();
+            ++num_level_ups;
             diff -= NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL;
         }
+        return num_level_ups;
     }
 
     public void increaseQuantityOfExperienceToNextLevel() {
@@ -264,11 +285,10 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
                 + "hardiness_level_: " + hardiness_level_ + "\n"
                 + "quantity_of_experience_: " + quantity_of_experience_ + "\n"
                 + "movement_level_: " + movement_level_ + "\n"
-                + "Armor: " + armor_rating_ + "\n"
                 + "Mana: " + max_mana_ + "\n"
-                + "Offense: " + offensive_rating_ + "\n"
-                + "Defense: " + defensive_rating_ + "\n"
-                + "Armor: " + armor_rating_ + "\n"
+                + "Offense: " + super.getOffensive_rating_() + "\n"
+                + "Defense: " + super.getDefensive_rating_() + "\n"
+                + "Armor: " + super.getArmor_rating_() + "\n"
                 + "moves_left_in_turn_: " + moves_left_in_turn_ + "\n"
                 + "cached_current_level_: " + cached_current_level_ + "\n"
                 + "current_life_: " + current_life_ + "\n"

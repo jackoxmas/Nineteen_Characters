@@ -299,15 +299,23 @@ public class Map implements MapUser_Interface, MapViewable {
         int error_code = 0;
         if (command != '\u0000') {
             error_code = to_recieve_command.acceptKeyCommand(command);
+            IO_Bundle return_package = new IO_Bundle(makeView(2, 2, 1, 1), to_recieve_command.getInventory(),
+                    // Don't for get left and right hand items
+                    to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
+                    to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
+                    to_recieve_command.getBargain_(), to_recieve_command.getObservation_()
+            );
+            return return_package;
+        } else {
+            IO_Bundle return_package = new IO_Bundle(null, to_recieve_command.getInventory(),
+                    // Don't for get left and right hand items
+                    to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
+                    to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
+                    to_recieve_command.getBargain_(), to_recieve_command.getObservation_()
+            );
+            return return_package;
         }
-        
-        IO_Bundle return_package = new IO_Bundle(makeView(2, 2, 1, 1), to_recieve_command.getInventory(), 
-                // Don't for get left and right hand items
-                to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(), 
-                to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(), 
-                to_recieve_command.getBargain_(), to_recieve_command.getObservation_()
-        );
-        return return_package;
+
     }
 
     // The map has a clock

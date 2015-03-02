@@ -419,7 +419,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 }
                 break;
             case DOWN_LEFT:
-                target_tile = current_map_reference_.getTile(x + 1, y - 1);
+                target_tile = current_map_reference_.getTile(x - 1, y - 1);
                 if (target_tile != null) {
                     Entity target = target_tile.getEntity();
                     reply = sendGreeting(target);

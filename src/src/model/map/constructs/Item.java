@@ -15,10 +15,18 @@ import src.io.view.Display;
  */
 public class Item extends DrawableThing {
 
+    public Item(String name, char representation,
+            boolean goes_in_inventory, boolean is_passable, boolean is_one_shot) {
+        super(name, representation);
+        goes_in_inventory_ = goes_in_inventory;
+        is_passable_ = is_passable;
+        is_one_shot_ = is_one_shot;
+    }
+
     private final boolean is_one_shot_;
 
     private boolean is_passable_;
-    
+
     public int setPassable(boolean is_passable) {
         is_passable_ = is_passable;
         return 0;
@@ -58,14 +66,6 @@ public class Item extends DrawableThing {
      */
     public boolean isOneShot() {
         return this.is_one_shot_;
-    }
-
-    public Item(String name, char representation,
-            boolean goes_in_inventory, boolean is_passable, boolean is_one_shot) {
-        super(name, representation);
-        goes_in_inventory_ = goes_in_inventory;
-        is_passable_ = is_passable;
-        is_one_shot_ = is_one_shot;
     }
 
     // map_relationship_ is used in place of a map_referance_

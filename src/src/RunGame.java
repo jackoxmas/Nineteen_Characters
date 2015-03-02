@@ -23,6 +23,7 @@ import src.model.map.Map;
 import src.model.map.MapTile;
 import src.io.view.Display;
 import src.io.view.Viewport;
+import src.model.map.MapUser_Interface;
 import src.model.map.constructs.OneWayTeleportItem;
 
 /**
@@ -115,6 +116,12 @@ public class RunGame {
         avatar_.getMapRelation().areaEffectFunctor.effectAreaWithinArc(3, 20, Effect.HURT);
         avatar_.setFacingDirection(FacingDirection.DOWN_RIGHT);
         avatar_.getMapRelation().areaEffectFunctor.effectAreaWithinArc(3, 1, Effect.KILL);
+        System.out.println("x position of avatar: " + avatar_.getMapRelation().getMyXCoordinate());
+        System.out.println("y position of avatar: " + avatar_.getMapRelation().getMyYCoordinate());
+
+        for (int i = 0; i < 20; ++i) {
+            ((MapUser_Interface) map_).sendCommandToMap("avatar", 'x', 10, 20);
+        }
 
     }
 
@@ -152,7 +159,6 @@ public class RunGame {
     private static class ProgramOpts {
 
         // Debug Mode
-
         String[] dbg_match = {"-d", "--debug"};
         boolean dbg_flag = false;
         int dbg_level = 1;

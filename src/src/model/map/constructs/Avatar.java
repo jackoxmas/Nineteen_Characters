@@ -141,11 +141,94 @@ public final class Avatar extends Entity {
 
     /**
      * Accepts a key command from the map
-     *
      * @param command
      * @return 0 on success, not zero if command cannot be accepted
      */
     public int acceptKeyCommand(char command) {
+        MapAvatar_Relation mar = this.getMapRelation();
+            if (mar == null) {
+                System.out.println("Avatar cannot be controlled without a MapAvatar_Relation");
+                System.exit(-8);
+            }
+            switch (command) {
+                case '1'://Move SW
+                    mar.moveInDirection(-1, -1);
+                    break;
+                case '2'://Move S
+                    mar.moveInDirection(0, -1);
+                    break;
+                case '3'://Move SE
+                    mar.moveInDirection(1, -1);
+                    break;
+                case '4': // Move W
+                    mar.moveInDirection(-1, 0);
+                    break;
+                case '6'://Move E
+                    mar.moveInDirection(1, 0);
+                    break;
+                case '7'://Move NW
+                    mar.moveInDirection(-1, 1);
+                    break;
+                case '8'://Move N
+                    mar.moveInDirection(0, 1);
+                    break;
+                case '9': //Move NE
+                    mar.moveInDirection(1, 1);
+                    break;
+                case 'S': //Save game
+                    saveGame();
+                    break;
+                // case 'v': //Open stats
+                //     break;
+                // case 'i': //Use item in direction
+                //     switchToStatsView();
+                //     break;
+                case 'u': //Use item in inventory
+                    int error_code_u = this.useLastInventoryItem();
+                    return error_code_u;
+                case 'q'://move NW
+                    mar.moveInDirection(-1, 1);
+                    break;
+                case 'w': //move N
+                    mar.moveInDirection(0, 1);
+                    break;
+                case 'e'://move NE
+                    mar.moveInDirection(1, 1);
+                    break;
+                case 'a': //move W
+                    mar.moveInDirection(-1, 0);
+                    break;
+                case 's'://Move stationary?
+                    mar.moveInDirection(0, 0);
+                    break;
+                case 'd'://Move E
+                    mar.moveInDirection(1, 0);
+                    break;
+                case 'z'://Move SW
+                    mar.moveInDirection(-1, -1);
+                    break;
+                case 'x'://move s
+                    mar.moveInDirection(0, -1);
+                    break;
+                case 'c'://move SE
+                    mar.moveInDirection(1, -1);
+                    break;
+                case 'D': //drop item
+                    int error_code_D = mar.dropItem();
+                    return error_code_D;
+                case 'E': // equip
+                    this.equipInventoryItem();
+                    break;
+                case 'U': // unEquip
+                    unEquipInventoryItem();
+                    break;
+                case 'p'://pickup item
+                    int error_code_p = mar.pickUpItemInDirection(0, 0);
+                    return error_code_p;
+                default: //no valid input
+                    System.out.println("Invalid input in Avatar.acceptKeyCommand() ");
+                    break;
+            }
         return 0;
     }
 

@@ -295,18 +295,29 @@ public class Map implements MapUser_Interface, MapViewable {
      * @return IO_Bundle of stuff that can be displayed.
      */
     public IO_Bundle sendCommandToMap(String username, char command) {
+        final int default_width_from_center = 10;
+        final int default_height_from_center = 20;
+        return sendCommandToMap(username, command, default_width_from_center, default_height_from_center);
+    }
+
+    public IO_Bundle sendCommandToMap(String username, char command, int width_from_center, int height_from_center) {
         Avatar to_recieve_command = this.getAvatarByName(username);
         int error_code = 0;
-        if (command != '\u0000') {
+        if (command != '\u0000' && to_recieve_command != null && to_recieve_command.getMapRelation() != null) {
             error_code = to_recieve_command.acceptKeyCommand(command);
-            IO_Bundle return_package = new IO_Bundle(makeView(2, 2, 1, 1), to_recieve_command.getInventory(),
+            IO_Bundle return_package = new IO_Bundle(
+                    makeView(to_recieve_command.getMapRelation().getMyXCoordinate(), 
+                    to_recieve_command.getMapRelation().getMyYCoordinate(), 
+                    width_from_center, height_from_center), 
+                    
+                    to_recieve_command.getInventory(),
                     // Don't for get left and right hand items
                     to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
                     to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
                     to_recieve_command.getBargain_(), to_recieve_command.getObservation_()
             );
             return return_package;
-        } else {
+        } else if (to_recieve_command != null) {
             IO_Bundle return_package = new IO_Bundle(null, to_recieve_command.getInventory(),
                     // Don't for get left and right hand items
                     to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
@@ -314,8 +325,11 @@ public class Map implements MapUser_Interface, MapViewable {
                     to_recieve_command.getBargain_(), to_recieve_command.getObservation_()
             );
             return return_package;
+        } else {
+            System.err.println("avatar + " + username + " is invalid. \n"
+                    + "Please check username and make sure he is on the map.");
+            return null;
         }
-
     }
 
     // The map has a clock

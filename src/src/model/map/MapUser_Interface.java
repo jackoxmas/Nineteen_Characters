@@ -13,4 +13,5 @@ import src.IO_Bundle;
  */
 public interface MapUser_Interface {
     public IO_Bundle sendCommandToMap(String username, char command);
+    public IO_Bundle sendCommandToMap(String username, char command, int width_from_center, int height_from_center);
 }

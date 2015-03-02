@@ -16,7 +16,7 @@ public class AreaEffectItem extends Item {
 
     private Effect effect_;
 
-    private boolean hasBeenActivated;
+    private boolean hasBeenActivated = false;
 
     transient private int power_ = 10;
 
@@ -34,7 +34,7 @@ public class AreaEffectItem extends Item {
      */
     public AreaEffectItem(String name, char representation,
             boolean goes_in_inventory, Effect effect, int power) {
-        super(name, representation, goes_in_inventory);
+        super(name, representation, goes_in_inventory, true, true);
         effect_ = effect;
         power_ = power;
         hasBeenActivated = false;
@@ -52,7 +52,7 @@ public class AreaEffectItem extends Item {
      */
     public AreaEffectItem(String name, char representation, boolean is_passable,
             boolean goes_in_inventory, boolean is_one_shot, Effect effect) {
-        super(name, representation, goes_in_inventory);
+        super(name, representation, goes_in_inventory, true, true);
         effect_ = effect;
     }
 

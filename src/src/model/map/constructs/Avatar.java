@@ -56,8 +56,20 @@ public final class Avatar extends Entity {
 
     // Non-occupation specific skills
     private int bind_wounds_ = 1;
+
+    public int getBind_wounds_() {
+        return bind_wounds_;
+    }
     private int bargain_ = 1;
+
+    public int getBargain_() {
+        return bargain_;
+    }
     private int observation_ = 1;
+
+    public int getObservation_() {
+        return observation_;
+    }
 
     /**
      * Designates a skill point towards a skill.
@@ -294,7 +306,7 @@ public final class Avatar extends Entity {
     private void generateStatsView() {
         stats_view_ = new StatsView(this);
     }
-    
+
     /**
      * Avatars automatically do nothing when attacked
      *

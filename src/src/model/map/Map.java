@@ -1,5 +1,6 @@
 package src.model.map;
 
+import src.IO_Bundle;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
@@ -13,11 +14,12 @@ import src.model.map.constructs.MapViewable;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+
 /**
  *
  * @author John-Michael Reed
  */
-public class Map implements MapViewable {
+public class Map implements MapUser_Interface, MapViewable {
 
     public static final int MAX_NUMBER_OF_WORLDS = 1;
     private static int number_of_worlds_generated_ = 0;
@@ -109,6 +111,27 @@ public class Map implements MapViewable {
             e.setMapRelation(null);
         }
         return error_code;
+    }
+
+    /**
+     * Makes a rectangular view with y coordinates in first [] of 2D array
+     *
+     * @param x_center
+     * @param y_center
+     * @param width_from_center - how much offset from the left side and the
+     * right side the view has
+     * @param height_from_center- how much horizontal offset from the center
+     * point the view has
+     * @return
+     */
+    public char[][] makeView(int x_center, int y_center, int width_from_center, int height_from_center) {
+        char[][] view = new char[1 + 2 * height_from_center][1 + 2 * width_from_center];
+        for (int y = y_center - height_from_center; y <= y_center + height_from_center; ++y) {
+            for (int x = x_center - width_from_center; x <= x_center + width_from_center; ++x) {
+                view[y][x] = this.getTileRepresentation(x, y);
+            }
+        }
+        return view;
     }
 
     /**
@@ -255,14 +278,9 @@ public class Map implements MapViewable {
             entity_list_ = new LinkedHashMap<String, Entity>();
             items_list_ = new LinkedList<Item>();
             time_measured_in_turns = 0;
-            /*
-            try {
-            new MapInputThread().start();
-            } catch(IOException e) {}
-            */
         }
     }
-    
+
     // 2d array of tiles.
     private transient MapTile map_grid_[][];
 
@@ -271,17 +289,24 @@ public class Map implements MapViewable {
     }
 
     /**
-     * @author John-Michael Reed Sends a key press from a keyboard to an avatar
-     * whose name is name. THIS FUNCTION SHOULD ONLY BE ACCESSIBLE VIA A
-     * MAP_KEYBOARD_RELATION
-     * @param name - Name of avatar to command
+     * @author John-Michael Reed
+     * @param username - Name of avatar to command
      * @param command - signal to send to avatar
-     * @return IO_Package of stuff that can be displayed.
+     * @return IO_Bundle of stuff that can be displayed.
      */
-    public IO_Package sendCommandToAvatarByName(String name, char command) {
-        Avatar to_recieve_command = this.getAvatarByName(name);
-        int error_code = to_recieve_command.acceptKeyCommand(command);
-        IO_Package return_package = null;
+    public IO_Bundle sendCommandToMap(String username, char command) {
+        Avatar to_recieve_command = this.getAvatarByName(username);
+        int error_code = 0;
+        if (command != '\u0000') {
+            error_code = to_recieve_command.acceptKeyCommand(command);
+        }
+        
+        IO_Bundle return_package = new IO_Bundle(makeView(2, 2, 1, 1), to_recieve_command.getInventory(), 
+                // Don't for get left and right hand items
+                to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(), 
+                to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(), 
+                to_recieve_command.getBargain_(), to_recieve_command.getObservation_()
+        );
         return return_package;
     }
 

@@ -50,6 +50,7 @@ public abstract class Viewport {
 		ArrayList<String> art = new ArrayList<String>();
 		try {
             InputStream in =this.getClass().getResourceAsStream(input);
+            if(in == null){throw new java.io.FileNotFoundException(input);}
 		    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		    String line = null;
 		    while ((line = reader.readLine()) != null) {

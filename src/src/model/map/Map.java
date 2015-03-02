@@ -126,10 +126,14 @@ public class Map implements MapUser_Interface, MapViewable {
      */
     public char[][] makeView(int x_center, int y_center, int width_from_center, int height_from_center) {
         char[][] view = new char[1 + 2 * height_from_center][1 + 2 * width_from_center];
+        int y_index = 0;
         for (int y = y_center - height_from_center; y <= y_center + height_from_center; ++y) {
+            int x_index = 0;
             for (int x = x_center - width_from_center; x <= x_center + width_from_center; ++x) {
-                view[y][x] = this.getTileRepresentation(x, y);
+                view[y_index][x_index] = this.getTileRepresentation(x, y);
+                ++x_index;
             }
+            ++y_index;
         }
         return view;
     }
@@ -302,14 +306,13 @@ public class Map implements MapUser_Interface, MapViewable {
 
     public IO_Bundle sendCommandToMap(String username, char command, int width_from_center, int height_from_center) {
         Avatar to_recieve_command = this.getAvatarByName(username);
-        int error_code = 0;
         if (command != '\u0000' && to_recieve_command != null && to_recieve_command.getMapRelation() != null) {
-            error_code = to_recieve_command.acceptKeyCommand(command);
+            int error_code = to_recieve_command.acceptKeyCommand(command);
+            char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                    to_recieve_command.getMapRelation().getMyYCoordinate(),
+                    width_from_center, height_from_center);
             IO_Bundle return_package = new IO_Bundle(
-                    makeView(to_recieve_command.getMapRelation().getMyXCoordinate(), 
-                    to_recieve_command.getMapRelation().getMyYCoordinate(), 
-                    width_from_center, height_from_center), 
-                    
+                    view,
                     to_recieve_command.getInventory(),
                     // Don't for get left and right hand items
                     to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),

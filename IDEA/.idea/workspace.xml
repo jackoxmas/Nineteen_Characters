@@ -34,16 +34,16 @@
       <file leaf-file-name="SavedGame.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../src/src/SavedGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.504329" vertical-offset="757" max-vertical-offset="1605">
-              <caret line="81" column="12" selection-start-line="81" selection-start-column="12" selection-end-line="81" selection-end-column="12" />
+            <state vertical-scroll-proportion="0.63419914" vertical-offset="757" max-vertical-offset="1605">
+              <caret line="85" column="42" selection-start-line="85" selection-start-column="42" selection-end-line="85" selection-end-column="42" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="docComment;class#SavedGame#0" expanded="false" />
                 <element signature="docComment;field#SAVE_DATA_VERSION#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#newSavedGame#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#newSavedGame#1;class#SavedGame#0" expanded="false" />
-                <element signature="e#4213#4322#0" expanded="false" />
-                <element signature="e#5317#5357#0" expanded="false" />
+                <element signature="e#4201#4310#0" expanded="false" />
+                <element signature="e#5305#5345#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -605,7 +605,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1366" height="743" extended-state="0" />
+    <frame x="0" y="0" width="1366" height="743" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -811,8 +811,8 @@
             <element signature="docComment;field#SAVE_DATA_VERSION#0;class#SavedGame#0" expanded="false" />
             <element signature="method#newSavedGame#0;class#SavedGame#0" expanded="false" />
             <element signature="method#newSavedGame#1;class#SavedGame#0" expanded="false" />
-            <element signature="e#4213#4322#0" expanded="false" />
-            <element signature="e#5317#5357#0" expanded="false" />
+            <element signature="e#4201#4310#0" expanded="false" />
+            <element signature="e#5305#5345#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1418,16 +1418,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/SavedGame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.504329" vertical-offset="757" max-vertical-offset="1605">
-          <caret line="81" column="12" selection-start-line="81" selection-start-column="12" selection-end-line="81" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.63419914" vertical-offset="757" max-vertical-offset="1605">
+          <caret line="85" column="42" selection-start-line="85" selection-start-column="42" selection-end-line="85" selection-end-column="42" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="docComment;class#SavedGame#0" expanded="false" />
             <element signature="docComment;field#SAVE_DATA_VERSION#0;class#SavedGame#0" expanded="false" />
             <element signature="method#newSavedGame#0;class#SavedGame#0" expanded="false" />
             <element signature="method#newSavedGame#1;class#SavedGame#0" expanded="false" />
-            <element signature="e#4213#4322#0" expanded="false" />
-            <element signature="e#5317#5357#0" expanded="false" />
+            <element signature="e#4201#4310#0" expanded="false" />
+            <element signature="e#5305#5345#0" expanded="false" />
           </folding>
         </state>
       </provider>

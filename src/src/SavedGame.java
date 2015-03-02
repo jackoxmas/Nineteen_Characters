@@ -79,7 +79,7 @@ public class SavedGame {
                 }
             }
 
-            
+
 
             // MAP - APPEND
             e_map.appendChild(e_time);

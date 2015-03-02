@@ -295,7 +295,7 @@ public final class Avatar extends Entity {
 
     private void saveGame() {
         SavedGame saveGame = new SavedGame("save.dave");
-        saveGame.saveGame(this);
+        saveGame.saveGame(this.getMapRelation().getMap());
     }
 
     public void generateMapView(MapViewable _map) {

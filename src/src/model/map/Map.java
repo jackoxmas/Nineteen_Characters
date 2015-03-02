@@ -334,4 +334,6 @@ public class Map implements MapUser_Interface, MapViewable {
 
     // The map has a clock
     private int time_measured_in_turns;
+
+    public int getTime() { return time_measured_in_turns; }
 }

@@ -38,14 +38,13 @@ public class RunGame {
     private static Map map_;
 
     public static void main(String[] args) {
-        //parseArgs(args); // Parse command line arguments
-        if (args.length != 0) {
-            loadGame("save.dave");
-        }
+        parseArgs(args); // Parse command line arguments
+        handleArgs(args);
+
         initialize(); // Initialize any data we need to before loading
         populateMap();//Add stuff into the map
         startGame(); // Begin the avatarcontroller loop
-        //handleArgs(args);
+
 
         // testing
         //saveGameToDisk();
@@ -63,7 +62,8 @@ public class RunGame {
     }
 
     private static void initialize() {
-        saveGame_ = null;
+        if (saveGame_ == null)
+            saveGame_ = SavedGame.newSavedGame();
         map_ = new Map(Viewport.width_ / 2, Viewport.height_);
         avatar_ = new Avatar("avatar", '☃');
         avatar_.generateMapView(map_);
@@ -270,6 +270,7 @@ public class RunGame {
         if (pOpts_.lsg_flag) {
             saveGame_ = new SavedGame(args[pOpts_.lsg_path]);
             Exception e = null;
+
             //int s = saveGame_.loadFile(mmr_, e);
             /*
              if (s == 0) { // the saved game load has failed
@@ -310,6 +311,7 @@ public class RunGame {
             for (String m : pOpts_.lsg_match) {
                 if (m.equals(args[a]) && (args.length > a + 1)) {
                     pOpts_.lsg_path = a + 1;
+                    // TODO: add line to load saveGame_
                     pOpts_.lsg_flag = true;
                     break;
                 }

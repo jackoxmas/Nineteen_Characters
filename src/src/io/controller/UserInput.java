@@ -13,14 +13,14 @@ import src.io.view.Display;
  * Uses keyboard input to control the avatar
  * @author JohnReedLOL
  */
-public final class AvatarController
+public final class UserInput
 {
 
     /**
      * AvatarController Constructor
      * @param avatar
      */
-    public AvatarController(Avatar avatar) {
+    public UserInput(Avatar avatar) {
         my_avatar_ = avatar;
     }
 

@@ -13,7 +13,7 @@ import java.util.Date;
 
 import src.model.map.constructs.AreaEffectItem;
 import src.model.map.constructs.Avatar;
-import src.io.controller.AvatarController;
+import src.io.controller.UserInput;
 import src.model.map.constructs.Item;
 import src.model.map.constructs.Smasher;
 import src.model.map.constructs.Sneak;
@@ -119,7 +119,7 @@ public class RunGame {
     }
 
     private static void startGame() {
-        AvatarController AC = new AvatarController(avatar_);
+        UserInput AC = new UserInput(avatar_);
         AC.runTheGame();
     }
 

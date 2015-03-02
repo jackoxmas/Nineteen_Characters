@@ -47,11 +47,9 @@ public abstract class Viewport {
 	 * @exception Prints to error line and returns empty ArrayList in event of failure.
 	 */
 	public ArrayList<String> getAsciiArtFromFile(String input){
-		Path path = Paths.get(input);
-		path = path.toAbsolutePath();
 		ArrayList<String> art = new ArrayList<String>();
 		try {
-            InputStream in = Files.newInputStream(path);
+            InputStream in =this.getClass().getResourceAsStream(input);
 		    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		    String line = null;
 		    while ((line = reader.readLine()) != null) {

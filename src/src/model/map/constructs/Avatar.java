@@ -278,8 +278,7 @@ public final class Avatar extends Entity {
      */
 
     private void saveGame() {
-        SavedGame saveGame = new SavedGame("save.dave");
-        saveGame.saveGame(this.getMapRelation().getMap());
+        // TODO: fix this. We need to pass the Map reference and the active UserController reference
     }
 
 

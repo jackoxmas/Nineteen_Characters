@@ -411,5 +411,7 @@ public class Map implements MapUser_Interface {
         e_map.appendChild(e_avatars);
         e_map.appendChild(e_entities);
         e_map.appendChild(e_items);
+
+        return 0; // Return success
     }
 }

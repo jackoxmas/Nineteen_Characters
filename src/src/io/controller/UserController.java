@@ -152,7 +152,7 @@ public final class UserController implements KeyListener, FocusListener
      */
     public void setRemap(HashMap<Character, Character> remap) {
         if (remap_ == null) remap_ = new KeyRemapper();
-        remap_.setMap(remap_):
+        remap_.setMap(remap);
     }
 
     // EVENT METHODS

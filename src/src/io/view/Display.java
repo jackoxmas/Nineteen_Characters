@@ -17,6 +17,9 @@ import java.io.Serializable;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.text.AttributeSet;
@@ -31,7 +34,18 @@ import javax.swing.text.StyledDocument;
  * @author Matthew B, JohnReedLOL
  */
 public class Display {
-
+	private class ChatBox{
+		private JTextField inputBox_;
+		private JTextArea outputBox_;
+		private int collumns_ = 100;
+		public ChatBox(JFrame frame_){
+			inputBox_ = new JTextField(collumns_);
+			outputBox_ = new JTextArea(5, collumns_);
+			outputBox_.setEditable(false);
+			frame_.add(outputBox_);
+	     	frame_.add(inputBox_);
+		}	
+	}
     // Converts the class name into a base 35 number
 	private static String message_ = "";
 	private static int counter_ = 0;
@@ -39,6 +53,8 @@ public class Display {
 	private JTextPane pane_ = null;
 	private JFrame frame_ = null;
 	private float fontSize = 20f;
+	private ChatBox chat_;
+	
 	/* 
 	 * Static method, sets to what is being output the given string, for counter frames
 	 * Note that is handles multiline strings, but pushes the view up for each line.
@@ -80,13 +96,12 @@ public class Display {
     	frame_.setBounds(0, 0, (int)fontSize*60, (int)fontSize*60); //Arbitary, but whatever.
     	pane_ = new JTextPane();
     	setFont();
-    	pane_.setEditable(true);
-    	JTextField chatbox = new JTextField(100);
-    	
+
     	frame_.getContentPane().setLayout(new FlowLayout());
     	frame_.add(pane_);
-    	frame_.add(chatbox);
+    	chat_ = new ChatBox(frame_);
     	frame_.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+
     	pane_.setEditable(false);
     	frame_.setVisible(true);
     	frame_.setFocusable(true);

@@ -179,7 +179,7 @@ public final class Avatar extends Entity {
             case 'S': //Save game
                 saveGame();
                 break;
-                // case 'v': //Open stats
+            // case 'v': //Open stats
             //     break;
             // case 'i': //Use item in direction
             //     switchToStatsView();

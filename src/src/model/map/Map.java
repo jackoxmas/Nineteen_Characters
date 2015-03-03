@@ -18,7 +18,7 @@ import java.util.*;
  *
  * @author John-Michael Reed
  */
-public class Map implements MapUser_Interface{
+public class Map implements MapUser_Interface {
 
     public static final int MAX_NUMBER_OF_WORLDS = 1;
     private static int number_of_worlds_generated_ = 0;
@@ -306,7 +306,9 @@ public class Map implements MapUser_Interface{
     public IO_Bundle sendCommandToMap(String username, char command, int width_from_center, int height_from_center) {
         Avatar to_recieve_command = this.getAvatarByName(username);
         if (command != '\u0000' && to_recieve_command != null && to_recieve_command.getMapRelation() != null) {
-            int error_code = to_recieve_command.acceptKeyCommand(command);
+            if (command != 'M') {
+                int error_code = to_recieve_command.acceptKeyCommand(command);
+            }
             char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
                     to_recieve_command.getMapRelation().getMyYCoordinate(),
                     width_from_center, height_from_center);

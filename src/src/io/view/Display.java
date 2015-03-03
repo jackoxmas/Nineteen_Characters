@@ -5,6 +5,7 @@
  */
 package src.io.view;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsConfiguration;
 import java.awt.event.FocusListener;
@@ -16,6 +17,10 @@ import java.io.Serializable;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JTextPane;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 /**
@@ -128,11 +133,29 @@ public class Display {
     		doc.insertString(0,out.toString(),null);
     		}
     		catch(Exception e){System.err.println(e.toString());}
-
+    		
 		
 		if(counter_ > 0){System.out.println(message_);--counter_;}
     }
-    /* 
+    /**
+     * Example of how to make a char that is printed a color
+     */
+    private void makeSamplePink(){
+    	MutableAttributeSet attributes = new SimpleAttributeSet();
+    	StyleConstants.setForeground(attributes, Color.pink);//Pink is easy to notice, good for debugging
+    	//Can do a variaty of things aside from color...
+    	colorChar(0,2,attributes);
+    }
+    /** 
+     * Make the char at this point take on the given attributes.
+     * @param x
+     * @param y
+     * @param attr
+     */
+    private void colorChar(int x, int y, AttributeSet attr){
+    	pane_.getStyledDocument().setCharacterAttributes(y*(Viewport.width_+1)+x, 1, attr, false);
+    }
+    /** 
      * Helper method to handle 'clearing' the screen
      */
     private void clearScreen(){

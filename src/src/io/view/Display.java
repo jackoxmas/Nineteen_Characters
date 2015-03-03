@@ -12,11 +12,14 @@ import java.awt.GraphicsConfiguration;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelListener;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -45,6 +48,10 @@ public class Display {
 			frame_.add(outputBox_);
 	     	frame_.add(inputBox_);
 		}	
+		public void setFont(){
+			Display.getDisplay().setFont(inputBox_);
+			Display.getDisplay().setFont(outputBox_);
+		}
 	}
     // Converts the class name into a base 35 number
 	private static String message_ = "";
@@ -52,7 +59,7 @@ public class Display {
 	static private Display display_ = null;
 	private JTextPane pane_ = null;
 	private JFrame frame_ = null;
-	private float fontSize = 20f;
+	private float fontSize_ = 18f;
 	private ChatBox chat_;
 	
 	/* 
@@ -76,11 +83,11 @@ public class Display {
     		return null;
     	}
     }
-    private void setFont(){
+    private void setFont(JComponent object){
     	Font font = getFont();
     	if(font == null){return;}//If we failed to load the font, do nothing
-    	Font  resized = font.deriveFont(fontSize);//This line sets the size of the game, not sure how to make it dynamic atm
-    	pane_.setFont(resized);
+    	Font  resized = font.deriveFont(fontSize_);//This line sets the size of the game, not sure how to make it dynamic atm
+    	object.setFont(resized);
     	return;
     }
     /**
@@ -93,9 +100,9 @@ public class Display {
     	 frame_ = new JFrame("NineTeen Characters");
     	frame_.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame_.setJMenuBar(new JMenuBar());
-    	frame_.setBounds(0, 0, (int)fontSize*60, (int)fontSize*60); //Arbitary, but whatever.
+    	frame_.setBounds(0, 0, (int)fontSize_*60, (int)fontSize_*60); //Arbitary, but whatever.
     	pane_ = new JTextPane();
-    	setFont();
+    	setFont(pane_);
 
     	frame_.getContentPane().setLayout(new FlowLayout());
     	frame_.add(pane_);
@@ -119,6 +126,17 @@ public class Display {
     	Display _display = getDisplay();
     	_display.setView(_view);
     	return _display;
+    }
+    public void zoomIn(){
+    	fontSize_++;
+    	setFont(pane_);
+    	chat_.setFont();
+    }
+    public void zoomOut(){
+    	if(fontSize_ < 2){return;}//Don't let the font get too small!
+    	fontSize_--;
+    	setFont(pane_);
+    	chat_.setFont();
     }
     private boolean guard(){
     	if (current_view_ == null){ System.err.println("DISPLAY VIEW NULL"); return true;}
@@ -197,6 +215,9 @@ public class Display {
     }
 	public void addGameKeyListener(KeyListener listener) {
 		pane_.addKeyListener(listener);	
+	}
+	public void addGameMouseWheelListener(MouseWheelListener listener){
+		pane_.addMouseWheelListener(listener);
 	}
 
 }

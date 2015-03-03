@@ -11,6 +11,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -25,7 +27,7 @@ import src.io.view.Viewport;
  * Uses keyboard input to control the avatar
  * @author JohnReedLOL
  */
-public final class UserController implements KeyListener
+public final class UserController implements KeyListener, MouseWheelListener
 {
 	private class KeyRemapper{
 		private char remapTrigger_ = '~';
@@ -58,6 +60,7 @@ public final class UserController implements KeyListener
      */
     public UserController(MapUser_Interface mui, String uName) {
         Display.getDisplay().addGameKeyListener(this);
+        Display.getDisplay().addGameMouseWheelListener(this);
         MapUserAble_ = mui;
         userName_ = uName;
         setView(nullChar_);
@@ -120,6 +123,16 @@ public final class UserController implements KeyListener
 	@Override
 	public void keyTyped(KeyEvent e) {
 		takeTurn(e);
+		
+	}
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent arg0) {
+		System.out.println("Mousewheel" + arg0.getWheelRotation());
+		if(arg0.getWheelRotation() >0 ){
+			Display.getDisplay().zoomIn();
+		}else{
+			Display.getDisplay().zoomOut();
+		}
 		
 	}
     

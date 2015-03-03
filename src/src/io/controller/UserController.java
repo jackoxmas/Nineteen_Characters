@@ -25,7 +25,7 @@ import src.io.view.Viewport;
  * Uses keyboard input to control the avatar
  * @author JohnReedLOL
  */
-public final class UserController implements KeyListener, FocusListener
+public final class UserController implements KeyListener
 {
 	private class KeyRemapper{
 		private char remapTrigger_ = '~';
@@ -57,8 +57,7 @@ public final class UserController implements KeyListener, FocusListener
      * @param avatar
      */
     public UserController(MapUser_Interface mui, String uName) {
-        Display.getDisplay().addKeyListener(this);
-        Display.getDisplay().addFocusListener(this);
+        Display.getDisplay().addGameKeyListener(this);
         MapUserAble_ = mui;
         userName_ = uName;
         setView(nullChar_);
@@ -121,28 +120,6 @@ public final class UserController implements KeyListener, FocusListener
 	@Override
 	public void keyTyped(KeyEvent e) {
 		takeTurn(e);
-		
-	}
-
-
-
-
-
-
-
-
-	@Override
-	public void focusGained(FocusEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	@Override
-	public void focusLost(FocusEvent arg0) {
-		Display.getDisplay().requestFocus();//Required to work around a bug in swing
-		//Otherwise, focus is never regained.
 		
 	}
     

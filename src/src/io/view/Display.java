@@ -6,6 +6,7 @@
 package src.io.view;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsConfiguration;
 import java.awt.event.FocusListener;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
@@ -78,16 +80,20 @@ public class Display {
     	frame_.setBounds(0, 0, (int)fontSize*60, (int)fontSize*60); //Arbitary, but whatever.
     	pane_ = new JTextPane();
     	setFont();
-    	pane_.setEditable(false);
+    	pane_.setEditable(true);
+    	JTextField chatbox = new JTextField(100);
+    	
+    	frame_.getContentPane().setLayout(new FlowLayout());
     	frame_.add(pane_);
+    	frame_.add(chatbox);
     	frame_.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+    	pane_.setEditable(false);
     	frame_.setVisible(true);
     	frame_.setFocusable(true);
+    	pane_.requestFocus();
 
     }
-    public void requestFocus(){
-    	frame_.requestFocus();
-    }
+
     static public Display getDisplay(){
     	if (display_ == null){
     		display_ = new Display();
@@ -174,13 +180,8 @@ public class Display {
     public int close(){
     	return 0;
     }
-	public void addKeyListener(KeyListener listener) {
-		frame_.addKeyListener(listener);	
+	public void addGameKeyListener(KeyListener listener) {
+		pane_.addKeyListener(listener);	
 	}
-	public void addMouseListener(MouseListener listener) {
-		frame_.addMouseListener(listener);	
-	}
-	public void addFocusListener(FocusListener listener) {
-		frame_.addFocusListener(listener);	
-	}
+
 }

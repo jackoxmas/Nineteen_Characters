@@ -28,16 +28,17 @@ import src.io.view.Viewport;
 public final class UserController implements KeyListener, FocusListener
 {
 	private class KeyRemapper{
-		char remapTrigger_ = '~';
-		HashMap<Character, Character> map_ = new HashMap<Character, Character>();
-		boolean rebindMode_ = false;
-		char rebindA_ = nullChar_;
+		private char remapTrigger_ = '~';
+		private HashMap<Character, Character> map_ = new HashMap<Character, Character>();
+		private boolean rebindMode_ = false;
+		private char rebindA_ = nullChar_;
 		public char remapInput(char c){
 			if(rebindMode_){
 				if(rebindA_ == nullChar_){rebindA_ = c;}
 				else{
-					map_.put(c,rebindA_);
-					map_.put(rebindA_, c);//Swap the values.
+					map_.put(rebindA_, c);//The value at A is now bound to C.
+					//Also, it would be worth it to add a textoutput showing remappings. For now, println
+					System.out.println(rebindA_ +" was remapped to original value for " +c);
 					rebindA_ = nullChar_;
 					rebindMode_ = false; //Reset it all.
 				}

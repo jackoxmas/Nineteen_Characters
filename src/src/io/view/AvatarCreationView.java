@@ -35,9 +35,9 @@ public final class AvatarCreationView extends Viewport
     private static char summonSelect_ = 'X';
     private static char smashSelect_ = 'Z';
     private static char sneakSelect_ = 'C';
-    private static String sneakerString_ = String.valueOf(sneakSelect_)+" to Select a Sneaker:";
-    private static String summonerString_ = String.valueOf(summonSelect_)+" to Select a Summoner:";
-    private static String smasherString_ = String.valueOf(smashSelect_)+" to Select a Smasher:";
+    private static String sneakerString_ = String.valueOf(sneakSelect_)+" default to Select a Sneaker:";
+    private static String summonerString_ = String.valueOf(summonSelect_)+" default to Select a Summoner:";
+    private static String smasherString_ = String.valueOf(smashSelect_)+" default to Select a Smasher:";
     public static void setChoosableChars(char sneak, char smash, char summon){
     	summonSelect_ = summon;
     	sneakSelect_ = sneak;

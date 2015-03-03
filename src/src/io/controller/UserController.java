@@ -24,14 +24,14 @@ import src.io.view.Viewport;
  * Uses keyboard input to control the avatar
  * @author JohnReedLOL
  */
-public final class UserInput implements KeyListener, FocusListener
+public final class UserController implements KeyListener, FocusListener
 {
 
     /**
      * UserInput Constructor
      * @param avatar
      */
-    public UserInput(MapUser_Interface mui, String uName) {
+    public UserController(MapUser_Interface mui, String uName) {
         Display.getDisplay().addKeyListener(this);
         Display.getDisplay().addFocusListener(this);
         MapUserAble_ = mui;

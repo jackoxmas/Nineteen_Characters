@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import src.IO_Bundle;
 import src.model.Vector2;
 
 /**
@@ -30,7 +31,7 @@ public abstract class Viewport {
 	/**
 	 * Tells the view to update it's array contents. 
 	 */
-	public abstract void renderToDisplay();
+	public abstract void renderToDisplay(IO_Bundle bundle);
 	/**
 	 * returns the contents of a view as a 2D array
 	 * @return the 2D array of characters that represents the view
@@ -47,11 +48,10 @@ public abstract class Viewport {
 	 * @exception Prints to error line and returns empty ArrayList in event of failure.
 	 */
 	public ArrayList<String> getAsciiArtFromFile(String input){
-		Path path = Paths.get(input);
-		path = path.toAbsolutePath();
 		ArrayList<String> art = new ArrayList<String>();
 		try {
-            InputStream in = Files.newInputStream(path);
+            InputStream in =this.getClass().getResourceAsStream(input);
+            if(in == null){throw new java.io.FileNotFoundException(input);}
 		    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		    String line = null;
 		    while ((line = reader.readLine()) != null) {

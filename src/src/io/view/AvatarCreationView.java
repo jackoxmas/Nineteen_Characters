@@ -8,6 +8,7 @@ package src.io.view;
 
 import java.util.ArrayList;
 
+import src.IO_Bundle;
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Smasher;
 import src.model.map.constructs.Sneak;
@@ -24,16 +25,27 @@ public final class AvatarCreationView extends Viewport
     private static final long serialVersionUID = Long.parseLong("CCView", 35);
 	
 
-    private final Avatar avatar_reference_;
-    private char[][] view_contents_;
+ 
+
 
     private ArrayList<String> title_;
     private ArrayList<String> smasherArt_;
     private ArrayList<String> sneakerArt_;
     private ArrayList<String> summonerArt_;
-    private String sneakerString_ = "C to Select a Sneaker:";
-    private String summonerString_ = "W to Select a Summoner:";
-    private String smasherString_ = "S to Select a Smasher:";
+    private static char summonSelect_ = 'X';
+    private static char smashSelect_ = 'Z';
+    private static char sneakSelect_ = 'C';
+    private static String sneakerString_ = String.valueOf(sneakSelect_)+" default to Select a Sneaker:";
+    private static String summonerString_ = String.valueOf(summonSelect_)+" default to Select a Summoner:";
+    private static String smasherString_ = String.valueOf(smashSelect_)+" default to Select a Smasher:";
+    public static void setChoosableChars(char sneak, char smash, char summon){
+    	summonSelect_ = summon;
+    	sneakSelect_ = sneak;
+    	smashSelect_ = smash;
+    	sneakerString_ = String.valueOf(sneakSelect_)+" to Select a Sneaker:";
+        summonerString_ = String.valueOf(summonSelect_)+" to Select a Summoner:";
+        smasherString_ = String.valueOf(smashSelect_)+" to Select a Smasher:";
+    }
     /* 
      * Internal method to assit with the rendering, does most of the bulk work, separated out so
      * that renderToDisplay remains pure
@@ -74,11 +86,8 @@ public final class AvatarCreationView extends Viewport
     /*
      * Generates a new ChaAvatarCreationViewses avatar_reference_ to modify the avatar.
      */
-    public AvatarCreationView(Avatar my_avatar) {
+    public AvatarCreationView() {
     	super();
-    	avatar_reference_ = my_avatar;
-
-    	view_contents_=new char[width_][height_];
 		title_ = getAsciiArtFromFile("ASCIIART/class.txt");
 		smasherArt_ = getAsciiArtFromFile("ASCIIART/smasher.txt");
 		sneakerArt_ = getAsciiArtFromFile("ASCIIART/sneaker.txt");
@@ -86,48 +95,23 @@ public final class AvatarCreationView extends Viewport
 		renderArray();
     	
     }
-    /*
-     * Set avatar to appropriate case
-     * @return Returns false if invalid
-     */
-    private boolean setOccupation(char c){
-    	switch (c) {
-    	case 'C':  avatar_reference_.setOccupation(new Sneak(avatar_reference_));
-    				avatar_reference_.setRepresentation('☭');
-                 break;
-        case 'W': avatar_reference_.setOccupation(new Summoner(avatar_reference_));
-        		  avatar_reference_.setRepresentation('☃');
-        		  Display.setMessage("Put on my robe and wizard hat", 4);
-        		break;
-        case 'S': avatar_reference_.setOccupation(new Smasher(avatar_reference_));
-        			avatar_reference_.setRepresentation('⚔');
-        		break;
-		default: System.err.println("Impossible Switch in CCview?");
-	 }
-    	return false;
-    }
+
     /* 
      * 
      * @see src.view.Viewport#renderToDisplay()
      */
 	@Override
-	public void renderToDisplay() {
+	public void renderToDisplay(IO_Bundle bundle) {
 		clear();
 		renderArray();
 		
 	}
-/*
- * 
- * @see src.view.Viewport#getInput(char)
- */
+
 	@Override
 	public boolean getInput(char c) {
-		if(c == 'C' || c == 'W' || c == 'S'){
-			 setOccupation(c);
-			 avatar_reference_.switchToMapView();
-			 return true;
-		}
+		// No input to grab
 		return false;
 	}
+
 }
 	

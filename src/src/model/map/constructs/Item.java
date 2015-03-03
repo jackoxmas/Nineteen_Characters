@@ -5,59 +5,72 @@
  */
 package src.model.map.constructs;
 
-
 import src.model.map.MapItem_Relation;
 import src.io.view.Display;
 
 /**
- * Class item represents a stackable entity that
- * cannot move itself.
+ * Class item represents a stackable entity that cannot move itself.
  *
  * @author JohnReedLOL
  */
 public class Item extends DrawableThing {
-	
-	public boolean determineIfCanPass(Entity entity) {
-        if (this.getMapRelation().isPassable() ) {
+
+    public Item(String name, char representation,
+            boolean goes_in_inventory, boolean is_passable, boolean is_one_shot) {
+        super(name, representation);
+        goes_in_inventory_ = goes_in_inventory;
+        is_passable_ = is_passable;
+        is_one_shot_ = is_one_shot;
+    }
+
+    private final boolean is_one_shot_;
+
+    private boolean is_passable_;
+
+    public int setPassable(boolean is_passable) {
+        is_passable_ = is_passable;
+        return 0;
+    }
+
+    public boolean determineIfCanPass(Entity entity) {
+        if (this.isPassable()) {
             return false;
         } else {
             return true;
         }
     }
-	
-	private boolean goes_in_inventory_;
+
+    private boolean goes_in_inventory_;
+
     /**
      * Checks if item can go in Inventory.
+     *
      * @return true if item can be put into inventory, false if not.
      */
     public boolean goesInInventory() {
         return this.goes_in_inventory_;
     }
-	    
+
     /**
      * Returns false because Entities are not passable.
      */
     @Override
     public boolean isPassable() {
-        return this.getMapRelation().isPassable();
+        return this.is_passable_;
     }
 
     /**
      * Checks if item is one shot.
+     *
      * @return true if item is one shot, false if not.
      */
     public boolean isOneShot() {
-        return this.getMapRelation().isOneShot();
-    }
-
-    public Item(String name, char representation,
-            boolean goes_in_inventory) {
-        super(name, representation);
-        goes_in_inventory_ = goes_in_inventory;
+        return this.is_one_shot_;
     }
 
     // map_relationship_ is used in place of a map_referance_
     private MapItem_Relation map_relationship_;
+
     /**
      * Use this to call functions contained within the MapItem relationship
      *
@@ -73,7 +86,7 @@ public class Item extends DrawableThing {
     }
 
     /**
-     * 
+     *
      */
     public void onWalkOver() {
         //System.out.println("Item: " + this.toString() + " is being walked on.");
@@ -106,10 +119,10 @@ public class Item extends DrawableThing {
      */
     public void use(Entity target) {
         //Display.setMessage("Used Item: " + this.toString() 
-                // + " Health: " 
-                //+ target.getStatsPack().current_life_
-                //+ " Level: " + target.getStatsPack().cached_current_level_, 3)
-                //;
+        // + " Health: " 
+        //+ target.getStatsPack().current_life_
+        //+ " Level: " + target.getStatsPack().cached_current_level_, 3)
+        //;
     }
 
     /**

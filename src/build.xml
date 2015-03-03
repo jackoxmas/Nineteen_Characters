@@ -9,7 +9,8 @@
          source="1.7"
 	 />
         <jar jarfile="NineteenCharacters.jar" basedir="./bin" includes="**/**.class">
-	  <zipfileset dir="ASCIIART" prefix="src/ASCIIART"/>
+	  <zipfileset dir="src/io/view/ASCIIART" prefix="src/io/view/ASCIIART"/>
+	  <zipfileset dir="src/io/view/Font" prefix="src/io/view/Font"/>
   	  <manifest>
   	    <attribute name="Main-Class" value="src.RunGame"/>
   	    <attribute name="Class-Path" value="./"/>

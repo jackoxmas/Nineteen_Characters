@@ -5,7 +5,8 @@
  */
 package src.io.view;
 
-import src.model.map.constructs.MapViewable;
+import src.IO_Bundle;
+
 
 /**
  * Players see the MapView while they are interacting with the map
@@ -17,42 +18,30 @@ public final class MapView extends Viewport {
     
     // map_relationship_ is used in place of a map_referance_
     private transient char[][] view_contents_;
-    private int x_;
-    private int y_;//Set these to center via avatar later.
-    private MapViewable map_;
+
 
 	@Override
-	public void renderToDisplay() {
-		render();//All that's needed for now.
+	public void renderToDisplay(IO_Bundle bundle) {
+		render(bundle);//All that's needed for now.
 		
 	}
 	/*
-	 * Constructor, inits center to (0,0)
+	 * Constructor
 	 */
-	public MapView(MapViewable _map){
+	public MapView(){
 		super();
-		view_contents_ = getContents();
-		x_=0;
-		y_=0;
-		map_ = _map;
-	}
-	/*
-	 * Set the center to render the view from
-	 * @param int x, int y, x and y coords
-	 */
-	public void setCenter(int x, int y){
-		x_ = x;
-		y_= y;
+		view_contents_ = getContents();		
 	}
 	/*
 	 * Helper method to keep renderToDisplay pure
 	 */
-	private void render(){
+	private void render(IO_Bundle bundle){
 		clear();
 		makeSquare(0, 0,width_-1,height_-1);
-		for(int i = 1;i!=width_-1;++i){
-			for(int j = 1;j!=height_-1;++j){
-				view_contents_[i][j] = map_.getTileRepresentation(i-width_/2+x_,height_/2-j+y_);
+		if(bundle.view_for_display_ == null || bundle.view_for_display_.length == 0){return;}
+		for(int i = 0;i<width_-2 && i < bundle.view_for_display_[0].length;++i){
+			for(int j = 0;j<height_-2 && j< bundle.view_for_display_.length;++j){
+				view_contents_[i+1][j+1] = bundle.view_for_display_[bundle.view_for_display_.length-j-1][i];
 			}
 
 		}

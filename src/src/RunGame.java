@@ -13,7 +13,7 @@ import java.util.Date;
 
 import src.model.map.constructs.AreaEffectItem;
 import src.model.map.constructs.Avatar;
-import src.io.controller.UserInput;
+import src.io.controller.UserController;
 import src.model.map.constructs.Item;
 import src.model.map.constructs.Smasher;
 import src.model.map.constructs.Sneak;
@@ -23,6 +23,7 @@ import src.model.map.Map;
 import src.model.map.MapTile;
 import src.io.view.Display;
 import src.io.view.Viewport;
+import src.model.map.MapUser_Interface;
 import src.model.map.constructs.OneWayTeleportItem;
 
 /**
@@ -66,28 +67,26 @@ public class RunGame {
             saveGame_ = SavedGame.newSavedGame();
         map_ = new Map(Viewport.width_ / 2, Viewport.height_);
         avatar_ = new Avatar("avatar", '☃');
-        avatar_.generateMapView(map_);
         map_.addAvatar(avatar_, 0, 0);
-        Display _display = new Display(avatar_.getMyView());
-        _display.printView();
+
 
     }
 
     private static void populateMap() {
-        Item blue = new Item("umbrella_1", '☂', true);
-        Item red = new Item("umbrella_2", '☂', true);
-        Item green = new Item("umbrella_3", '☂', true);
-        Item brown = new Item("umbrella_4", '☂', true);
-        Item seven = new Item("umbrella_5", '☂', true);
+        Item blue = new Item("umbrella_1", '☂', true, true, false);
+        Item red = new Item("umbrella_2", '☂', true, true, false);
+        Item green = new Item("umbrella_3", '☂', true, true, false);
+        Item brown = new Item("umbrella_4", '☂', true, true, false);
+        Item seven = new Item("umbrella_5", '☂', true, true, false);
         Item teleport = new OneWayTeleportItem("tele", 'T', 0, 0);
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
 
-        map_.addItem(blue, 6, 6, true, true); // ▨
-        map_.addItem(red, 7, 7, true, true); // ▨
-        map_.addItem(green, 8, 8, true, true); // ▨
-        map_.addItem(brown, 9, 9, true, true); // ▨
-        map_.addItem(seven, 5, 5, true, true); // ▨
-        map_.addItem(teleport, 2, 4, true, true);
+        map_.addItem(blue, 6, 6); // ▨
+        map_.addItem(red, 7, 7); // ▨
+        map_.addItem(green, 8, 8); // ▨
+        map_.addItem(brown, 9, 9); // ▨
+        map_.addItem(seven, 5, 5); // ▨
+        map_.addItem(teleport, 2, 4);
         for (int y = 0; y < Viewport.height_; ++y) {
             for (int x = 0; x < Viewport.width_ / 2; ++x) {
                 Terrain obstacle = new Terrain("land", '▨', false, false);
@@ -115,12 +114,17 @@ public class RunGame {
         avatar_.getMapRelation().areaEffectFunctor.effectAreaWithinArc(3, 20, Effect.HURT);
         avatar_.setFacingDirection(FacingDirection.DOWN_RIGHT);
         avatar_.getMapRelation().areaEffectFunctor.effectAreaWithinArc(3, 1, Effect.KILL);
+        System.out.println("x position of avatar: " + avatar_.getMapRelation().getMyXCoordinate());
+        System.out.println("y position of avatar: " + avatar_.getMapRelation().getMyYCoordinate());
+
+        for (int i = 0; i < 20; ++i) {
+            ((MapUser_Interface) map_).sendCommandToMap("avatar", 'x', 10, 20);
+        }
 
     }
 
     private static void startGame() {
-        UserInput AC = new UserInput(avatar_);
-        AC.runTheGame();
+        UserController AC = new UserController(map_,avatar_.name_);
     }
 
     private static void saveGameToDisk() {
@@ -152,7 +156,6 @@ public class RunGame {
     private static class ProgramOpts {
 
         // Debug Mode
-
         String[] dbg_match = {"-d", "--debug"};
         boolean dbg_flag = false;
         int dbg_level = 1;

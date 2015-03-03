@@ -38,9 +38,9 @@ public final class UserController implements KeyListener, MouseWheelListener
 			if(rebindMode_){
 				if(rebindA_ == nullChar_){rebindA_ = c;}
 				else{
-					map_.put(rebindA_, c);//The value at A is now bound to C.
+					map_.put(c, rebindA_);//The value at A is now bound to C.
 					//Also, it would be worth it to add a textoutput showing remappings. For now, println
-					System.out.println(rebindA_ +" was remapped to original value for " +c);
+					System.out.println(c +" was remapped to original value for " +rebindA_);
 					rebindA_ = nullChar_;
 					rebindMode_ = false; //Reset it all.
 				}

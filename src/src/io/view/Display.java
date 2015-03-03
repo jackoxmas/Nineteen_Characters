@@ -52,7 +52,7 @@ public class Display {
     private void setFont(){
     	Font font = getFont();
     	if(font == null){return;}//If we failed to load the font, do nothing
-    	Font  resized = font.deriveFont(12f);
+    	Font  resized = font.deriveFont(20f);//This line sets the size of the game, not sure how to make it dynamic atm
     	pane_.setFont(resized);
     	return;
     }
@@ -68,6 +68,7 @@ public class Display {
     	frame_.setJMenuBar(new JMenuBar());
     	pane_ = new JTextPane();
     	setFont();
+    	pane_.setEditable(false);
     	StyledDocument doc = pane_.getStyledDocument();
     	try{
     	doc.insertString(0, "test", null);

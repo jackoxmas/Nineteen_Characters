@@ -7,6 +7,9 @@ package src.io.view;
 
 import java.awt.Font;
 import java.awt.GraphicsConfiguration;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.io.InputStream;
 import java.io.Serializable;
 
@@ -28,6 +31,7 @@ public class Display {
 	static private Display display_ = null;
 	private JTextPane pane_ = null;
 	private JFrame frame_ = null;
+	private float fontSize = 20f;
 	/* 
 	 * Static method, sets to what is being output the given string, for counter frames
 	 * Note that is handles multiline strings, but pushes the view up for each line.
@@ -52,7 +56,7 @@ public class Display {
     private void setFont(){
     	Font font = getFont();
     	if(font == null){return;}//If we failed to load the font, do nothing
-    	Font  resized = font.deriveFont(20f);//This line sets the size of the game, not sure how to make it dynamic atm
+    	Font  resized = font.deriveFont(fontSize);//This line sets the size of the game, not sure how to make it dynamic atm
     	pane_.setFont(resized);
     	return;
     }
@@ -66,6 +70,7 @@ public class Display {
     	 frame_ = new JFrame("NineTeen Characters");
     	frame_.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame_.setJMenuBar(new JMenuBar());
+    	frame_.setBounds(0, 0, (int)fontSize*60, (int)fontSize*60); //Arbitary, but whatever.
     	pane_ = new JTextPane();
     	setFont();
     	pane_.setEditable(false);
@@ -79,7 +84,11 @@ public class Display {
     	frame_.add(pane_);
     	frame_.setExtendedState(JFrame.MAXIMIZED_BOTH); 
     	frame_.setVisible(true);
+    	frame_.setFocusable(true);
 
+    }
+    public void requestFocus(){
+    	frame_.requestFocus();
     }
     static public Display getDisplay(){
     	if (display_ == null){
@@ -110,10 +119,8 @@ public class Display {
     		// Use this to print a 2D array
     		for(int j = 0; j!=current_view_.height_;++j){
     			for(int i = 0; i!=current_view_.width_;++i){
-    				System.out.print(in[i][j]);
     				out.append(in[i][j]);
     			}
-    			System.out.print(System.lineSeparator());
     			out.append(System.lineSeparator());
     		}
     		StyledDocument doc = pane_.getStyledDocument();
@@ -129,7 +136,6 @@ public class Display {
      * Helper method to handle 'clearing' the screen
      */
     private void clearScreen(){
-    	//Create the illusion of clearing the screen.
     	pane_.setText("");
     }
     /**
@@ -153,4 +159,13 @@ public class Display {
     public int close(){
     	return 0;
     }
+	public void addKeyListener(KeyListener listener) {
+		frame_.addKeyListener(listener);	
+	}
+	public void addMouseListener(MouseListener listener) {
+		frame_.addMouseListener(listener);	
+	}
+	public void addFocusListener(FocusListener listener) {
+		frame_.addFocusListener(listener);	
+	}
 }

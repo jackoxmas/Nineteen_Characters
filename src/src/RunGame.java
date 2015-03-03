@@ -127,7 +127,6 @@ public class RunGame {
 
     private static void startGame() {
         UserInput AC = new UserInput(avatar_);
-        AC.runTheGame();
     }
 
     private static void saveGameToDisk() {

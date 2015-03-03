@@ -38,4 +38,13 @@ public class IO_Bundle {
    public final int bind_wounds_;
    public final int bargain_;
    public final int observation_;
+   public EntityStatsPack getStatsPack(){
+	   return stats_for_display_;
+   }
+   public Occupation getOccupation(){
+	   return occupation_;
+   }
+   public ArrayList<Item> getInventory(){
+	   return inventory_;
+   }
 }

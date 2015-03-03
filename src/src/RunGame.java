@@ -67,10 +67,8 @@ public class RunGame {
         saveGame_ = null;
         map_ = new Map(Viewport.width_ / 2, Viewport.height_);
         avatar_ = new Avatar("avatar", '☃');
-        avatar_.generateMapView(map_);
         map_.addAvatar(avatar_, 0, 0);
-        Display _display = new Display(avatar_.getMyView());
-        _display.printView();
+
 
     }
 
@@ -126,8 +124,7 @@ public class RunGame {
     }
 
     private static void startGame() {
-        UserInput AC = new UserInput(avatar_);
-        AC.runTheGame();
+        UserInput AC = new UserInput(map_,avatar_.name_);
     }
 
     private static void saveGameToDisk() {

@@ -36,30 +36,34 @@ public final class UserInput implements KeyListener, FocusListener
         Display.getDisplay().addFocusListener(this);
         MapUserAble_ = mui;
         userName_ = uName;
+        setView(nullChar);
+    	Display.getDisplay().setView(currentView_);
+        Display.getDisplay().printView();
+        
     }
 
     private MapUser_Interface MapUserAble_;
     private final String userName_;
     private Viewport currentView_ = new AvatarCreationView(); 
-    
+    private final char nullChar = (char)0;
     private void setView(char c){
     	boolean taken = false;
     	if(currentView_ instanceof AvatarCreationView){
     		if(c == 'Z' || c == 'C' || c == 'X' || c == 'V'){
-    			currentView_ = new MapView(); ////☭☃⚔
+    			currentView_ = new MapView(); 
     		}
     	}	
     	if(currentView_ instanceof MapView){
-    		if(c == 'i'){currentView_ = new StatsView(userName_);}
+    		if(c == 'i'){currentView_ = new StatsView(userName_); taken = true;}
     	}
-    	if(currentView_ instanceof StatsView){
-    		if(c == 'i'){currentView_ = new MapView();}
+    	else if(currentView_ instanceof StatsView){
+    		if(c == 'i'){currentView_ = new MapView(); taken = true;}
     	}
     	if(!taken){
-    	currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, c));
+    	currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, c, Viewport.width_/2,Viewport.height_/2));
     	}
     	else{
-    		currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, ' '));
+    		currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, nullChar));
     		//I need to get this info without sending a command, sending ' ' is a hack for now.
     	}
     }

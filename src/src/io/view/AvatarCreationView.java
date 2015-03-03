@@ -33,8 +33,8 @@ public final class AvatarCreationView extends Viewport
     private ArrayList<String> sneakerArt_;
     private ArrayList<String> summonerArt_;
     private String sneakerString_ = "C to Select a Sneaker:";
-    private String summonerString_ = "W to Select a Summoner:";
-    private String smasherString_ = "S to Select a Smasher:";
+    private String summonerString_ = "X to Select a Summoner:";
+    private String smasherString_ = "Z to Select a Smasher:";
     /* 
      * Internal method to assit with the rendering, does most of the bulk work, separated out so
      * that renderToDisplay remains pure

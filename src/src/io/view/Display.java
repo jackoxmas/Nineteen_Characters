@@ -79,13 +79,6 @@ public class Display {
     	pane_ = new JTextPane();
     	setFont();
     	pane_.setEditable(false);
-    	StyledDocument doc = pane_.getStyledDocument();
-    	try{
-    	doc.insertString(0, "test", null);
-    	}
-    	catch(Exception x){
-    		
-    	}
     	frame_.add(pane_);
     	frame_.setExtendedState(JFrame.MAXIMIZED_BOTH); 
     	frame_.setVisible(true);

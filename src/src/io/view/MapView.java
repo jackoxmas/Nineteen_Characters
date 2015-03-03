@@ -38,9 +38,9 @@ public final class MapView extends Viewport {
 	private void render(IO_Bundle bundle){
 		clear();
 		makeSquare(0, 0,width_-1,height_-1);
-		for(int i = 1;i!=width_-1 && i < bundle.view_for_display_[0].length;++i){
-			for(int j = 1;j!=height_-1 && j< bundle.view_for_display_.length;++j){
-				view_contents_[i][j] = bundle.view_for_display_[j][i];
+		for(int i = 0;i<width_-2 && i < bundle.view_for_display_[0].length;++i){
+			for(int j = 0;j<height_-2 && j< bundle.view_for_display_.length;++j){
+				view_contents_[i+1][j+1] = bundle.view_for_display_[bundle.view_for_display_.length-j-1][i];
 			}
 
 		}

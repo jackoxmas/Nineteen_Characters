@@ -5,18 +5,29 @@
  */
 package src.io.view;
 
+import java.awt.Font;
+import java.awt.GraphicsConfiguration;
+import java.io.InputStream;
 import java.io.Serializable;
+
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JTextPane;
+import javax.swing.text.StyledDocument;
 
 /**
  * Represents a single player's display. Has a static game wide message.
  *
  * @author Matthew B, JohnReedLOL
  */
-public class Display implements Serializable {
+public class Display {
 
     // Converts the class name into a base 35 number
 	private static String message_ = "";
 	private static int counter_ = 0;
+	static private Display display_ = null;
+	private JTextPane pane_ = null;
+	private JFrame frame_ = null;
 	/* 
 	 * Static method, sets to what is being output the given string, for counter frames
 	 * Note that is handles multiline strings, but pushes the view up for each line.
@@ -28,17 +39,61 @@ public class Display implements Serializable {
 		counter_ = counter;
 	}
     private static final long serialVersionUID = Long.parseLong("Display", 35);
+    private Font getFont(){
+    	InputStream in = this.getClass().getResourceAsStream("Font/DejaVuSansMono.ttf");
+    	try{
+    		return Font.createFont(Font.TRUETYPE_FONT, in);
+    	}
+    	catch(Exception e){
+    		System.err.println(e.toString());
+    		return null;
+    	}
+    }
+    private void setFont(){
+    	Font font = getFont();
+    	if(font == null){return;}//If we failed to load the font, do nothing
+    	Font  resized = font.deriveFont(12f);
+    	pane_.setFont(resized);
+    	return;
+    }
     /**
      * Create a display from a Viewport
      * @author Matthew B
      * @param Viewport
      * @return Display
      */
-    /* Constructor, requires the view to render. 
-     * A display without a view might as well not exist.
-     */
-    public Display(Viewport _view){
-    	current_view_ = _view;
+    private Display(){
+    	 frame_ = new JFrame("NineTeen Characters");
+    	frame_.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	frame_.setJMenuBar(new JMenuBar());
+    	pane_ = new JTextPane();
+    	setFont();
+    	StyledDocument doc = pane_.getStyledDocument();
+    	try{
+    	doc.insertString(0, "test", null);
+    	}
+    	catch(Exception x){
+    		
+    	}
+    	frame_.add(pane_);
+    	frame_.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+    	frame_.setVisible(true);
+
+    }
+    static public Display getDisplay(){
+    	if (display_ == null){
+    		display_ = new Display();
+    	}
+    	return display_;
+    }
+    static public Display getDisplay(Viewport _view){
+    	Display _display = getDisplay();
+    	_display.setView(_view);
+    	return _display;
+    }
+    private boolean guard(){
+    	if (current_view_ == null){ System.err.println("DISPLAY VIEW NULL"); return true;}
+    	return false;
     }
     private Viewport current_view_;
     /**
@@ -46,16 +101,27 @@ public class Display implements Serializable {
      * 
      */
     public void printView() {
+    	if(guard()){return;}
     	current_view_.renderToDisplay();
     	this.clearScreen();
         char[][] in = current_view_.getContents();
-        // Use this to print a 2D array
-		for(int j = 0; j!=current_view_.height_;++j){
-			for(int i = 0; i!=current_view_.width_;++i){
-				{System.out.print(in[i][j]);}
-			}
-			System.out.print(System.lineSeparator());
-		}
+        StringBuilder out = new StringBuilder();
+    		// Use this to print a 2D array
+    		for(int j = 0; j!=current_view_.height_;++j){
+    			for(int i = 0; i!=current_view_.width_;++i){
+    				System.out.print(in[i][j]);
+    				out.append(in[i][j]);
+    			}
+    			System.out.print(System.lineSeparator());
+    			out.append(System.lineSeparator());
+    		}
+    		StyledDocument doc = pane_.getStyledDocument();
+    		try{
+    		doc.insertString(0,out.toString(),null);
+    		}
+    		catch(Exception e){System.err.println(e.toString());}
+
+		
 		if(counter_ > 0){System.out.println(message_);--counter_;}
     }
     /* 
@@ -63,9 +129,7 @@ public class Display implements Serializable {
      */
     private void clearScreen(){
     	//Create the illusion of clearing the screen.
-    	for(int i = 0; i!=2*current_view_.height_;++i){
-    		System.out.print(System.lineSeparator());
-    	}
+    	pane_.setText("");
     }
     /**
      * Change the viewport held by the display

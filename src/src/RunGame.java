@@ -69,7 +69,7 @@ public class RunGame {
         avatar_ = new Avatar("avatar", '☃');
         avatar_.generateMapView(map_);
         map_.addAvatar(avatar_, 0, 0);
-        Display _display = new Display(avatar_.getMyView());
+        Display _display = Display.getDisplay(avatar_.getMyView());
         _display.printView();
 
     }

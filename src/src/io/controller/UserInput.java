@@ -32,7 +32,7 @@ public final class UserInput
     public void runTheGame() {
     	Scanner sc = new Scanner(System.in);
     	char input = '`';
-    	Display _display = new Display(my_avatar_.getMyView());
+    	Display _display = Display.getDisplay(my_avatar_.getMyView());
     	while ( (input = sc.next().charAt(0) ) != '`' ) {
 			my_avatar_.getInput((char)input);
 			//my_avatar_.getMapRelation().getSimpleAngle();//Example of simpleangle

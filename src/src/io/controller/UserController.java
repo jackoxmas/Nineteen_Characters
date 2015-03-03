@@ -32,6 +32,27 @@ public final class UserController implements KeyListener, FocusListener
 		private HashMap<Character, Character> map_ = new HashMap<Character, Character>();
 		private boolean rebindMode_ = false;
 		private char rebindA_ = nullChar_;
+
+        /**
+         * Gets a copy of the key remapping
+         * @return A HashMap copy of the key remapping
+         * @author Alex Stewart
+         */
+        public HashMap<Character, Character> getMap() { return map_; }
+
+        /**
+         * Validates and sets the key remapping, if successful; overwrites the entire remapping
+         * <p>ie. it does not mix the maps</p>
+         * @param newMap A new key remapping to be applied
+         * @auhtor Alex Stewart
+         */
+        public void setMap(HashMap<Character, Character> newMap) {
+            // validate entries in the map
+            if (newMap == null) return;
+            // Add code here if we want to reject some characters
+            map_ = newMap;
+        }
+
 		public char remapInput(char c){
 			if(rebindMode_){
 				if(rebindA_ == nullChar_){rebindA_ = c;}
@@ -104,9 +125,37 @@ public final class UserController implements KeyListener, FocusListener
     	Display.getDisplay().setView(currentView_);
         Display.getDisplay().printView();
     	}
-    	
-    	
 
+    // FIELD ACCESSORS
+    /**
+     * Gets this UserController's user name value
+     * <p>Used for saving. Loading is done through the constructor</p>
+     * @return A String object with this UserController's user name
+     * @author Alex Stewart
+     */
+    public String getUserName() { return userName_; }
+
+    /**
+     * Gets the underlying key remapping values
+     * @return A HashMap with the remapped key values in it
+     * @author Alex Stewart
+     */
+    public HashMap<Character, Character> getRemap() {
+        if (remap_ == null) return null;
+        return remap_.getMap();
+    }
+
+    /**
+     * Sets the underlying key remapping
+     * @param remap The new key remapping to be applied
+     * @author Alex Stewart
+     */
+    public void setRemap(HashMap<Character, Character> remap) {
+        if (remap_ == null) remap_ = new KeyRemapper();
+        remap_.setMap(remap_):
+    }
+
+    // EVENT METHODS
 	@Override
 	public void keyPressed(KeyEvent e) {
 		//Nothing to do here
@@ -124,20 +173,11 @@ public final class UserController implements KeyListener, FocusListener
 		
 	}
 
-
-
-
-
-
-
-
 	@Override
 	public void focusGained(FocusEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 
 	@Override
 	public void focusLost(FocusEvent arg0) {

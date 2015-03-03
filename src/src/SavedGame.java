@@ -47,7 +47,7 @@ public class SavedGame {
         file_path_ = filePath;
     }
 
-    public int saveGame(src.model.map.Map map) {
+    public int saveGame(src.model.map.Map map, src.io.controller.UserController controller) {
         try {
             // open or create the save file
             DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -59,12 +59,25 @@ public class SavedGame {
             e_version.appendChild(save.createTextNode(Long.toString(SAVE_DATA_VERSION)));
             root.appendChild(e_version);
 
+            // CONTROLLER KEYMAP
+            Element e_keymap = save.createElement("keymap");
+            e_keymap.setAttribute("username", controller.getUserName());
+
+            Element e_key;
+            for (Map.Entry<Character, Character> e : controller.getRemap().entrySet()) {
+                e_key = save.createElement("remap");
+                e_key.setAttribute("key", e.getKey().toString());
+                e_key.appendChild(save.createTextNode(e.getValue().toString()));
+                e_keymap.appendChild(e_key);
+            }
+
             // MAP
             Element e_map = save.createElement("map");
 
             map.mapToXML(save, e_map);
 
             // ROOT - APPEND
+            root.appendChild(e_keymap);
             root.appendChild(e_map);
 
             // SAVE - APPEND

@@ -7,6 +7,7 @@
 package src.io.view;
 import java.util.*;
 
+import src.IO_Bundle;
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Item;
 
@@ -22,95 +23,93 @@ public final class StatsView extends Viewport
 	
     private char[][] view_contents_;
     private ArrayList< ArrayList<Character>> render;
-    private final Avatar avatar_reference_;
 
     private ArrayList<String> template_;    
     private boolean display_index = false;
+    private String userName_;
     
     /**
      * Generates a new StatsView using the avatar_reference.
      */
-    public StatsView(Avatar my_avatar) {
+    public StatsView(String _uName) {
     	super();
-    	avatar_reference_ = my_avatar;
-
+    	userName_ = _uName;
     	view_contents_= new char[width_][height_];
 		template_ = getAsciiArtFromFile("ASCIIART/statsview.txt");
-		renderArray();
 	}
     
 	@Override
-	public void renderToDisplay() {
-		renderArray();
+	public void renderToDisplay(IO_Bundle bundle) {
+		renderArray(bundle);
 	}
 	/*
 	 * Helper method to handle bulk of rendering, keeps renderToDisplay pure
 	 */
-    private void renderArray() {
+    private void renderArray(IO_Bundle bundle) {
     	for (int i = 0; i < template_.size(); i++) {
     		writeStringToContents(0, 0+i, template_.get(i));
     	}
-    	renderStats();
-    	renderInventory();
+    	renderStats(bundle);
+    	renderInventory(bundle);
     }
 /*
  * helps renderToDisplay
  */
-    private void renderStats() {
-    	if (avatar_reference_.getOccupation() == null)
+    private void renderStats(IO_Bundle bundle_) {
+    	if (bundle_.getOccupation() == null)
     		return;
     		
-    	writeStringToContents(5, 6, avatar_reference_.name_ + ",");
+    	writeStringToContents(5, 6, userName_ + ",");
     	
-    	int level = avatar_reference_.getStatsPack().cached_current_level_;
+    	int level = bundle_.getStatsPack().cached_current_level_;
     	if (level == 1)
-    		writeStringToContents(5, 8, level + "st Level " + avatar_reference_.getOccupation().toString());
+    		writeStringToContents(5, 8, level + "st Level " + bundle_.getOccupation().toString());
     	else if (level == 2)
-    		writeStringToContents(5, 8, level + "nd Level " + avatar_reference_.getOccupation().toString());
+    		writeStringToContents(5, 8, level + "nd Level " + bundle_.getOccupation().toString());
     	else if (level == 3)
-    		writeStringToContents(5, 8, level + "rd Level " + avatar_reference_.getOccupation().toString());
+    		writeStringToContents(5, 8, level + "rd Level " + bundle_.getOccupation().toString());
     	else
-    		writeStringToContents(5, 8, level + "th Level " + avatar_reference_.getOccupation().toString());
+    		writeStringToContents(5, 8, level + "th Level " + bundle_.getOccupation().toString());
 
-    	writeStringToContents(18, 10, rightAlign(3, "" + avatar_reference_.getStatsPack().getStrength_level_()));
-    	writeStringToContents(18, 11, rightAlign(3, "" + avatar_reference_.getStatsPack().getAgility_level_()));
-    	writeStringToContents(18, 12, rightAlign(3, "" + avatar_reference_.getStatsPack().getIntellect_level_()));
-    	writeStringToContents(18, 13, rightAlign(3, "" + avatar_reference_.getStatsPack().getHardiness_level_()));
+    	writeStringToContents(18, 10, rightAlign(3, "" + bundle_.getStatsPack().getStrength_level_()));
+    	writeStringToContents(18, 11, rightAlign(3, "" + bundle_.getStatsPack().getAgility_level_()));
+    	writeStringToContents(18, 12, rightAlign(3, "" + bundle_.getStatsPack().getIntellect_level_()));
+    	writeStringToContents(18, 13, rightAlign(3, "" + bundle_.getStatsPack().getHardiness_level_()));
     	
     	StringBuilder hearts = new StringBuilder();
-    	for (int i = 0; i < (avatar_reference_.getStatsPack().current_life_/avatar_reference_.getStatsPack().getMax_life_())*10; i++)
+    	for (int i = 0; i < (bundle_.getStatsPack().current_life_/bundle_.getStatsPack().getMax_life_())*10; i++)
     		hearts.append("♥");
     	writeStringToContents(38, 6, rightAlign(10, hearts.toString()));
-    	writeStringToContents(40, 7, rightAlign(3, "" + avatar_reference_.getStatsPack().getCurrent_life_()));
-    	writeStringToContents(44, 7, rightAlign(3, "" + avatar_reference_.getStatsPack().getMax_life_()));
+    	writeStringToContents(40, 7, rightAlign(3, "" + bundle_.getStatsPack().getCurrent_life_()));
+    	writeStringToContents(44, 7, rightAlign(3, "" + bundle_.getStatsPack().getMax_life_()));
 
     	StringBuilder diamonds = new StringBuilder();
-    	for (int i = 0; i < avatar_reference_.getStatsPack().getCurrent_mana_()/avatar_reference_.getStatsPack().getMax_mana_()*10; i++)
+    	for (int i = 0; i < bundle_.getStatsPack().getCurrent_mana_()/bundle_.getStatsPack().getMax_mana_()*10; i++)
     		diamonds.append("♦");
     	writeStringToContents(38, 9, rightAlign(10, diamonds.toString()));
-    	writeStringToContents(40, 10, rightAlign(3, "" + avatar_reference_.getStatsPack().getCurrent_mana_()));
-    	writeStringToContents(44, 10, rightAlign(3, "" + avatar_reference_.getStatsPack().getMax_mana_()));
+    	writeStringToContents(40, 10, rightAlign(3, "" + bundle_.getStatsPack().getCurrent_mana_()));
+    	writeStringToContents(44, 10, rightAlign(3, "" + bundle_.getStatsPack().getMax_mana_()));
 
     	StringBuilder spades = new StringBuilder();
-    	for (int i = 0; i < (avatar_reference_.getStatsPack().getQuantity_of_experience_()
-    			- ((avatar_reference_.getStatsPack().getCached_current_level_()-1)*100))/10; i++)
+    	for (int i = 0; i < (bundle_.getStatsPack().getQuantity_of_experience_()
+    			- ((bundle_.getStatsPack().getCached_current_level_()-1)*100))/10; i++)
     		spades.append("♠");
     	writeStringToContents(40, 12, rightAlign(10, spades.toString()));
-    	writeStringToContents(40, 13, rightAlign(3, "" + avatar_reference_.getStatsPack().getQuantity_of_experience_()));
+    	writeStringToContents(40, 13, rightAlign(3, "" + bundle_.getStatsPack().getQuantity_of_experience_()));
 
-    	writeStringToContents(68, 6, rightAlign(3, "" + avatar_reference_.getStatsPack().getLives_left_()));
-    	writeStringToContents(68, 8, rightAlign(3, "" + avatar_reference_.getStatsPack().getMoves_left_in_turn_()));
-    	writeStringToContents(72, 8, rightAlign(3, "" + avatar_reference_.getStatsPack().getMovement_level_()));
-    	writeStringToContents(72, 11, rightAlign(3, "" + avatar_reference_.getStatsPack().getOffensive_rating_()));
+    	writeStringToContents(68, 6, rightAlign(3, "" + bundle_.getStatsPack().getLives_left_()));
+    	writeStringToContents(68, 8, rightAlign(3, "" + bundle_.getStatsPack().getMoves_left_in_turn_()));
+    	writeStringToContents(72, 8, rightAlign(3, "" + bundle_.getStatsPack().getMovement_level_()));
+    	writeStringToContents(72, 11, rightAlign(3, "" + bundle_.getStatsPack().getOffensive_rating_()));
         // Replacing current_defensive_rating with defensive_rating
-    	writeStringToContents(72, 12, rightAlign(3, "" + avatar_reference_.getStatsPack().getDefensive_rating_()));
-    	writeStringToContents(72, 13, rightAlign(3, "" + avatar_reference_.getStatsPack().getArmor_rating_()));
+    	writeStringToContents(72, 12, rightAlign(3, "" + bundle_.getStatsPack().getDefensive_rating_()));
+    	writeStringToContents(72, 13, rightAlign(3, "" + bundle_.getStatsPack().getArmor_rating_()));
     }
 /*
  * Helps renderToDisplay
  */
-    private void renderInventory() {
-    	ArrayList<Item> inventory = avatar_reference_.getInventory();
+    private void renderInventory(IO_Bundle bundle_) {
+    	ArrayList<Item> inventory = bundle_.getInventory();
     	for (int i = 0; i < inventory.size(); i++) {
     		String item_name = inventory.get(i).name_;
     		if (item_name.length() > 22)
@@ -138,10 +137,6 @@ public final class StatsView extends Viewport
 
 	@Override
 	public boolean getInput(char c) {
-		if (c == 'i') {
-			avatar_reference_.switchToMapView();
-			return true;
-		}
 		return false;
 	}
 		

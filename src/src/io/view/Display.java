@@ -117,7 +117,6 @@ public class Display {
      */
     public void printView() {
     	if(guard()){return;}
-    	current_view_.renderToDisplay();
     	this.clearScreen();
         char[][] in = current_view_.getContents();
         StringBuilder out = new StringBuilder();

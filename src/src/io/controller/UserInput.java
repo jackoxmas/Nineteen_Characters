@@ -13,8 +13,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Scanner;
 
+import src.model.map.MapUser_Interface;
 import src.model.map.constructs.Avatar;
+import src.io.view.AvatarCreationView;
 import src.io.view.Display;
+import src.io.view.MapView;
+import src.io.view.StatsView;
+import src.io.view.Viewport;
 /**
  * Uses keyboard input to control the avatar
  * @author JohnReedLOL
@@ -26,26 +31,47 @@ public final class UserInput implements KeyListener, FocusListener
      * UserInput Constructor
      * @param avatar
      */
-    public UserInput(Avatar avatar) {
-        my_avatar_ = avatar;
+    public UserInput(MapUser_Interface mui, String uName) {
         Display.getDisplay().addKeyListener(this);
         Display.getDisplay().addFocusListener(this);
+        MapUserAble_ = mui;
+        userName_ = uName;
     }
 
-    private final Avatar my_avatar_;
+    private MapUser_Interface MapUserAble_;
+    private final String userName_;
+    private Viewport currentView_ = new AvatarCreationView(); 
     
-    /**
-     * Runs the game.
-     */
- 
+    private void setView(char c){
+    	boolean taken = false;
+    	if(currentView_ instanceof AvatarCreationView){
+    		if(c == 'Z' || c == 'C' || c == 'X' || c == 'V'){
+    			currentView_ = new MapView(); ////☭☃⚔
+    		}
+    	}	
+    	if(currentView_ instanceof MapView){
+    		if(c == 'i'){currentView_ = new StatsView(userName_);}
+    	}
+    	if(currentView_ instanceof StatsView){
+    		if(c == 'i'){currentView_ = new MapView();}
+    	}
+    	if(!taken){
+    	currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, c));
+    	}
+    	else{
+    		currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, ' '));
+    		//I need to get this info without sending a command, sending ' ' is a hack for now.
+    	}
+    }
     private void takeTurn(KeyEvent e) {
-    	Display _display = Display.getDisplay(my_avatar_.getMyView());
-    	System.out.println(e.getKeyChar());
+
+    	setView(e.getKeyChar());
+
     	//my_avatar_.getInput((char)input);
 		//my_avatar_.getMapRelation().getSimpleAngle();//Example of simpleangle
 		//my_avatar_.getMapRelation().getAngle();//Example of how to use getAngle
-		_display.setView(my_avatar_.getMyView());
-        _display.printView();
+    	Display.getDisplay().setView(currentView_);
+        Display.getDisplay().printView();
     	}
     	
     	

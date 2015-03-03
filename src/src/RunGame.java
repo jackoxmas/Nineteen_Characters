@@ -126,7 +126,7 @@ public class RunGame {
     }
 
     private static void startGame() {
-        UserInput AC = new UserInput(avatar_);
+        UserInput AC = new UserInput(map_,avatar_.name_);
     }
 
     private static void saveGameToDisk() {

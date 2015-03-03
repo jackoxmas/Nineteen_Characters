@@ -40,10 +40,10 @@ public class Display {
 	private class ChatBox{
 		private JTextField inputBox_;
 		private JTextArea outputBox_;
-		private int collumns_ = 100;
+		private int width_ = 100;
 		public ChatBox(JFrame frame_){
-			inputBox_ = new JTextField(collumns_);
-			outputBox_ = new JTextArea(5, collumns_);
+			inputBox_ = new JTextField(width_);
+			outputBox_ = new JTextArea(5, width_);
 			outputBox_.setEditable(false);
 			frame_.add(outputBox_);
 	     	frame_.add(inputBox_);

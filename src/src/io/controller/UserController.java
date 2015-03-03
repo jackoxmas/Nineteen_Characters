@@ -128,7 +128,7 @@ public final class UserController implements KeyListener, MouseWheelListener
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent arg0) {
 		System.out.println("Mousewheel" + arg0.getWheelRotation());
-		if(arg0.getWheelRotation() >0 ){
+		if(arg0.getWheelRotation() <0 ){
 			Display.getDisplay().zoomIn();
 		}else{
 			Display.getDisplay().zoomOut();

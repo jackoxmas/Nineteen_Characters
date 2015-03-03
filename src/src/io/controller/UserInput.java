@@ -63,7 +63,7 @@ public final class UserInput implements KeyListener, FocusListener
     	currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, c, Viewport.width_/2,Viewport.height_/2));
     	}
     	else{
-    		currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, nullChar));
+    		currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, nullChar, Viewport.width_/2,Viewport.height_/2));
     		//I need to get this info without sending a command, sending ' ' is a hack for now.
     	}
     }

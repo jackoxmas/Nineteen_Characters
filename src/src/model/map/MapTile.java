@@ -58,15 +58,36 @@ public final class MapTile {
      * @author Reed, John
      */
     public char getTopCharacter() {
-        if (entity_ != null) {
+        if (entity_ != null && entity_.isVisible()) {
             return entity_.getRepresentation();
-        } else if (!items_.isEmpty()) {
-            return items_.peekLast().getRepresentation();
-        } else if (terrain_ != null) {
+        } else if (hasItemRepresentation() == true) {
+            char ret = 0;
+            for (int i = 0; i < items_.size(); ++i) {
+                if (items_.get(i).isVisible()) {
+                    ret = items_.get(i).getRepresentation();
+                }
+            }
+            if (ret != 0) {
+                return ret;
+            } else {
+                System.err.println("Impossible error occured in MapTile");
+                System.exit(-97);
+                return ret;
+            }
+        } else if (terrain_ != null && terrain_.isVisible()) {
             return terrain_.getRepresentation();
         } else {
             return '▩';
         }
+    }
+
+    private boolean hasItemRepresentation() {
+        for (int i = 0; i < items_.size(); ++i) {
+            if (items_.get(i).isVisible()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -120,13 +141,14 @@ public final class MapTile {
 
     /**
      * Removes top item of tile.
+     *
      * @author John-Michael Reed
      * @return -2 if there are no items, -1 if item cannot be found
      */
     public int removeSpecificItem(Item i) {
         if (!this.items_.isEmpty()) {
             boolean found = this.items_.remove(i);
-            if( !found ) {
+            if (!found) {
                 return -2;
             } else {
                 return 0;

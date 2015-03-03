@@ -14,26 +14,11 @@ import src.model.map.constructs.Item;
  */
 public class MapItem_Relation extends MapDrawableThing_Relation {
 
-    private final boolean is_one_shot_;
-
-    public boolean isOneShot() {
-        return is_one_shot_;
-    }
-
-    private final boolean is_passable_;
-
-    public boolean isPassable() {
-        return is_passable_;
-    }
-
     private final Item item_;
 
-    public MapItem_Relation(Map m, Item item,
-            boolean is_passable, boolean is_one_shot) {
+    public MapItem_Relation(Map m, Item item) {
         super(m);
         item_ = item;
-        is_passable_ = is_passable;
-        is_one_shot_ = is_one_shot;
     }
 
     public Entity getTheEntityOnTopOfMe() {

@@ -167,8 +167,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     public int dropItem() {
         Item itemToBeDropped = entity_.pullLastItemOutOfInventory();
         if (itemToBeDropped != null) {
-            current_map_reference_.addItem(itemToBeDropped, this.getMapTile().x_, this.getMapTile().y_,
-                    itemToBeDropped.getMapRelation().isPassable(), itemToBeDropped.getMapRelation().isOneShot());
+            current_map_reference_.addItem(itemToBeDropped, this.getMapTile().x_, this.getMapTile().y_);
             Display.setMessage("Dropped item: " + itemToBeDropped.name_, 3);
             return 0;
         } else {

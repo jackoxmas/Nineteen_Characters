@@ -32,9 +32,20 @@ public final class AvatarCreationView extends Viewport
     private ArrayList<String> smasherArt_;
     private ArrayList<String> sneakerArt_;
     private ArrayList<String> summonerArt_;
-    private String sneakerString_ = "C to Select a Sneaker:";
-    private String summonerString_ = "X to Select a Summoner:";
-    private String smasherString_ = "Z to Select a Smasher:";
+    private static char summonSelect_ = 'X';
+    private static char smashSelect_ = 'Z';
+    private static char sneakSelect_ = 'C';
+    private static String sneakerString_ = String.valueOf(sneakSelect_)+" to Select a Sneaker:";
+    private static String summonerString_ = String.valueOf(summonSelect_)+" to Select a Summoner:";
+    private static String smasherString_ = String.valueOf(smashSelect_)+" to Select a Smasher:";
+    public static void setChoosableChars(char sneak, char smash, char summon){
+    	summonSelect_ = summon;
+    	sneakSelect_ = sneak;
+    	smashSelect_ = smash;
+    	sneakerString_ = String.valueOf(sneakSelect_)+" to Select a Sneaker:";
+        summonerString_ = String.valueOf(summonSelect_)+" to Select a Summoner:";
+        smasherString_ = String.valueOf(smashSelect_)+" to Select a Smasher:";
+    }
     /* 
      * Internal method to assit with the rendering, does most of the bulk work, separated out so
      * that renderToDisplay remains pure

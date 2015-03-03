@@ -40,7 +40,7 @@ public final class UserInput implements KeyListener, FocusListener
  
     private void takeTurn(KeyEvent e) {
     	Display _display = Display.getDisplay(my_avatar_.getMyView());
-    	System.out.println(e.getKeyCode());
+    	System.out.println(e.getKeyChar());
     	//my_avatar_.getInput((char)input);
 		//my_avatar_.getMapRelation().getSimpleAngle();//Example of simpleangle
 		//my_avatar_.getMapRelation().getAngle();//Example of how to use getAngle
@@ -52,7 +52,7 @@ public final class UserInput implements KeyListener, FocusListener
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		takeTurn(e);
+		//Nothing to do here
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public final class UserInput implements KeyListener, FocusListener
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		//We do nothing in this situation
+		takeTurn(e);
 		
 	}
 

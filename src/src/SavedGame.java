@@ -18,6 +18,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Element;
 import org.w3c.dom.Document;
 import org.w3c.dom.Attr;
+import src.model.map.constructs.Avatar;
 
 /**
  * This class manages a saved game object. A saved game has a file path and 
@@ -61,29 +62,7 @@ public class SavedGame {
             // MAP
             Element e_map = save.createElement("map");
 
-            // MAP::TIME)
-            Element e_time = save.createElement("time");
-            e_map.appendChild(save.createTextNode(Integer.toString(map.getTime())));
-
-            // MAP::MAP_GRID
-            Element e_map_grid = save.createElement("map_grid");
-            e_map_grid.setAttribute("width", Integer.toString(map.width_));
-            e_map_grid.setAttribute("height", Integer.toString(map.height_));
-
-            Element e_mt;
-            for (int j = 0; j < map.height_; j++) {
-                for (int i = 0; i < map.width_; i++) {
-                    e_mt = save.createElement("map_tile");
-                    // TODO: finish tile xml
-                    e_map_grid.appendChild(e_mt);
-                }
-            }
-
-
-
-            // MAP - APPEND
-            e_map.appendChild(e_time);
-            e_map.appendChild(e_map_grid);
+            map.mapToXML(save, e_map);
 
             // ROOT - APPEND
             root.appendChild(e_map);

@@ -22,6 +22,9 @@ public final class Sneak extends Occupation {
 
     }
 
+    @Override
+    public int getOccNumber() { return 2; }
+
     /**
      * Increments an occupation specific skill. Caller should decrement number
      * of skillpoints.

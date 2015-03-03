@@ -11,6 +11,10 @@ import src.model.map.constructs.Terrain;
 import src.model.*;
 import src.model.map.constructs.MapViewable;
 
+import org.w3c.dom.Element;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -335,5 +339,73 @@ public class Map implements MapUser_Interface, MapViewable {
     // The map has a clock
     private int time_measured_in_turns;
 
-    public int getTime() { return time_measured_in_turns; }
+    public int mapToXML(Document doc, Element e_map) {
+        // MAP::TIME)
+        Element e_time = doc.createElement("time");
+        e_map.appendChild(doc.createTextNode(Integer.toString(this.time_measured_in_turns)));
+
+        // MAP::MAP_GRID
+        Element e_map_grid = doc.createElement("map_grid");
+        e_map_grid.setAttribute("width", Integer.toString(this.width_));
+        e_map_grid.setAttribute("height", Integer.toString(this.height_));
+
+        Element e_l, e_t;
+        for (int j = 0; j < this.height_; j++) {
+            for (int i = 0; i < this.width_; i++) {
+                e_l = doc.createElement("map_tile");
+                // TODO: finish tile xml
+                e_map_grid.appendChild(e_l);
+            }
+        }
+
+        // MAP::AVATAR_LIST
+        Element e_avatars = doc.createElement("avatars");
+        for (Avatar a : this.avatar_list_.values()) {
+            e_l = doc.createElement("avatar");
+            // TODO: finish avatar xml
+            e_avatars.appendChild(e_l);
+        }
+
+        // MAP::ENTITY_LIST
+        Element e_entities = doc.createElement("entities");
+        for (Entity e : this.entity_list_.values()) {
+            e_l = doc.createElement("entity");
+            e_l.appendChild(doc.createElement("direction").appendChild(doc.createTextNode(e.getFacingDirection().toString())));
+            e_l.appendChild(doc.createElement("items"));
+
+            // write inventory items to xml
+            Item equipped = e.getEquipped();
+            ArrayList<Item> tmp_inv = e.getInventory();
+            Element e_ll;
+            for (int i = 0; i < e.getInventory().size(); i++) {
+                e_ll = doc.createElement("item");
+                // TODO: add item XML logic
+                if (tmp_inv.get(i) == equipped) // if the item is equipped, set attr:equipped = 1
+                    e_ll.setAttribute("equipped", "1");
+                else
+                    e_ll.setAttribute("equipped", "0");
+                e_l.appendChild(e_ll);
+            }
+
+            // write entity occupation
+
+
+            e_entities.appendChild(e_l);
+        }
+
+        // MAP::ITEMS_LIST
+        Element e_items = doc.createElement("items");
+        for (Item i : this.items_list_) {
+            e_l = doc.createElement("item");
+            // TODO: finish item xml
+            e_items.appendChild(e_l);
+        }
+
+        // MAP - APPEND
+        e_map.appendChild(e_time);
+        e_map.appendChild(e_map_grid);
+        e_map.appendChild(e_avatars);
+        e_map.appendChild(e_entities);
+        e_map.appendChild(e_items);
+    }
 }

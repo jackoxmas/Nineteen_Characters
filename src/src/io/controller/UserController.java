@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import src.model.map.MapUser_Interface;
@@ -26,7 +27,30 @@ import src.io.view.Viewport;
  */
 public final class UserController implements KeyListener, FocusListener
 {
-
+	private class KeyRemapper{
+		char remapTrigger_ = '~';
+		HashMap<Character, Character> map_ = new HashMap<Character, Character>();
+		boolean rebindMode_ = false;
+		char rebindA_ = nullChar_;
+		public char remapInput(char c){
+			if(rebindMode_){
+				if(rebindA_ == nullChar_){rebindA_ = c;}
+				else{
+					map_.put(c,rebindA_);
+					map_.put(rebindA_, c);//Swap the values.
+					rebindA_ = nullChar_;
+					rebindMode_ = false; //Reset it all.
+				}
+			return stillChar_;//In this case, we want to stand still while the remapping occurs.
+			}
+			else{
+				Character value = map_.get(c);
+				if(value != null){c = value;}
+			}
+			if(c == remapTrigger_){rebindMode_ = true;}
+			return c;
+		}
+	}
     /**
      * UserInput Constructor
      * @param avatar
@@ -36,7 +60,7 @@ public final class UserController implements KeyListener, FocusListener
         Display.getDisplay().addFocusListener(this);
         MapUserAble_ = mui;
         userName_ = uName;
-        setView(nullChar);
+        setView(nullChar_);
     	Display.getDisplay().setView(currentView_);
         Display.getDisplay().printView();
         
@@ -45,7 +69,9 @@ public final class UserController implements KeyListener, FocusListener
     private MapUser_Interface MapUserAble_;
     private final String userName_;
     private Viewport currentView_ = new AvatarCreationView(); 
-    private final char nullChar = (char)0;
+    private final char nullChar_ = (char)0;
+    private final char stillChar_ = 'M';
+    private KeyRemapper remap_ = new KeyRemapper();
     private void setView(char c){
     	boolean taken = false;
     	if(currentView_ instanceof AvatarCreationView){
@@ -63,13 +89,13 @@ public final class UserController implements KeyListener, FocusListener
     	currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, c, Viewport.width_/2,Viewport.height_/2));
     	}
     	else{
-    		currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, 'M', Viewport.width_/2,Viewport.height_/2));
+    		currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, stillChar_, Viewport.width_/2,Viewport.height_/2));
     		//I need to get this info without sending a command, sending ' ' is a hack for now.
     	}
     }
     private void takeTurn(KeyEvent e) {
-
-    	setView(e.getKeyChar());
+    	char remapped = remap_.remapInput(e.getKeyChar());
+    	setView(remapped);
 
     	//my_avatar_.getInput((char)input);
 		//my_avatar_.getMapRelation().getSimpleAngle();//Example of simpleangle

@@ -12,6 +12,6 @@ package src.model.map.constructs;
 public class OneHandedSword extends OneHandedWeapon implements PrimaryHandHoldable {
 
     public OneHandedSword(String name, char representation) {
-        super(name, representation);
+        super(name, representation,"Smasher");
     }
 }

@@ -10,5 +10,7 @@ package src.model.map.constructs;
  * @author JohnReedLOL
  */
 public class Bow extends TwoHandedWeapon implements PrimaryHandHoldable, SecondaryHandHoldable {
-
+    public Bow(String name, char representation) {
+        super(name, representation);
+    }
 }

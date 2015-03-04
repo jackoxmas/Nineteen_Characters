@@ -9,6 +9,9 @@ package src.model.map.constructs;
  *
  * @author JohnReedLOL
  */
-public class Sheild extends OneHandedWeapon implements SecondaryHandHoldable{
-    
+public class Sheild extends OneHandedWeapon implements SecondaryHandHoldable {
+
+    public Sheild(String name, char representation) {
+        super(name, representation);
+    }
 }

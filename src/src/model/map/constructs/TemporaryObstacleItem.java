@@ -9,6 +9,20 @@ package src.model.map.constructs;
  *
  * @author JohnReedLOL
  */
-public class TemporaryObstacleItem extends ObstacleItem{
+public class TemporaryObstacleItem extends ObstacleItem {
     
+    private final ObstacleRemovingItem keyItem_;
+
+    public TemporaryObstacleItem(String name, char representation, ObstacleRemovingItem keyItem) {
+        super(name, representation);
+        keyItem_ = keyItem;
+    }
+    
+    /**
+     * Returns a reference to the keyItem needed to open this door.
+     * @return 
+     */
+    public ObstacleRemovingItem checkKey() {
+        return this.keyItem_;
+    }
 }

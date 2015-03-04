@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import src.model.map.constructs.AreaEffectItem;
+import src.model.map.constructs.OneShotAreaEffectItem;
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Item;
 import src.model.map.Map;

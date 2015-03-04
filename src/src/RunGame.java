@@ -11,7 +11,7 @@ import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import src.model.map.constructs.AreaEffectItem;
+import src.model.map.constructs.OneShotAreaEffectItem;
 import src.model.map.constructs.Avatar;
 import src.io.controller.UserController;
 import src.model.map.constructs.Item;
@@ -24,6 +24,7 @@ import src.model.map.MapTile;
 import src.io.view.Display;
 import src.io.view.Viewport;
 import src.model.map.MapUser_Interface;
+import src.model.map.constructs.OneHandedSword;
 import src.model.map.constructs.OneWayTeleportItem;
 
 /**
@@ -73,20 +74,20 @@ public class RunGame {
     }
 
     private static void populateMap() {
-        Item blue = new Item("umbrella_1", '☂', true, true, false);
-        Item red = new Item("umbrella_2", '☂', true, true, false);
-        Item green = new Item("umbrella_3", '☂', true, true, false);
-        Item brown = new Item("umbrella_4", '☂', true, true, false);
-        Item seven = new Item("umbrella_5", '☂', true, true, false);
-        Item teleport = new OneWayTeleportItem("tele", 'T', 0, 0);
+        Item blue = new OneHandedSword("umbrella_1", '☂');
+        // Item red = new Item("umbrella_2", '☂', true, true, false);
+        // Item green = new Item("umbrella_3", '☂', true, true, false);
+        // Item brown = new Item("umbrella_4", '☂', true, true, false);
+        // Item seven = new Item("umbrella_5", '☂', true, true, false);
+        // Item teleport = new OneWayTeleportItem("tele", 'T', 0, 0);
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
 
         map_.addItem(blue, 6, 6); // ▨
-        map_.addItem(red, 7, 7); // ▨
-        map_.addItem(green, 8, 8); // ▨
-        map_.addItem(brown, 9, 9); // ▨
-        map_.addItem(seven, 5, 5); // ▨
-        map_.addItem(teleport, 2, 4);
+        // map_.addItem(red, 7, 7); // ▨
+        // map_.addItem(green, 8, 8); // ▨
+        // map_.addItem(brown, 9, 9); // ▨
+        // map_.addItem(seven, 5, 5); // ▨
+        // map_.addItem(teleport, 2, 4);
         for (int y = 0; y < Viewport.height_; ++y) {
             for (int x = 0; x < Viewport.width_ / 2; ++x) {
                 Terrain obstacle = new Terrain("land", '▨', false, false);

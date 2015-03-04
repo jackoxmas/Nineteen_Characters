@@ -11,12 +11,17 @@ import src.FacingDirection;
 import src.model.map.MapEntity_Relation;
 import src.io.view.Display;
 import src.FacingDirection;
-
+import src.model.map.constructs.PrimaryHandHoldable;
+import src.model.map.constructs.SecondaryHandHoldable;
 /**
  * Entity inherits from DrawableThing. Entity is a DrawableThing that can move
  * on the map.
  */
 abstract public class Entity extends DrawableThing {
+    
+    // private Item equipped_item_;
+    private PrimaryHandHoldable right_hand_ = null;
+    private SecondaryHandHoldable left_hand_ = null;
 
     private FacingDirection direction_ = FacingDirection.UP;
 
@@ -73,9 +78,6 @@ abstract public class Entity extends DrawableThing {
         super(name, representation);
         inventory_ = new ArrayList<Item>();
     }
-
-    // Only 1 equipped item in iteration 1
-    private Item equipped_item_;
 
     public Item getEquipped() {
         if (equipped_item_ != null) {

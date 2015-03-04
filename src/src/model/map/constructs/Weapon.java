@@ -9,6 +9,9 @@ package src.model.map.constructs;
  *
  * @author JohnReedLOL
  */
-public class Weapon extends EquipableItem{
-    
+public abstract class Weapon extends EquipableItem {
+
+    public Weapon(String name, char representation) {
+        super(name, representation);
+    }
 }

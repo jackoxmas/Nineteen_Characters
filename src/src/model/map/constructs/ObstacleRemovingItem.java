@@ -9,6 +9,9 @@ package src.model.map.constructs;
  *
  * @author JohnReedLOL
  */
-public class ObstacleRemovingItem extends PickupableItem{
-    
+public class ObstacleRemovingItem extends PickupableItem {
+
+    public ObstacleRemovingItem(String name, char representation) {
+        super(name, representation);
+    }
 }

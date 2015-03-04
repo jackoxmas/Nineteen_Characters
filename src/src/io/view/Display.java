@@ -44,10 +44,12 @@ public class Display {
 		private int width_ = 100;
 		public ChatBox(JFrame frame_){
 			inputBox_ = new JTextField(width_);
-			outputBox_ = new JTextArea(5, width_);
+			outputBox_ = new JTextArea(7, width_);
 			outputBox_.setEditable(false);
-			frame_.add(outputBox_);
+			JScrollPane scroll = new JScrollPane(outputBox_);
+			frame_.add(scroll);			
 	     	frame_.add(inputBox_);
+	     	inputBox_.addKeyListener(this);
 		}	
 		public void setFont(){
 			Display.getDisplay().setFont(inputBox_);
@@ -56,16 +58,20 @@ public class Display {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			// TODO Auto-generated method stub
-			
+			if(e.getKeyCode() == KeyEvent.VK_ENTER){
+				outputBox_.append(System.lineSeparator()+inputBox_.getText());
+				inputBox_.setText("");//Upon enter, clear the input box, and move it's text to output
+			}
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
-			// TODO Auto-generated method stub
+			//Nothing to do here.
 			
 		}
 		@Override
 		public void keyTyped(KeyEvent e) {
-			System.out.println(e.getKeyChar());
+			//Nothing to do here.
+
 			
 		}
 	}

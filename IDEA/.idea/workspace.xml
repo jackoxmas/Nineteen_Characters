@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fbc16cae-2312-42a3-a657-0f99998ac22f" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/map/constructs/Avatar.java" afterPath="$PROJECT_DIR$/../src/src/model/map/constructs/Avatar.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/map/Map.java" afterPath="$PROJECT_DIR$/../src/src/model/map/Map.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -31,47 +32,46 @@
       <file leaf-file-name="Map.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../src/src/model/map/Map.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.34991974" vertical-offset="1327" max-vertical-offset="2130">
-              <caret line="598" column="55" selection-start-line="598" selection-start-column="55" selection-end-line="598" selection-end-column="55" />
+            <state vertical-scroll-proportion="0.26885247" vertical-offset="466" max-vertical-offset="1500">
+              <caret line="374" column="65" selection-start-line="374" selection-start-column="65" selection-end-line="374" selection-end-column="65" />
               <folding>
                 <element signature="docComment;class#Map#0" expanded="false" />
-                <element signature="docComment;method#addTerrain#0;class#Map#0" expanded="false" />
-                <element signature="method#addTerrain#0;class#Map#0" expanded="false" />
-                <element signature="docComment;method#addAvatar#0;class#Map#0" expanded="false" />
-                <element signature="method#addAvatar#0;class#Map#0" expanded="false" />
+                <element signature="docComment;method#getEntityByName#0;class#Map#0" expanded="false" />
+                <element signature="method#getMapGrid#0;class#Map#0" expanded="false" />
+                <element signature="docComment;method#getTile#0;class#Map#0" expanded="false" />
+                <element signature="method#getTile#0;class#Map#0" expanded="false" />
+                <element signature="docComment;method#getTileRepresentation#0;class#Map#0" expanded="false" />
+                <element signature="method#getTileRepresentation#0;class#Map#0" expanded="false" />
+                <element signature="method#Map#0;class#Map#0" expanded="false" />
+                <element signature="docComment;method#Map#1;class#Map#0" expanded="false" />
+                <element signature="method#Map#1;class#Map#0" expanded="false" />
                 <element signature="docComment;method#getAvatarByName#0;class#Map#0" expanded="false" />
                 <element signature="docComment;method#removeAvatar#0;class#Map#0" expanded="false" />
                 <element signature="method#removeAvatar#0;class#Map#0" expanded="false" />
                 <element signature="docComment;method#addEntity#0;class#Map#0" expanded="false" />
                 <element signature="method#addEntity#0;class#Map#0" expanded="false" />
+                <element signature="docComment;method#addTerrain#0;class#Map#0" expanded="false" />
+                <element signature="method#addTerrain#0;class#Map#0" expanded="false" />
+                <element signature="docComment;method#addAvatar#0;class#Map#0" expanded="false" />
+                <element signature="method#addAvatar#0;class#Map#0" expanded="false" />
                 <element signature="docComment;method#makeView#0;class#Map#0" expanded="false" />
                 <element signature="method#makeView#0;class#Map#0" expanded="false" />
-                <element signature="docComment;method#getEntityByName#0;class#Map#0" expanded="false" />
                 <element signature="docComment;method#removeEntity#0;class#Map#0" expanded="false" />
                 <element signature="method#removeEntity#0;class#Map#0" expanded="false" />
-                <element signature="docComment;method#getTile#0;class#Map#0" expanded="false" />
-                <element signature="method#getTile#0;class#Map#0" expanded="false" />
-                <element signature="docComment;method#getTileRepresentation#0;class#Map#0" expanded="false" />
-                <element signature="method#getTileRepresentation#0;class#Map#0" expanded="false" />
                 <element signature="docComment;method#addItem#0;class#Map#0" expanded="false" />
                 <element signature="method#addItem#0;class#Map#0" expanded="false" />
                 <element signature="docComment;method#removeTopItem#0;class#Map#0" expanded="false" />
                 <element signature="method#removeTopItem#0;class#Map#0" expanded="false" />
-                <element signature="method#Map#0;class#Map#0" expanded="false" />
-                <element signature="docComment;method#Map#1;class#Map#0" expanded="false" />
-                <element signature="method#Map#1;class#Map#0" expanded="false" />
                 <element signature="docComment;method#sendCommandToMap#0;class#Map#0" expanded="false" />
                 <element signature="method#sendCommandToMap#0;class#Map#0" expanded="false" />
                 <element signature="method#sendCommandToMap#1;class#Map#0" expanded="false" />
                 <element signature="docComment;method#xml_writeMap#0;class#Map#0" expanded="false" />
-                <element signature="method#xml_writeMap#0;class#Map#0" expanded="false" />
-                <element signature="e#13209#13245#0" expanded="false" />
-                <element signature="e#13720#13756#0" expanded="false" />
-                <element signature="docComment;method#xml_writeEntity#0;class#Map#0" expanded="false" />
                 <element signature="method#xml_writeEntity#0;class#Map#0" expanded="false" />
+                <element signature="docComment;method#xml_writeItem#0;class#Map#0" expanded="false" />
                 <element signature="method#xml_writeItem#0;class#Map#0" expanded="false" />
                 <element signature="method#xml_writeStatsDrawable#0;class#Map#0" expanded="false" />
                 <element signature="method#xml_writeStatsEntity#0;class#Map#0" expanded="false" />
+                <element signature="method#xml_writeTerrain#0;class#Map#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -198,6 +198,32 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Avatar.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../src/src/model/map/constructs/Avatar.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1035">
+              <caret line="250" column="5" selection-start-line="250" selection-start-column="5" selection-end-line="250" selection-end-column="5" />
+              <folding>
+                <element signature="docComment;class#Avatar#0" expanded="false" />
+                <element signature="docComment;method#gainExperiencePoints#0;class#Avatar#0" expanded="false" />
+                <element signature="method#gainExperiencePoints#0;class#Avatar#0" expanded="false" />
+                <element signature="docComment;method#gainEnoughExperienceTolevelUp#0;class#Avatar#0" expanded="false" />
+                <element signature="method#gainEnoughExperienceTolevelUp#0;class#Avatar#0" expanded="false" />
+                <element signature="docComment;method#spendSkillpointOn#0;class#Avatar#0" expanded="false" />
+                <element signature="method#spendSkillpointOn#0;class#Avatar#0" expanded="false" />
+                <element signature="docComment;method#acceptKeyCommand#0;class#Avatar#0" expanded="false" />
+                <element signature="method#acceptKeyCommand#0;class#Avatar#0" expanded="false" />
+                <element signature="e#5385#5410#0" expanded="false" />
+                <element signature="docComment;method#getMapRelation#0;class#Avatar#0" expanded="false" />
+                <element signature="docComment;method#setMapRelation#0;class#Avatar#0" expanded="false" />
+                <element signature="docComment;method#replyToAttackFrom#0;class#Avatar#0" expanded="false" />
+                <element signature="method#replyToAttackFrom#0;class#Avatar#0" expanded="false" />
+                <element signature="method#toString#0;class#Avatar#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Item.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/src/model/map/constructs/Item.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -279,11 +305,11 @@
         <option value="$PROJECT_DIR$/../src/src/model/map/constructs/Terrain.java" />
         <option value="$PROJECT_DIR$/../src/src/model/map/MapTile.java" />
         <option value="$PROJECT_DIR$/../src/src/model/map/constructs/Item.java" />
-        <option value="$PROJECT_DIR$/../src/src/model/map/constructs/Avatar.java" />
         <option value="$PROJECT_DIR$/../src/src/SavedGame.java" />
         <option value="$PROJECT_DIR$/../src/src/RunGame.java" />
         <option value="$PROJECT_DIR$/../src/src/io/controller/UserController.java" />
         <option value="$PROJECT_DIR$/../.gitignore" />
+        <option value="$PROJECT_DIR$/../src/src/model/map/constructs/Avatar.java" />
         <option value="$PROJECT_DIR$/../src/src/model/map/Map.java" />
       </list>
     </option>
@@ -330,6 +356,116 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="NCR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IDEA_Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NCR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IDEA_Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NCR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IDEA_Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NCR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IDEA_Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NCR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IDEA_Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NCR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="map" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="constructs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -998,43 +1134,42 @@
           <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
           <folding>
             <element signature="docComment;class#Map#0" expanded="false" />
-            <element signature="docComment;method#addTerrain#0;class#Map#0" expanded="false" />
-            <element signature="method#addTerrain#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#addAvatar#0;class#Map#0" expanded="false" />
-            <element signature="method#addAvatar#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#getEntityByName#0;class#Map#0" expanded="false" />
+            <element signature="method#getMapGrid#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#getTile#0;class#Map#0" expanded="false" />
+            <element signature="method#getTile#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#getTileRepresentation#0;class#Map#0" expanded="false" />
+            <element signature="method#getTileRepresentation#0;class#Map#0" expanded="false" />
+            <element signature="method#Map#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#Map#1;class#Map#0" expanded="false" />
+            <element signature="method#Map#1;class#Map#0" expanded="false" />
             <element signature="docComment;method#getAvatarByName#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#removeAvatar#0;class#Map#0" expanded="false" />
             <element signature="method#removeAvatar#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#addEntity#0;class#Map#0" expanded="false" />
             <element signature="method#addEntity#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#addTerrain#0;class#Map#0" expanded="false" />
+            <element signature="method#addTerrain#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#addAvatar#0;class#Map#0" expanded="false" />
+            <element signature="method#addAvatar#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#makeView#0;class#Map#0" expanded="false" />
             <element signature="method#makeView#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#getEntityByName#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#removeEntity#0;class#Map#0" expanded="false" />
             <element signature="method#removeEntity#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#getTile#0;class#Map#0" expanded="false" />
-            <element signature="method#getTile#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#getTileRepresentation#0;class#Map#0" expanded="false" />
-            <element signature="method#getTileRepresentation#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#addItem#0;class#Map#0" expanded="false" />
             <element signature="method#addItem#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#removeTopItem#0;class#Map#0" expanded="false" />
             <element signature="method#removeTopItem#0;class#Map#0" expanded="false" />
-            <element signature="method#Map#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#Map#1;class#Map#0" expanded="false" />
-            <element signature="method#Map#1;class#Map#0" expanded="false" />
             <element signature="docComment;method#sendCommandToMap#0;class#Map#0" expanded="false" />
             <element signature="method#sendCommandToMap#0;class#Map#0" expanded="false" />
             <element signature="method#sendCommandToMap#1;class#Map#0" expanded="false" />
             <element signature="docComment;method#xml_writeMap#0;class#Map#0" expanded="false" />
-            <element signature="method#xml_writeMap#0;class#Map#0" expanded="false" />
-            <element signature="e#13209#13245#0" expanded="false" />
-            <element signature="e#13720#13756#0" expanded="false" />
-            <element signature="docComment;method#xml_writeEntity#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeEntity#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#xml_writeItem#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeItem#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeStatsDrawable#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeStatsEntity#0;class#Map#0" expanded="false" />
+            <element signature="method#xml_writeTerrain#0;class#Map#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1045,43 +1180,42 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="docComment;class#Map#0" expanded="false" />
-            <element signature="docComment;method#addTerrain#0;class#Map#0" expanded="false" />
-            <element signature="method#addTerrain#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#addAvatar#0;class#Map#0" expanded="false" />
-            <element signature="method#addAvatar#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#getEntityByName#0;class#Map#0" expanded="false" />
+            <element signature="method#getMapGrid#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#getTile#0;class#Map#0" expanded="false" />
+            <element signature="method#getTile#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#getTileRepresentation#0;class#Map#0" expanded="false" />
+            <element signature="method#getTileRepresentation#0;class#Map#0" expanded="false" />
+            <element signature="method#Map#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#Map#1;class#Map#0" expanded="false" />
+            <element signature="method#Map#1;class#Map#0" expanded="false" />
             <element signature="docComment;method#getAvatarByName#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#removeAvatar#0;class#Map#0" expanded="false" />
             <element signature="method#removeAvatar#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#addEntity#0;class#Map#0" expanded="false" />
             <element signature="method#addEntity#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#addTerrain#0;class#Map#0" expanded="false" />
+            <element signature="method#addTerrain#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#addAvatar#0;class#Map#0" expanded="false" />
+            <element signature="method#addAvatar#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#makeView#0;class#Map#0" expanded="false" />
             <element signature="method#makeView#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#getEntityByName#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#removeEntity#0;class#Map#0" expanded="false" />
             <element signature="method#removeEntity#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#getTile#0;class#Map#0" expanded="false" />
-            <element signature="method#getTile#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#getTileRepresentation#0;class#Map#0" expanded="false" />
-            <element signature="method#getTileRepresentation#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#addItem#0;class#Map#0" expanded="false" />
             <element signature="method#addItem#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#removeTopItem#0;class#Map#0" expanded="false" />
             <element signature="method#removeTopItem#0;class#Map#0" expanded="false" />
-            <element signature="method#Map#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#Map#1;class#Map#0" expanded="false" />
-            <element signature="method#Map#1;class#Map#0" expanded="false" />
             <element signature="docComment;method#sendCommandToMap#0;class#Map#0" expanded="false" />
             <element signature="method#sendCommandToMap#0;class#Map#0" expanded="false" />
             <element signature="method#sendCommandToMap#1;class#Map#0" expanded="false" />
             <element signature="docComment;method#xml_writeMap#0;class#Map#0" expanded="false" />
-            <element signature="method#xml_writeMap#0;class#Map#0" expanded="false" />
-            <element signature="e#13209#13245#0" expanded="false" />
-            <element signature="e#13720#13756#0" expanded="false" />
-            <element signature="docComment;method#xml_writeEntity#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeEntity#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#xml_writeItem#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeItem#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeStatsDrawable#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeStatsEntity#0;class#Map#0" expanded="false" />
+            <element signature="method#xml_writeTerrain#0;class#Map#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1106,43 +1240,42 @@
           <caret line="42" column="19" selection-start-line="42" selection-start-column="19" selection-end-line="42" selection-end-column="19" />
           <folding>
             <element signature="docComment;class#Map#0" expanded="false" />
-            <element signature="docComment;method#addTerrain#0;class#Map#0" expanded="false" />
-            <element signature="method#addTerrain#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#addAvatar#0;class#Map#0" expanded="false" />
-            <element signature="method#addAvatar#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#getEntityByName#0;class#Map#0" expanded="false" />
+            <element signature="method#getMapGrid#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#getTile#0;class#Map#0" expanded="false" />
+            <element signature="method#getTile#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#getTileRepresentation#0;class#Map#0" expanded="false" />
+            <element signature="method#getTileRepresentation#0;class#Map#0" expanded="false" />
+            <element signature="method#Map#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#Map#1;class#Map#0" expanded="false" />
+            <element signature="method#Map#1;class#Map#0" expanded="false" />
             <element signature="docComment;method#getAvatarByName#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#removeAvatar#0;class#Map#0" expanded="false" />
             <element signature="method#removeAvatar#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#addEntity#0;class#Map#0" expanded="false" />
             <element signature="method#addEntity#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#addTerrain#0;class#Map#0" expanded="false" />
+            <element signature="method#addTerrain#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#addAvatar#0;class#Map#0" expanded="false" />
+            <element signature="method#addAvatar#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#makeView#0;class#Map#0" expanded="false" />
             <element signature="method#makeView#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#getEntityByName#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#removeEntity#0;class#Map#0" expanded="false" />
             <element signature="method#removeEntity#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#getTile#0;class#Map#0" expanded="false" />
-            <element signature="method#getTile#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#getTileRepresentation#0;class#Map#0" expanded="false" />
-            <element signature="method#getTileRepresentation#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#addItem#0;class#Map#0" expanded="false" />
             <element signature="method#addItem#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#removeTopItem#0;class#Map#0" expanded="false" />
             <element signature="method#removeTopItem#0;class#Map#0" expanded="false" />
-            <element signature="method#Map#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#Map#1;class#Map#0" expanded="false" />
-            <element signature="method#Map#1;class#Map#0" expanded="false" />
             <element signature="docComment;method#sendCommandToMap#0;class#Map#0" expanded="false" />
             <element signature="method#sendCommandToMap#0;class#Map#0" expanded="false" />
             <element signature="method#sendCommandToMap#1;class#Map#0" expanded="false" />
             <element signature="docComment;method#xml_writeMap#0;class#Map#0" expanded="false" />
-            <element signature="method#xml_writeMap#0;class#Map#0" expanded="false" />
-            <element signature="e#13209#13245#0" expanded="false" />
-            <element signature="e#13720#13756#0" expanded="false" />
-            <element signature="docComment;method#xml_writeEntity#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeEntity#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#xml_writeItem#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeItem#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeStatsDrawable#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeStatsEntity#0;class#Map#0" expanded="false" />
+            <element signature="method#xml_writeTerrain#0;class#Map#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1153,43 +1286,42 @@
           <caret line="42" column="19" selection-start-line="42" selection-start-column="19" selection-end-line="42" selection-end-column="19" />
           <folding>
             <element signature="docComment;class#Map#0" expanded="false" />
-            <element signature="docComment;method#addTerrain#0;class#Map#0" expanded="false" />
-            <element signature="method#addTerrain#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#addAvatar#0;class#Map#0" expanded="false" />
-            <element signature="method#addAvatar#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#getEntityByName#0;class#Map#0" expanded="false" />
+            <element signature="method#getMapGrid#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#getTile#0;class#Map#0" expanded="false" />
+            <element signature="method#getTile#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#getTileRepresentation#0;class#Map#0" expanded="false" />
+            <element signature="method#getTileRepresentation#0;class#Map#0" expanded="false" />
+            <element signature="method#Map#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#Map#1;class#Map#0" expanded="false" />
+            <element signature="method#Map#1;class#Map#0" expanded="false" />
             <element signature="docComment;method#getAvatarByName#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#removeAvatar#0;class#Map#0" expanded="false" />
             <element signature="method#removeAvatar#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#addEntity#0;class#Map#0" expanded="false" />
             <element signature="method#addEntity#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#addTerrain#0;class#Map#0" expanded="false" />
+            <element signature="method#addTerrain#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#addAvatar#0;class#Map#0" expanded="false" />
+            <element signature="method#addAvatar#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#makeView#0;class#Map#0" expanded="false" />
             <element signature="method#makeView#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#getEntityByName#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#removeEntity#0;class#Map#0" expanded="false" />
             <element signature="method#removeEntity#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#getTile#0;class#Map#0" expanded="false" />
-            <element signature="method#getTile#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#getTileRepresentation#0;class#Map#0" expanded="false" />
-            <element signature="method#getTileRepresentation#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#addItem#0;class#Map#0" expanded="false" />
             <element signature="method#addItem#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#removeTopItem#0;class#Map#0" expanded="false" />
             <element signature="method#removeTopItem#0;class#Map#0" expanded="false" />
-            <element signature="method#Map#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#Map#1;class#Map#0" expanded="false" />
-            <element signature="method#Map#1;class#Map#0" expanded="false" />
             <element signature="docComment;method#sendCommandToMap#0;class#Map#0" expanded="false" />
             <element signature="method#sendCommandToMap#0;class#Map#0" expanded="false" />
             <element signature="method#sendCommandToMap#1;class#Map#0" expanded="false" />
             <element signature="docComment;method#xml_writeMap#0;class#Map#0" expanded="false" />
-            <element signature="method#xml_writeMap#0;class#Map#0" expanded="false" />
-            <element signature="e#13209#13245#0" expanded="false" />
-            <element signature="e#13720#13756#0" expanded="false" />
-            <element signature="docComment;method#xml_writeEntity#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeEntity#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#xml_writeItem#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeItem#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeStatsDrawable#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeStatsEntity#0;class#Map#0" expanded="false" />
+            <element signature="method#xml_writeTerrain#0;class#Map#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1398,30 +1530,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/model/map/constructs/Avatar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="705" max-vertical-offset="2505">
-          <caret line="169" column="22" selection-start-line="169" selection-start-column="22" selection-end-line="169" selection-end-column="22" />
-          <folding>
-            <element signature="docComment;class#Avatar#0" expanded="false" />
-            <element signature="docComment;method#gainExperiencePoints#0;class#Avatar#0" expanded="false" />
-            <element signature="method#gainExperiencePoints#0;class#Avatar#0" expanded="false" />
-            <element signature="docComment;method#gainEnoughExperienceTolevelUp#0;class#Avatar#0" expanded="false" />
-            <element signature="method#gainEnoughExperienceTolevelUp#0;class#Avatar#0" expanded="false" />
-            <element signature="docComment;method#spendSkillpointOn#0;class#Avatar#0" expanded="false" />
-            <element signature="method#spendSkillpointOn#0;class#Avatar#0" expanded="false" />
-            <element signature="docComment;method#acceptKeyCommand#0;class#Avatar#0" expanded="false" />
-            <element signature="e#5385#5410#0" expanded="false" />
-            <element signature="docComment;method#getMapRelation#0;class#Avatar#0" expanded="false" />
-            <element signature="docComment;method#setMapRelation#0;class#Avatar#0" expanded="false" />
-            <element signature="method#saveGame#0;class#Avatar#0" expanded="false" />
-            <element signature="docComment;method#replyToAttackFrom#0;class#Avatar#0" expanded="false" />
-            <element signature="method#replyToAttackFrom#0;class#Avatar#0" expanded="false" />
-            <element signature="method#toString#0;class#Avatar#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/model/map/MapTile.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="900">
@@ -1590,86 +1698,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/model/map/constructs/Entity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1310" max-vertical-offset="1920">
-          <caret line="263" column="7" selection-start-line="263" selection-start-column="7" selection-end-line="263" selection-end-column="7" />
-          <folding>
-            <element signature="docComment;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#addItemStatsToMyStats#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#checkHealth#0;class#Entity#0" expanded="false" />
-            <element signature="method#checkHealth#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#commitSuicide#0;class#Entity#0" expanded="false" />
-            <element signature="method#commitSuicide#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#Entity#0;class#Entity#0" expanded="false" />
-            <element signature="method#Entity#0;class#Entity#0" expanded="false" />
-            <element signature="method#getEquipped#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#equipInventoryItem#0;class#Entity#0" expanded="false" />
-            <element signature="method#equipInventoryItem#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#unEquipInventoryItem#0;class#Entity#0" expanded="false" />
-            <element signature="method#unEquipInventoryItem#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#gainEnoughExperienceTolevelUp#0;class#Entity#0" expanded="false" />
-            <element signature="method#hasEquipped#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#isPassable#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#addItemToInventory#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#getLastItemInInventory#0;class#Entity#0" expanded="false" />
-            <element signature="method#getLastItemInInventory#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#getInventory#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#pullLastItemOutOfInventory#0;class#Entity#0" expanded="false" />
-            <element signature="method#pullLastItemOutOfInventory#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#useLastInventoryItem#0;class#Entity#0" expanded="false" />
-            <element signature="method#useLastInventoryItem#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#gainExperiencePoints#0;class#Entity#0" expanded="false" />
-            <element signature="method#gainExperiencePoints#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#getMapRelation#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#setMapRelation#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#getOccupation#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#setOccupation#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#becomeSmasher#0;class#Entity#0" expanded="false" />
-            <element signature="method#becomeSmasher#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#becomeSummoner#0;class#Entity#0" expanded="false" />
-            <element signature="method#becomeSummoner#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#becomeSneak#0;class#Entity#0" expanded="false" />
-            <element signature="method#becomeSneak#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#recalculateStats#0;class#Entity#0" expanded="false" />
-            <element signature="method#recalculateStats#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#receiveAttack#0;class#Entity#0" expanded="false" />
-            <element signature="method#receiveAttack#0;class#Entity#0" expanded="false" />
-            <element signature="method#reply#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#replyToAttackFrom#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#getStatsPack#0;class#Entity#0" expanded="false" />
-            <element signature="docComment;method#subtractItemStatsFromMyStats#0;class#Entity#0" expanded="false" />
-            <element signature="method#toString#0;class#Entity#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/model/map/constructs/Item.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="217" max-vertical-offset="840">
-          <caret line="119" column="35" selection-start-line="119" selection-start-column="35" selection-end-line="119" selection-end-column="35" />
-          <folding>
-            <element signature="docComment;class#Item#0" expanded="false" />
-            <element signature="method#Item#0;class#Item#0" expanded="false" />
-            <element signature="method#setPassable#0;class#Item#0" expanded="false" />
-            <element signature="method#determineIfCanPass#0;class#Item#0" expanded="false" />
-            <element signature="docComment;method#goesInInventory#0;class#Item#0" expanded="false" />
-            <element signature="docComment;method#isPassable#0;class#Item#0" expanded="false" />
-            <element signature="docComment;method#isOneShot#0;class#Item#0" expanded="false" />
-            <element signature="docComment;method#getMapRelation#0;class#Item#0" expanded="false" />
-            <element signature="docComment;method#onWalkOver#0;class#Item#0" expanded="false" />
-            <element signature="method#onWalkOver#0;class#Item#0" expanded="false" />
-            <element signature="e#2427#2490#0" expanded="false" />
-            <element signature="method#toString#0;class#Item#0" expanded="false" />
-            <element signature="docComment;method#use#0;class#Item#0" expanded="false" />
-            <element signature="method#use#0;class#Item#0" expanded="false" />
-            <element signature="e#3107#3160#0" expanded="false" />
-            <element signature="docComment;method#use#1;class#Item#0" expanded="false" />
-            <element signature="method#use#1;class#Item#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/model/map/constructs/DrawableThingStatsPack.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="202" max-vertical-offset="1005">
@@ -1739,49 +1767,152 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/model/map/constructs/Item.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="217" max-vertical-offset="840">
+          <caret line="119" column="35" selection-start-line="119" selection-start-column="35" selection-end-line="119" selection-end-column="35" />
+          <folding>
+            <element signature="docComment;class#Item#0" expanded="false" />
+            <element signature="method#Item#0;class#Item#0" expanded="false" />
+            <element signature="method#setPassable#0;class#Item#0" expanded="false" />
+            <element signature="method#determineIfCanPass#0;class#Item#0" expanded="false" />
+            <element signature="docComment;method#goesInInventory#0;class#Item#0" expanded="false" />
+            <element signature="docComment;method#isPassable#0;class#Item#0" expanded="false" />
+            <element signature="docComment;method#isOneShot#0;class#Item#0" expanded="false" />
+            <element signature="docComment;method#getMapRelation#0;class#Item#0" expanded="false" />
+            <element signature="docComment;method#onWalkOver#0;class#Item#0" expanded="false" />
+            <element signature="method#onWalkOver#0;class#Item#0" expanded="false" />
+            <element signature="e#2427#2490#0" expanded="false" />
+            <element signature="method#toString#0;class#Item#0" expanded="false" />
+            <element signature="docComment;method#use#0;class#Item#0" expanded="false" />
+            <element signature="method#use#0;class#Item#0" expanded="false" />
+            <element signature="e#3107#3160#0" expanded="false" />
+            <element signature="docComment;method#use#1;class#Item#0" expanded="false" />
+            <element signature="method#use#1;class#Item#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/model/map/constructs/Avatar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1035">
+          <caret line="250" column="5" selection-start-line="250" selection-start-column="5" selection-end-line="250" selection-end-column="5" />
+          <folding>
+            <element signature="docComment;class#Avatar#0" expanded="false" />
+            <element signature="docComment;method#gainExperiencePoints#0;class#Avatar#0" expanded="false" />
+            <element signature="method#gainExperiencePoints#0;class#Avatar#0" expanded="false" />
+            <element signature="docComment;method#gainEnoughExperienceTolevelUp#0;class#Avatar#0" expanded="false" />
+            <element signature="method#gainEnoughExperienceTolevelUp#0;class#Avatar#0" expanded="false" />
+            <element signature="docComment;method#spendSkillpointOn#0;class#Avatar#0" expanded="false" />
+            <element signature="method#spendSkillpointOn#0;class#Avatar#0" expanded="false" />
+            <element signature="docComment;method#acceptKeyCommand#0;class#Avatar#0" expanded="false" />
+            <element signature="method#acceptKeyCommand#0;class#Avatar#0" expanded="false" />
+            <element signature="e#5385#5410#0" expanded="false" />
+            <element signature="docComment;method#getMapRelation#0;class#Avatar#0" expanded="false" />
+            <element signature="docComment;method#setMapRelation#0;class#Avatar#0" expanded="false" />
+            <element signature="docComment;method#replyToAttackFrom#0;class#Avatar#0" expanded="false" />
+            <element signature="method#replyToAttackFrom#0;class#Avatar#0" expanded="false" />
+            <element signature="method#toString#0;class#Avatar#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/model/map/constructs/Entity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1310" max-vertical-offset="1920">
+          <caret line="263" column="7" selection-start-line="263" selection-start-column="7" selection-end-line="263" selection-end-column="7" />
+          <folding>
+            <element signature="docComment;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#addItemStatsToMyStats#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#checkHealth#0;class#Entity#0" expanded="false" />
+            <element signature="method#checkHealth#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#commitSuicide#0;class#Entity#0" expanded="false" />
+            <element signature="method#commitSuicide#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#Entity#0;class#Entity#0" expanded="false" />
+            <element signature="method#Entity#0;class#Entity#0" expanded="false" />
+            <element signature="method#getEquipped#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#equipInventoryItem#0;class#Entity#0" expanded="false" />
+            <element signature="method#equipInventoryItem#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#unEquipInventoryItem#0;class#Entity#0" expanded="false" />
+            <element signature="method#unEquipInventoryItem#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#gainEnoughExperienceTolevelUp#0;class#Entity#0" expanded="false" />
+            <element signature="method#hasEquipped#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#isPassable#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#addItemToInventory#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#getLastItemInInventory#0;class#Entity#0" expanded="false" />
+            <element signature="method#getLastItemInInventory#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#getInventory#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#pullLastItemOutOfInventory#0;class#Entity#0" expanded="false" />
+            <element signature="method#pullLastItemOutOfInventory#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#useLastInventoryItem#0;class#Entity#0" expanded="false" />
+            <element signature="method#useLastInventoryItem#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#gainExperiencePoints#0;class#Entity#0" expanded="false" />
+            <element signature="method#gainExperiencePoints#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#getMapRelation#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#setMapRelation#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#getOccupation#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#setOccupation#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#becomeSmasher#0;class#Entity#0" expanded="false" />
+            <element signature="method#becomeSmasher#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#becomeSummoner#0;class#Entity#0" expanded="false" />
+            <element signature="method#becomeSummoner#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#becomeSneak#0;class#Entity#0" expanded="false" />
+            <element signature="method#becomeSneak#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#recalculateStats#0;class#Entity#0" expanded="false" />
+            <element signature="method#recalculateStats#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#receiveAttack#0;class#Entity#0" expanded="false" />
+            <element signature="method#receiveAttack#0;class#Entity#0" expanded="false" />
+            <element signature="method#reply#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#replyToAttackFrom#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#getStatsPack#0;class#Entity#0" expanded="false" />
+            <element signature="docComment;method#subtractItemStatsFromMyStats#0;class#Entity#0" expanded="false" />
+            <element signature="method#toString#0;class#Entity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/model/map/Map.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34991974" vertical-offset="1327" max-vertical-offset="2130">
-          <caret line="598" column="55" selection-start-line="598" selection-start-column="55" selection-end-line="598" selection-end-column="55" />
+        <state vertical-scroll-proportion="0.26885247" vertical-offset="466" max-vertical-offset="1500">
+          <caret line="374" column="65" selection-start-line="374" selection-start-column="65" selection-end-line="374" selection-end-column="65" />
           <folding>
             <element signature="docComment;class#Map#0" expanded="false" />
-            <element signature="docComment;method#addTerrain#0;class#Map#0" expanded="false" />
-            <element signature="method#addTerrain#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#addAvatar#0;class#Map#0" expanded="false" />
-            <element signature="method#addAvatar#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#getEntityByName#0;class#Map#0" expanded="false" />
+            <element signature="method#getMapGrid#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#getTile#0;class#Map#0" expanded="false" />
+            <element signature="method#getTile#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#getTileRepresentation#0;class#Map#0" expanded="false" />
+            <element signature="method#getTileRepresentation#0;class#Map#0" expanded="false" />
+            <element signature="method#Map#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#Map#1;class#Map#0" expanded="false" />
+            <element signature="method#Map#1;class#Map#0" expanded="false" />
             <element signature="docComment;method#getAvatarByName#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#removeAvatar#0;class#Map#0" expanded="false" />
             <element signature="method#removeAvatar#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#addEntity#0;class#Map#0" expanded="false" />
             <element signature="method#addEntity#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#addTerrain#0;class#Map#0" expanded="false" />
+            <element signature="method#addTerrain#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#addAvatar#0;class#Map#0" expanded="false" />
+            <element signature="method#addAvatar#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#makeView#0;class#Map#0" expanded="false" />
             <element signature="method#makeView#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#getEntityByName#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#removeEntity#0;class#Map#0" expanded="false" />
             <element signature="method#removeEntity#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#getTile#0;class#Map#0" expanded="false" />
-            <element signature="method#getTile#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#getTileRepresentation#0;class#Map#0" expanded="false" />
-            <element signature="method#getTileRepresentation#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#addItem#0;class#Map#0" expanded="false" />
             <element signature="method#addItem#0;class#Map#0" expanded="false" />
             <element signature="docComment;method#removeTopItem#0;class#Map#0" expanded="false" />
             <element signature="method#removeTopItem#0;class#Map#0" expanded="false" />
-            <element signature="method#Map#0;class#Map#0" expanded="false" />
-            <element signature="docComment;method#Map#1;class#Map#0" expanded="false" />
-            <element signature="method#Map#1;class#Map#0" expanded="false" />
             <element signature="docComment;method#sendCommandToMap#0;class#Map#0" expanded="false" />
             <element signature="method#sendCommandToMap#0;class#Map#0" expanded="false" />
             <element signature="method#sendCommandToMap#1;class#Map#0" expanded="false" />
             <element signature="docComment;method#xml_writeMap#0;class#Map#0" expanded="false" />
-            <element signature="method#xml_writeMap#0;class#Map#0" expanded="false" />
-            <element signature="e#13209#13245#0" expanded="false" />
-            <element signature="e#13720#13756#0" expanded="false" />
-            <element signature="docComment;method#xml_writeEntity#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeEntity#0;class#Map#0" expanded="false" />
+            <element signature="docComment;method#xml_writeItem#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeItem#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeStatsDrawable#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeStatsEntity#0;class#Map#0" expanded="false" />
+            <element signature="method#xml_writeTerrain#0;class#Map#0" expanded="false" />
           </folding>
         </state>
       </provider>

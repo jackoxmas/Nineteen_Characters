@@ -249,8 +249,6 @@ public final class Avatar extends Entity {
     public Avatar(String name, char representation) {
         super(name, representation);
     }
-
-
   
     // map_relationship_ is used in place of a map_reference_
     private MapAvatar_Relation map_relationship_;
@@ -277,10 +275,6 @@ public final class Avatar extends Entity {
     /* Make sure to call set map after this!
      * 
      */
-
-    private void saveGame() {
-        // TODO: fix this. We need to pass the Map reference and the active UserController reference
-    }
 
     /**
      * Avatars automatically do nothing when attacked

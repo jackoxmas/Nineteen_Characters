@@ -101,10 +101,10 @@ public final class UserController implements KeyListener, MouseWheelListener
     		if(c == 'i'){currentView_ = new MapView(); taken = true;}
     	}
     	if(!taken){
-    	currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, c, Viewport.width_/2,Viewport.height_/2));
+    	currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, c, currentView_.getWidth()/2,currentView_.getHeight()/2));
     	}
     	else{
-    		currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, stillChar_, Viewport.width_/2,Viewport.height_/2));
+    		currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, stillChar_, currentView_.getWidth()/2,currentView_.getHeight()/2));
     		//I need to get this info without sending a command, sending ' ' is a hack for now.
     	}
     }

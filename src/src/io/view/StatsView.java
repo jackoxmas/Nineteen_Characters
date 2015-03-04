@@ -34,7 +34,7 @@ public final class StatsView extends Viewport
     public StatsView(String _uName) {
     	super();
     	userName_ = _uName;
-    	view_contents_= new char[width_][height_];
+    	view_contents_= new char[this.getWidth()][this.getHeight()];
 		template_ = getAsciiArtFromFile("ASCIIART/statsview.txt");
 	}
     

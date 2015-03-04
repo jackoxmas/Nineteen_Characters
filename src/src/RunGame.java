@@ -28,6 +28,8 @@ public class RunGame {
     private static Map map_;
     private static UserController uc_;
     private static ChatBoxController cc_;
+    private static int mapHeight_ = 40;
+    private static int mapWidth_ = 40;
 
     public static void main(String[] args) {
         parseArgs(args); // Parse command line arguments
@@ -55,7 +57,7 @@ public class RunGame {
     private static void initialize() {
         if (saveGame_ == null)
             saveGame_ = SavedGame.newSavedGame();
-        map_ = new Map(Viewport.width_ / 2, Viewport.height_);
+        map_ = new Map(mapWidth_,mapHeight_);
         avatar_ = new Avatar("avatar", '☃');
         map_.addAvatar(avatar_, 0, 0);
 
@@ -77,8 +79,8 @@ public class RunGame {
         map_.addItem(brown, 9, 9); // ▨
         map_.addItem(seven, 5, 5); // ▨
         map_.addItem(teleport, 2, 4);
-        for (int y = 0; y < Viewport.height_; ++y) {
-            for (int x = 0; x < Viewport.width_ / 2; ++x) {
+        for (int y = 0; y < mapHeight_; ++y) {
+            for (int x = 0; x < mapWidth_; ++x) {
                 Terrain obstacle = new Terrain("land", '▨', false, false);
                 if (y == 4) {
                     if (x == 2) {

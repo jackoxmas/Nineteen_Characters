@@ -230,8 +230,8 @@ public class Display {
         char[][] in = current_view_.getContents();
         StringBuilder out = new StringBuilder();
     		// Use this to print a 2D array
-    		for(int j = 0; j!=current_view_.height_;++j){
-    			for(int i = 0; i!=current_view_.width_;++i){
+    		for(int j = 0; j!=current_view_.getHeight();++j){
+    			for(int i = 0; i!=current_view_.getWidth();++i){
     				out.append(in[i][j]);
     			}
     			out.append(System.lineSeparator());
@@ -260,7 +260,7 @@ public class Display {
      * @param attr
      */
     private void colorChar(int x, int y, AttributeSet attr){
-    	pane_.getStyledDocument().setCharacterAttributes(y*(Viewport.width_+1)+x, 1, attr, false);
+    	pane_.getStyledDocument().setCharacterAttributes(y*(current_view_.getWidth()+1)+x, 1, attr, false);
     }
     /** 
      * Helper method to handle 'clearing' the screen

@@ -18,10 +18,11 @@ import src.model.Vector2;
  */
 public abstract class Viewport {
 
-    public static final int height_=40;
-    public static final int width_=80;
+    private final int height_=40;
+    private final int width_=80;
 	private transient char[][] view_contents_;
-
+	public int getHeight(){return height_;}
+	public int getWidth(){return width_;}
 	public abstract boolean getInput(char c);
 
 	public Viewport(){

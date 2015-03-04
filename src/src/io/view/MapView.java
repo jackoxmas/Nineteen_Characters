@@ -37,10 +37,10 @@ public final class MapView extends Viewport {
 	 */
 	private void render(IO_Bundle bundle){
 		clear();
-		makeSquare(0, 0,width_-1,height_-1);
+		makeSquare(0, 0,this.getWidth()-1,this.getHeight()-1);
 		if(bundle.view_for_display_ == null || bundle.view_for_display_.length == 0){return;}
-		for(int i = 0;i<width_-2 && i < bundle.view_for_display_[0].length;++i){
-			for(int j = 0;j<height_-2 && j< bundle.view_for_display_.length;++j){
+		for(int i = 0;i<this.getWidth()-2 && i < bundle.view_for_display_[0].length;++i){
+			for(int j = 0;j<this.getHeight()-2 && j< bundle.view_for_display_.length;++j){
 				view_contents_[i+1][j+1] = bundle.view_for_display_[bundle.view_for_display_.length-j-1][i];
 			}
 

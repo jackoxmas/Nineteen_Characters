@@ -51,14 +51,14 @@ public final class AvatarCreationView extends Viewport
      * that renderToDisplay remains pure
      */
     private void renderArray(){
-    	makeSquare(0,0,width_-1,height_-1);
+    	makeSquare(0,0,this.getWidth()-1,this.getHeight()-1);
     	for(int i = 0; i!=title_.size();++i){
     		writeStringToContents(5,1+i,title_.get(i));
     	}
 
-    	int heightFromBottom = height_-sneakerArt_.size()-1;
+    	int heightFromBottom = this.getHeight()-sneakerArt_.size()-1;
     	for(int i = 0; i!=sneakerArt_.size();++i){
-    		int offCenteredLength = width_/2-sneakerArt_.get(0).length()/2;
+    		int offCenteredLength = this.getWidth()/2-sneakerArt_.get(0).length()/2;
     		writeStringToContents(offCenteredLength,heightFromBottom+i,sneakerArt_.get(i));
     		//Above is a bit long, but I don't really think it's worth moving to a function, doing so would be just as cluttering. 
     	}
@@ -73,7 +73,7 @@ public final class AvatarCreationView extends Viewport
     	
     	//Summoner positioning a bit weird
     	heightFromBottom+=summonerArt_.size()-3;//3 is the magic constant. Really, it makes it looks properly spaced.
-    	int midpoint = width_/2;
+    	int midpoint = this.getWidth()/2;
     	writeStringToContents(midpoint,heightFromBottom,summonerString_);
     	++heightFromBottom;
     	for(int i = 0; i!=summonerArt_.size();++i){

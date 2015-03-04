@@ -6,10 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 import src.RunGame;
-import src.model.map.constructs.Avatar;
-import src.model.map.constructs.Entity;
-import src.model.map.constructs.Item;
-import src.model.map.constructs.Terrain;
+import src.model.map.constructs.*;
 import src.model.*;
 
 import org.w3c.dom.Element;
@@ -29,121 +26,23 @@ public class Map implements MapUser_Interface {
     public static final int MAX_NUMBER_OF_WORLDS = 1;
     private static int number_of_worlds_generated_ = 0;
     // Item is the address of an item in memory. Location is its xy coordinates on the grid.
-    private transient LinkedList<Item> items_list_;
 
-    /**
-     * Once a tile has terrain, that terrain is constant.
-     *
-     * @param t - Terrain
-     * @param x - x position for tile
-     * @param y - y position for tile
-     * @return error code
-     */
-    public int addTerrain(Terrain t, int x, int y) {
-        t.setMapRelation(new MapTerrain_Relation(this, t));
-        int error_code = this.map_grid_[y][x].addTerrain(t);
-        if (error_code == 0) {
-            t.getMapRelation().setMapTile(this.map_grid_[y][x]);
-        } else {
-            t.setMapRelation(null);
-        }
-        return error_code;
-    }
+    //<editor-fold desc="Fields and Accessors" defaultstate="collapsed">
+
+    // The map has a clock
+    private int time_measured_in_turns;
+    // MAP MUST BE SQUARE
+    //TODO:if Map has to be square, why have two different variables that will always be equivalent?
+    public int height_;
+    public int width_;
 
     // String is the avatar's name. The avatar name must be unqiue or else bugs will occur.
-    private transient LinkedHashMap<String, Avatar> avatar_list_;
-
-    /**
-     * Adds an avatar to the map.
-     *
-     * @param a - Avatar to be added
-     * @param x - x position of where you want to add Avatar
-     * @param y - y posiition of where you want to add Avatar
-     * @return -1 on fail, 0 on success
-     */
-    public int addAvatar(Avatar a, int x, int y) {
-        a.setMapRelation(new MapAvatar_Relation(this, a, x, y));
-        int error_code = this.map_grid_[y][x].addEntity(a);
-        if (error_code == 0) {
-            this.avatar_list_.put(a.name_, a);
-        } else {
-            a.setMapRelation(null);
-        }
-        return error_code;
-    }
-
-    /**
-     *
-     * @param name - name of Avatar
-     * @return Avatar with the name of of input.
-     */
-    public Avatar getAvatarByName(String name) {
-        return this.avatar_list_.get(name);
-    }
-
-    /**
-     * Removes and Avatar from map.
-     *
-     * @param a - Avatar to be removed.
-     * @return -1 if the entity to be removed does not exist.
-     */
-    public int removeAvatar(Avatar a) {
-        this.avatar_list_.remove(a.name_);
-        if (this.map_grid_[a.getMapRelation().getMyXCoordinate()][a.getMapRelation().getMyYCoordinate()].getEntity() == a) {
-            this.map_grid_[a.getMapRelation().getMyXCoordinate()][a.getMapRelation().getMyYCoordinate()].removeEntity();
-            a.setMapRelation(null);
-            return 0;
-        } else {
-            return -1;
-        }
-    }
-
+    private LinkedHashMap<String, Avatar> avatar_list_;
     // String is the entity's name. The entity name must be unqiue or else bugs will occur.
-    private transient LinkedHashMap<String, Entity> entity_list_;
-
-    /**
-     * Adds an entity to the map.
-     *
-     * @param e - Entity to be added
-     * @param x - x position of where you want to add entity
-     * @param y - y posiition of where you want to add entity
-     * @return -1 on fail, 0 on success
-     */
-    public int addEntity(Entity e, int x, int y) {
-        e.setMapRelation(new MapEntity_Relation(this, e, x, y));
-        int error_code = this.map_grid_[y][x].addEntity(e);
-        if (error_code == 0) {
-            this.entity_list_.put(e.name_, e);
-        } else {
-            e.setMapRelation(null);
-        }
-        return error_code;
-    }
-
-    /**
-     * Makes a rectangular view with y coordinates in first [] of 2D array
-     *
-     * @param x_center
-     * @param y_center
-     * @param width_from_center - how much offset from the left side and the
-     * right side the view has
-     * @param height_from_center- how much horizontal offset from the center
-     * point the view has
-     * @return
-     */
-    public char[][] makeView(int x_center, int y_center, int width_from_center, int height_from_center) {
-        char[][] view = new char[1 + 2 * height_from_center][1 + 2 * width_from_center];
-        int y_index = 0;
-        for (int y = y_center - height_from_center; y <= y_center + height_from_center; ++y) {
-            int x_index = 0;
-            for (int x = x_center - width_from_center; x <= x_center + width_from_center; ++x) {
-                view[y_index][x_index] = this.getTileRepresentation(x, y);
-                ++x_index;
-            }
-            ++y_index;
-        }
-        return view;
-    }
+    private LinkedHashMap<String, Entity> entity_list_;
+    private LinkedList<Item> items_list_;
+    // 2d array of tiles.
+    private transient MapTile map_grid_[][];
 
     /**
      *
@@ -154,21 +53,11 @@ public class Map implements MapUser_Interface {
         return this.entity_list_.get(name);
     }
 
-    /**
-     * Removes entity from map.
-     *
-     * @param e - entity to be removed
-     * @return -1 if the entity to be removed does not exist.
-     */
-    public int removeEntity(Entity e) {
-        this.avatar_list_.remove(e.name_);
-        if (this.map_grid_[e.getMapRelation().getMyXCoordinate()][e.getMapRelation().getMyYCoordinate()].getEntity() == e) {
-            this.map_grid_[e.getMapRelation().getMyXCoordinate()][e.getMapRelation().getMyYCoordinate()].removeEntity();
-            e.setMapRelation(null);
-            return 0;
-        }
-        return -1;
+    public LinkedList<Item> getItemsList() {
+        return items_list_;
     }
+
+    public MapTile[][] getMapGrid() { return map_grid_; }
 
     /**
      * Gets mapTile at (x,y).
@@ -201,50 +90,9 @@ public class Map implements MapUser_Interface {
         }
     }
 
+    //</editor-fold>
 
-
-    /**
-     * Adds an item to the map.
-     *
-     * @param i - Item to be added
-     * @param x - x position of where you want to add item
-     * @param y - y posiition of where you want to add item
-     * @return -1 on fail, 0 on success
-     */
-    public int addItem(Item i, int x, int y) {
-        i.setMapRelation(new MapItem_Relation(this, i));
-        int error_code = this.map_grid_[y][x].addItem(i);
-        if (error_code == 0) {
-            items_list_.add(i);
-        } else {
-            i.setMapRelation(null);
-        }
-        return error_code;
-    }
-
-    public LinkedList<Item> getItemsList() {
-        return items_list_;
-    }
-
-    /**
-     * Removes top item from tile in position (x,y).
-     *
-     * @param x - x position of tile
-     * @param y - y position of tile
-     * @return Top item from tile (x,y)
-     */
-    public Item removeTopItem(int x, int y) {
-        Item item = this.map_grid_[y][x].removeTopItem();
-        items_list_.remove(item);
-        return item;
-    }
-
-    //public static boolean NDEBUG_ = true;
-    // MAP MUST BE SQUARE
-    //TODO:if Map has to be square, why have two different variables that will always be equivalent?
-    public int height_;
-    public int width_;
-
+    //<editor-fold desc="Constructors" defaultstate="collapsed">
     // This should never get called
     private Map() {//throws Exception {
         height_ = 0;
@@ -290,13 +138,168 @@ public class Map implements MapUser_Interface {
             time_measured_in_turns = 0;
         }
     }
+    //</editor-fold>
 
-    // 2d array of tiles.
-    private transient MapTile map_grid_[][];
-
-    public MapTile[][] getMapGrid() {
-        return map_grid_;
+    //<editor-fold desc="Map Methods" defaultstate="collapsed">
+    /**
+     *
+     * @param name - name of Avatar
+     * @return Avatar with the name of of input.
+     */
+    public Avatar getAvatarByName(String name) {
+        return this.avatar_list_.get(name);
     }
+
+    /**
+     * Removes and Avatar from map.
+     *
+     * @param a - Avatar to be removed.
+     * @return -1 if the entity to be removed does not exist.
+     */
+    public int removeAvatar(Avatar a) {
+        this.avatar_list_.remove(a.name_);
+        if (this.map_grid_[a.getMapRelation().getMyXCoordinate()][a.getMapRelation().getMyYCoordinate()].getEntity() == a) {
+            this.map_grid_[a.getMapRelation().getMyXCoordinate()][a.getMapRelation().getMyYCoordinate()].removeEntity();
+            a.setMapRelation(null);
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+
+    /**
+     * Adds an entity to the map.
+     *
+     * @param e - Entity to be added
+     * @param x - x position of where you want to add entity
+     * @param y - y posiition of where you want to add entity
+     * @return -1 on fail, 0 on success
+     */
+    public int addEntity(Entity e, int x, int y) {
+        e.setMapRelation(new MapEntity_Relation(this, e, x, y));
+        int error_code = this.map_grid_[y][x].addEntity(e);
+        if (error_code == 0) {
+            this.entity_list_.put(e.name_, e);
+        } else {
+            e.setMapRelation(null);
+        }
+        return error_code;
+    }
+
+    /**
+     * Once a tile has terrain, that terrain is constant.
+     *
+     * @param t - Terrain
+     * @param x - x position for tile
+     * @param y - y position for tile
+     * @return error code
+     */
+    public int addTerrain(Terrain t, int x, int y) {
+        t.setMapRelation(new MapTerrain_Relation(this, t));
+        int error_code = this.map_grid_[y][x].addTerrain(t);
+        if (error_code == 0) {
+            t.getMapRelation().setMapTile(this.map_grid_[y][x]);
+        } else {
+            t.setMapRelation(null);
+        }
+        return error_code;
+    }
+
+    /**
+     * Adds an avatar to the map.
+     *
+     * @param a - Avatar to be added
+     * @param x - x position of where you want to add Avatar
+     * @param y - y posiition of where you want to add Avatar
+     * @return -1 on fail, 0 on success
+     */
+    public int addAvatar(Avatar a, int x, int y) {
+        a.setMapRelation(new MapAvatar_Relation(this, a, x, y));
+        int error_code = this.map_grid_[y][x].addEntity(a);
+        if (error_code == 0) {
+            this.avatar_list_.put(a.name_, a);
+        } else {
+            a.setMapRelation(null);
+        }
+        return error_code;
+    }
+
+    /**
+     * Makes a rectangular view with y coordinates in first [] of 2D array
+     *
+     * @param x_center
+     * @param y_center
+     * @param width_from_center - how much offset from the left side and the
+     * right side the view has
+     * @param height_from_center- how much horizontal offset from the center
+     * point the view has
+     * @return
+     */
+    public char[][] makeView(int x_center, int y_center, int width_from_center, int height_from_center) {
+        char[][] view = new char[1 + 2 * height_from_center][1 + 2 * width_from_center];
+        int y_index = 0;
+        for (int y = y_center - height_from_center; y <= y_center + height_from_center; ++y) {
+            int x_index = 0;
+            for (int x = x_center - width_from_center; x <= x_center + width_from_center; ++x) {
+                view[y_index][x_index] = this.getTileRepresentation(x, y);
+                ++x_index;
+            }
+            ++y_index;
+        }
+        return view;
+    }
+
+
+
+    /**
+     * Removes entity from map.
+     *
+     * @param e - entity to be removed
+     * @return -1 if the entity to be removed does not exist.
+     */
+    public int removeEntity(Entity e) {
+        this.avatar_list_.remove(e.name_);
+        if (this.map_grid_[e.getMapRelation().getMyXCoordinate()][e.getMapRelation().getMyYCoordinate()].getEntity() == e) {
+            this.map_grid_[e.getMapRelation().getMyXCoordinate()][e.getMapRelation().getMyYCoordinate()].removeEntity();
+            e.setMapRelation(null);
+            return 0;
+        }
+        return -1;
+    }
+
+    /**
+     * Adds an item to the map.
+     *
+     * @param i - Item to be added
+     * @param x - x position of where you want to add item
+     * @param y - y posiition of where you want to add item
+     * @return -1 on fail, 0 on success
+     */
+    public int addItem(Item i, int x, int y) {
+        i.setMapRelation(new MapItem_Relation(this, i));
+        int error_code = this.map_grid_[y][x].addItem(i);
+        if (error_code == 0) {
+            items_list_.add(i);
+        } else {
+            i.setMapRelation(null);
+        }
+        return error_code;
+    }
+
+    /**
+     * Removes top item from tile in position (x,y).
+     *
+     * @param x - x position of tile
+     * @param y - y position of tile
+     * @return Top item from tile (x,y)
+     */
+    public Item removeTopItem(int x, int y) {
+        Item item = this.map_grid_[y][x].removeTopItem();
+        items_list_.remove(item);
+        return item;
+    }
+
+    //</editor-fold>
 
     /**
      * @author John-Michael Reed
@@ -343,10 +346,7 @@ public class Map implements MapUser_Interface {
         }
     }
 
-    // The map has a clock
-    private int time_measured_in_turns;
-
-    //<editor-fold desc="XML" defaultstate="collapsed">
+    //<editor-fold desc="XML Saving/Loading" defaultstate="collapsed">
     /**
      * Writes this map to the given XML Element in the given XML document
      * @param doc The XML Document to write to
@@ -384,47 +384,43 @@ public class Map implements MapUser_Interface {
                 Entity ent = this.map_grid_[i][j].getEntity();
                 if (ent != null)
                     xml_writeEntity(doc, e_l, ent);
-                // TODO: remove if above code works:
-                // write entity hash code to 'entity' element
-                //e_l.appendChild(doc.createElement("entity").appendChild(doc.createTextNode(Integer.toString(System.identityHashCode(map_grid_[i][j].getEntity())))));
 
                 // Item list
-                Element e_itemlist = doc.createElement("item_list");
-                for (Item item : map_grid_[i][j].getItemList()) {
-                    xml_writeItem(doc, e_itemlist, item);
-
-                    // TODO: remove if above code works:
-                    //tmp_eItem = doc.createElement("item");
-                    //tmp_eItem.appendChild(doc.createTextNode(Integer.toString(System.identityHashCode(item))));
-                    //e_itemlist.appendChild(tmp_eItem);
+                if (map_grid_[i][j].getItemList().size() != 0) {
+                    Element e_itemlist = doc.createElement("item_list");
+                    for (Item item : map_grid_[i][j].getItemList()) {
+                        xml_writeItem(doc, e_itemlist, item);
+                    }
+                    e_l.appendChild(e_itemlist);
                 }
-                e_l.appendChild(e_itemlist);
 
                 e_map_grid.appendChild(e_l);
             }
         }
 
-        // MAP::AVATAR_LIST
-        Element e_avatars = doc.createElement("avatars");
-        for (Avatar a : this.avatar_list_.values()) {
-            e_l = doc.createElement("avatar");
-            // TODO: finish avatar xml
-            e_avatars.appendChild(e_l);
-        }
-
         // MAP - APPEND
         e_map.appendChild(e_time);
         e_map.appendChild(e_map_grid);
-        e_map.appendChild(e_avatars);
 
         return 0; // Return success
     }
 
+    /**
+     * Writes an entity to an XML element
+     * @param doc The DOM document to write to
+     * @param parent The parent element to write this entity in
+     * @param entity The Entity object to write
+     * @return The entity's DOM Element, or null - on failure.
+     */
     private Element xml_writeEntity(Document doc, Element parent, Entity entity) {
         Element e_entity = doc.createElement("entity");
 
         // Name
         e_entity.setAttribute("name", entity.getName());
+
+        if (this.avatar_list_.containsValue(entity)) {
+            e_entity.appendChild(doc.createElement("b_avatar"));
+        }
 
         // Direction
         Element e_dir = doc.createElement("direction");
@@ -437,50 +433,156 @@ public class Map implements MapUser_Interface {
         ArrayList<Item> tmp_inv = entity.getInventory();
         Element tmp_eInvItem; // temp inventory item
         for (int i = 0; i < entity.getInventory().size(); i++) {
-            Element tmp_einvItem = xml_writeItem(doc, e_itemList, tmp_inv.get(i));
+            tmp_eInvItem = xml_writeItem(doc, e_itemList, tmp_inv.get(i));
 
-            Element e_equip = doc.createElement("equipped");
             if (tmp_inv.get(i) == equipped)
-                e_equip.appendChild(doc.createTextNode("1"));
-            else
-                e_equip.appendChild(doc.createTextNode("0"));
-            tmp_einvItem.appendChild(e_equip);
+                tmp_eInvItem.appendChild(doc.createElement("b_equipped"));
+            e_itemList.appendChild(tmp_eInvItem);
         }
         e_entity.appendChild(e_itemList);
+
+        xml_writeStatsDrawable(doc, e_entity, (DrawableThingStatsPack)entity.getStatsPack());
+        xml_writeStatsEntity(doc, e_entity, entity.getStatsPack());
+
         parent.appendChild(e_entity);
 
         return e_entity;
     }
 
+    /**
+     * Writes an Item to a DOM document
+     * @param doc The DOM Document to write to
+     * @param parent The parent Element to insert the item in
+     * @param item The Item to write
+     * @return The item's DOM Element, or null - if there was an error
+     */
     private Element xml_writeItem(Document doc, Element parent, Item item) {
         Element e_item = doc.createElement("item");
 
         // Name
         e_item.setAttribute("name", item.getName());
         // Is One Shot
-        Element tmp_e = doc.createElement("one_shot");
         if (item.isOneShot())
-            tmp_e.appendChild(doc.createTextNode("1"));
-        else
-            tmp_e.appendChild(doc.createTextNode("0"));
-        e_item.appendChild(tmp_e);
+            e_item.appendChild(doc.createElement("b_one_shot"));
         // Is Passable
-        tmp_e = doc.createElement("passable");
         if (item.isPassable())
-            tmp_e.appendChild(doc.createTextNode("1"));
-        else
-            tmp_e.appendChild(doc.createTextNode("0"));
-        e_item.appendChild(tmp_e);
+            e_item.appendChild(doc.createElement("b_passable"));
         // Goes in Inventory
-        tmp_e = doc.createElement("inventory-able");
         if (item.goesInInventory())
-            tmp_e.appendChild(doc.createTextNode("1"));
-        else
-            tmp_e.appendChild(doc.createTextNode("0"));
-        e_item.appendChild(tmp_e);
+            e_item.appendChild(doc.createElement("b_inventory-able"));
+
+        xml_writeStatsDrawable(doc, e_item, item.getStatsPack());
 
         parent.appendChild(e_item);
         return e_item;
+    }
+
+    private Element xml_writeStatsDrawable(Document doc, Element parent, DrawableThingStatsPack stats) {
+        if (stats == null) {
+            RunGame.errOut("xml_writeStatsDrawable: null statspack");
+            return null;
+        }
+
+        Element e_stats = doc.createElement("stats_drawable");
+        Element trans_eStat;
+
+        if (stats.getArmor_rating_() != 0) {
+            trans_eStat = doc.createElement("armor_rating");
+            trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getArmor_rating_())));
+            e_stats.appendChild(trans_eStat);
+        }
+        if (stats.getDefensive_rating_() != 0) {
+            trans_eStat = doc.createElement("def_rating");
+            trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getDefensive_rating_())));
+            e_stats.appendChild(trans_eStat);
+        }
+        if (stats.getOffensive_rating_() != 0) {
+            trans_eStat = doc.createElement("off_rating");
+            trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getOffensive_rating_())));
+            e_stats.appendChild(trans_eStat);
+        }
+
+        parent.appendChild(e_stats);
+        return e_stats;
+    }
+
+    private Element xml_writeStatsEntity(Document doc, Element parent, EntityStatsPack stats) {
+        if (stats == null) {
+            RunGame.errOut("xml_writeStatsEntity: null statspack");
+            return null;
+        }
+
+        Element e_stats = doc.createElement("stats_entity");
+        Element tra_eStat;
+
+        if (stats.getLives_left_() != 0) {
+            tra_eStat = doc.createElement("lives");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getLives_left_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getStrength_level_() != 0) {
+            tra_eStat = doc.createElement("strength");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getStrength_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getAgility_level_() != 0) {
+            tra_eStat = doc.createElement("agility");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getAgility_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getIntellect_level_() != 0) {
+            tra_eStat = doc.createElement("intellect");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getIntellect_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getHardiness_level_() != 0) {
+            tra_eStat = doc.createElement("hardness");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getHardiness_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getQuantity_of_experience_() != 0) {
+            tra_eStat = doc.createElement("XP");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getQuantity_of_experience_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getMovement_level_() != 0) {
+            tra_eStat = doc.createElement("movement");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getMovement_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getMax_life_() != 0) {
+            tra_eStat = doc.createElement("max_life");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getMax_life_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getMax_mana_() != 0) {
+            tra_eStat = doc.createElement("max_mana");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getMax_mana_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getMoves_left_in_turn_() != 0) {
+            tra_eStat = doc.createElement("moves_remaining");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getMoves_left_in_turn_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getCached_current_level_() != 0) {
+            tra_eStat = doc.createElement("level");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getCached_current_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getCurrent_life_() != 0) {
+            tra_eStat = doc.createElement("life");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getCurrent_life_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getCurrent_mana_() != 0) {
+            tra_eStat = doc.createElement("mana");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getCurrent_mana_())));
+            e_stats.appendChild(tra_eStat);
+        }
+
+        parent.appendChild(e_stats);
+        return e_stats;
     }
 
     private Element xml_writeTerrain(Document doc, Element parent, Terrain terr) {
@@ -492,39 +594,31 @@ public class Map implements MapUser_Interface {
         }
         e_Terrain.setAttribute("name", terr.getName());
 
-        Element e_Mountain = doc.createElement("mountain");
+        // BOOLEANS:
         if (terr.isMountain())
-            e_Mountain.appendChild(doc.createTextNode("1"));
-        else
-            e_Mountain.appendChild(doc.createTextNode("0"));
-        e_Terrain.appendChild(e_Mountain);
+            e_Terrain.appendChild(doc.createElement("b_mountain"));
 
-        Element e_water = doc.createElement("water");
         if (terr.isWater())
-            e_water.appendChild(doc.createTextNode("1"));
-        else
-            e_water.appendChild(doc.createTextNode("0"));
-        e_Terrain.appendChild(e_water);
+            e_Terrain.appendChild(doc.createElement("b_water"));
 
-        // Terrain::Decal
-        String dec = "NULL";
+        // Terrain::Decal - only write if non-null
         if (terr.getDecal() != '\u0000') {
-            dec = Character.toString(terr.getDecal());
+            Element e_decal = doc.createElement("decal");
+            e_decal.appendChild(doc.createTextNode(Character.toString(terr.getDecal())));
+            e_Terrain.appendChild(e_decal);
         }
-        Element e_decal = doc.createElement("decal");
-        e_decal.appendChild(doc.createTextNode(dec));
-        e_Terrain.appendChild(e_decal);
+
         // Terrain::Character
         Element e_dChar = doc.createElement("terr_char");
         e_dChar.appendChild(doc.createTextNode(Character.toString(terr.getDChar())));
         e_Terrain.appendChild(e_dChar);
-        // Terrain::Color
-        String col = "NULL";
-        if (terr.color_ != null)
-            col = terr.color_.name();
-        Element e_color = doc.createElement("color");
-        e_color.appendChild(doc.createTextNode(col));
-        e_Terrain.appendChild(e_color);
+
+        // Terrain::Color - only write if non-null
+        if (terr.color_ != null) {
+            Element e_color = doc.createElement("color");
+            e_color.appendChild(doc.createTextNode(terr.color_.name()));
+            e_Terrain.appendChild(e_color);
+        }
 
         parent.appendChild(e_Terrain);
         return e_Terrain;

@@ -13,6 +13,10 @@ import src.model.map.MapTerrain_Relation;
  */
 public class Terrain extends DrawableThing {
 
+    public enum Color {
+        GREEN, BLUE, GRAY //grass, water, mountain
+    }
+
     void activate() {
 
     }
@@ -20,11 +24,8 @@ public class Terrain extends DrawableThing {
     void applyTerrainEffect(Entity entity) {
 
     }
-	
-    public enum Color {
-        GREEN, BLUE, GRAY //grass, water, mountain
-    }
-    Color color_;
+
+    public Color color_;
 
     private boolean contains_water_;
     private boolean contains_mountain_;
@@ -37,7 +38,7 @@ public class Terrain extends DrawableThing {
     public void addDecal(char decal) {
         decal_ = decal;
     }
-    
+
     public char getDecal() {
     	return decal_;
     }
@@ -53,6 +54,10 @@ public class Terrain extends DrawableThing {
             return true;
         }
     }
+
+    public boolean isMountain() { return contains_mountain_; }
+
+    public boolean isWater() { return contains_water_; }
 
     public void removeDecal(char decal) {
         decal_ = ' ';
@@ -77,18 +82,6 @@ public class Terrain extends DrawableThing {
         } else {
             return super.getRepresentation();
         }
-    }
-    
-    public String hasMountain() {
-    	if (contains_mountain_)
-    		return "true";
-    	return "false";
-    }
-    
-    public String hasWater() {
-    	if (contains_water_)
-    		return "true";
-    	return "false";
     }
 
     @Override

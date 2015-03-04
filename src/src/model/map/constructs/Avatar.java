@@ -5,6 +5,7 @@
  */
 package src.model.map.constructs;
 
+import src.RunGame;
 import src.SavedGame;
 import src.SkillEnum;
 import src.model.map.MapAvatar_Relation;
@@ -177,7 +178,7 @@ public final class Avatar extends Entity {
                 mar.moveInDirection(1, 1);
                 break;
             case 'S': //Save game
-                saveGame();
+                RunGame.saveGameToDisk(); // TODO: this is for testing, remove for deployment
                 break;
             // case 'v': //Open stats
             //     break;
@@ -251,7 +252,7 @@ public final class Avatar extends Entity {
 
 
   
-    // map_relationship_ is used in place of a map_referance_
+    // map_relationship_ is used in place of a map_reference_
     private MapAvatar_Relation map_relationship_;
 
     /**
@@ -278,11 +279,8 @@ public final class Avatar extends Entity {
      */
 
     private void saveGame() {
-        SavedGame saveGame = new SavedGame("save.dave");
-        saveGame.saveGame(this);
+        // TODO: fix this. We need to pass the Map reference and the active UserController reference
     }
-
-
 
     /**
      * Avatars automatically do nothing when attacked
@@ -300,10 +298,6 @@ public final class Avatar extends Entity {
         // return this.getMapRelation().sendAttack(attacker);
         return 0;
     }
-
-    
-
-   
 
     @Override
     public String toString() {

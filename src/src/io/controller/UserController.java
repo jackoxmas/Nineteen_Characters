@@ -5,19 +5,13 @@
  */
 
 package src.io.controller;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.HashMap;
-import java.util.Scanner;
 
 import src.model.map.MapUser_Interface;
-import src.model.map.constructs.Avatar;
 import src.io.view.AvatarCreationView;
 import src.io.view.Display;
 import src.io.view.MapView;
@@ -34,6 +28,27 @@ public final class UserController implements KeyListener, MouseWheelListener
 		private HashMap<Character, Character> map_ = new HashMap<Character, Character>();
 		private boolean rebindMode_ = false;
 		private char rebindA_ = nullChar_;
+
+        /**
+         * Gets a copy of the key remapping
+         * @return A HashMap copy of the key remapping
+         * @author Alex Stewart
+         */
+        public HashMap<Character, Character> getMap() { return map_; }
+
+        /**
+         * Validates and sets the key remapping, if successful; overwrites the entire remapping
+         * <p>ie. it does not mix the maps</p>
+         * @param newMap A new key remapping to be applied
+         * @auhtor Alex Stewart
+         */
+        public void setMap(HashMap<Character, Character> newMap) {
+            // validate entries in the map
+            if (newMap == null) return;
+            // Add code here if we want to reject some characters
+            map_ = newMap;
+        }
+
 		public char remapInput(char c){
 			if(rebindMode_){
 				if(rebindA_ == nullChar_){rebindA_ = c;}
@@ -54,10 +69,7 @@ public final class UserController implements KeyListener, MouseWheelListener
 			return c;
 		}
 	}
-    /**
-     * UserInput Constructor
-     * @param avatar
-     */
+
     public UserController(MapUser_Interface mui, String uName) {
         Display.getDisplay().addGameKeyListener(this);
         Display.getDisplay().addGameMouseWheelListener(this);
@@ -106,9 +118,37 @@ public final class UserController implements KeyListener, MouseWheelListener
     	Display.getDisplay().setView(currentView_);
         Display.getDisplay().printView();
     	}
-    	
-    	
 
+    // FIELD ACCESSORS
+    /**
+     * Gets this UserController's user name value
+     * <p>Used for saving. Loading is done through the constructor</p>
+     * @return A String object with this UserController's user name
+     * @author Alex Stewart
+     */
+    public String getUserName() { return userName_; }
+
+    /**
+     * Gets the underlying key remapping values
+     * @return A HashMap with the remapped key values in it
+     * @author Alex Stewart
+     */
+    public HashMap<Character, Character> getRemap() {
+        if (remap_ == null) return null;
+        return remap_.getMap();
+    }
+
+    /**
+     * Sets the underlying key remapping
+     * @param remap The new key remapping to be applied
+     * @author Alex Stewart
+     */
+    public void setRemap(HashMap<Character, Character> remap) {
+        if (remap_ == null) remap_ = new KeyRemapper();
+        remap_.setMap(remap);
+    }
+
+    // EVENT METHODS
 	@Override
 	public void keyPressed(KeyEvent e) {
 		//Nothing to do here
@@ -125,6 +165,7 @@ public final class UserController implements KeyListener, MouseWheelListener
 		takeTurn(e);
 		
 	}
+
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent arg0) {
 		System.out.println("Mousewheel" + arg0.getWheelRotation());
@@ -133,7 +174,6 @@ public final class UserController implements KeyListener, MouseWheelListener
 		}else{
 			Display.getDisplay().zoomOut();
 		}
-		
 	}
     
 }

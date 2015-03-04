@@ -21,6 +21,9 @@ public final class Summoner extends Occupation {
         current_stats.increaseIntellectLevelByOne();
     }
 
+    @Override
+    public int getOccNumber() { return 3; }
+
     /**
      * Increments an occupation specific skill. Caller should decrement number
      * of skillpoints.

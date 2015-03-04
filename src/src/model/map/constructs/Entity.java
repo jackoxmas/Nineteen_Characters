@@ -108,7 +108,7 @@ abstract public class Entity extends DrawableThing {
                 return -1;
             }
         } else {
-            Display.setMessage("You don't have anything to equip!", 3);
+            Display.getDisplay().setMessage("You don't have anything to equip!");
             return -2;
         }
     }
@@ -120,14 +120,14 @@ abstract public class Entity extends DrawableThing {
      */
     public int unEquipInventoryItem() {
         if (equipped_item_ != null) {
-            Display.setMessage("Unequipping item: " + equipped_item_.name_, 3);
+            Display.getDisplay().setMessage("Unequipping item: " + equipped_item_.name_);
             DrawableThingStatsPack to_remove = equipped_item_.getStatsPack();
             this.stats_pack_.reduceBy(to_remove);
             inventory_.add(equipped_item_);
             equipped_item_ = null;
             return 0;
         } else {
-            Display.setMessage("No equipped item to unequip", 3);
+            Display.getDisplay().setMessage("No equipped item to unequip");
             return -1;
         }
     }
@@ -211,7 +211,7 @@ abstract public class Entity extends DrawableThing {
     public int useLastInventoryItem() {
         Item i = getLastItemInInventory();
         if (i == null) {
-            Display.setMessage("You have no items to use.", 3);
+            Display.getDisplay().setMessage("You have no items to use.");
             return -1;
         } else {
             i.use(this);

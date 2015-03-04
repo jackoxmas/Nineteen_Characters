@@ -168,10 +168,10 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         Item itemToBeDropped = entity_.pullLastItemOutOfInventory();
         if (itemToBeDropped != null) {
             current_map_reference_.addItem(itemToBeDropped, this.getMapTile().x_, this.getMapTile().y_);
-            Display.setMessage("Dropped item: " + itemToBeDropped.name_, 3);
+            Display.getDisplay().setMessage("Dropped item: " + itemToBeDropped.name_);
             return 0;
         } else {
-            Display.setMessage("You have no items to drop.", 3);
+            Display.getDisplay().setMessage("You have no items to drop.");
             return -1;
         }
     }
@@ -235,10 +235,10 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         Item itemToBePickedUp = current_map_reference_.removeTopItem(x + getMyXCoordinate(), y + getMyYCoordinate());
         if (itemToBePickedUp != null) {
             entity_.addItemToInventory(itemToBePickedUp);
-            Display.setMessage("Picked up item: " + itemToBePickedUp.name_, 3);
+            Display.getDisplay().setMessage("Picked up item: " + itemToBePickedUp.name_);
             error_code = 0;
         } else {
-            Display.setMessage("There is nothing here to pick up.", 3);
+            Display.getDisplay().setMessage("There is nothing here to pick up.");
         }
 
         return error_code;

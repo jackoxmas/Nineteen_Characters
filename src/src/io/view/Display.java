@@ -51,6 +51,9 @@ public class Display {
 	     	frame_.add(inputBox_);
 	     	inputBox_.addKeyListener(this);
 		}	
+		public void addMessage(String message){
+			outputBox_.append(System.lineSeparator()+message);
+		}
 		public void setFont(){
 			Display.getDisplay().setFont(inputBox_);
 			Display.getDisplay().setFont(outputBox_);
@@ -79,8 +82,6 @@ public class Display {
 		}
 	}
     // Converts the class name into a base 35 number
-	private static String message_ = "";
-	private static int counter_ = 0;
 	static private Display display_ = null;
 	private JTextPane pane_ = null;
 	private JFrame frame_ = null;
@@ -93,9 +94,8 @@ public class Display {
 	 * Don't abuse please
 	 * @params String m : The message string, int counter : The frames to display it for
 	 */
-	public static void setMessage(String m, int counter){
-		message_ = m;
-		counter_ = counter;
+	public void setMessage(String m){
+		chat_.addMessage(m);
 	}
     private static final long serialVersionUID = Long.parseLong("Display", 35);
     private Font getFont(){
@@ -191,7 +191,6 @@ public class Display {
     		catch(Exception e){System.err.println(e.toString());}
     		
 		
-		if(counter_ > 0){System.out.println(message_);--counter_;}
     }
     /**
      * Example of how to make a char that is printed a color

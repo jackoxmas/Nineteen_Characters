@@ -20,7 +20,9 @@ public final class ChatBoxController implements Function<Void, String> {
 
 
 
-
+	/**
+	 * The function that is called by the chat box when enter is hit. Receives contents of input box. 
+	 */
 	@Override
 	public Void apply(String foo) {
 		// React to text from chatbox here

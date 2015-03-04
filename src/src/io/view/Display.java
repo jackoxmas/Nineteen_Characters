@@ -10,6 +10,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsConfiguration;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelListener;
@@ -37,7 +38,7 @@ import javax.swing.text.StyledDocument;
  * @author Matthew B, JohnReedLOL
  */
 public class Display {
-	private class ChatBox{
+	private class ChatBox implements KeyListener{
 		private JTextField inputBox_;
 		private JTextArea outputBox_;
 		private int width_ = 100;
@@ -51,6 +52,21 @@ public class Display {
 		public void setFont(){
 			Display.getDisplay().setFont(inputBox_);
 			Display.getDisplay().setFont(outputBox_);
+		}
+		@Override
+		public void keyPressed(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void keyTyped(KeyEvent e) {
+			System.out.println(e.getKeyChar());
+			
 		}
 	}
     // Converts the class name into a base 35 number

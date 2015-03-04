@@ -27,6 +27,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.text.AttributeSet;
+import javax.swing.text.DefaultCaret;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -41,18 +42,24 @@ public class Display {
 	private class ChatBox implements KeyListener{
 		private JTextField inputBox_;
 		private JTextArea outputBox_;
+		private JScrollPane scroll_;
 		private int width_ = 100;
 		public ChatBox(JFrame frame_){
 			inputBox_ = new JTextField(width_);
 			outputBox_ = new JTextArea(7, width_);
 			outputBox_.setEditable(false);
 			JScrollPane scroll = new JScrollPane(outputBox_);
+
 			frame_.add(scroll);			
 	     	frame_.add(inputBox_);
 	     	inputBox_.addKeyListener(this);
-		}	
+		}
+		private void updateScroll(){
+			outputBox_.setCaretPosition(outputBox_.getText().length());
+		}
 		public void addMessage(String message){
 			outputBox_.append(System.lineSeparator()+message);
+			updateScroll();
 		}
 		public void setFont(){
 			Display.getDisplay().setFont(inputBox_);
@@ -69,7 +76,9 @@ public class Display {
 			if(e.getKeyCode() == KeyEvent.VK_ENTER){
 				outputBox_.append(System.lineSeparator()+inputBox_.getText());
 				inputBox_.setText("");//Upon enter, clear the input box, and move it's text to output
+				updateScroll();
 			}	
+
 		}
 		@Override
 		public void keyTyped(KeyEvent e) {

@@ -13,15 +13,16 @@ import src.io.view.Display;
 import src.FacingDirection;
 import src.model.map.constructs.PrimaryHandHoldable;
 import src.model.map.constructs.SecondaryHandHoldable;
+
 /**
  * Entity inherits from DrawableThing. Entity is a DrawableThing that can move
  * on the map.
  */
 abstract public class Entity extends DrawableThing {
-    
+
     // private Item equipped_item_;
-    private PrimaryHandHoldable right_hand_ = null;
-    private SecondaryHandHoldable left_hand_ = null;
+    private PrimaryHandHoldable primary_hard_ = null;
+    private SecondaryHandHoldable secondary_hand_ = null;
 
     private FacingDirection direction_ = FacingDirection.UP;
 
@@ -79,57 +80,77 @@ abstract public class Entity extends DrawableThing {
         inventory_ = new ArrayList<Item>();
     }
 
-    public Item getEquipped() {
-        if (equipped_item_ != null) {
-            return equipped_item_;
-        }
-        return null;
+    public PrimaryHandHoldable getPrimaryEquipped() {
+        return primary_hard_;
     }
 
-    /**
-     * Equip Item at final position in the Inventory ArrayList.
-     *
-     * @author John-Michael Reed
-     * @return error codes: -2, inventory has no item; -1, cannot equip another
-     * item; -3 inventory is empty;
-     */
-    public int equipInventoryItem() {
-        if (!inventory_.isEmpty()) {
-            if (equipped_item_ == null) {
-                if (!inventory_.isEmpty()) {
-                    Item last = inventory_.get(inventory_.size() - 1);
-                    DrawableThingStatsPack to_add = last.getStatsPack();
-                    this.stats_pack_.addOn(to_add);
-                    equipped_item_ = last;
-                    inventory_.remove(inventory_.size() - 1);
-                    return 0;
-                } else {
-                    return -3;
-                }
-            } else {
-                return -1;
-            }
-        } else {
-            Display.setMessage("You don't have anything to equip!", 3);
-            return -2;
-        }
+    public SecondaryHandHoldable getSecondaryEquipped() {
+        return secondary_hand_;
+    }
+
+    public void setPrimaryEquipped(PrimaryHandHoldable primary_hard) {
+        primary_hard_ = primary_hard;
+    }
+
+    public void setSecondaryEquipped(SecondaryHandHoldable secondary_hard) {
+        secondary_hand_ = secondary_hard;
     }
 
     /**
      * @author John-Michael Reed
-     * @return error codes: -1 inventory is too full for item [not yet
-     * availible]
+     * @param sheild
+     * @return 
      */
-    public int unEquipInventoryItem() {
-        if (equipped_item_ != null) {
-            Display.setMessage("Unequipping item: " + equipped_item_.name_, 3);
-            DrawableThingStatsPack to_remove = equipped_item_.getStatsPack();
-            this.stats_pack_.reduceBy(to_remove);
-            inventory_.add(equipped_item_);
-            equipped_item_ = null;
+    public int equipSheild(Sheild sheild) {
+        SecondaryHandHoldable secondary_hand = secondary_hand_;
+        secondary_hand_ = sheild;
+        inventory_.add((PickupableItem) secondary_hand);
+        return 0;
+    }
+
+    /**
+     * @author John-Michael Reed
+     * @param one_hand_weapon
+     * @return 
+     */
+    public int equip1hWeapon(OneHandedWeapon one_hand_weapon) {
+        PrimaryHandHoldable primary_hand = primary_hard_;
+        int error_code = -1; // by default null occupation cannot equip any weapon
+        if (occupation_ != null) {
+            error_code = occupation_.equipOneHandWeapon(one_hand_weapon);
+        }
+        if (error_code == 0) {
+            primary_hard_ = one_hand_weapon;
+            inventory_.add((PickupableItem) primary_hand);
             return 0;
         } else {
-            Display.setMessage("No equipped item to unequip", 3);
+            return -1;
+        }
+    }
+
+    /**
+     * @author John-Michael Reed
+     * @param two_hand_weapon
+     * @return 
+     */
+    public int equip2hWeapon(TwoHandedWeapon two_hand_weapon) {
+        PrimaryHandHoldable primary_hand = primary_hard_;
+        SecondaryHandHoldable secondary_hand = secondary_hand_;
+        int error_code = -1; // by default null occupation cannot equip any weapon
+        if (occupation_ != null) {
+            error_code = occupation_.equipTwoHandWeapon(two_hand_weapon);
+        }
+        if (error_code == 0) {
+            primary_hard_ = two_hand_weapon;
+            secondary_hand_ = two_hand_weapon;
+            if (primary_hand == secondary_hand) {
+                inventory_.add((PickupableItem) primary_hand);
+            } else {
+                inventory_.add((PickupableItem) primary_hand);
+                inventory_.add((PickupableItem) secondary_hand);
+            }
+            return 0;
+        } else {
             return -1;
         }
     }
@@ -144,8 +165,15 @@ abstract public class Entity extends DrawableThing {
         stats_pack_.increaseQuantityOfExperienceToNextLevel();
     }
 
-    public boolean hasEquipped() {
-        if (equipped_item_ != null) {
+    public boolean hasEquippedPrimaryHand() {
+        if (primary_hard_ != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean hasEquippedSecondaryHand() {
+        if (secondary_hand_ != null) {
             return true;
         }
         return false;
@@ -313,6 +341,7 @@ abstract public class Entity extends DrawableThing {
 
     /**
      * Specify null if the attacker is not an entity that can be attacked.
+     *
      * @param damage - damage received
      * @param attacker - who the attack is coming from
      */
@@ -385,11 +414,11 @@ abstract public class Entity extends DrawableThing {
     public String toString() {
         String s = "Entity name: " + name_;
 
-        if (!(equipped_item_ == null)) {
+        /*if (!(equipped_item_ == null)) {
             s += "\n equppied item: " + equipped_item_.name_;
         } else {
             s += "\n equppied item: null";
-        }
+        }*/
 
         s += "\n Inventory " + "(" + inventory_.size() + ")" + ":";
         for (int i = 0; i < inventory_.size(); ++i) {

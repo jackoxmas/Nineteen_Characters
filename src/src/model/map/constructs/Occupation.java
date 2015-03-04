@@ -58,6 +58,14 @@ public abstract class Occupation {
         return ++skill_4_;
     }
 
+    /**
+     * @author John-Michael Reed
+     * @param weapon weapon to be equipped
+     * @return 0 on success, -1 on failure
+     */
+    public abstract int equipOneHandWeapon(OneHandedWeapon weapon);
+    public abstract int equipTwoHandWeapon(TwoHandedWeapon weapon);
+
     public abstract void change_stats(EntityStatsPack current_stats);
 
     public abstract int incrementSkill(SkillEnum skill);

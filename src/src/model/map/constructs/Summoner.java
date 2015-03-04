@@ -15,15 +15,32 @@ public final class Summoner extends Occupation {
     public Summoner(Entity e) {
         super(e);
     }
+    private Staff staff_ = null;
 
     public void change_stats(EntityStatsPack current_stats) {
         //for sneak
         current_stats.increaseIntellectLevelByOne();
     }
 
+    @Override
+    public int equipOneHandWeapon(OneHandedWeapon weapon) {
+        try {
+            staff_ = (Staff) weapon;
+            return 0;
+        } catch (ClassCastException e) {
+            return -1;
+        }
+    }
+
+    @Override
+    public int equipTwoHandWeapon(TwoHandedWeapon weapon) {
+        return -1;
+    }
+
     /**
      * Increments an occupation specific skill. Caller should decrement number
      * of skillpoints.
+     *
      * @author John-Michael Reed
      * @param skill Which skill to increment
      * @return 0 on success, -1 if this occupation cannot increment this skill.

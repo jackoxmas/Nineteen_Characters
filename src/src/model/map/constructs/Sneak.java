@@ -15,6 +15,7 @@ public final class Sneak extends Occupation {
     public Sneak(Entity e) {
         super(e);
     }
+    private Bow bow_ = null;
 
     public void change_stats(EntityStatsPack current_stats) {
         //for sneak
@@ -22,9 +23,41 @@ public final class Sneak extends Occupation {
 
     }
 
+    @Override
+    public int equipOneHandWeapon(OneHandedWeapon weapon) {
+        return -1;
+    }
+
+    @Override
+    public int equipTwoHandWeapon(TwoHandedWeapon weapon) {
+        try {
+            bow_ = (Bow) weapon;
+            return 0;
+        } catch (ClassCastException e) {
+            return -1;
+        }
+    }
+
+    /**
+     * @author John-Michael Reed
+     * @param equipable_item
+     * @return 1 for right hand, 2 for both hands, -1 for neither hand [failure]
+     */
+    public int equipWeapon(Weapon weapon) {
+        try {
+            bow_ = (Bow) weapon;
+            this.occupation_holder_.setPrimaryEquipped(bow_);
+            this.occupation_holder_.setSecondaryEquipped(bow_);
+            return 2;
+        } catch (ClassCastException e) {
+            return -1;
+        }
+    }
+
     /**
      * Increments an occupation specific skill. Caller should decrement number
      * of skillpoints.
+     *
      * @author John-Michael Reed
      * @param skill Which skill to increment
      * @return 0 on success, -1 if this occupation cannot increment this skill.

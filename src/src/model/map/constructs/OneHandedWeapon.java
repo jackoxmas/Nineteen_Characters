@@ -9,7 +9,7 @@ package src.model.map.constructs;
  *
  * @author JohnReedLOL
  */
-public class OneHandedWeapon extends Weapon {
+public class OneHandedWeapon extends Weapon implements PrimaryHandHoldable {
 
     public OneHandedWeapon(String name, char representation) {
         super(name, representation);

@@ -9,7 +9,7 @@ package src.model.map.constructs;
  *
  * @author JohnReedLOL
  */
-public abstract class Weapon extends EquipableItem {
+public abstract class Weapon extends EquipableItem implements PrimaryHandHoldable {
 
     public Weapon(String name, char representation) {
         super(name, representation);

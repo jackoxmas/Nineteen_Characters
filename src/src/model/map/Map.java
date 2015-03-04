@@ -26,6 +26,8 @@ public class Map implements MapUser_Interface {
 
     public static final int MAX_NUMBER_OF_WORLDS = 1;
     private static int number_of_worlds_generated_ = 0;
+    // Item is the address of an item in memory. Location is its xy coordinates on the grid.
+    private transient LinkedList<Item> items_list_;
 
     /**
      * Once a tile has terrain, that terrain is constant.
@@ -197,8 +199,7 @@ public class Map implements MapUser_Interface {
         }
     }
 
-    // Item is the address of an item in memory. Location is its xy coordinates on the grid.
-    private transient LinkedList<Item> items_list_;
+
 
     /**
      * Adds an item to the map.
@@ -343,6 +344,13 @@ public class Map implements MapUser_Interface {
     // The map has a clock
     private int time_measured_in_turns;
 
+    /**
+     * Writes this map to the given XML Element in the given XML document
+     * @param doc The XML Document to write to
+     * @param e_map The XML Element to write to
+     * @return 0 = success
+     * @author Alex Stewart
+     */
     public int mapToXML(Document doc, Element e_map) {
         // MAP::TIME)
         Element e_time = doc.createElement("time");
@@ -353,11 +361,54 @@ public class Map implements MapUser_Interface {
         e_map_grid.setAttribute("width", Integer.toString(this.width_));
         e_map_grid.setAttribute("height", Integer.toString(this.height_));
 
-        Element e_l, e_t;
+        Element e_l, tmp_ett, tmp_eTerrain;
         for (int j = 0; j < this.height_; j++) {
             for (int i = 0; i < this.width_; i++) {
                 e_l = doc.createElement("map_tile");
-                // TODO: finish tile xml
+                e_l.setAttribute("x", Integer.toString(i));
+                e_l.setAttribute("y", Integer.toString(j));
+
+                // Terrain
+                tmp_eTerrain = doc.createElement("terrain");
+                Terrain terr = this.map_grid_[i][j].getTerrain();
+                tmp_eTerrain.setAttribute("name", terr.getName());
+
+                tmp_ett = doc.createElement("mountain");
+                if (terr.isMountain())
+                    tmp_ett.appendChild(doc.createTextNode("1"));
+                else
+                    tmp_ett.appendChild(doc.createTextNode("0"));
+                tmp_eTerrain.appendChild(tmp_ett);
+
+                tmp_ett = doc.createElement("water");
+                if (terr.isWater())
+                    tmp_ett.appendChild(doc.createTextNode("1"));
+                else
+                    tmp_ett.appendChild(doc.createTextNode("0"));
+                tmp_eTerrain.appendChild(tmp_ett);
+
+                // Terrain::Decal
+                tmp_eTerrain.appendChild(doc.createElement("decal").appendChild(doc.createTextNode(Character.toString(terr.getDecal()))));
+                // Terrain::Character
+                tmp_eTerrain.appendChild(doc.createElement("terr_char").appendChild(doc.createTextNode(Character.toString(terr.getDChar()))));
+                // Terrain::Color
+                tmp_eTerrain.appendChild(doc.createElement("color").appendChild(doc.createTextNode(terr.color_.name())));
+                e_l.appendChild(tmp_eTerrain);
+
+                // Entity
+                // write entity hash code to 'entity' element
+                e_l.appendChild(doc.createElement("entity").appendChild(doc.createTextNode(Integer.toString(System.identityHashCode(map_grid_[i][j].getEntity())))));
+
+                // Item list
+                Element e_itemlist = doc.createElement("item_list");
+                Element tmp_eItem;
+                for (Item item : map_grid_[i][j].getItemList()) {
+                    tmp_eItem = doc.createElement("item");
+                    tmp_eItem.appendChild(doc.createTextNode(Integer.toString(System.identityHashCode(item))));
+                    e_itemlist.appendChild(tmp_eItem);
+                }
+                e_l.appendChild(e_itemlist);
+
                 e_map_grid.appendChild(e_l);
             }
         }

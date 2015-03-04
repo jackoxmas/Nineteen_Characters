@@ -14,6 +14,10 @@ import src.model.map.constructs.Terrain;
 public final class MapTile {
 
     private Entity entity_;     // the single Entity occupying this space
+    private LinkedList<Item> items_;    // the collection of Items in this space
+    private Terrain terrain_;   // the Terrain at this space
+    public final int x_;    // the x coordinate of this area unit
+    public final int y_;    // the y coordinate of this area unit
 
     /**
      * Only works if there in no entity there already.
@@ -31,9 +35,33 @@ public final class MapTile {
         }
     }
 
+    /**
+     * Returns a reference to the terrain object used by this map tile
+     * <p>Used in XML writing</p>
+     * @return a Terrain reference to the terrain object used by this map tile
+     * @author Alex Stewart
+     */
+    public Terrain getTerrain() {
+        return this.terrain_;
+    }
+
+    /**
+     * Returns a reference to the Entity located at this map tile
+     * <p>Used in XML writing</p>
+     * @return a reference to the Entity object located at this map tile
+     * @author Alex Stewart
+     */
     public Entity getEntity() {
         return this.entity_;
     }
+
+    /**
+     * Returns a copy of the item list for this map tile
+     * <p>Used in XML writing</p>
+     * @return a copy of the item list for this map tile
+     * @author Alex Stewart
+     */
+    public LinkedList<Item> getItemList() { return items_; }
 
     /**
      * Will return -1 if entity already equals null
@@ -112,8 +140,6 @@ public final class MapTile {
         }
         return true;
     }
-
-    private LinkedList<Item> items_;    // the collection of Items in this space
 
     /**
      * Returns 0 on success, -1 when blocking item is already there, -2 when
@@ -201,8 +227,6 @@ public final class MapTile {
         items_ = new LinkedList<Item>();
     }
 
-    private Terrain terrain_;   // the Terrain at this space
-
     /**
      * Returns 0 on success, returns -1 if terrain is already set.
      *
@@ -216,11 +240,4 @@ public final class MapTile {
             return -1;
         }
     }
-
-    public Terrain getTerrain() {
-        return this.terrain_;
-    }
-
-    public final int x_;    // the x coordinate of this area unit
-    public final int y_;    // the y coordinate of this area unit
 }

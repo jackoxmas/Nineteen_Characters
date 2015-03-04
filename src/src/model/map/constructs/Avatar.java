@@ -251,7 +251,7 @@ public final class Avatar extends Entity {
 
 
   
-    // map_relationship_ is used in place of a map_referance_
+    // map_relationship_ is used in place of a map_reference_
     private MapAvatar_Relation map_relationship_;
 
     /**
@@ -281,8 +281,6 @@ public final class Avatar extends Entity {
         // TODO: fix this. We need to pass the Map reference and the active UserController reference
     }
 
-
-
     /**
      * Avatars automatically do nothing when attacked
      *
@@ -299,10 +297,6 @@ public final class Avatar extends Entity {
         // return this.getMapRelation().sendAttack(attacker);
         return 0;
     }
-
-    
-
-   
 
     @Override
     public String toString() {

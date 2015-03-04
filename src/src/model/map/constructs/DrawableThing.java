@@ -14,6 +14,13 @@ import src.model.map.MapDrawableThing_Relation;
  * @author JohnReedLOL
  */
 abstract public class DrawableThing {
+    // names of items and terrain should be non-unique.
+    // names of entities should be unique to fit in a hashmap.
+    public final String name_;
+
+    public String getName() { return name_; }
+
+    public char getDChar() { return single_character_representation_; }
 
     protected DrawableThing(String name, char representation) {
         name_ = name;
@@ -59,10 +66,6 @@ abstract public class DrawableThing {
     public void setViewable(boolean is_visible) {
         is_visible_ = is_visible;
     }
-
-    // names of items and terrain should be non-unique.
-    // names of entities should be unique to fit in a hashmap.
-    public final String name_;
 
     // For things that take up only  1 tile or need to appear on a minimap
     private char single_character_representation_;

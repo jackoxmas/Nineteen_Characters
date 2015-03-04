@@ -35,6 +35,15 @@ import src.Function;
  * @author Matthew B, JohnReedLOL
  */
 public class Display {
+	/**
+	 * The chatbox.
+	 * It is it's own listener, and on the enter keypress, it flushes the input box into the output. 
+	 * Has methods to add messages, and can take in anything that implements the Function interface
+	 * Things passed in that implement Function interface are called with a String containing the contents of input, 
+	 * before it is cleared when input is hit. 
+	 * @author Mbregg
+	 *
+	 */
 	private class ChatBox implements KeyListener{
 		private JTextField inputBox_;
 		private JTextArea outputBox_;
@@ -54,14 +63,26 @@ public class Display {
 		private void updateScroll(){
 			outputBox_.setCaretPosition(outputBox_.getText().length());
 		}
+		/**
+		 * Puts a string in the output box
+		 * @param message The string to display in a new line
+		 */
 		public void addMessage(String message){
 			outputBox_.append(System.lineSeparator()+message);
 			updateScroll();
 		}
+		/** 
+		 * Sets the font, including font size.
+		 * Used for scrolling, and is kept in sync with displays font.
+		 */
 		public void setFont(){
 			Display.getDisplay().setFont(inputBox_);
 			Display.getDisplay().setFont(outputBox_);
 		}
+		/** 
+		 * On key press
+		 * run through all the Function objects, calling apply
+		 */
 		@Override
 		public void keyPressed(KeyEvent e) {
 			// Run through the functions we were given
@@ -73,6 +94,9 @@ public class Display {
 			}
 			
 		}
+		/**
+		 * On key release, put the input text into the output box.
+		 */
 		@Override
 		public void keyReleased(KeyEvent e) {
 			//On release,  
@@ -89,6 +113,10 @@ public class Display {
 
 			
 		}
+		/**
+		 * Adds a Function to the list.
+		 * @param listen
+		 */
 		public void addFunction(Function<Void,String> listen){
 			functions_.add(listen);
 		}
@@ -99,12 +127,10 @@ public class Display {
 	private JFrame frame_ = null;
 	private float fontSize_ = 18f;
 	private ChatBox chat_;
-	
-	/* 
-	 * Static method, sets to what is being output the given string, for counter frames
-	 * Note that is handles multiline strings, but pushes the view up for each line.
-	 * Don't abuse please
-	 * @params String m : The message string, int counter : The frames to display it for
+
+	/**
+	 * Puts the given message in the chatboxes output box
+	 * @param m The string to output
 	 */
 	public void setMessage(String m){
 		chat_.addMessage(m);
@@ -152,23 +178,37 @@ public class Display {
     	pane_.requestFocus();
 
     }
-
+    /**
+     * Gets the display
+     * @return Returns a reference to the Display
+     */
     static public Display getDisplay(){
     	if (display_ == null){
     		display_ = new Display();
     	}
     	return display_;
     }
+    /**
+     * Does the same as above, but also sets the Displays view to be the given view
+     * @param _view
+     * @return
+     */
     static public Display getDisplay(Viewport _view){
     	Display _display = getDisplay();
     	_display.setView(_view);
     	return _display;
     }
+    /** 
+     * Zooms in slightly(increases font size)
+     */
     public void zoomIn(){
     	fontSize_++;
     	setFont(pane_);
     	chat_.setFont();
     }
+    /** 
+     * Zooms out slightly(Decreases font size)
+     */
     public void zoomOut(){
     	if(fontSize_ < 2){return;}//Don't let the font get too small!
     	fontSize_--;
@@ -249,12 +289,25 @@ public class Display {
     public int close(){
     	return 0;
     }
+    /**
+     * Add a Keylistener to the main game pane
+     * 
+     * @param listener
+     */
 	public void addGameKeyListener(KeyListener listener) {
 		pane_.addKeyListener(listener);	
 	}
+	/** 
+	 * Adds a Mouselistener to the main game pane
+	 * @param listener
+	 */
 	public void addGameMouseWheelListener(MouseWheelListener listener){
 		pane_.addMouseWheelListener(listener);
 	}
+	/**
+	 * Adds a Function<Void,String> object to the list of things called by chatbox on enter
+	 * @param Function<Void,String> listen
+	 */
 	public void addChatBoxFunctionEvent(Function<Void,String> listen){
 		chat_.addFunction(listen);
 	}

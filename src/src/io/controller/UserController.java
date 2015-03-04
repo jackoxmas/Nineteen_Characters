@@ -11,6 +11,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -25,7 +27,7 @@ import src.io.view.Viewport;
  * Uses keyboard input to control the avatar
  * @author JohnReedLOL
  */
-public final class UserController implements KeyListener, FocusListener
+public final class UserController implements KeyListener, MouseWheelListener
 {
 	private class KeyRemapper{
 		private char remapTrigger_ = '~';
@@ -57,8 +59,8 @@ public final class UserController implements KeyListener, FocusListener
      * @param avatar
      */
     public UserController(MapUser_Interface mui, String uName) {
-        Display.getDisplay().addKeyListener(this);
-        Display.getDisplay().addFocusListener(this);
+        Display.getDisplay().addGameKeyListener(this);
+        Display.getDisplay().addGameMouseWheelListener(this);
         MapUserAble_ = mui;
         userName_ = uName;
         setView(nullChar_);
@@ -123,26 +125,14 @@ public final class UserController implements KeyListener, FocusListener
 		takeTurn(e);
 		
 	}
-
-
-
-
-
-
-
-
 	@Override
-	public void focusGained(FocusEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	@Override
-	public void focusLost(FocusEvent arg0) {
-		Display.getDisplay().requestFocus();//Required to work around a bug in swing
-		//Otherwise, focus is never regained.
+	public void mouseWheelMoved(MouseWheelEvent arg0) {
+		System.out.println("Mousewheel" + arg0.getWheelRotation());
+		if(arg0.getWheelRotation() <0 ){
+			Display.getDisplay().zoomIn();
+		}else{
+			Display.getDisplay().zoomOut();
+		}
 		
 	}
     

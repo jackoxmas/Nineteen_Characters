@@ -47,6 +47,7 @@ public class RunGame {
         populateMap();//Add stuff into the map
         startGame(); // Begin the avatarcontroller loop
         //handleArgs(args);
+        
 
         // testing
         //saveGameToDisk();

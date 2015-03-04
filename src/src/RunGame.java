@@ -37,6 +37,7 @@ public class RunGame {
     private static SavedGame saveGame_;
     private static Avatar avatar_;
     private static Map map_;
+    private static UserController uc_;
 
     public static void main(String[] args) {
         parseArgs(args); // Parse command line arguments
@@ -124,18 +125,14 @@ public class RunGame {
     }
 
     private static void startGame() {
-        UserController AC = new UserController(map_,avatar_.name_);
+        uc_ = new UserController(map_,avatar_.name_);
     }
 
-    private static void saveGameToDisk() {
+    public static void saveGameToDisk() {
         if (saveGame_ == null) {
             saveGame_ = SavedGame.newSavedGame();
         }
-        Exception e = null;
-
-        if (e != null) {
-            errOut(e);
-        }
+        saveGame_.saveGame(map_, uc_);
     }
 
     // TODO: complete

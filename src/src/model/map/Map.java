@@ -5,6 +5,7 @@ import src.IO_Bundle;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
+import src.RunGame;
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Entity;
 import src.model.map.constructs.Item;
@@ -372,11 +373,17 @@ public class Map implements MapUser_Interface {
 
                 // Terrain
                 Terrain terr = this.map_grid_[i][j].getTerrain();
+                if (terr == null) {
+                    RunGame.errOut("xml_writeMap: null terrain @ [" + i + ", " + j + "]");
+                    return 1;
+                }
                 xml_writeTerrain(doc, e_l, terr);
 
 
                 // Entity
-                xml_writeEntity(doc, e_l, map_grid_[i][j].getEntity());
+                Entity ent = this.map_grid_[i][j].getEntity();
+                if (ent != null)
+                    xml_writeEntity(doc, e_l, ent);
                 // TODO: remove if above code works:
                 // write entity hash code to 'entity' element
                 //e_l.appendChild(doc.createElement("entity").appendChild(doc.createTextNode(Integer.toString(System.identityHashCode(map_grid_[i][j].getEntity())))));
@@ -440,8 +447,8 @@ public class Map implements MapUser_Interface {
             tmp_einvItem.appendChild(e_equip);
         }
         e_entity.appendChild(e_itemList);
+        parent.appendChild(e_entity);
 
-        doc.appendChild(e_entity);
         return e_entity;
     }
 
@@ -456,18 +463,21 @@ public class Map implements MapUser_Interface {
             tmp_e.appendChild(doc.createTextNode("1"));
         else
             tmp_e.appendChild(doc.createTextNode("0"));
+        e_item.appendChild(tmp_e);
         // Is Passable
         tmp_e = doc.createElement("passable");
         if (item.isPassable())
             tmp_e.appendChild(doc.createTextNode("1"));
         else
             tmp_e.appendChild(doc.createTextNode("0"));
+        e_item.appendChild(tmp_e);
         // Goes in Inventory
         tmp_e = doc.createElement("inventory-able");
         if (item.goesInInventory())
             tmp_e.appendChild(doc.createTextNode("1"));
         else
             tmp_e.appendChild(doc.createTextNode("0"));
+        e_item.appendChild(tmp_e);
 
         parent.appendChild(e_item);
         return e_item;
@@ -476,7 +486,10 @@ public class Map implements MapUser_Interface {
     private Element xml_writeTerrain(Document doc, Element parent, Terrain terr) {
         Element e_Terrain = doc.createElement("terrain");
 
-
+        if (terr.getName() == null) {
+            RunGame.errOut("xml_writeTerrain: null Terrain name");
+            return null;
+        }
         e_Terrain.setAttribute("name", terr.getName());
 
         Element e_Mountain = doc.createElement("mountain");
@@ -494,11 +507,24 @@ public class Map implements MapUser_Interface {
         e_Terrain.appendChild(e_water);
 
         // Terrain::Decal
-        e_Terrain.appendChild(doc.createElement("decal").appendChild(doc.createTextNode(Character.toString(terr.getDecal()))));
+        String dec = "NULL";
+        if (terr.getDecal() != '\u0000') {
+            dec = Character.toString(terr.getDecal());
+        }
+        Element e_decal = doc.createElement("decal");
+        e_decal.appendChild(doc.createTextNode(dec));
+        e_Terrain.appendChild(e_decal);
         // Terrain::Character
-        e_Terrain.appendChild(doc.createElement("terr_char").appendChild(doc.createTextNode(Character.toString(terr.getDChar()))));
+        Element e_dChar = doc.createElement("terr_char");
+        e_dChar.appendChild(doc.createTextNode(Character.toString(terr.getDChar())));
+        e_Terrain.appendChild(e_dChar);
         // Terrain::Color
-        e_Terrain.appendChild(doc.createElement("color").appendChild(doc.createTextNode(terr.color_.name())));
+        String col = "NULL";
+        if (terr.color_ != null)
+            col = terr.color_.name();
+        Element e_color = doc.createElement("color");
+        e_color.appendChild(doc.createTextNode(col));
+        e_Terrain.appendChild(e_color);
 
         parent.appendChild(e_Terrain);
         return e_Terrain;

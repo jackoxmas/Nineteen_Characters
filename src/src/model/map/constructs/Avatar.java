@@ -5,6 +5,7 @@
  */
 package src.model.map.constructs;
 
+import src.RunGame;
 import src.SavedGame;
 import src.SkillEnum;
 import src.model.map.MapAvatar_Relation;
@@ -177,7 +178,7 @@ public final class Avatar extends Entity {
                 mar.moveInDirection(1, 1);
                 break;
             case 'S': //Save game
-                saveGame();
+                RunGame.saveGameToDisk(); // TODO: this is for testing, remove for deployment
                 break;
             // case 'v': //Open stats
             //     break;

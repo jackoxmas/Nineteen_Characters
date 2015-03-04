@@ -38,7 +38,7 @@ public class SavedGame {
      * relation to the Java native Serialization object ID.
      */
     public static final long SAVE_DATA_VERSION = 2;
-    public static final String SAVE_EXT = ".sav";
+    public static final String SAVE_EXT = ".xml";
     public static final char SAVE_ITERATOR_FLAG = '_';
     private static final String SAVE_EOF_STRING = "///END OF FILE///";
     // SAVE FILE FORMAT: yyMMdd_<number>.sav
@@ -50,10 +50,13 @@ public class SavedGame {
     public int saveGame(src.model.map.Map map, src.io.controller.UserController controller) {
         try {
             // open or create the save file
-            DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(false);
+            DocumentBuilder docBuilder = dbf.newDocumentBuilder();
 
             Document save = docBuilder.newDocument();
             Element root = save.createElement("save_game");
+            save.appendChild(root);
 
             Element e_version = save.createElement("version");
             e_version.appendChild(save.createTextNode(Long.toString(SAVE_DATA_VERSION)));
@@ -79,9 +82,6 @@ public class SavedGame {
             // ROOT - APPEND
             root.appendChild(e_keymap);
             root.appendChild(e_map);
-
-            // SAVE - APPEND
-            save.appendChild(root);
 
             // write the content into xml file
             Transformer transformer = TransformerFactory.newInstance().newTransformer();

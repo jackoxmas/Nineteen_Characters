@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelListener;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -26,6 +27,8 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import src.Function;
+
 /**
  * Represents a single player's display. Has a static game wide message.
  *
@@ -37,6 +40,7 @@ public class Display {
 		private JTextArea outputBox_;
 		private JScrollPane scroll_;
 		private int width_ = 100;
+		private ArrayList<Function<Void,String>> functions_ = new ArrayList<Function<Void,String>>();
 		public ChatBox(JFrame frame_){
 			inputBox_ = new JTextField(width_);
 			outputBox_ = new JTextArea(7, width_);
@@ -60,7 +64,13 @@ public class Display {
 		}
 		@Override
 		public void keyPressed(KeyEvent e) {
-			// Nada to do here
+			// Run through the functions we were given
+			if(e.getKeyCode() == KeyEvent.VK_ENTER){
+				String S = inputBox_.getText();
+				for(Function<Void,String> functor : functions_){
+					functor.apply(S);
+				}
+			}
 			
 		}
 		@Override
@@ -79,8 +89,8 @@ public class Display {
 
 			
 		}
-		public void addKeyListener(KeyListener listen){
-			inputBox_.addKeyListener(listen);
+		public void addFunction(Function<Void,String> listen){
+			functions_.add(listen);
 		}
 	}
     // Converts the class name into a base 35 number
@@ -245,8 +255,8 @@ public class Display {
 	public void addGameMouseWheelListener(MouseWheelListener listener){
 		pane_.addMouseWheelListener(listener);
 	}
-	public void addChatBoxKeyListener(KeyListener listen){
-		chat_.addKeyListener(listen);
+	public void addChatBoxFunctionEvent(Function<Void,String> listen){
+		chat_.addFunction(listen);
 	}
 
 }

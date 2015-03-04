@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import src.model.map.constructs.Avatar;
+import src.io.controller.ChatBoxController;
 import src.io.controller.UserController;
 import src.model.map.constructs.Item;
 import src.model.map.constructs.Terrain;
@@ -26,6 +27,7 @@ public class RunGame {
     private static Avatar avatar_;
     private static Map map_;
     private static UserController uc_;
+    private static ChatBoxController cc_;
 
     public static void main(String[] args) {
         parseArgs(args); // Parse command line arguments
@@ -113,6 +115,8 @@ public class RunGame {
 
     private static void startGame() {
         uc_ = new UserController(map_,avatar_.name_);
+        cc_ = new ChatBoxController();
+        
     }
 
     public static void saveGameToDisk() {

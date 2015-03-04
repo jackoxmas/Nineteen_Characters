@@ -11,7 +11,7 @@ package src.model.map.constructs;
  */
 public class OneHandedWeapon extends Weapon {
 
-    public OneHandedWeapon(String name, char representation,String eBy) {
-        super(name, representation,eBy);
+    public OneHandedWeapon(String name, char representation) {
+        super(name, representation);
     }
 }

@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fbc16cae-2312-42a3-a657-0f99998ac22f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/map/constructs/Avatar.java" afterPath="$PROJECT_DIR$/../src/src/model/map/constructs/Avatar.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/map/Map.java" afterPath="$PROJECT_DIR$/../src/src/model/map/Map.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="IDEA_Project.iws" />
@@ -33,7 +31,7 @@
         <entry file="file://$PROJECT_DIR$/../src/src/model/map/Map.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.26885247" vertical-offset="466" max-vertical-offset="1500">
-              <caret line="374" column="65" selection-start-line="374" selection-start-column="65" selection-end-line="374" selection-end-column="65" />
+              <caret line="374" column="55" selection-start-line="374" selection-start-column="55" selection-end-line="374" selection-end-column="55" />
               <folding>
                 <element signature="docComment;class#Map#0" expanded="false" />
                 <element signature="docComment;method#getEntityByName#0;class#Map#0" expanded="false" />
@@ -799,7 +797,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="743" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1874,7 +1872,7 @@
     <entry file="file://$PROJECT_DIR$/../src/src/model/map/Map.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.26885247" vertical-offset="466" max-vertical-offset="1500">
-          <caret line="374" column="65" selection-start-line="374" selection-start-column="65" selection-end-line="374" selection-end-column="65" />
+          <caret line="374" column="55" selection-start-line="374" selection-start-column="55" selection-end-line="374" selection-end-column="55" />
           <folding>
             <element signature="docComment;class#Map#0" expanded="false" />
             <element signature="docComment;method#getEntityByName#0;class#Map#0" expanded="false" />

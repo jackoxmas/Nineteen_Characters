@@ -6,10 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 import src.RunGame;
-import src.model.map.constructs.Avatar;
-import src.model.map.constructs.Entity;
-import src.model.map.constructs.Item;
-import src.model.map.constructs.Terrain;
+import src.model.map.constructs.*;
 import src.model.*;
 
 import org.w3c.dom.Element;
@@ -346,7 +343,7 @@ public class Map implements MapUser_Interface {
     // The map has a clock
     private int time_measured_in_turns;
 
-    //<editor-fold desc="XML" defaultstate="collapsed">
+    //<editor-fold desc="XML Saving/Loading" defaultstate="collapsed">
     /**
      * Writes this map to the given XML Element in the given XML document
      * @param doc The XML Document to write to
@@ -420,6 +417,13 @@ public class Map implements MapUser_Interface {
         return 0; // Return success
     }
 
+    /**
+     * Writes an entity to an XML element
+     * @param doc The DOM document to write to
+     * @param parent The parent element to write this entity in
+     * @param entity The Entity object to write
+     * @return The entity's DOM Element, or null - on failure.
+     */
     private Element xml_writeEntity(Document doc, Element parent, Entity entity) {
         Element e_entity = doc.createElement("entity");
 
@@ -447,6 +451,10 @@ public class Map implements MapUser_Interface {
             tmp_einvItem.appendChild(e_equip);
         }
         e_entity.appendChild(e_itemList);
+
+        xml_writeStatsDrawable(doc, e_entity, (DrawableThingStatsPack)entity.getStatsPack());
+        xml_writeStatsEntity(doc, e_entity, entity.getStatsPack());
+
         parent.appendChild(e_entity);
 
         return e_entity;
@@ -479,8 +487,118 @@ public class Map implements MapUser_Interface {
             tmp_e.appendChild(doc.createTextNode("0"));
         e_item.appendChild(tmp_e);
 
+        xml_writeStatsDrawable(doc, e_item, item.getStatsPack());
+
         parent.appendChild(e_item);
         return e_item;
+    }
+
+    private Element xml_writeStatsDrawable(Document doc, Element parent, DrawableThingStatsPack stats) {
+        if (stats == null) {
+            RunGame.errOut("xml_writeStatsDrawable: null statspack");
+            return null;
+        }
+
+        Element e_stats = doc.createElement("stats_drawable");
+        Element trans_eStat;
+
+        if (stats.getArmor_rating_() != 0) {
+            trans_eStat = doc.createElement("armor_rating");
+            trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getArmor_rating_())));
+            e_stats.appendChild(trans_eStat);
+        }
+        if (stats.getDefensive_rating_() != 0) {
+            trans_eStat = doc.createElement("def_rating");
+            trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getDefensive_rating_())));
+            e_stats.appendChild(trans_eStat);
+        }
+        if (stats.getOffensive_rating_() != 0) {
+            trans_eStat = doc.createElement("off_rating");
+            trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getOffensive_rating_())));
+            e_stats.appendChild(trans_eStat);
+        }
+
+        parent.appendChild(e_stats);
+        return e_stats;
+    }
+
+    private Element xml_writeStatsEntity(Document doc, Element parent, EntityStatsPack stats) {
+        if (stats == null) {
+            RunGame.errOut("xml_writeStatsEntity: null statspack");
+            return null;
+        }
+
+        Element e_stats = doc.createElement("stats_entity");
+        Element tra_eStat;
+
+        if (stats.getLives_left_() != 0) {
+            tra_eStat = doc.createElement("lives");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getLives_left_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getStrength_level_() != 0) {
+            tra_eStat = doc.createElement("strength");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getStrength_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getAgility_level_() != 0) {
+            tra_eStat = doc.createElement("agility");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getAgility_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getIntellect_level_() != 0) {
+            tra_eStat = doc.createElement("intellect");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getIntellect_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getHardiness_level_() != 0) {
+            tra_eStat = doc.createElement("hardness");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getHardiness_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getQuantity_of_experience_() != 0) {
+            tra_eStat = doc.createElement("XP");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getQuantity_of_experience_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getMovement_level_() != 0) {
+            tra_eStat = doc.createElement("movement");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getMovement_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getMax_life_() != 0) {
+            tra_eStat = doc.createElement("max_life");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getMax_life_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getMax_mana_() != 0) {
+            tra_eStat = doc.createElement("max_mana");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getMax_mana_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getMoves_left_in_turn_() != 0) {
+            tra_eStat = doc.createElement("moves_remaining");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getMoves_left_in_turn_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getCached_current_level_() != 0) {
+            tra_eStat = doc.createElement("level");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getCached_current_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getCurrent_life_() != 0) {
+            tra_eStat = doc.createElement("life");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getCurrent_life_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getCurrent_mana_() != 0) {
+            tra_eStat = doc.createElement("mana");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getCurrent_mana_())));
+            e_stats.appendChild(tra_eStat);
+        }
+
+        parent.appendChild(e_stats);
+        return e_stats;
     }
 
     private Element xml_writeTerrain(Document doc, Element parent, Terrain terr) {

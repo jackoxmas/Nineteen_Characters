@@ -5,17 +5,13 @@
  */
 
 package src.io.controller;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.HashMap;
-import java.util.Scanner;
 
 import src.model.map.MapUser_Interface;
-import src.model.map.constructs.Avatar;
 import src.io.view.AvatarCreationView;
 import src.io.view.Display;
 import src.io.view.MapView;
@@ -25,7 +21,7 @@ import src.io.view.Viewport;
  * Uses keyboard input to control the avatar
  * @author JohnReedLOL
  */
-public final class UserController implements KeyListener, FocusListener
+public final class UserController implements KeyListener, MouseWheelListener
 {
 	private class KeyRemapper{
 		private char remapTrigger_ = '~';
@@ -57,9 +53,9 @@ public final class UserController implements KeyListener, FocusListener
 			if(rebindMode_){
 				if(rebindA_ == nullChar_){rebindA_ = c;}
 				else{
-					map_.put(rebindA_, c);//The value at A is now bound to C.
+					map_.put(c, rebindA_);//The value at A is now bound to C.
 					//Also, it would be worth it to add a textoutput showing remappings. For now, println
-					System.out.println(rebindA_ +" was remapped to original value for " +c);
+					System.out.println(c +" was remapped to original value for " +rebindA_);
 					rebindA_ = nullChar_;
 					rebindMode_ = false; //Reset it all.
 				}
@@ -73,13 +69,10 @@ public final class UserController implements KeyListener, FocusListener
 			return c;
 		}
 	}
-    /**
-     * UserInput Constructor
-     * @param avatar
-     */
+
     public UserController(MapUser_Interface mui, String uName) {
-        Display.getDisplay().addKeyListener(this);
-        Display.getDisplay().addFocusListener(this);
+        Display.getDisplay().addGameKeyListener(this);
+        Display.getDisplay().addGameMouseWheelListener(this);
         MapUserAble_ = mui;
         userName_ = uName;
         setView(nullChar_);
@@ -174,16 +167,13 @@ public final class UserController implements KeyListener, FocusListener
 	}
 
 	@Override
-	public void focusGained(FocusEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void focusLost(FocusEvent arg0) {
-		Display.getDisplay().requestFocus();//Required to work around a bug in swing
-		//Otherwise, focus is never regained.
-		
+	public void mouseWheelMoved(MouseWheelEvent arg0) {
+		System.out.println("Mousewheel" + arg0.getWheelRotation());
+		if(arg0.getWheelRotation() <0 ){
+			Display.getDisplay().zoomIn();
+		}else{
+			Display.getDisplay().zoomOut();
+		}
 	}
     
 }

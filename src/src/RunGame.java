@@ -1,27 +1,15 @@
-/**
- * Implementor: Alex Stewart Last Update: 15-02-13
- */
 package src;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import src.model.map.constructs.AreaEffectItem;
 import src.model.map.constructs.Avatar;
 import src.io.controller.UserController;
 import src.model.map.constructs.Item;
-import src.model.map.constructs.Smasher;
-import src.model.map.constructs.Sneak;
-import src.model.map.constructs.Summoner;
 import src.model.map.constructs.Terrain;
 import src.model.map.Map;
-import src.model.map.MapTile;
-import src.io.view.Display;
 import src.io.view.Viewport;
 import src.model.map.MapUser_Interface;
 import src.model.map.constructs.OneWayTeleportItem;
@@ -46,7 +34,6 @@ public class RunGame {
         initialize(); // Initialize any data we need to before loading
         populateMap();//Add stuff into the map
         startGame(); // Begin the avatarcontroller loop
-
 
         // testing
         //saveGameToDisk();

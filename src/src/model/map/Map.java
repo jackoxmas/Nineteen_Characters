@@ -1,5 +1,6 @@
 package src.model.map;
 
+import org.w3c.dom.Node;
 import src.IO_Bundle;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -344,6 +345,7 @@ public class Map implements MapUser_Interface {
     // The map has a clock
     private int time_measured_in_turns;
 
+    //<editor-fold desc="XML" defaultstate="collapsed">
     /**
      * Writes this map to the given XML Element in the given XML document
      * @param doc The XML Document to write to
@@ -351,7 +353,7 @@ public class Map implements MapUser_Interface {
      * @return 0 = success
      * @author Alex Stewart
      */
-    public int mapToXML(Document doc, Element e_map) {
+    public int xml_writeMap(Document doc, Element e_map) {
         // MAP::TIME)
         Element e_time = doc.createElement("time");
         e_map.appendChild(doc.createTextNode(Integer.toString(this.time_measured_in_turns)));
@@ -361,7 +363,7 @@ public class Map implements MapUser_Interface {
         e_map_grid.setAttribute("width", Integer.toString(this.width_));
         e_map_grid.setAttribute("height", Integer.toString(this.height_));
 
-        Element e_l, tmp_ett, tmp_eTerrain;
+        Element e_l;
         for (int j = 0; j < this.height_; j++) {
             for (int i = 0; i < this.width_; i++) {
                 e_l = doc.createElement("map_tile");
@@ -369,43 +371,25 @@ public class Map implements MapUser_Interface {
                 e_l.setAttribute("y", Integer.toString(j));
 
                 // Terrain
-                tmp_eTerrain = doc.createElement("terrain");
                 Terrain terr = this.map_grid_[i][j].getTerrain();
-                tmp_eTerrain.setAttribute("name", terr.getName());
+                xml_writeTerrain(doc, e_l, terr);
 
-                tmp_ett = doc.createElement("mountain");
-                if (terr.isMountain())
-                    tmp_ett.appendChild(doc.createTextNode("1"));
-                else
-                    tmp_ett.appendChild(doc.createTextNode("0"));
-                tmp_eTerrain.appendChild(tmp_ett);
-
-                tmp_ett = doc.createElement("water");
-                if (terr.isWater())
-                    tmp_ett.appendChild(doc.createTextNode("1"));
-                else
-                    tmp_ett.appendChild(doc.createTextNode("0"));
-                tmp_eTerrain.appendChild(tmp_ett);
-
-                // Terrain::Decal
-                tmp_eTerrain.appendChild(doc.createElement("decal").appendChild(doc.createTextNode(Character.toString(terr.getDecal()))));
-                // Terrain::Character
-                tmp_eTerrain.appendChild(doc.createElement("terr_char").appendChild(doc.createTextNode(Character.toString(terr.getDChar()))));
-                // Terrain::Color
-                tmp_eTerrain.appendChild(doc.createElement("color").appendChild(doc.createTextNode(terr.color_.name())));
-                e_l.appendChild(tmp_eTerrain);
 
                 // Entity
+                xml_writeEntity(doc, e_l, map_grid_[i][j].getEntity());
+                // TODO: remove if above code works:
                 // write entity hash code to 'entity' element
-                e_l.appendChild(doc.createElement("entity").appendChild(doc.createTextNode(Integer.toString(System.identityHashCode(map_grid_[i][j].getEntity())))));
+                //e_l.appendChild(doc.createElement("entity").appendChild(doc.createTextNode(Integer.toString(System.identityHashCode(map_grid_[i][j].getEntity())))));
 
                 // Item list
                 Element e_itemlist = doc.createElement("item_list");
-                Element tmp_eItem;
                 for (Item item : map_grid_[i][j].getItemList()) {
-                    tmp_eItem = doc.createElement("item");
-                    tmp_eItem.appendChild(doc.createTextNode(Integer.toString(System.identityHashCode(item))));
-                    e_itemlist.appendChild(tmp_eItem);
+                    xml_writeItem(doc, e_itemlist, item);
+
+                    // TODO: remove if above code works:
+                    //tmp_eItem = doc.createElement("item");
+                    //tmp_eItem.appendChild(doc.createTextNode(Integer.toString(System.identityHashCode(item))));
+                    //e_itemlist.appendChild(tmp_eItem);
                 }
                 e_l.appendChild(e_itemlist);
 
@@ -421,48 +405,103 @@ public class Map implements MapUser_Interface {
             e_avatars.appendChild(e_l);
         }
 
-        // MAP::ENTITY_LIST
-        Element e_entities = doc.createElement("entities");
-        for (Entity e : this.entity_list_.values()) {
-            e_l = doc.createElement("entity");
-            e_l.appendChild(doc.createElement("direction").appendChild(doc.createTextNode(e.getFacingDirection().toString())));
-            e_l.appendChild(doc.createElement("items"));
-
-            // write inventory items to xml
-            Item equipped = e.getEquipped();
-            ArrayList<Item> tmp_inv = e.getInventory();
-            Element e_ll;
-            for (int i = 0; i < e.getInventory().size(); i++) {
-                e_ll = doc.createElement("item");
-                // TODO: add item XML logic
-                if (tmp_inv.get(i) == equipped) // if the item is equipped, set attr:equipped = 1
-                    e_ll.setAttribute("equipped", "1");
-                else
-                    e_ll.setAttribute("equipped", "0");
-                e_l.appendChild(e_ll);
-            }
-
-            // write entity occupation
-
-
-            e_entities.appendChild(e_l);
-        }
-
-        // MAP::ITEMS_LIST
-        Element e_items = doc.createElement("items");
-        for (Item i : this.items_list_) {
-            e_l = doc.createElement("item");
-            // TODO: finish item xml
-            e_items.appendChild(e_l);
-        }
-
         // MAP - APPEND
         e_map.appendChild(e_time);
         e_map.appendChild(e_map_grid);
         e_map.appendChild(e_avatars);
-        e_map.appendChild(e_entities);
-        e_map.appendChild(e_items);
 
         return 0; // Return success
     }
+
+    private Element xml_writeEntity(Document doc, Element parent, Entity entity) {
+        Element e_entity = doc.createElement("entity");
+
+        // Name
+        e_entity.setAttribute("name", entity.getName());
+
+        // Direction
+        Element e_dir = doc.createElement("direction");
+        e_dir.appendChild(doc.createTextNode(entity.getFacingDirection().toString()));
+
+        // Item List
+        Element e_itemList = doc.createElement("item_list");
+        // write inventory items to xml
+        Item equipped = entity.getEquipped();
+        ArrayList<Item> tmp_inv = entity.getInventory();
+        Element tmp_eInvItem; // temp inventory item
+        for (int i = 0; i < entity.getInventory().size(); i++) {
+            Element tmp_einvItem = xml_writeItem(doc, e_itemList, tmp_inv.get(i));
+
+            Element e_equip = doc.createElement("equipped");
+            if (tmp_inv.get(i) == equipped)
+                e_equip.appendChild(doc.createTextNode("1"));
+            else
+                e_equip.appendChild(doc.createTextNode("0"));
+            tmp_einvItem.appendChild(e_equip);
+        }
+        e_entity.appendChild(e_itemList);
+
+        doc.appendChild(e_entity);
+        return e_entity;
+    }
+
+    private Element xml_writeItem(Document doc, Element parent, Item item) {
+        Element e_item = doc.createElement("item");
+
+        // Name
+        e_item.setAttribute("name", item.getName());
+        // Is One Shot
+        Element tmp_e = doc.createElement("one_shot");
+        if (item.isOneShot())
+            tmp_e.appendChild(doc.createTextNode("1"));
+        else
+            tmp_e.appendChild(doc.createTextNode("0"));
+        // Is Passable
+        tmp_e = doc.createElement("passable");
+        if (item.isPassable())
+            tmp_e.appendChild(doc.createTextNode("1"));
+        else
+            tmp_e.appendChild(doc.createTextNode("0"));
+        // Goes in Inventory
+        tmp_e = doc.createElement("inventory-able");
+        if (item.goesInInventory())
+            tmp_e.appendChild(doc.createTextNode("1"));
+        else
+            tmp_e.appendChild(doc.createTextNode("0"));
+
+        parent.appendChild(e_item);
+        return e_item;
+    }
+
+    private Element xml_writeTerrain(Document doc, Element parent, Terrain terr) {
+        Element e_Terrain = doc.createElement("terrain");
+
+
+        e_Terrain.setAttribute("name", terr.getName());
+
+        Element e_Mountain = doc.createElement("mountain");
+        if (terr.isMountain())
+            e_Mountain.appendChild(doc.createTextNode("1"));
+        else
+            e_Mountain.appendChild(doc.createTextNode("0"));
+        e_Terrain.appendChild(e_Mountain);
+
+        Element e_water = doc.createElement("water");
+        if (terr.isWater())
+            e_water.appendChild(doc.createTextNode("1"));
+        else
+            e_water.appendChild(doc.createTextNode("0"));
+        e_Terrain.appendChild(e_water);
+
+        // Terrain::Decal
+        e_Terrain.appendChild(doc.createElement("decal").appendChild(doc.createTextNode(Character.toString(terr.getDecal()))));
+        // Terrain::Character
+        e_Terrain.appendChild(doc.createElement("terr_char").appendChild(doc.createTextNode(Character.toString(terr.getDChar()))));
+        // Terrain::Color
+        e_Terrain.appendChild(doc.createElement("color").appendChild(doc.createTextNode(terr.color_.name())));
+
+        parent.appendChild(e_Terrain);
+        return e_Terrain;
+    }
+    //</editor-fold>
 }

@@ -74,7 +74,7 @@ public class SavedGame {
             // MAP
             Element e_map = save.createElement("map");
 
-            map.mapToXML(save, e_map);
+            map.xml_writeMap(save, e_map);
 
             // ROOT - APPEND
             root.appendChild(e_keymap);

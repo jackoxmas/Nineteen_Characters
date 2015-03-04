@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fbc16cae-2312-42a3-a657-0f99998ac22f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gitignore" afterPath="$PROJECT_DIR$/../.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/map/Map.java" afterPath="$PROJECT_DIR$/../src/src/model/map/Map.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -29,11 +28,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Map.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Map.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../src/src/model/map/Map.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="952" max-vertical-offset="2730">
-              <caret line="530" column="57" selection-start-line="530" selection-start-column="57" selection-end-line="530" selection-end-column="57" />
+            <state vertical-scroll-proportion="0.34991974" vertical-offset="1327" max-vertical-offset="2130">
+              <caret line="598" column="55" selection-start-line="598" selection-start-column="55" selection-end-line="598" selection-end-column="55" />
               <folding>
                 <element signature="docComment;class#Map#0" expanded="false" />
                 <element signature="docComment;method#addTerrain#0;class#Map#0" expanded="false" />
@@ -72,18 +71,8 @@
                 <element signature="method#xml_writeEntity#0;class#Map#0" expanded="false" />
                 <element signature="method#xml_writeItem#0;class#Map#0" expanded="false" />
                 <element signature="method#xml_writeStatsDrawable#0;class#Map#0" expanded="false" />
-                <element signature="method#xml_writeTerrain#0;class#Map#0" expanded="false" />
+                <element signature="method#xml_writeStatsEntity#0;class#Map#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.30100334" vertical-offset="540" max-vertical-offset="2400">
-              <caret line="48" column="11" selection-start-line="48" selection-start-column="11" selection-end-line="48" selection-end-column="11" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -294,8 +283,8 @@
         <option value="$PROJECT_DIR$/../src/src/SavedGame.java" />
         <option value="$PROJECT_DIR$/../src/src/RunGame.java" />
         <option value="$PROJECT_DIR$/../src/src/io/controller/UserController.java" />
-        <option value="$PROJECT_DIR$/../src/src/model/map/Map.java" />
         <option value="$PROJECT_DIR$/../.gitignore" />
+        <option value="$PROJECT_DIR$/../src/src/model/map/Map.java" />
       </list>
     </option>
   </component>
@@ -1045,7 +1034,7 @@
             <element signature="method#xml_writeEntity#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeItem#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeStatsDrawable#0;class#Map#0" expanded="false" />
-            <element signature="method#xml_writeTerrain#0;class#Map#0" expanded="false" />
+            <element signature="method#xml_writeStatsEntity#0;class#Map#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1092,7 +1081,7 @@
             <element signature="method#xml_writeEntity#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeItem#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeStatsDrawable#0;class#Map#0" expanded="false" />
-            <element signature="method#xml_writeTerrain#0;class#Map#0" expanded="false" />
+            <element signature="method#xml_writeStatsEntity#0;class#Map#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1153,7 +1142,7 @@
             <element signature="method#xml_writeEntity#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeItem#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeStatsDrawable#0;class#Map#0" expanded="false" />
-            <element signature="method#xml_writeTerrain#0;class#Map#0" expanded="false" />
+            <element signature="method#xml_writeStatsEntity#0;class#Map#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1200,7 +1189,7 @@
             <element signature="method#xml_writeEntity#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeItem#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeStatsDrawable#0;class#Map#0" expanded="false" />
-            <element signature="method#xml_writeTerrain#0;class#Map#0" expanded="false" />
+            <element signature="method#xml_writeStatsEntity#0;class#Map#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1742,10 +1731,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.30100334" vertical-offset="540" max-vertical-offset="2400">
+          <caret line="48" column="11" selection-start-line="48" selection-start-column="11" selection-end-line="48" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/model/map/Map.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="952" max-vertical-offset="2730">
-          <caret line="530" column="57" selection-start-line="530" selection-start-column="57" selection-end-line="530" selection-end-column="57" />
+        <state vertical-scroll-proportion="0.34991974" vertical-offset="1327" max-vertical-offset="2130">
+          <caret line="598" column="55" selection-start-line="598" selection-start-column="55" selection-end-line="598" selection-end-column="55" />
           <folding>
             <element signature="docComment;class#Map#0" expanded="false" />
             <element signature="docComment;method#addTerrain#0;class#Map#0" expanded="false" />
@@ -1784,16 +1781,8 @@
             <element signature="method#xml_writeEntity#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeItem#0;class#Map#0" expanded="false" />
             <element signature="method#xml_writeStatsDrawable#0;class#Map#0" expanded="false" />
-            <element signature="method#xml_writeTerrain#0;class#Map#0" expanded="false" />
+            <element signature="method#xml_writeStatsEntity#0;class#Map#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30100334" vertical-offset="540" max-vertical-offset="2400">
-          <caret line="48" column="11" selection-start-line="48" selection-start-column="11" selection-end-line="48" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>

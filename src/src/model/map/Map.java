@@ -466,26 +466,14 @@ public class Map implements MapUser_Interface {
         // Name
         e_item.setAttribute("name", item.getName());
         // Is One Shot
-        Element tmp_e = doc.createElement("one_shot");
         if (item.isOneShot())
-            tmp_e.appendChild(doc.createTextNode("1"));
-        else
-            tmp_e.appendChild(doc.createTextNode("0"));
-        e_item.appendChild(tmp_e);
+            e_item.appendChild(doc.createElement("one_shot"));
         // Is Passable
-        tmp_e = doc.createElement("passable");
         if (item.isPassable())
-            tmp_e.appendChild(doc.createTextNode("1"));
-        else
-            tmp_e.appendChild(doc.createTextNode("0"));
-        e_item.appendChild(tmp_e);
+            e_item.appendChild(doc.createElement("passable"));
         // Goes in Inventory
-        tmp_e = doc.createElement("inventory-able");
         if (item.goesInInventory())
-            tmp_e.appendChild(doc.createTextNode("1"));
-        else
-            tmp_e.appendChild(doc.createTextNode("0"));
-        e_item.appendChild(tmp_e);
+            e_item.appendChild(doc.createElement("inventory-able"));
 
         xml_writeStatsDrawable(doc, e_item, item.getStatsPack());
 
@@ -610,39 +598,31 @@ public class Map implements MapUser_Interface {
         }
         e_Terrain.setAttribute("name", terr.getName());
 
-        Element e_Mountain = doc.createElement("mountain");
+        // BOOLEANS:
         if (terr.isMountain())
-            e_Mountain.appendChild(doc.createTextNode("1"));
-        else
-            e_Mountain.appendChild(doc.createTextNode("0"));
-        e_Terrain.appendChild(e_Mountain);
+            e_Terrain.appendChild(doc.createElement("mountain"));
 
-        Element e_water = doc.createElement("water");
         if (terr.isWater())
-            e_water.appendChild(doc.createTextNode("1"));
-        else
-            e_water.appendChild(doc.createTextNode("0"));
-        e_Terrain.appendChild(e_water);
+            e_Terrain.appendChild(doc.createElement("water"));
 
-        // Terrain::Decal
-        String dec = "NULL";
+        // Terrain::Decal - only write if non-null
         if (terr.getDecal() != '\u0000') {
-            dec = Character.toString(terr.getDecal());
+            Element e_decal = doc.createElement("decal");
+            e_decal.appendChild(doc.createTextNode(Character.toString(terr.getDecal())));
+            e_Terrain.appendChild(e_decal);
         }
-        Element e_decal = doc.createElement("decal");
-        e_decal.appendChild(doc.createTextNode(dec));
-        e_Terrain.appendChild(e_decal);
+
         // Terrain::Character
         Element e_dChar = doc.createElement("terr_char");
         e_dChar.appendChild(doc.createTextNode(Character.toString(terr.getDChar())));
         e_Terrain.appendChild(e_dChar);
-        // Terrain::Color
-        String col = "NULL";
-        if (terr.color_ != null)
-            col = terr.color_.name();
-        Element e_color = doc.createElement("color");
-        e_color.appendChild(doc.createTextNode(col));
-        e_Terrain.appendChild(e_color);
+
+        // Terrain::Color - only write if non-null
+        if (terr.color_ != null) {
+            Element e_color = doc.createElement("color");
+            e_color.appendChild(doc.createTextNode(terr.color_.name()));
+            e_Terrain.appendChild(e_color);
+        }
 
         parent.appendChild(e_Terrain);
         return e_Terrain;

@@ -57,22 +57,25 @@ public class Display {
 		}
 		@Override
 		public void keyPressed(KeyEvent e) {
-			// TODO Auto-generated method stub
-			if(e.getKeyCode() == KeyEvent.VK_ENTER){
-				outputBox_.append(System.lineSeparator()+inputBox_.getText());
-				inputBox_.setText("");//Upon enter, clear the input box, and move it's text to output
-			}
+			// Nada to do here
+			
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
-			//Nothing to do here.
-			
+			//On release,  
+			if(e.getKeyCode() == KeyEvent.VK_ENTER){
+				outputBox_.append(System.lineSeparator()+inputBox_.getText());
+				inputBox_.setText("");//Upon enter, clear the input box, and move it's text to output
+			}	
 		}
 		@Override
 		public void keyTyped(KeyEvent e) {
 			//Nothing to do here.
 
 			
+		}
+		public void addKeyListener(KeyListener listen){
+			inputBox_.addKeyListener(listen);
 		}
 	}
     // Converts the class name into a base 35 number
@@ -240,6 +243,9 @@ public class Display {
 	}
 	public void addGameMouseWheelListener(MouseWheelListener listener){
 		pane_.addMouseWheelListener(listener);
+	}
+	public void addChatBoxKeyListener(KeyListener listen){
+		chat_.addKeyListener(listen);
 	}
 
 }

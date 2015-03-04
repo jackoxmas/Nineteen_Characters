@@ -21,8 +21,13 @@ public final class Smasher extends Occupation {
         current_stats.increaseStrengthLevelByOne();
 
     }
+
+    @Override
+    public int getOccNumber() { return 1;}
+
     /**
      * Increments an occupation specific skill. Caller should decrement number of skillpoints.
+     *
      * @param skill Which skill to increment
      * @return 0 on success, -1 if this occupation cannot increment this skill.
      */

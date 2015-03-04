@@ -1,14 +1,20 @@
 package src.model.map;
 
+import org.w3c.dom.Node;
 import src.IO_Bundle;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
+import src.RunGame;
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Entity;
 import src.model.map.constructs.Item;
 import src.model.map.constructs.Terrain;
 import src.model.*;
+
+import org.w3c.dom.Element;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
 
 import java.io.*;
 import java.net.*;
@@ -22,6 +28,8 @@ public class Map implements MapUser_Interface {
 
     public static final int MAX_NUMBER_OF_WORLDS = 1;
     private static int number_of_worlds_generated_ = 0;
+    // Item is the address of an item in memory. Location is its xy coordinates on the grid.
+    private transient LinkedList<Item> items_list_;
 
     /**
      * Once a tile has terrain, that terrain is constant.
@@ -193,8 +201,7 @@ public class Map implements MapUser_Interface {
         }
     }
 
-    // Item is the address of an item in memory. Location is its xy coordinates on the grid.
-    private transient LinkedList<Item> items_list_;
+
 
     /**
      * Adds an item to the map.
@@ -338,4 +345,189 @@ public class Map implements MapUser_Interface {
 
     // The map has a clock
     private int time_measured_in_turns;
+
+    //<editor-fold desc="XML" defaultstate="collapsed">
+    /**
+     * Writes this map to the given XML Element in the given XML document
+     * @param doc The XML Document to write to
+     * @param e_map The XML Element to write to
+     * @return 0 = success
+     * @author Alex Stewart
+     */
+    public int xml_writeMap(Document doc, Element e_map) {
+        // MAP::TIME)
+        Element e_time = doc.createElement("time");
+        e_map.appendChild(doc.createTextNode(Integer.toString(this.time_measured_in_turns)));
+
+        // MAP::MAP_GRID
+        Element e_map_grid = doc.createElement("map_grid");
+        e_map_grid.setAttribute("width", Integer.toString(this.width_));
+        e_map_grid.setAttribute("height", Integer.toString(this.height_));
+
+        Element e_l;
+        for (int j = 0; j < this.height_; j++) {
+            for (int i = 0; i < this.width_; i++) {
+                e_l = doc.createElement("map_tile");
+                e_l.setAttribute("x", Integer.toString(i));
+                e_l.setAttribute("y", Integer.toString(j));
+
+                // Terrain
+                Terrain terr = this.map_grid_[i][j].getTerrain();
+                if (terr == null) {
+                    RunGame.errOut("xml_writeMap: null terrain @ [" + i + ", " + j + "]");
+                    return 1;
+                }
+                xml_writeTerrain(doc, e_l, terr);
+
+
+                // Entity
+                Entity ent = this.map_grid_[i][j].getEntity();
+                if (ent != null)
+                    xml_writeEntity(doc, e_l, ent);
+                // TODO: remove if above code works:
+                // write entity hash code to 'entity' element
+                //e_l.appendChild(doc.createElement("entity").appendChild(doc.createTextNode(Integer.toString(System.identityHashCode(map_grid_[i][j].getEntity())))));
+
+                // Item list
+                Element e_itemlist = doc.createElement("item_list");
+                for (Item item : map_grid_[i][j].getItemList()) {
+                    xml_writeItem(doc, e_itemlist, item);
+
+                    // TODO: remove if above code works:
+                    //tmp_eItem = doc.createElement("item");
+                    //tmp_eItem.appendChild(doc.createTextNode(Integer.toString(System.identityHashCode(item))));
+                    //e_itemlist.appendChild(tmp_eItem);
+                }
+                e_l.appendChild(e_itemlist);
+
+                e_map_grid.appendChild(e_l);
+            }
+        }
+
+        // MAP::AVATAR_LIST
+        Element e_avatars = doc.createElement("avatars");
+        for (Avatar a : this.avatar_list_.values()) {
+            e_l = doc.createElement("avatar");
+            // TODO: finish avatar xml
+            e_avatars.appendChild(e_l);
+        }
+
+        // MAP - APPEND
+        e_map.appendChild(e_time);
+        e_map.appendChild(e_map_grid);
+        e_map.appendChild(e_avatars);
+
+        return 0; // Return success
+    }
+
+    private Element xml_writeEntity(Document doc, Element parent, Entity entity) {
+        Element e_entity = doc.createElement("entity");
+
+        // Name
+        e_entity.setAttribute("name", entity.getName());
+
+        // Direction
+        Element e_dir = doc.createElement("direction");
+        e_dir.appendChild(doc.createTextNode(entity.getFacingDirection().toString()));
+
+        // Item List
+        Element e_itemList = doc.createElement("item_list");
+        // write inventory items to xml
+        Item equipped = entity.getEquipped();
+        ArrayList<Item> tmp_inv = entity.getInventory();
+        Element tmp_eInvItem; // temp inventory item
+        for (int i = 0; i < entity.getInventory().size(); i++) {
+            Element tmp_einvItem = xml_writeItem(doc, e_itemList, tmp_inv.get(i));
+
+            Element e_equip = doc.createElement("equipped");
+            if (tmp_inv.get(i) == equipped)
+                e_equip.appendChild(doc.createTextNode("1"));
+            else
+                e_equip.appendChild(doc.createTextNode("0"));
+            tmp_einvItem.appendChild(e_equip);
+        }
+        e_entity.appendChild(e_itemList);
+        parent.appendChild(e_entity);
+
+        return e_entity;
+    }
+
+    private Element xml_writeItem(Document doc, Element parent, Item item) {
+        Element e_item = doc.createElement("item");
+
+        // Name
+        e_item.setAttribute("name", item.getName());
+        // Is One Shot
+        Element tmp_e = doc.createElement("one_shot");
+        if (item.isOneShot())
+            tmp_e.appendChild(doc.createTextNode("1"));
+        else
+            tmp_e.appendChild(doc.createTextNode("0"));
+        e_item.appendChild(tmp_e);
+        // Is Passable
+        tmp_e = doc.createElement("passable");
+        if (item.isPassable())
+            tmp_e.appendChild(doc.createTextNode("1"));
+        else
+            tmp_e.appendChild(doc.createTextNode("0"));
+        e_item.appendChild(tmp_e);
+        // Goes in Inventory
+        tmp_e = doc.createElement("inventory-able");
+        if (item.goesInInventory())
+            tmp_e.appendChild(doc.createTextNode("1"));
+        else
+            tmp_e.appendChild(doc.createTextNode("0"));
+        e_item.appendChild(tmp_e);
+
+        parent.appendChild(e_item);
+        return e_item;
+    }
+
+    private Element xml_writeTerrain(Document doc, Element parent, Terrain terr) {
+        Element e_Terrain = doc.createElement("terrain");
+
+        if (terr.getName() == null) {
+            RunGame.errOut("xml_writeTerrain: null Terrain name");
+            return null;
+        }
+        e_Terrain.setAttribute("name", terr.getName());
+
+        Element e_Mountain = doc.createElement("mountain");
+        if (terr.isMountain())
+            e_Mountain.appendChild(doc.createTextNode("1"));
+        else
+            e_Mountain.appendChild(doc.createTextNode("0"));
+        e_Terrain.appendChild(e_Mountain);
+
+        Element e_water = doc.createElement("water");
+        if (terr.isWater())
+            e_water.appendChild(doc.createTextNode("1"));
+        else
+            e_water.appendChild(doc.createTextNode("0"));
+        e_Terrain.appendChild(e_water);
+
+        // Terrain::Decal
+        String dec = "NULL";
+        if (terr.getDecal() != '\u0000') {
+            dec = Character.toString(terr.getDecal());
+        }
+        Element e_decal = doc.createElement("decal");
+        e_decal.appendChild(doc.createTextNode(dec));
+        e_Terrain.appendChild(e_decal);
+        // Terrain::Character
+        Element e_dChar = doc.createElement("terr_char");
+        e_dChar.appendChild(doc.createTextNode(Character.toString(terr.getDChar())));
+        e_Terrain.appendChild(e_dChar);
+        // Terrain::Color
+        String col = "NULL";
+        if (terr.color_ != null)
+            col = terr.color_.name();
+        Element e_color = doc.createElement("color");
+        e_color.appendChild(doc.createTextNode(col));
+        e_Terrain.appendChild(e_color);
+
+        parent.appendChild(e_Terrain);
+        return e_Terrain;
+    }
+    //</editor-fold>
 }

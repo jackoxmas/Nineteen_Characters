@@ -1,27 +1,15 @@
-/**
- * Implementor: Alex Stewart Last Update: 15-02-13
- */
 package src;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import src.model.map.constructs.AreaEffectItem;
 import src.model.map.constructs.Avatar;
 import src.io.controller.UserController;
 import src.model.map.constructs.Item;
-import src.model.map.constructs.Smasher;
-import src.model.map.constructs.Sneak;
-import src.model.map.constructs.Summoner;
 import src.model.map.constructs.Terrain;
 import src.model.map.Map;
-import src.model.map.MapTile;
-import src.io.view.Display;
 import src.io.view.Viewport;
 import src.model.map.MapUser_Interface;
 import src.model.map.constructs.OneWayTeleportItem;
@@ -37,17 +25,15 @@ public class RunGame {
     private static SavedGame saveGame_;
     private static Avatar avatar_;
     private static Map map_;
+    private static UserController uc_;
 
     public static void main(String[] args) {
-        //parseArgs(args); // Parse command line arguments
-        if (args.length != 0) {
-            loadGame("save.dave");
-        }
+        parseArgs(args); // Parse command line arguments
+        handleArgs(args);
+
         initialize(); // Initialize any data we need to before loading
         populateMap();//Add stuff into the map
         startGame(); // Begin the avatarcontroller loop
-        //handleArgs(args);
-        
 
         // testing
         //saveGameToDisk();
@@ -65,7 +51,8 @@ public class RunGame {
     }
 
     private static void initialize() {
-        saveGame_ = null;
+        if (saveGame_ == null)
+            saveGame_ = SavedGame.newSavedGame();
         map_ = new Map(Viewport.width_ / 2, Viewport.height_);
         avatar_ = new Avatar("avatar", '☃');
         map_.addAvatar(avatar_, 0, 0);
@@ -125,18 +112,14 @@ public class RunGame {
     }
 
     private static void startGame() {
-        UserController AC = new UserController(map_,avatar_.name_);
+        uc_ = new UserController(map_,avatar_.name_);
     }
 
-    private static void saveGameToDisk() {
+    public static void saveGameToDisk() {
         if (saveGame_ == null) {
             saveGame_ = SavedGame.newSavedGame();
         }
-        Exception e = null;
-
-        if (e != null) {
-            errOut(e);
-        }
+        saveGame_.saveGame(map_, uc_);
     }
 
     // TODO: complete
@@ -274,6 +257,7 @@ public class RunGame {
         if (pOpts_.lsg_flag) {
             saveGame_ = new SavedGame(args[pOpts_.lsg_path]);
             Exception e = null;
+
             //int s = saveGame_.loadFile(mmr_, e);
             /*
              if (s == 0) { // the saved game load has failed
@@ -314,6 +298,7 @@ public class RunGame {
             for (String m : pOpts_.lsg_match) {
                 if (m.equals(args[a]) && (args.length > a + 1)) {
                     pOpts_.lsg_path = a + 1;
+                    // TODO: add line to load saveGame_
                     pOpts_.lsg_flag = true;
                     break;
                 }

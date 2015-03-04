@@ -61,4 +61,6 @@ public abstract class Occupation {
     public abstract void change_stats(EntityStatsPack current_stats);
 
     public abstract int incrementSkill(SkillEnum skill);
+
+    public abstract int getOccNumber();
 }

@@ -47,9 +47,6 @@ public final class MapView extends Viewport {
 			for(int j = 0;j<this.getHeight()-2 && j< bundle.view_for_display_.length;++j){
 				view_contents_[i+1][j+1] = bundle.view_for_display_[bundle.view_for_display_.length-j-1][i];
 				color_contents_[i+1][j+1] = bundle.color_for_display_[bundle.view_for_display_.length-j-1][i];
-				if(color_contents_[i+1][j+1]!= Color.black || color_contents_[i+1][j+1] != Color.white){
-					//System.out.println(color_contents_[i+1][j+1]);
-				}
 			}
 
 		}

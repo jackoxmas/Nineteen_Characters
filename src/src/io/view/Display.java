@@ -245,7 +245,9 @@ public class Display {
     		catch(Exception e){System.err.println(e.toString());}
     		for(int j = 0; j!=current_view_.getHeight();++j){
     			for(int i = 0; i!=current_view_.getWidth();++i){
-    				colorChar(i,j,colors[i][j]);
+    				if(colors[i][j] != null){
+    					colorChar(i,j,colors[i][j]);
+    				}
     			}
     		}
 		
@@ -259,7 +261,7 @@ public class Display {
      */
     private void colorChar(int x, int y, Color color){
     	if(color.equals(color.white)){return;}
-    	if(color.equals(color.black)){return;}
+    	if(color.equals(color.black)){return;}//White is only used for space, so no need to render it. 
     	MutableAttributeSet attr = new SimpleAttributeSet();
     	StyleConstants.setForeground(attr, color);
     	pane_.getStyledDocument().setCharacterAttributes(y*(current_view_.getWidth()+1)+x, 1, attr, false);

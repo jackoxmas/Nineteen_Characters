@@ -83,7 +83,7 @@ public abstract class Viewport {
 			for(int i = 0; i!=width_;++i){
 				{
 					view_contents_[i][j]=' ';
-					color_contents_[i][j] = Color.black;
+					color_contents_[i][j] = null;
 					}
 			}	
 		}

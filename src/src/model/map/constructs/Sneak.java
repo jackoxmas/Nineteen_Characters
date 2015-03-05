@@ -15,7 +15,9 @@ public final class Sneak extends Occupation {
     public Sneak(Entity e) {
         super(e);
     }
+    private Bow bow_ = null;
 
+    @Override
     public void change_stats(EntityStatsPack current_stats) {
         //for sneak
         current_stats.increaseAgilityLevelByOne();
@@ -23,11 +25,30 @@ public final class Sneak extends Occupation {
     }
 
     @Override
-    public int getOccNumber() { return 2; }
+    public int equipOneHandWeapon(OneHandedWeapon weapon) {
+        return -1;
+    }
+
+    @Override
+    public int unEquipEverything() {
+        bow_ = null;
+        return 0;
+    }
+
+    @Override
+    public int equipTwoHandWeapon(TwoHandedWeapon weapon) {
+        try {
+            bow_ = (Bow) weapon;
+            return 0;
+        } catch (ClassCastException e) {
+            return -1;
+        }
+    }
 
     /**
      * Increments an occupation specific skill. Caller should decrement number
      * of skillpoints.
+     *
      * @author John-Michael Reed
      * @param skill Which skill to increment
      * @return 0 on success, -1 if this occupation cannot increment this skill.

@@ -9,6 +9,10 @@ package src.model.map.constructs;
  *
  * @author JohnReedLOL
  */
-public class ObstacleItem {
-    
+public abstract class ObstacleItem extends Item {
+
+    public ObstacleItem(String name, char representation) {
+        super(name, representation, false, false, false);
+    }
+
 }

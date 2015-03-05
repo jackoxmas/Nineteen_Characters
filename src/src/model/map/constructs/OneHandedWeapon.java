@@ -9,6 +9,14 @@ package src.model.map.constructs;
  *
  * @author JohnReedLOL
  */
-public class OneHandedWeapon {
-    
+public class OneHandedWeapon extends Weapon implements PrimaryHandHoldable {
+
+    public OneHandedWeapon(String name, char representation) {
+        super(name, representation);
+    }
+
+    @Override
+    public int equipMyselfTo(Entity to_equip) {
+        return to_equip.equip1hWeapon(this);
+    }
 }

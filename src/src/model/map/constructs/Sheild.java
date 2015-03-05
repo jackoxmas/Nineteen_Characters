@@ -9,6 +9,12 @@ package src.model.map.constructs;
  *
  * @author JohnReedLOL
  */
-public class Sheild extends OneHandedWeapon implements SecondaryHandHoldable{
-    
+public class Sheild extends EquipableItem implements SecondaryHandHoldable {
+
+    public Sheild(String name, char representation) {
+        super(name, representation);
+    }
+    public int equipMyselfTo(Entity to_equip) {
+        return to_equip.equipSheild(this);
+    }
 }

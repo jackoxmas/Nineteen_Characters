@@ -70,7 +70,7 @@ public final class Summoner extends Occupation {
         }
     }
     @Override
-    public int performOccupationSpecificSkillNumber(int number) {
+    public int performOccupationSkill(int number) {
         if(number == 1) {
             //...
         }

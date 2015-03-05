@@ -35,7 +35,7 @@ public abstract class Occupation {
      * @param number
      * @return 
      */
-    abstract public int performOccupationSpecificSkillNumber(int number);
+    abstract public int performOccupationSkill(int number);
 
     public int getSkill_1_() {
         return skill_1_;

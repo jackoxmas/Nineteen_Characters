@@ -215,6 +215,19 @@ public final class Avatar extends Entity {
             case 'c'://move SE
                 mar.moveInDirection(1, -1);
                 break;
+            case 'E': // equipMyselfTo
+                try {
+                    EquipableItem item = (EquipableItem) this.getLastItemInInventory();
+                    if (item != null) {
+                        return item.equipMyselfTo(this);
+                    } 
+                } catch (ClassCastException e) {
+                    // ignore it
+                }
+                return -1;
+            case 'U': // unEquip
+                this.unEquipEverything();
+                break;
             case 'D': //drop item
                 int error_code_D = mar.dropItem();
                 return error_code_D;

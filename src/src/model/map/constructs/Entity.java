@@ -110,11 +110,22 @@ abstract public class Entity extends DrawableThing {
      */
     public int equipSheild(Sheild sheild) {
         if (sheild != null) {
-            if (secondary_hand_ != null) {
-                inventory_.add((PickupableItem) secondary_hand_);
+            // In the case of a 2H sword
+            if ((primary_hand_ == secondary_hand_) && (secondary_hand_ != null)) {
+                inventory_.add((PickupableItem) primary_hand_);
+                primary_hand_ = null;
+                secondary_hand_ = null;
+            } // In the case of a sheild
+            else if ((primary_hand_ != secondary_hand_) && (secondary_hand_ != null)) {
+                inventory_.add((PickupableItem) primary_hand_);
+                secondary_hand_ = null;
             }
+
             secondary_hand_ = sheild;
-            inventory_.remove((PickupableItem) sheild);
+            boolean successful_removal = inventory_.remove((PickupableItem) sheild);
+            if (successful_removal != true) {
+                System.exit(-66);
+            }
             return 0;
         } else {
             return -5;
@@ -128,16 +139,27 @@ abstract public class Entity extends DrawableThing {
      */
     public int equip1hWeapon(final OneHandedWeapon one_hand_weapon) {
         if (one_hand_weapon != null) {
-            if (primary_hand_ != null) {
+            // In the case of a 2H sword
+            if ((primary_hand_ == secondary_hand_) && (primary_hand_ != null)) {
                 inventory_.add((PickupableItem) primary_hand_);
+                primary_hand_ = null;
+                secondary_hand_ = null;
+            } // In the case of a 1h sword
+            else if ((primary_hand_ != secondary_hand_) && (primary_hand_ != null)) {
+                inventory_.add((PickupableItem) primary_hand_);
+                primary_hand_ = null;
             }
+
             int error_code = -1; // by default null occupation cannot equipMyselfTo any weapon
             if (occupation_ != null) {
                 error_code = occupation_.equipOneHandWeapon(one_hand_weapon);
             }
             if (error_code == 0) {
                 primary_hand_ = one_hand_weapon;
-                inventory_.remove((PickupableItem) one_hand_weapon);
+                boolean successful_removal = inventory_.remove((PickupableItem) one_hand_weapon);
+                if (successful_removal != true) {
+                    System.exit(-77);
+                }
                 return 0;
             } else {
                 return error_code;
@@ -153,13 +175,13 @@ abstract public class Entity extends DrawableThing {
         } else if (primary_hand_ != secondary_hand_) {
             if (primary_hand_ != null) {
                 inventory_.add((PickupableItem) primary_hand_);
-                primary_hand_ = null;
             }
             if (secondary_hand_ != null) {
                 inventory_.add((PickupableItem) secondary_hand_);
-                secondary_hand_ = null;
             }
         }
+        primary_hand_ = null;
+        secondary_hand_ = null;
 
         if (occupation_ == null) {
             return 0;
@@ -175,16 +197,21 @@ abstract public class Entity extends DrawableThing {
      */
     public int equip2hWeapon(TwoHandedWeapon two_hand_weapon) {
         if (two_hand_weapon != null) {
+            // case of 2H sword
             if ((primary_hand_ == secondary_hand_) && (primary_hand_ != null)) {
                 inventory_.add((PickupableItem) primary_hand_);
             } else if ((primary_hand_ != secondary_hand_)) {
+                // case of 1h SWORD
                 if (primary_hand_ != null) {
                     inventory_.add((PickupableItem) primary_hand_);
                 }
+                // case of sheld
                 if (secondary_hand_ != null) {
                     inventory_.add((PickupableItem) secondary_hand_);
                 }
             }
+            primary_hand_ = null;
+            secondary_hand_ = null;
 
             int error_code = -1; // by default null occupation cannot equipMyselfTo any weapon
             if (occupation_ != null) {
@@ -193,7 +220,10 @@ abstract public class Entity extends DrawableThing {
             if (error_code == 0) {
                 primary_hand_ = two_hand_weapon;
                 secondary_hand_ = two_hand_weapon;
-                inventory_.remove((PickupableItem) two_hand_weapon);
+                boolean successful_removal = inventory_.remove((PickupableItem) two_hand_weapon);
+                if (successful_removal != true) {
+                    System.exit(-88);
+                }
                 return 0;
             } else {
                 return error_code;

@@ -17,6 +17,7 @@ import src.model.map.Map;
 import src.io.view.Viewport;
 import src.model.map.MapUser_Interface;
 import src.model.map.constructs.OneWayTeleportItem;
+import src.model.map.constructs.TwoHandedSword;
 
 /**
  * Initializes, opens the program.
@@ -70,9 +71,11 @@ public class RunGame {
     private static void populateMap() {
         Item teleport = new OneWayTeleportItem("tele", 'T', 0, 0);
         Item onehandedsword = new OneHandedSword("Excalibur", '|');
+        Item twohandedsword = new TwoHandedSword("Two_hander", '|');
         Item sheild = new Sheild("Sheildy",'O');
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
         map_.addItem(teleport, 2, 4);
+        map_.addItem(twohandedsword, 1, 1);
         map_.addItem(sheild,10,10);
         map_.addItem(onehandedsword, 5,5);
         for (int y = 0; y < mapHeight_; ++y) {

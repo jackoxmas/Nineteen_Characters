@@ -13,7 +13,7 @@ import src.io.view.Display;
  *
  * @author JohnReedLOL
  */
-public class Item extends DrawableThing {
+public abstract class Item extends DrawableThing {
 
     public Item(String name, char representation,
             boolean goes_in_inventory, boolean is_passable, boolean is_one_shot) {

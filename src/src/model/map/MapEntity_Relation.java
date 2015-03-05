@@ -13,6 +13,7 @@ import src.io.view.Display;
 
 import java.awt.Color;
 import java.util.regex.*;
+import src.model.map.constructs.PickupableItem;
 
 /**
  * One line description
@@ -22,9 +23,10 @@ import java.util.regex.*;
 public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     public class AreaEffect extends MapDrawableThing_Relation.AreaEffect {
-        
+
         /**
          * For damage coming from entities
+         *
          * @param x_pos - x coordinate of effect
          * @param y_pos - y coordinate of effect
          * @param strength - how much effect
@@ -229,14 +231,18 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      * @author John-Michael Reed
      * @param x
      * @param y
-     * @return error_code
+     * @return error_code: return -2 if item is not pickupable
      */
     public int pickUpItemInDirection(int x, int y) {
         int error_code = -1;
 
         Item itemToBePickedUp = current_map_reference_.removeTopItem(x + getMyXCoordinate(), y + getMyYCoordinate());
         if (itemToBePickedUp != null) {
-            entity_.addItemToInventory(itemToBePickedUp);
+            try {
+                entity_.addItemToInventory((PickupableItem) itemToBePickedUp);
+            } catch (ClassCastException c) {
+                return -2;
+            }
             Display.getDisplay().setMessage("Picked up item: " + itemToBePickedUp.name_);
             error_code = 0;
         } else {
@@ -289,17 +295,18 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     /**
      * Sends an attack to an entity.
+     *
      * @author John-Michael Reed
      * @param target - entity to hit
      * @return -1 if target is null, 0 if success
      */
     public int sendAttack(Entity target_entity) {
-            if (target_entity == null) {
-                return -1;
-            } else {
-                target_entity.receiveAttack(3 + entity_.getStatsPack().getOffensive_rating_(), entity_);
-                return 0;
-            }
+        if (target_entity == null) {
+            return -1;
+        } else {
+            target_entity.receiveAttack(3 + entity_.getStatsPack().getOffensive_rating_(), entity_);
+            return 0;
+        }
     }
 
     /**

@@ -10,5 +10,8 @@ package src.model.map.constructs;
  * @author JohnReedLOL
  */
 public class TwoHandedSword extends TwoHandedWeapon implements PrimaryHandHoldable, SecondaryHandHoldable {
-    
+
+    public TwoHandedSword(String name, char representation) {
+        super(name, representation);
+    }
 }

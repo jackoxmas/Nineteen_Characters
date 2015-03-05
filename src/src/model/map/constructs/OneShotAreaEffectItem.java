@@ -12,7 +12,7 @@ import src.Effect;
  *
  * @author JohnMichaelReed
  */
-public class AreaEffectItem extends Item {
+public class OneShotAreaEffectItem extends Item {
 
     private Effect effect_;
 
@@ -32,7 +32,7 @@ public class AreaEffectItem extends Item {
      * @param effect
      * @param power
      */
-    public AreaEffectItem(String name, char representation,
+    public OneShotAreaEffectItem(String name, char representation,
             boolean goes_in_inventory, Effect effect, int power) {
         super(name, representation, goes_in_inventory, true, true);
         effect_ = effect;
@@ -50,7 +50,7 @@ public class AreaEffectItem extends Item {
      * @param is_one_shot
      * @param effect
      */
-    public AreaEffectItem(String name, char representation, boolean is_passable,
+    public OneShotAreaEffectItem(String name, char representation, boolean is_passable,
             boolean goes_in_inventory, boolean is_one_shot, Effect effect) {
         super(name, representation, goes_in_inventory, true, true);
         effect_ = effect;

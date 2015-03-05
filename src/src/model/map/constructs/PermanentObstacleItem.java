@@ -9,6 +9,28 @@ package src.model.map.constructs;
  *
  * @author JohnReedLOL
  */
-public class PermanentObstacleItem extends ObstacleItem{
-    
+public class PermanentObstacleItem extends ObstacleItem {
+
+    public PermanentObstacleItem(String name, char representation) {
+        super(name, representation);
+    }
+
+    /**
+     * You can't make a permanent Obstacle Item passable
+     * @param is_passable
+     * @return 
+     */
+    @Override
+    public int setPassable(boolean is_passable) {
+        return -1;
+    }
+
+    /**
+     * Permanent obstacles are always impassable
+     * @return 
+     */
+    @Override
+    public boolean isPassable() {
+        return false;
+    }
 }

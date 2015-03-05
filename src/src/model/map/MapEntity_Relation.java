@@ -348,7 +348,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     }
 
     /**
-     * Sends a greeting to an enrirt.
+     * Sends a greeting to an entity.
      *
      * @author John-Michael Reed
      * @return reply string

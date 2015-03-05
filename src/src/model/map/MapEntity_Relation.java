@@ -10,6 +10,8 @@ import src.FacingDirection;
 import src.model.map.constructs.Entity;
 import src.model.map.constructs.Item;
 import src.io.view.Display;
+
+import java.awt.Color;
 import java.util.regex.*;
 
 /**
@@ -35,13 +37,13 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 // If there is no decal, fuck shit up
                 if (infliction.getTerrain() != null && !infliction.getTerrain().hasDecal()) {
                     if (effect == Effect.HURT) {
-                        infliction.getTerrain().addDecal('♨');
+                        infliction.getTerrain().addDecal('♨',Color.magenta);
                     } else if (effect == Effect.HEAL) {
-                        infliction.getTerrain().addDecal('♥');
+                        infliction.getTerrain().addDecal('♥',Color.red);
                     } else if (effect == Effect.LEVEL) {
-                        infliction.getTerrain().addDecal('↑');
+                        infliction.getTerrain().addDecal('↑',Color.black);
                     } else if (effect == Effect.KILL) {
-                        infliction.getTerrain().addDecal('☣');
+                        infliction.getTerrain().addDecal('☣',Color.orange);
                     }
                 }
                 Entity to_effect = infliction.getEntity();

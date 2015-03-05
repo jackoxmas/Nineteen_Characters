@@ -1,5 +1,6 @@
 package src;
 
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
@@ -84,11 +85,11 @@ public class RunGame {
                 Terrain obstacle = new Terrain("land", '▨', false, false);
                 if (y == 4) {
                     if (x == 2) {
-                        obstacle.addDecal('☠');
+                        obstacle.addDecal('☠',Color.black);
                     } else if (x == 6) {
-                        obstacle.addDecal('★');
+                        obstacle.addDecal('★',Color.yellow);
                     } else if (x == 9) {
-                        obstacle.addDecal('✚');
+                        obstacle.addDecal('✚',Color.red);
                     }
                 }
                 map_.addTerrain(obstacle, x, y);

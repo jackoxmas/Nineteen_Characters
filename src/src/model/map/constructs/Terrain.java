@@ -33,8 +33,9 @@ public class Terrain extends DrawableThing {
      * Sets Terrain's decal.
      * @param decal
      */
-    public void addDecal(char decal) {
+    public void addDecal(char decal,Color col_) {
         decal_ = decal;
+        this.setColor(col_);
     }
 
     public char getDecal() {

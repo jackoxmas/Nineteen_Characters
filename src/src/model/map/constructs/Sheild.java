@@ -14,4 +14,7 @@ public class Sheild extends EquipableItem implements SecondaryHandHoldable {
     public Sheild(String name, char representation) {
         super(name, representation);
     }
+    public int equip(Entity to_equip) {
+        return to_equip.equipSheild(this);
+    }
 }

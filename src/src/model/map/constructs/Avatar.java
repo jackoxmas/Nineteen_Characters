@@ -218,22 +218,29 @@ public final class Avatar extends Entity {
                 int error_code_D = mar.dropItem();
                 return error_code_D;
             case 'E': // equip
-                this.equipInventoryItem();
-                break;
+                try {
+                    EquipableItem item = (EquipableItem) this.getLastItemInInventory();
+                    if (item != null) {
+                        return this.equip(item);
+                    }
+                } catch (ClassCastException e) {
+                    // ignore it
+                }
+                return -1;
             case 'U': // unEquip
-                unEquipInventoryItem();
+                this.unEquipEverything();
                 break;
             case 'p'://pickup item
                 int error_code_p = mar.pickUpItemInDirection(0, 0);
                 return error_code_p;
             case 'Z': //switch to Smasher
-            	this.setRepresentation('⚔');
+                this.setRepresentation('⚔');
                 return this.becomeSmasher();
             case 'X': //switch to Summoner
-            	this.setRepresentation('☃');
+                this.setRepresentation('☃');
                 return this.becomeSummoner();
             case 'C': //switch to Sneaker
-            	this.setRepresentation('☭');
+                this.setRepresentation('☭');
                 return this.becomeSneak();
             case 'V': //switch to Smasher
                 this.setOccupation(null);
@@ -249,8 +256,6 @@ public final class Avatar extends Entity {
         super(name, representation);
     }
 
-
-  
     // map_relationship_ is used in place of a map_referance_
     private MapAvatar_Relation map_relationship_;
 
@@ -282,8 +287,6 @@ public final class Avatar extends Entity {
         saveGame.saveGame(this);
     }
 
-
-
     /**
      * Avatars automatically do nothing when attacked
      *
@@ -300,10 +303,6 @@ public final class Avatar extends Entity {
         // return this.getMapRelation().sendAttack(attacker);
         return 0;
     }
-
-    
-
-   
 
     @Override
     public String toString() {

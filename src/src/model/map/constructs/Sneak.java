@@ -29,6 +29,12 @@ public final class Sneak extends Occupation {
     }
 
     @Override
+    public int unEquipEverything() {
+        bow_ = null;
+        return 0;
+    }
+
+    @Override
     public int equipTwoHandWeapon(TwoHandedWeapon weapon) {
         try {
             bow_ = (Bow) weapon;

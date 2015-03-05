@@ -31,6 +31,11 @@ public final class Summoner extends Occupation {
             return -1;
         }
     }
+    @Override
+    public int unEquipEverything() {
+        staff_ = null;
+        return 0;
+    }
 
     @Override
     public int equipTwoHandWeapon(TwoHandedWeapon weapon) {

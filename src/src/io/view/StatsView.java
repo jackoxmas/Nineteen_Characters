@@ -12,6 +12,7 @@ import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Item;
 
 import java.lang.Character;
+import src.model.map.constructs.PickupableItem;
 /**
  * Players see the StatsView when they are checking their stats
  * @author Matthew B, Jessan, Jack C,JohnReedLOL
@@ -109,7 +110,7 @@ public final class StatsView extends Viewport
  * Helps renderToDisplay
  */
     private void renderInventory(IO_Bundle bundle_) {
-    	ArrayList<Item> inventory = bundle_.getInventory();
+    	ArrayList<PickupableItem> inventory = bundle_.getInventory();
     	for (int i = 0; i < inventory.size(); i++) {
     		String item_name = inventory.get(i).name_;
     		if (item_name.length() > 22)

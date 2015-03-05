@@ -14,4 +14,8 @@ public class OneHandedWeapon extends Weapon implements PrimaryHandHoldable {
     public OneHandedWeapon(String name, char representation) {
         super(name, representation);
     }
+
+    public int equip(Entity to_equip) {
+        return to_equip.equip1hWeapon(this);
+    }
 }

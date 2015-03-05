@@ -20,11 +20,21 @@ import src.model.map.constructs.SecondaryHandHoldable;
  */
 abstract public class Entity extends DrawableThing {
 
-    // private Item equipped_item_;
     private PrimaryHandHoldable primary_hard_ = null;
     private SecondaryHandHoldable secondary_hand_ = null;
-
     private FacingDirection direction_ = FacingDirection.UP;
+    protected ArrayList<PickupableItem> inventory_;
+
+    /**
+     * Entity Constructor
+     *
+     * @param name
+     * @param representation - What will represent the Entity on the screen.
+     */
+    public Entity(String name, char representation) {
+        super(name, representation);
+        inventory_ = new ArrayList<PickupableItem>();
+    }
 
     public FacingDirection getFacingDirection() {
         return direction_;
@@ -69,17 +79,6 @@ abstract public class Entity extends DrawableThing {
         System.out.println("game over");
     }
 
-    /**
-     * Entity Constructor
-     *
-     * @param name
-     * @param representation - What will represent the Entity on the screen.
-     */
-    public Entity(String name, char representation) {
-        super(name, representation);
-        inventory_ = new ArrayList<Item>();
-    }
-
     public PrimaryHandHoldable getPrimaryEquipped() {
         return primary_hard_;
     }
@@ -98,8 +97,16 @@ abstract public class Entity extends DrawableThing {
 
     /**
      * @author John-Michael Reed
+     * @return
+     */
+    public int equip(EquipableItem item) {
+        return item.equip(this);
+    }
+
+    /**
+     * @author John-Michael Reed
      * @param sheild
-     * @return 
+     * @return
      */
     public int equipSheild(Sheild sheild) {
         SecondaryHandHoldable secondary_hand = secondary_hand_;
@@ -111,7 +118,7 @@ abstract public class Entity extends DrawableThing {
     /**
      * @author John-Michael Reed
      * @param one_hand_weapon
-     * @return 
+     * @return
      */
     public int equip1hWeapon(OneHandedWeapon one_hand_weapon) {
         PrimaryHandHoldable primary_hand = primary_hard_;
@@ -128,10 +135,26 @@ abstract public class Entity extends DrawableThing {
         }
     }
 
+    public int unEquipEverything() {
+        if (primary_hard_ == secondary_hand_) {
+            inventory_.add((PickupableItem) primary_hard_);
+        } else {
+            inventory_.add((PickupableItem) primary_hard_);
+            inventory_.add((PickupableItem) secondary_hand_);
+        }
+        primary_hard_ = null;
+        secondary_hand_ = null;
+        if (occupation_ == null) {
+            return 0;
+        } else {
+            return occupation_.unEquipEverything();
+        }
+    }
+
     /**
      * @author John-Michael Reed
      * @param two_hand_weapon
-     * @return 
+     * @return
      */
     public int equip2hWeapon(TwoHandedWeapon two_hand_weapon) {
         PrimaryHandHoldable primary_hand = primary_hard_;
@@ -187,14 +210,12 @@ abstract public class Entity extends DrawableThing {
         return false;
     }
 
-    protected ArrayList<Item> inventory_;
-
     /**
      * Add item to the inventory.
      *
      * @param item
      */
-    public void addItemToInventory(Item item) {
+    public void addItemToInventory(PickupableItem item) {
         inventory_.add(item);
     }
 
@@ -203,7 +224,7 @@ abstract public class Entity extends DrawableThing {
      *
      * @return Item
      */
-    public Item getLastItemInInventory() {
+    public PickupableItem getLastItemInInventory() {
         if (!inventory_.isEmpty()) {
             return inventory_.get(inventory_.size() - 1);
         } else {
@@ -216,7 +237,7 @@ abstract public class Entity extends DrawableThing {
      *
      * @return ArrayList of Items that are in the Entities Inventory
      */
-    public ArrayList<Item> getInventory() {
+    public ArrayList<PickupableItem> getInventory() {
         return inventory_;
     }
 
@@ -225,7 +246,7 @@ abstract public class Entity extends DrawableThing {
      *
      * @return Null if list is empty
      */
-    public Item pullLastItemOutOfInventory() {
+    public PickupableItem pullLastItemOutOfInventory() {
         if (!inventory_.isEmpty()) {
             return inventory_.remove(inventory_.size() - 1);
         } else {
@@ -415,11 +436,10 @@ abstract public class Entity extends DrawableThing {
         String s = "Entity name: " + name_;
 
         /*if (!(equipped_item_ == null)) {
-            s += "\n equppied item: " + equipped_item_.name_;
-        } else {
-            s += "\n equppied item: null";
-        }*/
-
+         s += "\n equppied item: " + equipped_item_.name_;
+         } else {
+         s += "\n equppied item: null";
+         }*/
         s += "\n Inventory " + "(" + inventory_.size() + ")" + ":";
         for (int i = 0; i < inventory_.size(); ++i) {
             s += " " + inventory_.get(i).name_;

@@ -9,9 +9,9 @@ package src.model.map.constructs;
  *
  * @author JohnReedLOL
  */
-public class EquipableItem extends PickupableItem{
+public abstract class EquipableItem extends PickupableItem{
     public EquipableItem(String name, char representation) {
         super(name, representation);
     }
-    public abstract int equipThisItemOnEntity(Entity);
+    public abstract int equip(Entity to_equip);
 }

@@ -6,7 +6,7 @@
 package src;
 
 import java.util.ArrayList;
-import src.model.map.constructs.Item;
+import src.model.map.constructs.PickupableItem;
 import src.model.map.constructs.EntityStatsPack;
 import src.model.map.constructs.Occupation;
 
@@ -16,7 +16,7 @@ import src.model.map.constructs.Occupation;
  * @author JohnReedLOL
  */
 public class IO_Bundle {
-    public IO_Bundle(char[][] v, ArrayList<Item> i,
+    public IO_Bundle(char[][] v, ArrayList<PickupableItem> i,
             // Don't for get left and right hand items
             EntityStatsPack s, Occupation o, int n, int bi, int ba, int ob
     ) {
@@ -31,7 +31,7 @@ public class IO_Bundle {
         observation_ = ob;
     }
    public final char[][] view_for_display_;
-   public final ArrayList<Item> inventory_;
+   public final ArrayList<PickupableItem> inventory_;
    public final EntityStatsPack stats_for_display_;
    public final Occupation occupation_;
    public final int num_skillpoints_;
@@ -44,7 +44,7 @@ public class IO_Bundle {
    public Occupation getOccupation(){
 	   return occupation_;
    }
-   public ArrayList<Item> getInventory(){
+   public ArrayList<PickupableItem> getInventory(){
 	   return inventory_;
    }
 }

@@ -65,6 +65,7 @@ public abstract class Occupation {
      */
     public abstract int equipOneHandWeapon(OneHandedWeapon weapon);
     public abstract int equipTwoHandWeapon(TwoHandedWeapon weapon);
+    public abstract int unEquipEverything();
 
     public abstract void change_stats(EntityStatsPack current_stats);
 

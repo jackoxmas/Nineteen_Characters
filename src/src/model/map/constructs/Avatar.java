@@ -236,12 +236,18 @@ public final class Avatar extends Entity {
             case 'E': // equipMyselfTo
                 try {
                     EquipableItem item = (EquipableItem) this.getLastItemInInventory();
+                    if(item != null){
                     Display.getDisplay().setMessage("Attempted to Equip " + item.toString());
+                    }
+                    else{
+                    	Display.getDisplay().setMessage("No item(s) to equip");
+                    }
                     if (item != null) {
                         return item.equipMyselfTo(this);
                     }
                 } catch (ClassCastException e) {
                     // ignore it
+                	Display.getDisplay().setMessage("Cannot Equip From Inventory");
                 }
                 return -1;
             case 'U': // unEquip

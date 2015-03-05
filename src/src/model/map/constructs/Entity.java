@@ -11,6 +11,8 @@ import src.FacingDirection;
 import src.model.map.MapEntity_Relation;
 import src.io.view.Display;
 import src.FacingDirection;
+import src.model.map.constructs.PrimaryHandHoldable;
+import src.model.map.constructs.SecondaryHandHoldable;
 
 /**
  * Entity inherits from DrawableThing. Entity is a DrawableThing that can move
@@ -18,7 +20,21 @@ import src.FacingDirection;
  */
 abstract public class Entity extends DrawableThing {
 
+    private PrimaryHandHoldable primary_hand_ = null;
+    private SecondaryHandHoldable secondary_hand_ = null;
     private FacingDirection direction_ = FacingDirection.UP;
+    protected ArrayList<PickupableItem> inventory_;
+
+    /**
+     * Entity Constructor
+     *
+     * @param name
+     * @param representation - What will represent the Entity on the screen.
+     */
+    public Entity(String name, char representation) {
+        super(name, representation);
+        inventory_ = new ArrayList<PickupableItem>();
+    }
 
     public FacingDirection getFacingDirection() {
         return direction_;
@@ -63,72 +79,127 @@ abstract public class Entity extends DrawableThing {
         System.out.println("game over");
     }
 
-    /**
-     * Entity Constructor
-     *
-     * @param name
-     * @param representation - What will represent the Entity on the screen.
-     */
-    public Entity(String name, char representation) {
-        super(name, representation);
-        inventory_ = new ArrayList<Item>();
+    public PrimaryHandHoldable getPrimaryEquipped() {
+        return primary_hand_;
     }
 
-    // Only 1 equipped item in iteration 1
-    private Item equipped_item_;
+    public SecondaryHandHoldable getSecondaryEquipped() {
+        return secondary_hand_;
+    }
 
-    public Item getEquipped() {
-        if (equipped_item_ != null) {
-            return equipped_item_;
-        }
-        return null;
+    public void setPrimaryEquipped(PrimaryHandHoldable primary_hard) {
+        primary_hand_ = primary_hard;
+    }
+
+    public void setSecondaryEquipped(SecondaryHandHoldable secondary_hard) {
+        secondary_hand_ = secondary_hard;
     }
 
     /**
-     * Equip Item at final position in the Inventory ArrayList.
-     *
      * @author John-Michael Reed
-     * @return error codes: -2, inventory has no item; -1, cannot equip another
-     * item; -3 inventory is empty;
+     * @return
      */
-    public int equipInventoryItem() {
-        if (!inventory_.isEmpty()) {
-            if (equipped_item_ == null) {
-                if (!inventory_.isEmpty()) {
-                    Item last = inventory_.get(inventory_.size() - 1);
-                    DrawableThingStatsPack to_add = last.getStatsPack();
-                    this.stats_pack_.addOn(to_add);
-                    equipped_item_ = last;
-                    inventory_.remove(inventory_.size() - 1);
-                    return 0;
-                } else {
-                    return -3;
-                }
-            } else {
-                return -1;
+    public int equip(EquipableItem item) {
+        return item.equipMyselfTo(this);
+    }
+
+    /**
+     * @author John-Michael Reed
+     * @param sheild
+     * @return
+     */
+    public int equipSheild(Sheild sheild) {
+        if (sheild != null) {
+            if (secondary_hand_ != null) {
+                inventory_.add((PickupableItem) secondary_hand_);
             }
-        } else {
-            Display.setMessage("You don't have anything to equip!", 3);
-            return -2;
-        }
-    }
-
-    /**
-     * @author John-Michael Reed
-     * @return error codes: -1 inventory is too full for item [not yet
-     * availible]
-     */
-    public int unEquipInventoryItem() {
-        if (equipped_item_ != null) {
-            Display.setMessage("Unequipping item: " + equipped_item_.name_, 3);
-            DrawableThingStatsPack to_remove = equipped_item_.getStatsPack();
-            this.stats_pack_.reduceBy(to_remove);
-            inventory_.add(equipped_item_);
-            equipped_item_ = null;
+            secondary_hand_ = sheild;
+            inventory_.remove((PickupableItem) sheild);
             return 0;
         } else {
-            Display.setMessage("No equipped item to unequip", 3);
-            return -1;
+            return -5;
+        }
+    }
+
+    /**
+     * @author John-Michael Reed
+     * @param one_hand_weapon
+     * @return
+     */
+    public int equip1hWeapon(final OneHandedWeapon one_hand_weapon) {
+        if (one_hand_weapon != null) {
+            if (primary_hand_ != null) {
+                inventory_.add((PickupableItem) primary_hand_);
+            }
+            int error_code = -1; // by default null occupation cannot equipMyselfTo any weapon
+            if (occupation_ != null) {
+                error_code = occupation_.equipOneHandWeapon(one_hand_weapon);
+            }
+            if (error_code == 0) {
+                primary_hand_ = one_hand_weapon;
+                inventory_.remove((PickupableItem) one_hand_weapon);
+                return 0;
+            } else {
+                return error_code;
+            }
+        } else {
+            return -5;
+        }
+    }
+
+    public int unEquipEverything() {
+        if (primary_hand_ == secondary_hand_ && primary_hand_ != null) {
+            inventory_.add((PickupableItem) primary_hand_);
+        } else if (primary_hand_ != secondary_hand_) {
+            if (primary_hand_ != null) {
+                inventory_.add((PickupableItem) primary_hand_);
+                primary_hand_ = null;
+            }
+            if (secondary_hand_ != null) {
+                inventory_.add((PickupableItem) secondary_hand_);
+                secondary_hand_ = null;
+            }
+        }
+
+        if (occupation_ == null) {
+            return 0;
+        } else {
+            return occupation_.unEquipEverything();
+        }
+    }
+
+    /**
+     * @author John-Michael Reed
+     * @param two_hand_weapon
+     * @return
+     */
+    public int equip2hWeapon(TwoHandedWeapon two_hand_weapon) {
+        if (two_hand_weapon != null) {
+            if ((primary_hand_ == secondary_hand_) && (primary_hand_ != null)) {
+                inventory_.add((PickupableItem) primary_hand_);
+            } else if ((primary_hand_ != secondary_hand_)) {
+                if (primary_hand_ != null) {
+                    inventory_.add((PickupableItem) primary_hand_);
+                }
+                if (secondary_hand_ != null) {
+                    inventory_.add((PickupableItem) secondary_hand_);
+                }
+            }
+
+            int error_code = -1; // by default null occupation cannot equipMyselfTo any weapon
+            if (occupation_ != null) {
+                error_code = occupation_.equipTwoHandWeapon(two_hand_weapon);
+            }
+            if (error_code == 0) {
+                primary_hand_ = two_hand_weapon;
+                secondary_hand_ = two_hand_weapon;
+                inventory_.remove((PickupableItem) two_hand_weapon);
+                return 0;
+            } else {
+                return error_code;
+            }
+        } else {
+            return -5;
         }
     }
 
@@ -142,8 +213,15 @@ abstract public class Entity extends DrawableThing {
         stats_pack_.increaseQuantityOfExperienceToNextLevel();
     }
 
-    public boolean hasEquipped() {
-        if (equipped_item_ != null) {
+    public boolean hasEquippedPrimaryHand() {
+        if (primary_hand_ != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean hasEquippedSecondaryHand() {
+        if (secondary_hand_ != null) {
             return true;
         }
         return false;
@@ -157,14 +235,12 @@ abstract public class Entity extends DrawableThing {
         return false;
     }
 
-    protected ArrayList<Item> inventory_;
-
     /**
      * Add item to the inventory.
      *
      * @param item
      */
-    public void addItemToInventory(Item item) {
+    public void addItemToInventory(PickupableItem item) {
         inventory_.add(item);
     }
 
@@ -173,7 +249,7 @@ abstract public class Entity extends DrawableThing {
      *
      * @return Item
      */
-    public Item getLastItemInInventory() {
+    public PickupableItem getLastItemInInventory() {
         if (!inventory_.isEmpty()) {
             return inventory_.get(inventory_.size() - 1);
         } else {
@@ -186,7 +262,7 @@ abstract public class Entity extends DrawableThing {
      *
      * @return ArrayList of Items that are in the Entities Inventory
      */
-    public ArrayList<Item> getInventory() {
+    public ArrayList<PickupableItem> getInventory() {
         return inventory_;
     }
 
@@ -195,7 +271,7 @@ abstract public class Entity extends DrawableThing {
      *
      * @return Null if list is empty
      */
-    public Item pullLastItemOutOfInventory() {
+    public PickupableItem pullLastItemOutOfInventory() {
         if (!inventory_.isEmpty()) {
             return inventory_.remove(inventory_.size() - 1);
         } else {
@@ -311,6 +387,7 @@ abstract public class Entity extends DrawableThing {
 
     /**
      * Specify null if the attacker is not an entity that can be attacked.
+     *
      * @param damage - damage received
      * @param attacker - who the attack is coming from
      */
@@ -383,12 +460,11 @@ abstract public class Entity extends DrawableThing {
     public String toString() {
         String s = "Entity name: " + name_;
 
-        if (!(equipped_item_ == null)) {
-            s += "\n equppied item: " + equipped_item_.name_;
-        } else {
-            s += "\n equppied item: null";
-        }
-
+        /*if (!(equipped_item_ == null)) {
+         s += "\n equppied item: " + equipped_item_.name_;
+         } else {
+         s += "\n equppied item: null";
+         }*/
         s += "\n Inventory " + "(" + inventory_.size() + ")" + ":";
         for (int i = 0; i < inventory_.size(); ++i) {
             s += " " + inventory_.get(i).name_;

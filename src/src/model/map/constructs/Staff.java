@@ -9,6 +9,9 @@ package src.model.map.constructs;
  *
  * @author JohnReedLOL
  */
-public class Staff extends OneHandedWeapon implements PrimaryHandHoldable {
-    
+public class Staff extends OneHandedWeapon {
+
+    public Staff(String name, char representation) {
+        super(name, representation);
+    }
 }

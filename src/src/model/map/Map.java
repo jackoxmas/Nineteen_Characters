@@ -429,13 +429,15 @@ public class Map implements MapUser_Interface {
         // Item List
         Element e_itemList = doc.createElement("item_list");
         // write inventory items to xml
-        Item equipped = entity.getEquipped();
-        ArrayList<Item> tmp_inv = entity.getInventory();
+        Item equipped1 = (Item)entity.getPrimaryEquipped();
+        Item equipped2 = (Item)entity.getSecondaryEquipped(); 
+        /* Hey Alex I changed the item hierarchy and made entities dual weild */
+        ArrayList<PickupableItem> tmp_inv = entity.getInventory();
         Element tmp_eInvItem; // temp inventory item
         for (int i = 0; i < entity.getInventory().size(); i++) {
             tmp_eInvItem = xml_writeItem(doc, e_itemList, tmp_inv.get(i));
 
-            if (tmp_inv.get(i) == equipped)
+            if (tmp_inv.get(i) == equipped1)
                 tmp_eInvItem.appendChild(doc.createElement("b_equipped"));
             e_itemList.appendChild(tmp_eInvItem);
         }

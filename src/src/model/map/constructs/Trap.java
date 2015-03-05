@@ -1,8 +1,8 @@
 package src.model.map.constructs;
 
 import src.Effect;
-
-public class Trap extends AreaEffectItem {
+import src.model.map.constructs.OneShotAreaEffectItem;
+public class Trap extends OneShotAreaEffectItem {
 
 	public Trap(String name, char representation, boolean goes_in_inventory,
 			Effect effect, int power) {

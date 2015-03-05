@@ -9,6 +9,10 @@ package src.model.map.constructs;
  *
  * @author JohnReedLOL
  */
-public class PickupableItem {
-    
+public abstract class PickupableItem extends Item {
+
+    public PickupableItem(String name, char representation) {
+        super(name, representation, true, true, false);
+    }
+
 }

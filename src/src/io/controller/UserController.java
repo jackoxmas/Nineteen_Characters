@@ -87,6 +87,9 @@ public final class UserController implements KeyListener, MouseWheelListener
     private final char nullChar_ = (char)0;
     private final char stillChar_ = 'M';
     private KeyRemapper remap_ = new KeyRemapper();
+    
+    //Handles the view switching, uses the  instanceof operator in a slightly evil way, 
+    //ideally we should look into refactoring this to not
     private void setView(char c){
     	boolean taken = false;
     	if(currentView_ instanceof AvatarCreationView){

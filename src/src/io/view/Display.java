@@ -233,7 +233,10 @@ public class Display {
     		// Use this to print a 2D array
     		for(int j = 0; j!=current_view_.getHeight();++j){
     			for(int i = 0; i!=current_view_.getWidth();++i){
-    				out.append(in[i][j]);
+    				if(!(Color.white.equals(colors[i][j]))){
+    					out.append(in[i][j]);
+    				}
+    				else {out.append(' ');}//Append a space rather than coloring white. 
 
     			}
     			out.append(System.lineSeparator());
@@ -244,12 +247,34 @@ public class Display {
     		}
     		catch(Exception e){System.err.println(e.toString());}
     		for(int j = 0; j!=current_view_.getHeight();++j){
+    			Color currColor = null;
+    			int currColorCount = 0;
+    			int oldIndex = 0;
+    			/* 
+    			 * What's going on here: Also: Yes, I profiled and tested, it makes a big difference.
+    			 * Color assigning for a single char is inefficient, so to avoid that, since colors often appear lots in a row, we count that row up, and then render it
+    			 * in one big block when the color changes. So, when currColor no longer equals the colors[i][j], it is rendered, with the oldIndex and count, 
+    			 * which are then reset. 
+    			 *   black is the default, no need to do that. That optimization is done in the colorChar method. 
+    			 *   Right now white is ignored and replaced with a space. , since it'd just make stuff invisible.
+    			 */
     			for(int i = 0; i!=current_view_.getWidth();++i){
-    				if(colors[i][j] != null){
-    					colorChar(i,j,colors[i][j]);
+    				if(colors[i][j] != null && colors[i][j].equals(currColor)){currColorCount++;}
+    				else if(colors[i][j] == null && currColor == null){currColorCount++;}
+    				else{
+    					if(currColor != null){
+    						colorChar(oldIndex,j,currColor,currColorCount);
+    					}
+						oldIndex = i;
+						currColorCount = 1;
+						currColor = colors[i][j];
+    						
     				}
     			}
-    		}
+			if(currColor != null){
+				colorChar(oldIndex,j,currColor,currColorCount);
+			}
+		}
 		
     }
    
@@ -259,12 +284,12 @@ public class Display {
      * @param y
      * @param attr
      */
-    private void colorChar(int x, int y, Color color){
+    private void colorChar(int x, int y, Color color, int length){
     	if(color.equals(color.white)){return;}
     	if(color.equals(color.black)){return;}//White is only used for space, so no need to render it. 
     	MutableAttributeSet attr = new SimpleAttributeSet();
     	StyleConstants.setForeground(attr, color);
-    	pane_.getStyledDocument().setCharacterAttributes(y*(current_view_.getWidth()+1)+x, 1, attr, false);
+    	pane_.getStyledDocument().setCharacterAttributes(y*(current_view_.getWidth()+1)+x, length, attr, false);
     }
     /** 
      * Helper method to handle 'clearing' the screen

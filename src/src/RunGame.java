@@ -66,19 +66,8 @@ public class RunGame {
     }
 
     private static void populateMap() {
-        Item blue = new Item("umbrella_1", '☂', true, true, false);
-        Item red = new Item("umbrella_2", '☂', true, true, false);
-        Item green = new Item("umbrella_3", '☂', true, true, false);
-        Item brown = new Item("umbrella_4", '☂', true, true, false);
-        Item seven = new Item("umbrella_5", '☂', true, true, false);
         Item teleport = new OneWayTeleportItem("tele", 'T', 0, 0);
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
-
-        map_.addItem(blue, 6, 6); // ▨
-        map_.addItem(red, 7, 7); // ▨
-        map_.addItem(green, 8, 8); // ▨
-        map_.addItem(brown, 9, 9); // ▨
-        map_.addItem(seven, 5, 5); // ▨
         map_.addItem(teleport, 2, 4);
         for (int y = 0; y < mapHeight_; ++y) {
             for (int x = 0; x < mapWidth_; ++x) {

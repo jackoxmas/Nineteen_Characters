@@ -243,7 +243,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             } catch (ClassCastException c) {
                 return -2;
             }
-            Display.setMessage("Picked up item: " + itemToBePickedUp.name_, 3);
+            Display.getDisplay().setMessage("Picked up item: " + itemToBePickedUp.name_);
             error_code = 0;
         } else {
             Display.getDisplay().setMessage("There is nothing here to pick up.");

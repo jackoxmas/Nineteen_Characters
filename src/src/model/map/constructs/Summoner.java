@@ -69,6 +69,13 @@ public final class Summoner extends Occupation {
             return -99999; // F***ing impossible
         }
     }
+    @Override
+    public int performOccupationSpecificSkillNumber(int number) {
+        if(number == 1) {
+            //...
+        }
+        return 0;
+    }
 
     @Override
     public String toString() {

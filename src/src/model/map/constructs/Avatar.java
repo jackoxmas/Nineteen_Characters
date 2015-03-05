@@ -5,6 +5,7 @@
  */
 package src.model.map.constructs;
 
+import src.FacingDirection;
 import src.RunGame;
 import src.SavedGame;
 import src.SkillEnum;
@@ -62,6 +63,10 @@ public final class Avatar extends Entity {
     public int getBind_wounds_() {
         return bind_wounds_;
     }
+
+    public int bindWounds() {
+        return 0;
+    }
     private int bargain_ = 1;
 
     public int getBargain_() {
@@ -71,6 +76,18 @@ public final class Avatar extends Entity {
 
     public int getObservation_() {
         return observation_;
+    }
+
+    /**
+     * Gets information based on observation level. If the entity is facing up,
+     * observation will work in the up direction.
+     * @return 
+     */
+    public int observe() {
+        if(getFacingDirection() == FacingDirection.UP) {
+            //...
+        }
+        return 0;
     }
 
     /**
@@ -222,7 +239,7 @@ public final class Avatar extends Entity {
                     Display.getDisplay().setMessage("Attempted to Equip " + item.toString());
                     if (item != null) {
                         return item.equipMyselfTo(this);
-                    } 
+                    }
                 } catch (ClassCastException e) {
                     // ignore it
                 }
@@ -238,13 +255,13 @@ public final class Avatar extends Entity {
                 int error_code_p = mar.pickUpItemInDirection(0, 0);
                 return error_code_p;
             case 'Z': //switch to Smasher
-            	this.setRepresentation('⚔');
+                this.setRepresentation('⚔');
                 return this.becomeSmasher();
             case 'X': //switch to Summoner
-            	this.setRepresentation('☃');
+                this.setRepresentation('☃');
                 return this.becomeSummoner();
             case 'C': //switch to Sneaker
-            	this.setRepresentation('☭');
+                this.setRepresentation('☭');
                 return this.becomeSneak();
             case 'V': //switch to Smasher
                 this.setOccupation(null);
@@ -259,7 +276,7 @@ public final class Avatar extends Entity {
     public Avatar(String name, char representation) {
         super(name, representation);
     }
-  
+
     // map_relationship_ is used in place of a map_reference_
     private MapAvatar_Relation map_relationship_;
 

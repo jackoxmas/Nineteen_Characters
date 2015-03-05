@@ -29,6 +29,13 @@ public abstract class Occupation {
     private int skill_2_ = 1;
     private int skill_3_ = 1;
     private int skill_4_ = 1;
+    
+    /**
+     * Goes from one to four
+     * @param number
+     * @return 
+     */
+    abstract public int performOccupationSpecificSkillNumber(int number);
 
     public int getSkill_1_() {
         return skill_1_;
@@ -71,7 +78,6 @@ public abstract class Occupation {
      public abstract int equipOneHandWeapon(OneHandedWeapon weapon);
      public abstract int equipTwoHandWeapon(TwoHandedWeapon weapon);
      public abstract int unEquipEverything();
-
      public abstract void change_stats(EntityStatsPack current_stats);
 
      public abstract int incrementSkill(SkillEnum skill);

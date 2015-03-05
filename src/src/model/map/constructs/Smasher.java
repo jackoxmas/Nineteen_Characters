@@ -25,6 +25,7 @@ public final class Smasher extends Occupation {
         FISTS, TWO_HANDED_SWORD, ONE_HANDED_SWORD, TWO_HANDED_BULLSHIT, ONE_HANDED_BULLSHIT
     }
     private ActiveWeapon current_weapon = ActiveWeapon.FISTS;
+
     @Override
     public void change_stats(EntityStatsPack current_stats) {
         //for smasher
@@ -57,10 +58,12 @@ public final class Smasher extends Occupation {
     }
 
     /**
-     * Equips a two handed weapon to an occupation for occupation specific bonuses.
+     * Equips a two handed weapon to an occupation for occupation specific
+     * bonuses.
+     *
      * @author John-Michael Reed
      * @param weapon
-     * @return 
+     * @return
      */
     @Override
     public int equipTwoHandWeapon(TwoHandedWeapon weapon) {
@@ -102,6 +105,13 @@ public final class Smasher extends Occupation {
             System.exit(-1);
             return -99999; // F***ing impossible
         }
+    }
+    @Override
+    public int performOccupationSpecificSkillNumber(int number) {
+        if (number == 1) {
+            //...
+        }
+        return 0;
     }
 
     @Override

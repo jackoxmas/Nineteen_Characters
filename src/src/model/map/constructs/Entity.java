@@ -20,7 +20,7 @@ import src.model.map.constructs.SecondaryHandHoldable;
  */
 abstract public class Entity extends DrawableThing {
 
-    private PrimaryHandHoldable primary_hard_ = null;
+    private PrimaryHandHoldable primary_hand_ = null;
     private SecondaryHandHoldable secondary_hand_ = null;
     private FacingDirection direction_ = FacingDirection.UP;
     protected ArrayList<PickupableItem> inventory_;
@@ -80,7 +80,7 @@ abstract public class Entity extends DrawableThing {
     }
 
     public PrimaryHandHoldable getPrimaryEquipped() {
-        return primary_hard_;
+        return primary_hand_;
     }
 
     public SecondaryHandHoldable getSecondaryEquipped() {
@@ -88,7 +88,7 @@ abstract public class Entity extends DrawableThing {
     }
 
     public void setPrimaryEquipped(PrimaryHandHoldable primary_hard) {
-        primary_hard_ = primary_hard;
+        primary_hand_ = primary_hard;
     }
 
     public void setSecondaryEquipped(SecondaryHandHoldable secondary_hard) {
@@ -100,7 +100,7 @@ abstract public class Entity extends DrawableThing {
      * @return
      */
     public int equip(EquipableItem item) {
-        return item.equip(this);
+        return item.equipMyselfTo(this);
     }
 
     /**
@@ -109,10 +109,16 @@ abstract public class Entity extends DrawableThing {
      * @return
      */
     public int equipSheild(Sheild sheild) {
-        SecondaryHandHoldable secondary_hand = secondary_hand_;
-        secondary_hand_ = sheild;
-        inventory_.add((PickupableItem) secondary_hand);
-        return 0;
+        if (sheild != null) {
+            if (secondary_hand_ != null) {
+                inventory_.add((PickupableItem) secondary_hand_);
+            }
+            secondary_hand_ = sheild;
+            inventory_.remove((PickupableItem) sheild);
+            return 0;
+        } else {
+            return -5;
+        }
     }
 
     /**
@@ -120,30 +126,41 @@ abstract public class Entity extends DrawableThing {
      * @param one_hand_weapon
      * @return
      */
-    public int equip1hWeapon(OneHandedWeapon one_hand_weapon) {
-        PrimaryHandHoldable primary_hand = primary_hard_;
-        int error_code = -1; // by default null occupation cannot equip any weapon
-        if (occupation_ != null) {
-            error_code = occupation_.equipOneHandWeapon(one_hand_weapon);
-        }
-        if (error_code == 0) {
-            primary_hard_ = one_hand_weapon;
-            inventory_.add((PickupableItem) primary_hand);
-            return 0;
+    public int equip1hWeapon(final OneHandedWeapon one_hand_weapon) {
+        if (one_hand_weapon != null) {
+            if (primary_hand_ != null) {
+                inventory_.add((PickupableItem) primary_hand_);
+            }
+            int error_code = -1; // by default null occupation cannot equipMyselfTo any weapon
+            if (occupation_ != null) {
+                error_code = occupation_.equipOneHandWeapon(one_hand_weapon);
+            }
+            if (error_code == 0) {
+                primary_hand_ = one_hand_weapon;
+                inventory_.remove((PickupableItem) one_hand_weapon);
+                return 0;
+            } else {
+                return error_code;
+            }
         } else {
-            return -1;
+            return -5;
         }
     }
 
     public int unEquipEverything() {
-        if (primary_hard_ == secondary_hand_) {
-            inventory_.add((PickupableItem) primary_hard_);
-        } else {
-            inventory_.add((PickupableItem) primary_hard_);
-            inventory_.add((PickupableItem) secondary_hand_);
+        if (primary_hand_ == secondary_hand_ && primary_hand_ != null) {
+            inventory_.add((PickupableItem) primary_hand_);
+        } else if (primary_hand_ != secondary_hand_) {
+            if (primary_hand_ != null) {
+                inventory_.add((PickupableItem) primary_hand_);
+                primary_hand_ = null;
+            }
+            if (secondary_hand_ != null) {
+                inventory_.add((PickupableItem) secondary_hand_);
+                secondary_hand_ = null;
+            }
         }
-        primary_hard_ = null;
-        secondary_hand_ = null;
+
         if (occupation_ == null) {
             return 0;
         } else {
@@ -157,24 +174,32 @@ abstract public class Entity extends DrawableThing {
      * @return
      */
     public int equip2hWeapon(TwoHandedWeapon two_hand_weapon) {
-        PrimaryHandHoldable primary_hand = primary_hard_;
-        SecondaryHandHoldable secondary_hand = secondary_hand_;
-        int error_code = -1; // by default null occupation cannot equip any weapon
-        if (occupation_ != null) {
-            error_code = occupation_.equipTwoHandWeapon(two_hand_weapon);
-        }
-        if (error_code == 0) {
-            primary_hard_ = two_hand_weapon;
-            secondary_hand_ = two_hand_weapon;
-            if (primary_hand == secondary_hand) {
-                inventory_.add((PickupableItem) primary_hand);
-            } else {
-                inventory_.add((PickupableItem) primary_hand);
-                inventory_.add((PickupableItem) secondary_hand);
+        if (two_hand_weapon != null) {
+            if ((primary_hand_ == secondary_hand_) && (primary_hand_ != null)) {
+                inventory_.add((PickupableItem) primary_hand_);
+            } else if ((primary_hand_ != secondary_hand_)) {
+                if (primary_hand_ != null) {
+                    inventory_.add((PickupableItem) primary_hand_);
+                }
+                if (secondary_hand_ != null) {
+                    inventory_.add((PickupableItem) secondary_hand_);
+                }
             }
-            return 0;
+
+            int error_code = -1; // by default null occupation cannot equipMyselfTo any weapon
+            if (occupation_ != null) {
+                error_code = occupation_.equipTwoHandWeapon(two_hand_weapon);
+            }
+            if (error_code == 0) {
+                primary_hand_ = two_hand_weapon;
+                secondary_hand_ = two_hand_weapon;
+                inventory_.remove((PickupableItem) two_hand_weapon);
+                return 0;
+            } else {
+                return error_code;
+            }
         } else {
-            return -1;
+            return -5;
         }
     }
 
@@ -189,7 +214,7 @@ abstract public class Entity extends DrawableThing {
     }
 
     public boolean hasEquippedPrimaryHand() {
-        if (primary_hard_ != null) {
+        if (primary_hand_ != null) {
             return true;
         }
         return false;

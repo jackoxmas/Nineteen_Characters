@@ -14,13 +14,17 @@ import src.SkillEnum;
  * @author JohnReedLOL
  */
 public abstract class Occupation {
-    
+
     protected final Entity occupation_holder_;
-    private Occupation(){occupation_holder_ = null;}
-    public Occupation(Entity occupation_holder){
+
+    private Occupation() {
+        occupation_holder_ = null;
+    }
+
+    public Occupation(Entity occupation_holder) {
         occupation_holder_ = occupation_holder;
     }
-    
+
     private int skill_1_ = 1;
     private int skill_2_ = 1;
     private int skill_3_ = 1;
@@ -63,11 +67,13 @@ public abstract class Occupation {
      * @param weapon weapon to be equipped
      * @return 0 on success, -1 on failure
      */
-    public abstract int equipOneHandWeapon(OneHandedWeapon weapon);
-    public abstract int equipTwoHandWeapon(TwoHandedWeapon weapon);
-    public abstract int unEquipEverything();
+    
+     public abstract int equipOneHandWeapon(OneHandedWeapon weapon);
+     public abstract int equipTwoHandWeapon(TwoHandedWeapon weapon);
+     public abstract int unEquipEverything();
 
-    public abstract void change_stats(EntityStatsPack current_stats);
+     public abstract void change_stats(EntityStatsPack current_stats);
 
-    public abstract int incrementSkill(SkillEnum skill);
+     public abstract int incrementSkill(SkillEnum skill);
+    
 }

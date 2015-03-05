@@ -25,7 +25,7 @@ public final class Smasher extends Occupation {
         FISTS, TWO_HANDED_SWORD, ONE_HANDED_SWORD, TWO_HANDED_BULLSHIT, ONE_HANDED_BULLSHIT
     }
     private ActiveWeapon current_weapon = ActiveWeapon.FISTS;
-
+    @Override
     public void change_stats(EntityStatsPack current_stats) {
         //for smasher
         current_stats.increaseStrengthLevelByOne();

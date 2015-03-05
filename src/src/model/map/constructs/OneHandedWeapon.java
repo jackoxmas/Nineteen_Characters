@@ -15,7 +15,8 @@ public class OneHandedWeapon extends Weapon implements PrimaryHandHoldable {
         super(name, representation);
     }
 
-    public int equip(Entity to_equip) {
+    @Override
+    public int equipMyselfTo(Entity to_equip) {
         return to_equip.equip1hWeapon(this);
     }
 }

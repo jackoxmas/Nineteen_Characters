@@ -15,7 +15,7 @@ public class TwoHandedWeapon extends Weapon implements PrimaryHandHoldable, Seco
         super(name, representation);
     }
 
-    public int equip(Entity to_equip) {
+    public int equipMyselfTo(Entity to_equip) {
         return to_equip.equip2hWeapon(this);
     }
 }

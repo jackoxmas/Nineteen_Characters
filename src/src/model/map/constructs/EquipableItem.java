@@ -13,5 +13,5 @@ public abstract class EquipableItem extends PickupableItem{
     public EquipableItem(String name, char representation) {
         super(name, representation);
     }
-    public abstract int equip(Entity to_equip);
+    public abstract int equipMyselfTo(Entity to_equip);
 }

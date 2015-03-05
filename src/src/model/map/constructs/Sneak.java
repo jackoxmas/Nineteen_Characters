@@ -17,6 +17,7 @@ public final class Sneak extends Occupation {
     }
     private Bow bow_ = null;
 
+    @Override
     public void change_stats(EntityStatsPack current_stats) {
         //for sneak
         current_stats.increaseAgilityLevelByOne();
@@ -39,22 +40,6 @@ public final class Sneak extends Occupation {
         try {
             bow_ = (Bow) weapon;
             return 0;
-        } catch (ClassCastException e) {
-            return -1;
-        }
-    }
-
-    /**
-     * @author John-Michael Reed
-     * @param equipable_item
-     * @return 1 for right hand, 2 for both hands, -1 for neither hand [failure]
-     */
-    public int equipWeapon(Weapon weapon) {
-        try {
-            bow_ = (Bow) weapon;
-            this.occupation_holder_.setPrimaryEquipped(bow_);
-            this.occupation_holder_.setSecondaryEquipped(bow_);
-            return 2;
         } catch (ClassCastException e) {
             return -1;
         }

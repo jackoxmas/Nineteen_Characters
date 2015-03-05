@@ -1,5 +1,6 @@
 package src.model.map;
 
+import java.awt.Color;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -106,6 +107,29 @@ public final class MapTile {
             return terrain_.getRepresentation();
         } else {
             return '▩';
+        }
+    }
+    public Color getTopColor() {
+        if (entity_ != null && entity_.isVisible()) {
+            return entity_.getColor();
+        } else if (hasItemRepresentation() == true) {
+            Color ret = null;
+            for (int i = 0; i < items_.size(); ++i) {
+                if (items_.get(i).isVisible()) {
+                    ret = items_.get(i).getColor();
+                }
+            }
+            if (ret != null) {
+                return ret;
+            } else {
+                System.err.println("Impossible error occured in MapTile");
+                System.exit(-97);
+                return ret;
+            }
+        } else if (terrain_ != null && terrain_.isVisible()) {
+            return terrain_.getColor();
+        } else {
+            return Color.BLACK;
         }
     }
 

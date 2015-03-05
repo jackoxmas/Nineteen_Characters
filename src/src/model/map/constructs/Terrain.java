@@ -6,6 +6,8 @@
 package src.model.map.constructs;
 
 
+import java.awt.Color;
+
 import src.model.map.MapTerrain_Relation;
 
 /**
@@ -13,9 +15,6 @@ import src.model.map.MapTerrain_Relation;
  */
 public class Terrain extends DrawableThing {
 
-    public enum Color {
-        GREEN, BLUE, GRAY //grass, water, mountain
-    }
 
     void activate() {
 
@@ -25,7 +24,6 @@ public class Terrain extends DrawableThing {
 
     }
 
-    public Color color_;
 
     private boolean contains_water_;
     private boolean contains_mountain_;
@@ -120,10 +118,21 @@ public class Terrain extends DrawableThing {
     public Terrain(String name, char representation, boolean contains_mountain,
             boolean contains_water, char decal) {
         super(name, representation);
-        //color_ = color;
+        contains_water_ = contains_water;
+        contains_mountain_ = contains_mountain;
+        if(contains_water){this.setColor(Color.blue);}
+        if(contains_mountain_){this.setColor(Color.gray);}
+        if(contains_mountain_ && contains_water_){this.setColor(Color.cyan);}
+        if(!contains_mountain_ && !contains_water_){this.setColor(Color.green);}//Set grass to be green.
+        decal_ = decal;
+    }
+    public Terrain(String name, char representation, boolean contains_mountain,
+            boolean contains_water, char decal, Color col_) {
+        super(name, representation);
         contains_water_ = contains_water;
         contains_mountain_ = contains_mountain;
         decal_ = decal;
+        this.setColor(col_);
     }
 
     /**
@@ -136,8 +145,12 @@ public class Terrain extends DrawableThing {
     public Terrain(String name, char representation, boolean contains_mountain,
             boolean contains_water) {
         super(name, representation);
-        //color_ = color;
+
         contains_water_ = contains_water;
         contains_mountain_ = contains_mountain;
+        if(contains_water){this.setColor(Color.blue);}
+        if(contains_mountain_){this.setColor(Color.gray);}
+        if(contains_mountain_ && contains_water_){this.setColor(Color.cyan);}
+        if(!contains_mountain_ && !contains_water_){this.setColor(Color.green);}//Set grass to be green.
     }
 }

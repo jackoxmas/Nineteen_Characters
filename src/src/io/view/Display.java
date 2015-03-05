@@ -227,12 +227,14 @@ public class Display {
     public void printView() {
     	if(guard()){return;}
     	this.clearScreen();
-        char[][] in = current_view_.getContents();
+        char[][] in = current_view_.getCharContents();
+        Color[][] colors = current_view_.getColorContents();
         StringBuilder out = new StringBuilder();
     		// Use this to print a 2D array
     		for(int j = 0; j!=current_view_.getHeight();++j){
     			for(int i = 0; i!=current_view_.getWidth();++i){
     				out.append(in[i][j]);
+
     			}
     			out.append(System.lineSeparator());
     		}
@@ -241,25 +243,25 @@ public class Display {
     		doc.insertString(0,out.toString(),null);
     		}
     		catch(Exception e){System.err.println(e.toString());}
-    		
+    		for(int j = 0; j!=current_view_.getHeight();++j){
+    			for(int i = 0; i!=current_view_.getWidth();++i){
+    				colorChar(i,j,colors[i][j]);
+    			}
+    		}
 		
     }
-    /**
-     * Example of how to make a char that is printed a color
-     */
-    private void makeSamplePink(){
-    	MutableAttributeSet attributes = new SimpleAttributeSet();
-    	StyleConstants.setForeground(attributes, Color.pink);//Pink is easy to notice, good for debugging
-    	//Can do a variaty of things aside from color...
-    	colorChar(0,2,attributes);
-    }
+   
     /** 
      * Make the char at this point take on the given attributes.
      * @param x
      * @param y
      * @param attr
      */
-    private void colorChar(int x, int y, AttributeSet attr){
+    private void colorChar(int x, int y, Color color){
+    	if(color.equals(color.white)){return;}
+    	if(color.equals(color.black)){return;}
+    	MutableAttributeSet attr = new SimpleAttributeSet();
+    	StyleConstants.setForeground(attr, color);
     	pane_.getStyledDocument().setCharacterAttributes(y*(current_view_.getWidth()+1)+x, 1, attr, false);
     }
     /** 

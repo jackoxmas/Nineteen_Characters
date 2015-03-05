@@ -1,4 +1,5 @@
 package src.io.view;
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,12 +22,14 @@ public abstract class Viewport {
     private final int height_=40;
     private final int width_=80;
 	private transient char[][] view_contents_;
+	private transient Color[][] color_contents_;
 	public int getHeight(){return height_;}
 	public int getWidth(){return width_;}
 	public abstract boolean getInput(char c);
 
 	public Viewport(){
 		view_contents_ = new char[width_][height_];
+		color_contents_ = new Color[width_][height_];
 		}
 	    
 	/**
@@ -37,9 +40,13 @@ public abstract class Viewport {
 	 * returns the contents of a view as a 2D array
 	 * @return the 2D array of characters that represents the view
 	 */
-	public char[][] getContents() {
+	public char[][] getCharContents(){
 	initGuard();
 	return view_contents_;	
+	}
+	public Color[][] getColorContents(){
+		initGuard();
+		return color_contents_;
 	}
 	/**
 	 * Load in ascii art from file
@@ -74,7 +81,10 @@ public abstract class Viewport {
 		if(view_contents_==null){return;}//Avoid doing this on null array.
 		for(int j = 0; j!=height_;++j){
 			for(int i = 0; i!=width_;++i){
-				{view_contents_[i][j]=' ';}
+				{
+					view_contents_[i][j]=' ';
+					color_contents_[i][j] = Color.black;
+					}
 			}	
 		}
 	}
@@ -82,7 +92,9 @@ public abstract class Viewport {
 	 * If someone tries to touch the view_contents_ prior to it being set, fix that.
 	 */
 	private void initGuard(){
-		if(view_contents_ == null){view_contents_=new char[width_][height_];
+		if(view_contents_ == null){
+			view_contents_=new char[width_][height_];
+			color_contents_ = new Color[width_][height_];
 			clear();
 		}
 	}

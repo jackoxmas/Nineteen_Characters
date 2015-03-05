@@ -1,5 +1,7 @@
 package src.model.map.constructs;
 
+import java.awt.Color;
+
 import src.model.map.MapDrawableThing_Relation;
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -32,6 +34,19 @@ abstract public class DrawableThing {
         name_ = name;
         single_character_representation_ = representation;
         is_visible_ = is_visible;
+    }
+    protected DrawableThing(String name, char representation, Color col_) {
+        name_ = name;
+        single_character_representation_ = representation;
+        is_visible_ = true;
+        color_ = col_;
+    }
+
+    protected DrawableThing(String name, char representation, Color col_, boolean is_visible) {
+        name_ = name;
+        single_character_representation_ = representation;
+        is_visible_ = is_visible;
+        color_ = col_;
     }
 
     abstract public MapDrawableThing_Relation getMapRelation();
@@ -69,6 +84,9 @@ abstract public class DrawableThing {
 
     // For things that take up only  1 tile or need to appear on a minimap
     private char single_character_representation_;
+    private Color color_ = Color.BLACK;//Default color to black
+    public Color getColor(){return color_;}
+    protected void setColor(Color col_){color_ = col_;}
 
     /**
      * Get character representation.

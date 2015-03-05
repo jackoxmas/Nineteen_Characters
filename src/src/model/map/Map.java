@@ -13,6 +13,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
+import java.awt.Color;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -89,12 +90,21 @@ public class Map implements MapUser_Interface {
             return tile_at_x_y.getTopCharacter();
         }
     }
+    public Color getColorRepresentation(int x, int y) {
+        MapTile tile_at_x_y = this.getTile(x, y);
+        if (tile_at_x_y == null) {
+            return Color.WHITE;//Off the map should be white.
+        } else {
+            return tile_at_x_y.getTopColor();
+        }
+    }
 
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
     // This should never get called
-    private Map() {//throws Exception {
+    @SuppressWarnings("unused")
+	private Map() {//throws Exception {
         height_ = 0;
         width_ = 0;
         System.exit(-777);
@@ -248,7 +258,19 @@ public class Map implements MapUser_Interface {
         }
         return view;
     }
-
+    public Color[][] makeColors(int x_center, int y_center, int width_from_center, int height_from_center) {
+        Color[][] colors = new Color[1 + 2 * height_from_center][1 + 2 * width_from_center];
+        int y_index = 0;
+        for (int y = y_center - height_from_center; y <= y_center + height_from_center; ++y) {
+            int x_index = 0;
+            for (int x = x_center - width_from_center; x <= x_center + width_from_center; ++x) {
+                colors[y_index][x_index] = this.getColorRepresentation(x, y);
+                ++x_index;
+            }
+            ++y_index;
+        }
+        return colors;
+    }
 
 
     /**
@@ -322,8 +344,12 @@ public class Map implements MapUser_Interface {
             char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
                     to_recieve_command.getMapRelation().getMyYCoordinate(),
                     width_from_center, height_from_center);
+            Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                    to_recieve_command.getMapRelation().getMyYCoordinate(),
+                    width_from_center, height_from_center);
             IO_Bundle return_package = new IO_Bundle(
                     view,
+                    colors,
                     to_recieve_command.getInventory(),
                     // Don't for get left and right hand items
                     to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
@@ -332,7 +358,7 @@ public class Map implements MapUser_Interface {
             );
             return return_package;
         } else if (to_recieve_command != null) {
-            IO_Bundle return_package = new IO_Bundle(null, to_recieve_command.getInventory(),
+            IO_Bundle return_package = new IO_Bundle(null,null, to_recieve_command.getInventory(),
                     // Don't for get left and right hand items
                     to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
                     to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
@@ -614,11 +640,13 @@ public class Map implements MapUser_Interface {
         e_Terrain.appendChild(e_dChar);
 
         // Terrain::Color - only write if non-null
+        /* What is this?
         if (terr.color_ != null) {
             Element e_color = doc.createElement("color");
             e_color.appendChild(doc.createTextNode(terr.color_.name()));
             e_Terrain.appendChild(e_color);
         }
+        */ 
 
         parent.appendChild(e_Terrain);
         return e_Terrain;

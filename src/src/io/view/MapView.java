@@ -5,6 +5,8 @@
  */
 package src.io.view;
 
+import java.awt.Color;
+
 import src.IO_Bundle;
 
 
@@ -18,6 +20,7 @@ public final class MapView extends Viewport {
     
     // map_relationship_ is used in place of a map_referance_
     private transient char[][] view_contents_;
+    private transient Color[][] color_contents_;
 
 
 	@Override
@@ -30,7 +33,8 @@ public final class MapView extends Viewport {
 	 */
 	public MapView(){
 		super();
-		view_contents_ = getContents();		
+		view_contents_ = getCharContents();	
+		color_contents_ = getColorContents();
 	}
 	/*
 	 * Helper method to keep renderToDisplay pure
@@ -42,6 +46,10 @@ public final class MapView extends Viewport {
 		for(int i = 0;i<this.getWidth()-2 && i < bundle.view_for_display_[0].length;++i){
 			for(int j = 0;j<this.getHeight()-2 && j< bundle.view_for_display_.length;++j){
 				view_contents_[i+1][j+1] = bundle.view_for_display_[bundle.view_for_display_.length-j-1][i];
+				color_contents_[i+1][j+1] = bundle.color_for_display_[bundle.view_for_display_.length-j-1][i];
+				if(color_contents_[i+1][j+1]!= Color.black || color_contents_[i+1][j+1] != Color.white){
+					//System.out.println(color_contents_[i+1][j+1]);
+				}
 			}
 
 		}

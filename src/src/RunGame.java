@@ -10,6 +10,8 @@ import src.model.map.constructs.Avatar;
 import src.io.controller.ChatBoxController;
 import src.io.controller.UserController;
 import src.model.map.constructs.Item;
+import src.model.map.constructs.OneHandedSword;
+import src.model.map.constructs.Sheild;
 import src.model.map.constructs.Terrain;
 import src.model.map.Map;
 import src.io.view.Viewport;
@@ -67,8 +69,12 @@ public class RunGame {
 
     private static void populateMap() {
         Item teleport = new OneWayTeleportItem("tele", 'T', 0, 0);
+        Item onehandedsword = new OneHandedSword("Excalibur", '|');
+        Item sheild = new Sheild("Sheildy",'O');
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
         map_.addItem(teleport, 2, 4);
+        map_.addItem(sheild,10,10);
+        map_.addItem(onehandedsword, 5,5);
         for (int y = 0; y < mapHeight_; ++y) {
             for (int x = 0; x < mapWidth_; ++x) {
                 Terrain obstacle = new Terrain("land", '▨', false, false);

@@ -30,14 +30,20 @@ public class Terrain extends DrawableThing {
 
     private char decal_ = '\u0000'; // null character
     /**
-     * Sets Terrain's decal.
-     * @param decal
+     * Sets Terrain's decal. and color.
+     * @param decal, Color col_
      */
     public void addDecal(char decal,Color col_) {
-        decal_ = decal;
         this.setColor(col_);
+        this.addDecal(decal);
     }
-
+    /**
+     * Sets Terrain's decal
+     * @param decal
+     */
+    public void addDecal(char decal) {
+        decal_ = decal;
+    }
     public char getDecal() {
     	return decal_;
     }

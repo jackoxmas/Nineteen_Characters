@@ -10,6 +10,7 @@ import src.SavedGame;
 import src.SkillEnum;
 import src.model.map.MapAvatar_Relation;
 import src.io.view.AvatarCreationView;
+import src.io.view.Display;
 import src.io.view.MapView;
 import src.io.view.StatsView;
 import src.io.view.Viewport;
@@ -218,6 +219,7 @@ public final class Avatar extends Entity {
             case 'E': // equipMyselfTo
                 try {
                     EquipableItem item = (EquipableItem) this.getLastItemInInventory();
+                    Display.getDisplay().setMessage("Attempted to Equip " + item.toString());
                     if (item != null) {
                         return item.equipMyselfTo(this);
                     } 
@@ -227,6 +229,7 @@ public final class Avatar extends Entity {
                 return -1;
             case 'U': // unEquip
                 this.unEquipEverything();
+                Display.getDisplay().setMessage("Unequipped Everything");
                 break;
             case 'D': //drop item
                 int error_code_D = mar.dropItem();

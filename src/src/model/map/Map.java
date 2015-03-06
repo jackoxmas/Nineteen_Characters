@@ -26,10 +26,8 @@ public class Map implements MapUser_Interface {
 
     public static final int MAX_NUMBER_OF_WORLDS = 1;
     private static int number_of_worlds_generated_ = 0;
-    // Item is the address of an item in memory. Location is its xy coordinates on the grid.
 
     //<editor-fold desc="Fields and Accessors" defaultstate="collapsed">
-
     // The map has a clock
     private int time_measured_in_turns;
     // MAP MUST BE SQUARE
@@ -58,7 +56,9 @@ public class Map implements MapUser_Interface {
         return items_list_;
     }
 
-    public MapTile[][] getMapGrid() { return map_grid_; }
+    public MapTile[][] getMapGrid() {
+        return map_grid_;
+    }
 
     /**
      * Gets mapTile at (x,y).
@@ -90,6 +90,7 @@ public class Map implements MapUser_Interface {
             return tile_at_x_y.getTopCharacter();
         }
     }
+
     public Color getColorRepresentation(int x, int y) {
         MapTile tile_at_x_y = this.getTile(x, y);
         if (tile_at_x_y == null) {
@@ -100,11 +101,10 @@ public class Map implements MapUser_Interface {
     }
 
     //</editor-fold>
-
     //<editor-fold desc="Constructors" defaultstate="collapsed">
     // This should never get called
     @SuppressWarnings("unused")
-	private Map() {//throws Exception {
+    private Map() {//throws Exception {
         height_ = 0;
         width_ = 0;
         System.exit(-777);
@@ -258,6 +258,8 @@ public class Map implements MapUser_Interface {
         }
         return view;
     }
+
+    
     public Color[][] makeColors(int x_center, int y_center, int width_from_center, int height_from_center) {
         Color[][] colors = new Color[1 + 2 * height_from_center][1 + 2 * width_from_center];
         int y_index = 0;
@@ -271,7 +273,6 @@ public class Map implements MapUser_Interface {
         }
         return colors;
     }
-
 
     /**
      * Removes entity from map.
@@ -321,8 +322,6 @@ public class Map implements MapUser_Interface {
         return item;
     }
 
-    //</editor-fold>
-
     /**
      * @author John-Michael Reed
      * @param username - Name of avatar to command
@@ -358,7 +357,7 @@ public class Map implements MapUser_Interface {
             );
             return return_package;
         } else if (to_recieve_command != null) {
-            IO_Bundle return_package = new IO_Bundle(null,null, to_recieve_command.getInventory(),
+            IO_Bundle return_package = new IO_Bundle(null, null, to_recieve_command.getInventory(),
                     // Don't for get left and right hand items
                     to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
                     to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
@@ -372,9 +371,11 @@ public class Map implements MapUser_Interface {
         }
     }
 
+    //</editor-fold>
     //<editor-fold desc="XML Saving/Loading" defaultstate="collapsed">
     /**
      * Writes this map to the given XML Element in the given XML document
+     *
      * @param doc The XML Document to write to
      * @param e_map The XML Element to write to
      * @return 0 = success
@@ -405,11 +406,11 @@ public class Map implements MapUser_Interface {
                 }
                 xml_writeTerrain(doc, e_l, terr);
 
-
                 // Entity
                 Entity ent = this.map_grid_[i][j].getEntity();
-                if (ent != null)
+                if (ent != null) {
                     xml_writeEntity(doc, e_l, ent);
+                }
 
                 // Item list
                 if (map_grid_[i][j].getItemList().size() != 0) {
@@ -433,6 +434,7 @@ public class Map implements MapUser_Interface {
 
     /**
      * Writes an entity to an XML element
+     *
      * @param doc The DOM document to write to
      * @param parent The parent element to write this entity in
      * @param entity The Entity object to write
@@ -455,21 +457,22 @@ public class Map implements MapUser_Interface {
         // Item List
         Element e_itemList = doc.createElement("item_list");
         // write inventory items to xml
-        Item equipped1 = (Item)entity.getPrimaryEquipped();
-        Item equipped2 = (Item)entity.getSecondaryEquipped(); 
+        Item equipped1 = (Item) entity.getPrimaryEquipped();
+        Item equipped2 = (Item) entity.getSecondaryEquipped();
         /* Hey Alex I changed the item hierarchy and made entities dual weild */
         ArrayList<PickupableItem> tmp_inv = entity.getInventory();
         Element tmp_eInvItem; // temp inventory item
         for (int i = 0; i < entity.getInventory().size(); i++) {
             tmp_eInvItem = xml_writeItem(doc, e_itemList, tmp_inv.get(i));
 
-            if (tmp_inv.get(i) == equipped1)
+            if (tmp_inv.get(i) == equipped1) {
                 tmp_eInvItem.appendChild(doc.createElement("b_equipped"));
+            }
             e_itemList.appendChild(tmp_eInvItem);
         }
         e_entity.appendChild(e_itemList);
 
-        xml_writeStatsDrawable(doc, e_entity, (DrawableThingStatsPack)entity.getStatsPack());
+        xml_writeStatsDrawable(doc, e_entity, (DrawableThingStatsPack) entity.getStatsPack());
         xml_writeStatsEntity(doc, e_entity, entity.getStatsPack());
 
         parent.appendChild(e_entity);
@@ -479,6 +482,7 @@ public class Map implements MapUser_Interface {
 
     /**
      * Writes an Item to a DOM document
+     *
      * @param doc The DOM Document to write to
      * @param parent The parent Element to insert the item in
      * @param item The Item to write
@@ -490,14 +494,17 @@ public class Map implements MapUser_Interface {
         // Name
         e_item.setAttribute("name", item.getName());
         // Is One Shot
-        if (item.isOneShot())
+        if (item.isOneShot()) {
             e_item.appendChild(doc.createElement("b_one_shot"));
+        }
         // Is Passable
-        if (item.isPassable())
+        if (item.isPassable()) {
             e_item.appendChild(doc.createElement("b_passable"));
+        }
         // Goes in Inventory
-        if (item.goesInInventory())
+        if (item.goesInInventory()) {
             e_item.appendChild(doc.createElement("b_inventory-able"));
+        }
 
         xml_writeStatsDrawable(doc, e_item, item.getStatsPack());
 
@@ -623,11 +630,13 @@ public class Map implements MapUser_Interface {
         e_Terrain.setAttribute("name", terr.getName());
 
         // BOOLEANS:
-        if (terr.isMountain())
+        if (terr.isMountain()) {
             e_Terrain.appendChild(doc.createElement("b_mountain"));
+        }
 
-        if (terr.isWater())
+        if (terr.isWater()) {
             e_Terrain.appendChild(doc.createElement("b_water"));
+        }
 
         // Terrain::Decal - only write if non-null
         if (terr.getDecal() != '\u0000') {
@@ -643,13 +652,12 @@ public class Map implements MapUser_Interface {
 
         // Terrain::Color - only write if non-null
         /* What is this?
-        if (terr.color_ != null) {
-            Element e_color = doc.createElement("color");
-            e_color.appendChild(doc.createTextNode(terr.color_.name()));
-            e_Terrain.appendChild(e_color);
-        }
-        */ 
-
+         if (terr.color_ != null) {
+         Element e_color = doc.createElement("color");
+         e_color.appendChild(doc.createTextNode(terr.color_.name()));
+         e_Terrain.appendChild(e_color);
+         }
+         */
         parent.appendChild(e_Terrain);
         return e_Terrain;
     }

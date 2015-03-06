@@ -26,6 +26,7 @@ import src.io.view.Viewport;
  */
 public final class Avatar extends Entity {
 
+
 	// map_relationship_ is used in place of a map_referance_
 	private MapView map_view_;
 	private StatsView stats_view_;
@@ -521,4 +522,5 @@ public final class Avatar extends Entity {
 
 		return s;
 	}
+
 }

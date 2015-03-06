@@ -14,10 +14,10 @@ import src.SavedGame;
 import src.SkillEnum;
 import src.model.map.MapAvatar_Relation;
 import src.io.view.AvatarCreationView;
-import src.io.view.Display;
 import src.io.view.MapView;
 import src.io.view.StatsView;
 import src.io.view.Viewport;
+import src.io.view.display.Display;
 
 /**
  * Each avatar represents a player

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package src.io.view;
+package src.io.view.display;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -30,6 +30,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import src.Function;
+import src.io.view.Viewport;
 
 /**
  * Represents a single player's display. Has a static game wide message.

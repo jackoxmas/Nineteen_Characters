@@ -13,10 +13,10 @@ import java.util.HashMap;
 
 import src.model.map.MapUser_Interface;
 import src.io.view.AvatarCreationView;
-import src.io.view.Display;
 import src.io.view.MapView;
 import src.io.view.StatsView;
 import src.io.view.Viewport;
+import src.io.view.display.Display;
 /**
  * Uses keyboard input to control the avatar
  * @author JohnReedLOL

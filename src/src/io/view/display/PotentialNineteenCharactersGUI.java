@@ -1,4 +1,4 @@
-package src.io.view;
+package src.io.view.display;
 
 import java.awt.Font;
 import java.awt.event.KeyListener;

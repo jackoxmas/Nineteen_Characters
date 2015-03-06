@@ -104,28 +104,13 @@ public class Display {
     	_display.setView(_view);
     	return _display;
     }
-    /** 
-     * Zooms in slightly(increases font size)
-     */
-    public void zoomIn(){
-    	fontSize_++;
-    	//setFont(pane_);
-    	//chat_.setFont();
-    }
-    /** 
-     * Zooms out slightly(Decreases font size)
-     */
-    public void zoomOut(){
-    	if(fontSize_ < 2){return;}//Don't let the font get too small!
-    	fontSize_--;
-    	//setFont(pane_);
-    	//chat_.setFont();
-    }
+    
     private boolean guard(){
     	if (current_view_ == null){ System.err.println("DISPLAY VIEW NULL"); return true;}
     	return false;
     }
     private Viewport current_view_;
+    
     private class setDocumentRunnable implements Runnable{
     	private StyledDocument doc_;
     	public setDocumentRunnable(StyledDocument d){
@@ -161,7 +146,6 @@ public class Display {
     		doc.insertString(0,out.toString(),null);
     		}
     		catch(Exception e){System.err.println(e.toString());}
-    		EventQueue.invokeLater(new setDocumentRunnable(doc));
     		
     		for(int j = 0; j!=current_view_.getHeight();++j){
     			Color currColor = null;
@@ -192,7 +176,7 @@ public class Display {
 				colorChar(doc,oldIndex,j,currColor,currColorCount);
 			}
 		}
-		
+    		EventQueue.invokeLater(new setDocumentRunnable(doc));
     }
    
     /** 

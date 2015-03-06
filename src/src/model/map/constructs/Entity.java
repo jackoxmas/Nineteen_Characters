@@ -24,6 +24,7 @@ abstract public class Entity extends DrawableThing {
     private SecondaryHandHoldable secondary_hand_ = null;
     private FacingDirection direction_ = FacingDirection.UP;
     protected ArrayList<PickupableItem> inventory_;
+    private EntityStatsPack stats_pack_ = new EntityStatsPack(this);
 
     /**
      * Entity Constructor
@@ -51,14 +52,14 @@ abstract public class Entity extends DrawableThing {
      * @param item
      */
     private void addItemStatsToMyStats(Item item) {
-        equipped_stats_pack_.addOn(item.getStatsPack());
+        stats_pack_.addOn(item.getStatsPack());
     }
 
     /**
      * Entities should check their health after they are damaged.
      */
     public void checkHealth() {
-        if (base_stats_pack_.getCurrent_life_() <= 0) {
+        if (stats_pack_.getCurrent_life_() <= 0) {
             commitSuicide();
         }
     }
@@ -67,10 +68,10 @@ abstract public class Entity extends DrawableThing {
      * Entity dies, Game Over.
      */
     public void commitSuicide() {
-        int health_left = base_stats_pack_.getCurrent_life_();
-        base_stats_pack_.deductCurrentLifeBy(health_left);
+        int health_left = stats_pack_.getCurrent_life_();
+        stats_pack_.deductCurrentLifeBy(health_left);
         getMapRelation().respawn();
-        if (base_stats_pack_.getLives_left_() < 0) {
+        if (stats_pack_.getLives_left_() < 0) {
             gameOver();
         }
     }
@@ -100,10 +101,9 @@ abstract public class Entity extends DrawableThing {
      * @return
      */
     public int equip(EquipableItem item) {
-        int temp= item.equipMyselfTo(this);
-        this.recalculateStats();
+        int temp = item.equipMyselfTo(this);
         return temp;
-        
+
     }
 
     /**
@@ -116,15 +116,18 @@ abstract public class Entity extends DrawableThing {
             // In the case of a 2H sword
             if ((primary_hand_ == secondary_hand_) && (secondary_hand_ != null)) {
                 inventory_.add((PickupableItem) primary_hand_);
+                stats_pack_.reduceBy(secondary_hand_.getStatsPack());
                 primary_hand_ = null;
                 secondary_hand_ = null;
             } // In the case of a sheild
             else if ((primary_hand_ != secondary_hand_) && (secondary_hand_ != null)) {
                 inventory_.add((PickupableItem) primary_hand_);
+                stats_pack_.reduceBy(secondary_hand_.getStatsPack());
                 secondary_hand_ = null;
             }
 
             secondary_hand_ = sheild;
+            stats_pack_.addOn(secondary_hand_.getStatsPack());
             boolean successful_removal = inventory_.remove((PickupableItem) sheild);
             if (successful_removal != true) {
                 System.exit(-66);
@@ -137,6 +140,7 @@ abstract public class Entity extends DrawableThing {
 
     /**
      * @author John-Michael Reed
+     * Equips the weapon and modifies stats
      * @param one_hand_weapon
      * @return
      */
@@ -145,11 +149,13 @@ abstract public class Entity extends DrawableThing {
             // In the case of a 2H sword
             if ((primary_hand_ == secondary_hand_) && (primary_hand_ != null)) {
                 inventory_.add((PickupableItem) primary_hand_);
+                stats_pack_.reduceBy(primary_hand_.getStatsPack());
                 primary_hand_ = null;
                 secondary_hand_ = null;
             } // In the case of a 1h sword
             else if ((primary_hand_ != secondary_hand_) && (primary_hand_ != null)) {
                 inventory_.add((PickupableItem) primary_hand_);
+                stats_pack_.reduceBy(primary_hand_.getStatsPack());
                 primary_hand_ = null;
             }
 
@@ -159,6 +165,7 @@ abstract public class Entity extends DrawableThing {
             }
             if (error_code == 0) {
                 primary_hand_ = one_hand_weapon;
+                stats_pack_.addOn(primary_hand_.getStatsPack());
                 boolean successful_removal = inventory_.remove((PickupableItem) one_hand_weapon);
                 if (successful_removal != true) {
                     System.exit(-77);
@@ -175,12 +182,15 @@ abstract public class Entity extends DrawableThing {
     public int unEquipEverything() {
         if (primary_hand_ == secondary_hand_ && primary_hand_ != null) {
             inventory_.add((PickupableItem) primary_hand_);
+            stats_pack_.reduceBy(primary_hand_.getStatsPack());
         } else if (primary_hand_ != secondary_hand_) {
             if (primary_hand_ != null) {
                 inventory_.add((PickupableItem) primary_hand_);
+                stats_pack_.reduceBy(primary_hand_.getStatsPack());
             }
             if (secondary_hand_ != null) {
                 inventory_.add((PickupableItem) secondary_hand_);
+                stats_pack_.reduceBy(secondary_hand_.getStatsPack());
             }
         }
         primary_hand_ = null;
@@ -203,14 +213,21 @@ abstract public class Entity extends DrawableThing {
             // case of 2H sword
             if ((primary_hand_ == secondary_hand_) && (primary_hand_ != null)) {
                 inventory_.add((PickupableItem) primary_hand_);
+                stats_pack_.reduceBy(primary_hand_.getStatsPack());
+                primary_hand_ = null;
+                secondary_hand_ = null;
             } else if ((primary_hand_ != secondary_hand_)) {
                 // case of 1h SWORD
                 if (primary_hand_ != null) {
                     inventory_.add((PickupableItem) primary_hand_);
+                    stats_pack_.reduceBy(primary_hand_.getStatsPack());
+                    primary_hand_ = null;
                 }
                 // case of sheld
                 if (secondary_hand_ != null) {
                     inventory_.add((PickupableItem) secondary_hand_);
+                    stats_pack_.reduceBy(secondary_hand_.getStatsPack());
+                    secondary_hand_ = null;
                 }
             }
             primary_hand_ = null;
@@ -223,6 +240,7 @@ abstract public class Entity extends DrawableThing {
             if (error_code == 0) {
                 primary_hand_ = two_hand_weapon;
                 secondary_hand_ = two_hand_weapon;
+                stats_pack_.addOn(primary_hand_.getStatsPack());
                 boolean successful_removal = inventory_.remove((PickupableItem) two_hand_weapon);
                 if (successful_removal != true) {
                     System.exit(-88);
@@ -243,7 +261,7 @@ abstract public class Entity extends DrawableThing {
      * @author John
      */
     public void gainEnoughExperienceTolevelUp() {
-        base_stats_pack_.increaseQuantityOfExperienceToNextLevel();
+        stats_pack_.increaseQuantityOfExperienceToNextLevel();
     }
 
     public boolean hasEquippedPrimaryHand() {
@@ -334,12 +352,12 @@ abstract public class Entity extends DrawableThing {
      * @return number of level ups;
      */
     public int gainExperiencePoints(int amount) {
-        int num_level_ups = base_stats_pack_.increaseQuantityOfExperienceBy(amount);
+        int num_level_ups = stats_pack_.increaseQuantityOfExperienceBy(amount);
         return num_level_ups;
     }
 
     public int checkLevel() {
-        return base_stats_pack_.getCached_current_level_();
+        return stats_pack_.getCached_current_level_();
     }
 
     // map_relationship_ is used in place of a map_referance_
@@ -409,27 +427,16 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     * Resets the equipped stats pack, and adds back into it. 
-     *
-     * @author Jessan/Mbregg
-     */
-    private void recalculateStats() {
-    	equipped_stats_pack_.reset();
-    	if(primary_hand_!= null){equipped_stats_pack_.addOn(primary_hand_.getStatsPack());}
-    	if(secondary_hand_!=null){equipped_stats_pack_.addOn(secondary_hand_.getStatsPack());}
-    }
-
-    /**
      * Specify null if the attacker is not an entity that can be attacked.
      *
      * @param damage - damage received
      * @param attacker - who the attack is coming from
      */
     public void receiveAttack(int damage, Entity attacker) {
-        int did_I_run_out_of_health = base_stats_pack_.deductCurrentLifeBy(damage - getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_());
+        int did_I_run_out_of_health = stats_pack_.deductCurrentLifeBy(damage - getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_());
         if (did_I_run_out_of_health != 0) {
             getMapRelation().respawn();
-            if (base_stats_pack_.getLives_left_() < 0) {
+            if (stats_pack_.getLives_left_() < 0) {
                 gameOver();
             }
         } else {
@@ -440,7 +447,7 @@ abstract public class Entity extends DrawableThing {
     }
 
     public void receiveHeal(int strength) {
-        this.base_stats_pack_.increaseCurrentLifeBy(strength);
+        this.stats_pack_.increaseCurrentLifeBy(strength);
     }
 
     // reply(greeting, this);
@@ -470,22 +477,12 @@ abstract public class Entity extends DrawableThing {
      */
     public abstract int replyToAttackFrom(Entity attacker);
 
-    //private final int max_level_;
-    private EntityStatsPack base_stats_pack_ = new EntityStatsPack(this);
-    private DrawableThingStatsPack equipped_stats_pack_ = new DrawableThingStatsPack();
-
     /**
-     * Return the combined stats of the entity, includes armour
-     * stats.
+     * Return the combined stats of the entity, includes armour stats.
      */
     public EntityStatsPack getStatsPack() {
-    	recalculateStats();
-        EntityStatsPack combined = new EntityStatsPack(base_stats_pack_);
-        combined.addOn(equipped_stats_pack_);
-        return combined;
+        return stats_pack_;
     }
-
-
 
     public String toString() {
         String s = "Entity name: " + name_;

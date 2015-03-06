@@ -61,7 +61,12 @@ public class Display {
 	public void setMessage(String m){
 		EventQueue.invokeLater(new messageRunnable(m));
 	}
-	class messageRunnable implements Runnable{
+	/**
+	 * The runnable to handle sending message to the GUI
+	 * @author mbregg
+	 *
+	 */
+	private class messageRunnable implements Runnable{
 		String message_;
 		public messageRunnable(String m) {
 			message_ = m;
@@ -110,7 +115,11 @@ public class Display {
     	return false;
     }
     private Viewport current_view_;
-    
+    /**
+     * The runnable to send the current styled doc to the GUI
+     * @author mbregg
+     *
+     */
     private class setDocumentRunnable implements Runnable{
     	private StyledDocument doc_;
     	public setDocumentRunnable(StyledDocument d){
@@ -181,8 +190,11 @@ public class Display {
    
     /** 
      * Make the char at this point take on the given attributes.
+     * Make sure the x and y are in range.
      * @param x
      * @param y
+     * @param the styled doc to color.
+     * 
      * @param attr
      */
     private void colorChar(StyledDocument doc, int x, int y, Color color, int length){
@@ -214,12 +226,21 @@ public class Display {
     public int close(){
     	return 0;
     }
-    public void addInputerHandler(Function<Void,Character> foo){
-    	java.awt.EventQueue.invokeLater(new inputHandlerRunnable(foo));
+    /**
+     * Adds a class to be called via the function interface whenever a character is typed in the main gameview.
+	 * @param foo : The class to call
+     */
+    public void addGameInputerHandler(Function<Void,Character> foo){
+    	java.awt.EventQueue.invokeLater(new gameInputHandlerRunnable(foo));
 	}
-    class inputHandlerRunnable implements Runnable{
+    /** 
+     * The class handles giving the Function interface to the GUI
+     * @author mbregg
+     *
+     */
+    private class gameInputHandlerRunnable implements Runnable{
     	private Function<Void,Character> handler_;
-    	public inputHandlerRunnable(Function<Void,Character> foo) {
+    	public gameInputHandlerRunnable(Function<Void,Character> foo) {
 			handler_ = foo;
 		}
 		@Override

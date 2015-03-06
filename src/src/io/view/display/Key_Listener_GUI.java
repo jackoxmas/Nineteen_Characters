@@ -24,6 +24,8 @@ import src.Function;
  * @author JohnReedLOL
  */
 class Key_Listener_GUI extends javax.swing.JFrame {
+	//These two arraylists hold the things to apply when input is received by either the map, or by the chatbox
+	
 	private ArrayList<Function<Void,Character>> game_inputHandlers_ = new ArrayList<Function<Void,Character>>();;
 	private ArrayList<Function<Void,String>> chatbox_inputHandlers_ = new ArrayList<Function<Void,String>>();
 	/**
@@ -34,38 +36,63 @@ class Key_Listener_GUI extends javax.swing.JFrame {
 		incoming_text_jTextArea.append(System.lineSeparator()+message);
 		updateScroll();
 	}
+	/**
+	 * Sends the scroll bar to the buttom, used when new text is added.
+	 */
 	private void updateScroll(){
 		incoming_text_jTextArea.setCaretPosition(incoming_text_jTextArea.getText().length());
 	}
-	// private variables are declared are the bottom [do not modify]
+	/**
+	 * Sets the given styled doc to be displayed in the main view. 
+	 * @param doc
+	 */
 	public void setGameContent(StyledDocument doc){
 		game_jTextPane.setStyledDocument(doc);
 	}
-	private static Key_Listener_GUI gui_ = null;
+	private static Key_Listener_GUI gui_ = null;//Singleton variable.
 	/**
-	 * Creates new form NumberAdditionUI
+	 * Singleton constructor
 	 */
 	private Key_Listener_GUI() {
 		initComponents();
 		setFont();
 	}
+	/**
+	 * Sets the font of the 3 main components. Uses the fontSize_ variable.
+	 */
 	private void setFont(){
 		setFont(game_jTextPane);
 		setFont(incoming_text_jTextArea);
 		setFont(outgoing_chat_text_area_jScrollPane);
 	}
+	/**
+	 * Returns the singleton instance.
+	 * @return The singleton Key_Listener_GUI
+	 */
 	public static Key_Listener_GUI getGUI(){
 		if(gui_ == null){gui_ = new Key_Listener_GUI();}
 		return gui_;
 
 	}
+	/**
+	 * Adds a class to be called via the function interface whenever a character is typed in the main gameview.
+	 * @param foo : The class to call
+	 */
 	public void addGameInputerHandler(Function<Void,Character> foo){
 		game_inputHandlers_.add((foo));
 	}
+	/**
+	 * Adds a class to be called via the function interface whenever a new line is typed in the input box. 
+	 * @param foo : the class to call
+	 */
 	public void addChatboxInputerHandler(Function<Void,String> foo){
 		chatbox_inputHandlers_.add((foo));
 	}
-	private float fontSize_ = 14f;
+	private float fontSize_ = 14f;//The font size
+	/**
+	 * Loads the font from file, if it can find it. 
+	 * @return
+	 */
 	private Font loadFont(){
 		InputStream in = this.getClass().getResourceAsStream("Font/DejaVuSansMono.ttf");
 		try{
@@ -76,6 +103,10 @@ class Key_Listener_GUI extends javax.swing.JFrame {
 			return null;
 		}
 	}
+	/**
+	 * Taking into account fontSize_, sets the font of the given component.
+	 * @param object
+	 */
 	private void setFont(JComponent object){
 		Font font = loadFont();
 		if(font == null){return;}//If we failed to load the font, do nothing

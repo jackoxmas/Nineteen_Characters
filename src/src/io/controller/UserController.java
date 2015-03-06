@@ -75,7 +75,7 @@ public final class UserController implements Function<Void, Character>
         MapUserAble_ = mui;
         userName_ = uName;
         setView(nullChar_);
-    	Display.getDisplay().addInputerHandler(this);
+    	Display.getDisplay().addGameInputerHandler(this);
     	Display.getDisplay().setView(currentView_);
         Display.getDisplay().printView();
         

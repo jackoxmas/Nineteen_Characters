@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelListener;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -283,7 +284,20 @@ class Key_Listener_GUI extends javax.swing.JFrame {
 			for(Function<Void,String> functor : chatbox_inputHandlers_){
 				functor.apply(S);
 			}
+
 			incoming_text_jTextArea.append(System.lineSeparator()+outgoing_text_jTextField.getText());
+			if(outgoing_text_jTextField.getText().startsWith("/fontsize")){
+				try{
+					String temp = outgoing_text_jTextField.getText();
+					temp = temp.replaceAll("[^0-9 | .]", "");//Regex, to select anything not 0-9 or .
+					System.out.println("Test " + temp);
+					fontSize_ = Float.parseFloat(temp);
+					setFont();
+					this.addMessage("Set font to " + fontSize_);
+				}catch(Exception e){
+					this.addMessage("Invalid Font size! Current size is " + Float.toString(fontSize_));
+				}
+			}
 			outgoing_text_jTextField.setText("");//Upon enter, clear the input box, and move it's text to output
 			updateScroll();
 		}

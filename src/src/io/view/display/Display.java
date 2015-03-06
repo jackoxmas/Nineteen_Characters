@@ -130,7 +130,6 @@ public class Display {
 	private JFrame frame_ = null;
 	private float fontSize_ = 18f;
 	private ChatBox chat_;
-	private PotentialNineteenCharactersGUI gui_ = null;
 
 	/**
 	 * Puts the given message in the chatboxes output box
@@ -148,8 +147,9 @@ public class Display {
      * @return Display
      */
     private Display(){
-    	gui_ = PotentialNineteenCharactersGUI.getGUI();
-    	gui_.setVisible(true);
+    	java.awt.EventQueue.invokeLater(new Runnable() {
+			public void run() { Key_Listener_GUI.getGUI().setVisible(true);}});
+
     }
     /**
      * Gets the display
@@ -200,7 +200,7 @@ public class Display {
     	}
     	@Override
     	public void run() {
-    		PotentialNineteenCharactersGUI.getGUI().setGameContent(doc_);
+    		Key_Listener_GUI.getGUI().setGameContent(doc_);
     	}
     }
     /**
@@ -298,48 +298,26 @@ public class Display {
     public int close(){
     	return 0;
     }
-    /**
-     * Add a Keylistener to the main game pane
-     * 
-     * @param listener
-     */
-	public void addGameKeyListener(KeyListener listener) {
-		EventQueue.invokeLater(new addKeyListenerRunnable(listener));
+    public void addInputerHandler(Function<Void,Character> foo){
+    	java.awt.EventQueue.invokeLater(new inputHandlerRunnable(foo));
 	}
-	class addKeyListenerRunnable implements Runnable{
-		private KeyListener listener = null;
-		public addKeyListenerRunnable(KeyListener Listen){listener = Listen;}
+    class inputHandlerRunnable implements Runnable{
+    	private Function<Void,Character> handler_;
+    	public inputHandlerRunnable(Function<Void,Character> foo) {
+			handler_ = foo;
+		}
 		@Override
 		public void run() {
-			PotentialNineteenCharactersGUI.getGUI().addGameKeyListener(listener);
-			
+			Key_Listener_GUI.getGUI().addInputerHandler(handler_);	
 		}
-		
-	}
-	/** 
-	 * Adds a Mouselistener to the main game pane
-	 * @param listener
-	 */
-	public void addGameMouseWheelListener(MouseWheelListener listener){
-		EventQueue.invokeLater(new addMouseWheelListenerRunnable(listener));
-	}
-	class addMouseWheelListenerRunnable implements Runnable{
-		private MouseWheelListener listener = null;
-		public addMouseWheelListenerRunnable(MouseWheelListener Listen){listener = Listen;}
-		@Override
-		public void run() {
-			PotentialNineteenCharactersGUI.getGUI().addGameMouseWheelListener(listener);
-			
-		}
-		
-	}
-
+    	
+    }
 	/**
 	 * Adds a Function<Void,String> object to the list of things called by chatbox on enter
 	 * @param Function<Void,String> listen
 	 */
 	public void addChatBoxFunctionEvent(Function<Void,String> listen){
-		chat_.addFunction(listen);
+		//chat_.addFunction(listen);
 	}
 
 }

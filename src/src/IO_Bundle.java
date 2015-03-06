@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import src.model.map.constructs.PickupableItem;
 import src.model.map.constructs.EntityStatsPack;
 import src.model.map.constructs.Occupation;
+import src.model.map.constructs.PrimaryHandHoldable;
+import src.model.map.constructs.SecondaryHandHoldable;
 
 /**
  * Contains contents of data for IO to user.
@@ -21,7 +23,8 @@ public class IO_Bundle {
     public IO_Bundle(char[][] v,Color[][] c, ArrayList<PickupableItem> i,
 
             // Don't for get left and right hand items
-            EntityStatsPack s, Occupation o, int n, int bi, int ba, int ob
+            EntityStatsPack s, Occupation o, int n, int bi, int ba, int ob,
+            PrimaryHandHoldable pri, SecondaryHandHoldable sec
     ) {
         view_for_display_ = v;
         color_for_display_ = c;
@@ -33,9 +36,13 @@ public class IO_Bundle {
         bind_wounds_ = bi;
         bargain_ = ba;
         observation_ = ob;
+        primary_ = pri;
+        second_= sec;
     }
    public final char[][] view_for_display_;
    public final Color[][] color_for_display_;
+   public final PrimaryHandHoldable primary_;
+   public final SecondaryHandHoldable second_;
    public final ArrayList<PickupableItem> inventory_;
    public final EntityStatsPack stats_for_display_;
    public final Occupation occupation_;

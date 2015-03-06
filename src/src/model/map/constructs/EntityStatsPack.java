@@ -21,6 +21,7 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
     private int movement_level_ = 1;
     private int max_life_ = 1;
     private int max_mana_ = 1;
+    private int defensive_rating_ = 1;
 
     public int getMax_life_() {
         return max_life_;
@@ -84,7 +85,9 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
     public int getCurrent_mana_() {
         return current_mana_;
     }
-
+    public int getDefensive_rating_(){
+    	return defensive_rating_;
+    }
     private EntityStatsPack() {
         owner_ = null;
     }
@@ -95,8 +98,42 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
      * Constructor: sets values to 1.
      */
     public EntityStatsPack(Entity master) {
-        super(1, 1, 1, 1, 1);
+        super(1, 1);
         this.owner_ = master;
+    }
+    /**
+     * Resets the stat pack back to it's natural, pristine state.
+     */
+    public void reset() {
+    	super.reset();
+    	lives_left_ = 1; // this can change without leveling up
+    	strength_level_ = 1;
+    	agility_level_ = 1;
+    	intellect_level_ = 1;
+    	hardiness_level_ = 1;
+    	quantity_of_experience_ = 1;
+    	movement_level_ = 1;
+    	max_life_ = 1;
+    	max_mana_ = 1;
+    	defensive_rating_ = 1;
+    }
+    /** 
+     * Copy constructor
+     * @param in : Stats pack to copy
+     */
+    public EntityStatsPack(EntityStatsPack in){
+    	super(in);
+    	owner_ = in.owner_;
+    	lives_left_ = in.lives_left_; // this can change without leveling up
+    	strength_level_ = in.strength_level_;
+    	agility_level_ = in.agility_level_;
+    	intellect_level_ = in.intellect_level_;
+    	hardiness_level_ = in.hardiness_level_;
+    	quantity_of_experience_ = in.quantity_of_experience_;
+    	movement_level_ = in.movement_level_;
+    	max_life_ = in.max_life_;
+    	max_mana_ = in.max_mana_;
+    	defensive_rating_ = in.defensive_rating_;
     }
 
     public void increaseCurrentLevelByOne() {
@@ -107,8 +144,8 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
         ++current_mana_;
         
         super.incrementOffensive_rating_();
-        super.incrementDefensive_rating_();
-
+       
+        increaseDefenseLevelByOne();
         increaseHardinessLevelByOne();
         increaseMovementLevelByOne();
         increaseLivesLeftByOne();
@@ -132,10 +169,11 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
 
     public void increaseAgilityLevelByOne() {
         ++agility_level_;
-        super.incrementDefensive_rating_();
+        increaseDefenseLevelByOne();
     }
 
-    public void increaseIntellectLevelByOne() {
+
+	public void increaseIntellectLevelByOne() {
         ++intellect_level_;
         ++max_mana_;
         ++current_mana_;
@@ -147,6 +185,9 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
         ++current_life_;
         super.incrementtArmor_rating_();
     }
+    public void increaseDefenseLevelByOne(){
+    	++defensive_rating_;
+    }
 
     /**
      *
@@ -157,22 +198,18 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
         if (increase < 0) {
             System.exit(1);
         }
-        int num_level_ups = 0;
-        int old_experience = quantity_of_experience_;
+        final int old_experience = quantity_of_experience_;
         quantity_of_experience_ += increase;
-        int diff = quantity_of_experience_ - old_experience;
-        while (diff >= NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL) {
+        final int old_div_100 = old_experience / NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL;
+        
+        final int new_div_100 = quantity_of_experience_ / NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL;
+        int num_level_ups_counter = (Math.abs(new_div_100 - old_div_100));
+        final int num_level_ups = num_level_ups_counter;
+        while (num_level_ups_counter > 0) {
             increaseCurrentLevelByOne();
-            ++num_level_ups;
-            diff -= NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL;
+            --num_level_ups_counter;
         }
         return num_level_ups;
-    }
-
-    public void increaseQuantityOfExperienceToNextLevel() {
-        int exp_to_next = NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL
-                - (quantity_of_experience_ % NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL);
-        increaseQuantityOfExperienceBy(exp_to_next);
     }
 
     public void increaseMovementLevelByOne() {
@@ -287,7 +324,7 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
                 + "movement_level_: " + movement_level_ + "\n"
                 + "Mana: " + max_mana_ + "\n"
                 + "Offense: " + super.getOffensive_rating_() + "\n"
-                + "Defense: " + super.getDefensive_rating_() + "\n"
+                + "Defense: " + getDefensive_rating_() + "\n"
                 + "Armor: " + super.getArmor_rating_() + "\n"
                 + "moves_left_in_turn_: " + moves_left_in_turn_ + "\n"
                 + "cached_current_level_: " + cached_current_level_ + "\n"

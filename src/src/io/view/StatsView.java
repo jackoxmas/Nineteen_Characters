@@ -28,6 +28,7 @@ public final class StatsView extends Viewport
     private ArrayList<String> template_;    
     private boolean display_index = false;
     private String userName_;
+    private final String tab = "  ";
     
     /**
      * Generates a new StatsView using the avatar_reference.
@@ -106,33 +107,45 @@ public final class StatsView extends Viewport
     	writeStringToContents(72, 12, rightAlign(3, "" + bundle_.getStatsPack().getDefensive_rating_()));
     	writeStringToContents(72, 13, rightAlign(3, "" + bundle_.getStatsPack().getArmor_rating_()));
     }
+    private void printItemName(String item_name, int row){
+    	if (item_name.length() > 22)
+			item_name = item_name.substring(0, 21);
+		if (row < 10) {
+			if (display_index)
+				writeStringToContents(19+row, 2, "" + (char)(48+row));
+			writeStringToContents(4, 19+row, item_name);
+		} else if (row < 12) {
+			if (display_index)
+				writeStringToContents(19+row, 2, "" + (char)(97+row));
+			writeStringToContents(4, 19+row, item_name);
+		} else if (row < 24) {
+			if (display_index)
+				writeStringToContents(19+row, 2, "" + (char)(97+row));
+			writeStringToContents(30, 19+row, item_name);
+		} else if (row < 36) {
+			if (display_index)
+				writeStringToContents(19+row, 2, "" + (char)(97+row));
+			writeStringToContents(56, 19+row, item_name);
+		}
+    }
 /*
  * Helps renderToDisplay
  */
     private void renderInventory(IO_Bundle bundle_) {
     	ArrayList<PickupableItem> inventory = bundle_.getInventory();
-    	for (int i = 0; i < inventory.size(); i++) {
+    	int i = 0;
+    	for (i = 0; i < inventory.size(); i++) {
     		String item_name = inventory.get(i).name_;
-    		if (item_name.length() > 22)
-    			item_name = item_name.substring(0, 21);
-    		if (i < 10) {
-    			if (display_index)
-    				writeStringToContents(19+i, 2, "" + (char)(48+i));
-    			System.out.println("yes it works");
-    			writeStringToContents(4, 19+i, item_name);
-    		} else if (i < 12) {
-    			if (display_index)
-    				writeStringToContents(19+i, 2, "" + (char)(97+i));
-    			writeStringToContents(4, 19+i, item_name);
-    		} else if (i < 24) {
-    			if (display_index)
-    				writeStringToContents(19+i, 2, "" + (char)(97+i));
-    			writeStringToContents(30, 19+i, item_name);
-    		} else if (i < 36) {
-    			if (display_index)
-    				writeStringToContents(19+i, 2, "" + (char)(97+i));
-    			writeStringToContents(56, 19+i, item_name);
-    		}
+    		printItemName(item_name, i);	
+    	}
+    	printItemName("Equipped:",++i);
+    	if(bundle_.primary_!=null){
+    		printItemName(tab+"Primary:",++i);
+    		printItemName(tab+tab+bundle_.primary_.getName(),++i);
+    	}
+    	if(bundle_.second_!=null){
+    		printItemName(tab+"Secondary:",++i);
+    		printItemName(tab+tab+bundle_.second_.getName(), ++i);
     	}
     }
 

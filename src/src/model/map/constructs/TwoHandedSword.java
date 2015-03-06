@@ -13,5 +13,6 @@ public class TwoHandedSword extends TwoHandedWeapon implements PrimaryHandHoldab
 
     public TwoHandedSword(String name, char representation) {
         super(name, representation);
+        this.getStatsPack().addOn(new DrawableThingStatsPack(10,5));
     }
 }

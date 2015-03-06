@@ -10,5 +10,8 @@ package src.model.map.constructs;
  * @author JohnReedLOL
  */
 public interface SecondaryHandHoldable {
+	 DrawableThingStatsPack getStatsPack();
+
+	String getName();
     
 }

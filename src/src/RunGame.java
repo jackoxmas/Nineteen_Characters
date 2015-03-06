@@ -17,6 +17,7 @@ import src.model.map.constructs.Villager;
 import src.model.map.Map;
 import src.io.view.Viewport;
 import src.model.map.MapUser_Interface;
+import src.model.map.constructs.OneShotAreaEffectItem;
 import src.model.map.constructs.OneWayTeleportItem;
 import src.model.map.constructs.TwoHandedSword;
 
@@ -74,6 +75,15 @@ public class RunGame {
         Item onehandedsword = new OneHandedSword("Excalibur", '|');
         Item twohandedsword = new TwoHandedSword("Two_hander", '|');
         Item sheild = new Sheild("Sheildy",'O');
+        OneShotAreaEffectItem heal = new OneShotAreaEffectItem("healer", 'h', Effect.HEAL, 10);
+        OneShotAreaEffectItem hurt = new OneShotAreaEffectItem("hurter", 'u', Effect.HURT, 10);
+        OneShotAreaEffectItem kill = new OneShotAreaEffectItem("killer", 'k', Effect.KILL, 10);
+        OneShotAreaEffectItem level = new OneShotAreaEffectItem("leveler", 'l', Effect.LEVEL, 10);
+        
+        map_.addItem(heal, 3, 2);
+        map_.addItem(hurt, 6, 2);
+        map_.addItem(kill, 9, 2);
+        map_.addItem(level, 12, 2);
         
         Villager villager =new Villager("Tom", 'V');
         map_.addEntity(villager,0,5);

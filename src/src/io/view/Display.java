@@ -289,7 +289,8 @@ public class Display {
     	if(color.equals(color.black)){return;}//White is only used for space, so no need to render it. 
     	MutableAttributeSet attr = new SimpleAttributeSet();
     	StyleConstants.setForeground(attr, color);
-    	pane_.getStyledDocument().setCharacterAttributes(y*(current_view_.getWidth()+1)+x, length, attr, false);
+    	pane_.getStyledDocument().setCharacterAttributes(y*(current_view_.getWidth()+(System.lineSeparator().length()))+x,
+    			length, attr, false);
     }
     /** 
      * Helper method to handle 'clearing' the screen

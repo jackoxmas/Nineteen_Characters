@@ -130,7 +130,7 @@ public class Terrain extends DrawableThing {
         if(contains_water){this.setColor(Color.blue);}
         if(contains_mountain_){this.setColor(Color.gray);}
         if(contains_mountain_ && contains_water_){this.setColor(Color.cyan);}
-        if(!contains_mountain_ && !contains_water_){this.setColor(Color.green);}//Set grass to be green.
+        if(!contains_mountain_ && !contains_water_){this.setColor(Color.green.darker());}//Set grass to be green.
         decal_ = decal;
     }
     public Terrain(String name, char representation, boolean contains_mountain,
@@ -158,6 +158,6 @@ public class Terrain extends DrawableThing {
         if(contains_water){this.setColor(Color.blue);}
         if(contains_mountain_){this.setColor(Color.gray);}
         if(contains_mountain_ && contains_water_){this.setColor(Color.cyan);}
-        if(!contains_mountain_ && !contains_water_){this.setColor(Color.green);}//Set grass to be green.
+        if(!contains_mountain_ && !contains_water_){this.setColor(Color.green.darker());}//Set grass to be green.
     }
 }

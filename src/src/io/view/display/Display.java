@@ -47,96 +47,19 @@ public class Display {
 	 * @author Mbregg
 	 *
 	 */
-	private class ChatBox implements KeyListener{
-		private JTextField inputBox_;
-		private JTextArea outputBox_;
-		private JScrollPane scroll_;
-		private int width_ = 100;
-		private ArrayList<Function<Void,String>> functions_ = new ArrayList<Function<Void,String>>();
-		public ChatBox(JFrame frame_){
-			inputBox_ = new JTextField(width_);
-			outputBox_ = new JTextArea(7, width_);
-			outputBox_.setEditable(false);
-			JScrollPane scroll = new JScrollPane(outputBox_);
 
-			frame_.add(scroll);			
-	     	frame_.add(inputBox_);
-	     	inputBox_.addKeyListener(this);
-		}
-		private void updateScroll(){
-			outputBox_.setCaretPosition(outputBox_.getText().length());
-		}
-		/**
-		 * Puts a string in the output box
-		 * @param message The string to display in a new line
-		 */
-		public void addMessage(String message){
-			outputBox_.append(System.lineSeparator()+message);
-			updateScroll();
-		}
-		/** 
-		 * Sets the font, including font size.
-		 * Used for scrolling, and is kept in sync with displays font.
-		 */
-		private void setFont(){
-			//Display.getDisplay().setFont(inputBox_);
-			//Display.getDisplay().setFont(outputBox_);
-		}
-		/** 
-		 * On key press
-		 * run through all the Function objects, calling apply
-		 */
-		@Override
-		public void keyPressed(KeyEvent e) {
-			// Run through the functions we were given
-			if(e.getKeyCode() == KeyEvent.VK_ENTER){
-				String S = inputBox_.getText();
-				for(Function<Void,String> functor : functions_){
-					functor.apply(S);
-				}
-			}
-			
-		}
-		/**
-		 * On key release, put the input text into the output box.
-		 */
-		@Override
-		public void keyReleased(KeyEvent e) {
-			//On release,  
-			if(e.getKeyCode() == KeyEvent.VK_ENTER){
-				outputBox_.append(System.lineSeparator()+inputBox_.getText());
-				inputBox_.setText("");//Upon enter, clear the input box, and move it's text to output
-				updateScroll();
-			}	
-
-		}
-		@Override
-		public void keyTyped(KeyEvent e) {
-			//Nothing to do here.
-
-			
-		}
-		/**
-		 * Adds a Function to the list.
-		 * @param listen
-		 */
-		public void addFunction(Function<Void,String> listen){
-			functions_.add(listen);
-		}
-	}
     // Converts the class name into a base 35 number
 	static private Display display_ = null;
 	private JTextPane pane_ = null;
 	private JFrame frame_ = null;
-	private float fontSize_ = 18f;
-	private ChatBox chat_;
+	private float fontSize_ = 14f;
 
 	/**
 	 * Puts the given message in the chatboxes output box
 	 * @param m The string to output
 	 */
 	public void setMessage(String m){
-		chat_.addMessage(m);
+		Key_Listener_GUI.getGUI().addMessage(m);
 	}
     private static final long serialVersionUID = Long.parseLong("Display", 35);
 
@@ -307,7 +230,7 @@ public class Display {
 		}
 		@Override
 		public void run() {
-			Key_Listener_GUI.getGUI().addInputerHandler(handler_);	
+			Key_Listener_GUI.getGUI().addGameInputerHandler(handler_);	
 		}
     	
     }

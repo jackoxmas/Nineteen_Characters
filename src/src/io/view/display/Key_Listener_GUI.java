@@ -1,12 +1,17 @@
 package src.io.view.display;
 
 import java.awt.Font;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelListener;
 import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.text.StyledDocument;
 
 import src.Function;
@@ -18,17 +23,22 @@ import src.Function;
  * @author JohnReedLOL
  */
 class Key_Listener_GUI extends javax.swing.JFrame {
-	private ArrayList<Function<Void,Character>> inputHandlers_;
-
+	private ArrayList<Function<Void,Character>> game_inputHandlers_ = new ArrayList<Function<Void,Character>>();;
+	private ArrayList<Function<Void,String>> chatbox_inputHandlers_ = new ArrayList<Function<Void,String>>();
+	/**
+	 * Puts a string in the output box
+	 * @param message The string to display in a new line
+	 */
+	public void addMessage(String message){
+		incoming_text_jTextArea.append(System.lineSeparator()+message);
+		updateScroll();
+	}
+	private void updateScroll(){
+		incoming_text_jTextArea.setCaretPosition(incoming_text_jTextArea.getText().length());
+	}
 	// private variables are declared are the bottom [do not modify]
 	public void setGameContent(StyledDocument doc){
 		game_jTextPane.setStyledDocument(doc);
-	}
-	public void addGameKeyListener(KeyListener listen){
-		game_jTextPane.addKeyListener(listen);
-	}
-	public void addGameMouseWheelListener(MouseWheelListener listen){
-		game_jTextPane.addMouseWheelListener(listen);
 	}
 	private static Key_Listener_GUI gui_ = null;
 	/**
@@ -36,17 +46,23 @@ class Key_Listener_GUI extends javax.swing.JFrame {
 	 */
 	private Key_Listener_GUI() {
 		initComponents();
-		inputHandlers_ = new ArrayList<Function<Void,Character>>();
+		setFont();
+	}
+	private void setFont(){
 		setFont(game_jTextPane);
+		setFont(incoming_text_jTextArea);
+		setFont(outgoing_chat_text_area_jScrollPane);
 	}
 	public static Key_Listener_GUI getGUI(){
 		if(gui_ == null){gui_ = new Key_Listener_GUI();}
 		return gui_;
 
 	}
-	public void addInputerHandler(Function<Void,Character> foo){
-		inputHandlers_.add((foo));
-		System.out.println("Test");
+	public void addGameInputerHandler(Function<Void,Character> foo){
+		game_inputHandlers_.add((foo));
+	}
+	public void addChatboxInputerHandler(Function<Void,String> foo){
+		chatbox_inputHandlers_.add((foo));
 	}
 	private float fontSize_ = 14f;
 	private Font loadFont(){
@@ -113,7 +129,7 @@ class Key_Listener_GUI extends javax.swing.JFrame {
 
 		equipment_and_inventory_jTabbedPane.addTab("Inventory", inventory_text_area_jScrollPane);
 
-		outgoing_text_jTextField.setText("Outgoing text.");
+		outgoing_text_jTextField.setText("");
 		outgoing_text_jTextField.addKeyListener(new java.awt.event.KeyAdapter() {
 			public void keyPressed(java.awt.event.KeyEvent evt) {
 				outgoing_text_jTextFieldKeyPressed(evt);
@@ -123,7 +139,7 @@ class Key_Listener_GUI extends javax.swing.JFrame {
 		incoming_text_jTextArea.setEditable(false);
 		incoming_text_jTextArea.setColumns(20);
 		incoming_text_jTextArea.setRows(5);
-		incoming_text_jTextArea.setText("Incoming text.\n");
+		incoming_text_jTextArea.setText("Game Messages: "+ System.lineSeparator());
 		incoming_text_jTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
 			public void keyTyped(java.awt.event.KeyEvent evt) {
 				incoming_text_jTextAreaKeyTyped(evt);
@@ -262,7 +278,15 @@ class Key_Listener_GUI extends javax.swing.JFrame {
 	}//GEN-LAST:event_incoming_text_jTextAreaKeyTyped
 
 	private void outgoing_text_jTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_outgoing_text_jTextFieldKeyPressed
-		// TODO add your handling code here:
+		if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+			String S = outgoing_text_jTextField.getText();
+			for(Function<Void,String> functor : chatbox_inputHandlers_){
+				functor.apply(S);
+			}
+			incoming_text_jTextArea.append(System.lineSeparator()+outgoing_text_jTextField.getText());
+			outgoing_text_jTextField.setText("");//Upon enter, clear the input box, and move it's text to output
+			updateScroll();
+		}
 	}//GEN-LAST:event_outgoing_text_jTextFieldKeyPressed
 
 	private void bind_wounds_jButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bind_wounds_jButtonMouseClicked
@@ -278,7 +302,7 @@ class Key_Listener_GUI extends javax.swing.JFrame {
 	}//GEN-LAST:event_observe_jButtonMouseClicked
 
 	private void game_jTextPaneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_game_jTextPaneKeyTyped
-		for(Function<Void,Character> foo : inputHandlers_){foo.apply(evt.getKeyChar());}
+		for(Function<Void,Character> foo : game_inputHandlers_){foo.apply(evt.getKeyChar());}
 	}//GEN-LAST:event_game_jTextPaneKeyTyped
 
 

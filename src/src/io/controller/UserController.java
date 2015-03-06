@@ -165,6 +165,7 @@ public final class UserController implements KeyListener, MouseWheelListener
 
 	@Override
 	public void keyTyped(KeyEvent e) {
+		System.out.println("Got input");
 		takeTurn(e);
 		
 	}

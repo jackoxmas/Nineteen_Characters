@@ -6,6 +6,7 @@
 package src.io.view;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
@@ -22,6 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.text.AttributeSet;
+import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -75,9 +77,9 @@ public class Display {
 		 * Sets the font, including font size.
 		 * Used for scrolling, and is kept in sync with displays font.
 		 */
-		public void setFont(){
-			Display.getDisplay().setFont(inputBox_);
-			Display.getDisplay().setFont(outputBox_);
+		private void setFont(){
+			//Display.getDisplay().setFont(inputBox_);
+			//Display.getDisplay().setFont(outputBox_);
 		}
 		/** 
 		 * On key press
@@ -127,6 +129,7 @@ public class Display {
 	private JFrame frame_ = null;
 	private float fontSize_ = 18f;
 	private ChatBox chat_;
+	private PotentialNineteenCharactersGUI gui_ = null;
 
 	/**
 	 * Puts the given message in the chatboxes output box
@@ -136,23 +139,7 @@ public class Display {
 		chat_.addMessage(m);
 	}
     private static final long serialVersionUID = Long.parseLong("Display", 35);
-    private Font getFont(){
-    	InputStream in = this.getClass().getResourceAsStream("Font/DejaVuSansMono.ttf");
-    	try{
-    		return Font.createFont(Font.TRUETYPE_FONT, in);
-    	}
-    	catch(Exception e){
-    		System.err.println(e.toString());
-    		return null;
-    	}
-    }
-    private void setFont(JComponent object){
-    	Font font = getFont();
-    	if(font == null){return;}//If we failed to load the font, do nothing
-    	Font  resized = font.deriveFont(fontSize_);//This line sets the size of the game, not sure how to make it dynamic atm
-    	object.setFont(resized);
-    	return;
-    }
+
     /**
      * Create a display from a Viewport
      * @author Matthew B
@@ -160,23 +147,8 @@ public class Display {
      * @return Display
      */
     private Display(){
-    	 frame_ = new JFrame("NineTeen Characters");
-    	frame_.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	frame_.setJMenuBar(new JMenuBar());
-    	frame_.setBounds(0, 0, (int)fontSize_*60, (int)fontSize_*60); //Arbitary, but whatever.
-    	pane_ = new JTextPane();
-    	setFont(pane_);
-
-    	frame_.getContentPane().setLayout(new FlowLayout());
-    	frame_.add(pane_);
-    	chat_ = new ChatBox(frame_);
-    	frame_.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-
-    	pane_.setEditable(false);
-    	frame_.setVisible(true);
-    	frame_.setFocusable(true);
-    	pane_.requestFocus();
-
+    	gui_ = PotentialNineteenCharactersGUI.getGUI();
+    	gui_.setVisible(true);
     }
     /**
      * Gets the display
@@ -203,8 +175,8 @@ public class Display {
      */
     public void zoomIn(){
     	fontSize_++;
-    	setFont(pane_);
-    	chat_.setFont();
+    	//setFont(pane_);
+    	//chat_.setFont();
     }
     /** 
      * Zooms out slightly(Decreases font size)
@@ -212,21 +184,31 @@ public class Display {
     public void zoomOut(){
     	if(fontSize_ < 2){return;}//Don't let the font get too small!
     	fontSize_--;
-    	setFont(pane_);
-    	chat_.setFont();
+    	//setFont(pane_);
+    	//chat_.setFont();
     }
     private boolean guard(){
     	if (current_view_ == null){ System.err.println("DISPLAY VIEW NULL"); return true;}
     	return false;
     }
     private Viewport current_view_;
+    private class setDocumentRunnable implements Runnable{
+    	private StyledDocument doc_;
+    	public setDocumentRunnable(StyledDocument d){
+    		doc_ = d;
+    	}
+    	@Override
+    	public void run() {
+    		PotentialNineteenCharactersGUI.getGUI().setGameContent(doc_);
+    	}
+    }
     /**
      * Print the currently held view
      * 
      */
     public void printView() {
+    	System.out.println("Got here");
     	if(guard()){return;}
-    	this.clearScreen();
         char[][] in = current_view_.getCharContents();
         Color[][] colors = current_view_.getColorContents();
         StringBuilder out = new StringBuilder();
@@ -241,11 +223,13 @@ public class Display {
     			}
     			out.append(System.lineSeparator());
     		}
-    		StyledDocument doc = pane_.getStyledDocument();
+    		StyledDocument doc = new DefaultStyledDocument();
     		try{
     		doc.insertString(0,out.toString(),null);
     		}
     		catch(Exception e){System.err.println(e.toString());}
+    		EventQueue.invokeLater(new setDocumentRunnable(doc));
+    		
     		for(int j = 0; j!=current_view_.getHeight();++j){
     			Color currColor = null;
     			int currColorCount = 0;
@@ -263,7 +247,7 @@ public class Display {
     				else if(colors[i][j] == null && currColor == null){currColorCount++;}
     				else{
     					if(currColor != null){
-    						colorChar(oldIndex,j,currColor,currColorCount);
+    						colorChar(doc,oldIndex,j,currColor,currColorCount);
     					}
 						oldIndex = i;
 						currColorCount = 1;
@@ -272,7 +256,7 @@ public class Display {
     				}
     			}
 			if(currColor != null){
-				colorChar(oldIndex,j,currColor,currColorCount);
+				colorChar(doc,oldIndex,j,currColor,currColorCount);
 			}
 		}
 		
@@ -284,19 +268,13 @@ public class Display {
      * @param y
      * @param attr
      */
-    private void colorChar(int x, int y, Color color, int length){
+    private void colorChar(StyledDocument doc, int x, int y, Color color, int length){
     	if(color.equals(color.white)){return;}
     	if(color.equals(color.black)){return;}//White is only used for space, so no need to render it. 
     	MutableAttributeSet attr = new SimpleAttributeSet();
     	StyleConstants.setForeground(attr, color);
-    	pane_.getStyledDocument().setCharacterAttributes(y*(current_view_.getWidth()+(System.lineSeparator().length()))+x,
+    	doc.setCharacterAttributes(y*(current_view_.getWidth()+(System.lineSeparator().length()))+x,
     			length, attr, false);
-    }
-    /** 
-     * Helper method to handle 'clearing' the screen
-     */
-    private void clearScreen(){
-    	pane_.setText("");
     }
     /**
      * Change the viewport held by the display
@@ -325,14 +303,14 @@ public class Display {
      * @param listener
      */
 	public void addGameKeyListener(KeyListener listener) {
-		pane_.addKeyListener(listener);	
+		PotentialNineteenCharactersGUI.getGUI().addGameKeyListener(listener);
 	}
 	/** 
 	 * Adds a Mouselistener to the main game pane
 	 * @param listener
 	 */
 	public void addGameMouseWheelListener(MouseWheelListener listener){
-		pane_.addMouseWheelListener(listener);
+		PotentialNineteenCharactersGUI.getGUI().addGameMouseWheelListener(listener);
 	}
 	/**
 	 * Adds a Function<Void,String> object to the list of things called by chatbox on enter

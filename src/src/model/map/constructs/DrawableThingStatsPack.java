@@ -82,8 +82,7 @@ public class DrawableThingStatsPack {
 
     @Override
     public String toString() {
-        return "Offense: " + offensive_rating_ + "\n"
-                + 
-                "Armor: " + armor_rating_ + "\n";
+        return "Offense: " + offensive_rating_ + 
+                "Armor: " + armor_rating_;
     }
 }

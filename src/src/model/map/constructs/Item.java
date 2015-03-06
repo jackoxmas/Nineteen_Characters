@@ -111,6 +111,9 @@ public abstract class Item extends DrawableThing {
 
         return s;
     }
+    public String getName(){
+    	return name_;
+    }
 
     /**
      * The use function allows an item to exert its effect on an entity.

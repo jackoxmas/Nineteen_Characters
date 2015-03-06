@@ -353,7 +353,9 @@ public class Map implements MapUser_Interface {
                     // Don't for get left and right hand items
                     to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
                     to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
-                    to_recieve_command.getBargain_(), to_recieve_command.getObservation_()
+                    to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
+                    to_recieve_command.getPrimaryEquipped(),
+                    to_recieve_command.getSecondaryEquipped()
             );
             return return_package;
         } else if (to_recieve_command != null) {
@@ -361,7 +363,9 @@ public class Map implements MapUser_Interface {
                     // Don't for get left and right hand items
                     to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
                     to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
-                    to_recieve_command.getBargain_(), to_recieve_command.getObservation_()
+                    to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
+                    to_recieve_command.getPrimaryEquipped(),
+                    to_recieve_command.getSecondaryEquipped()
             );
             return return_package;
         } else {

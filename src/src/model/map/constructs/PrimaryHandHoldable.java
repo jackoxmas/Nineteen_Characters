@@ -11,5 +11,7 @@ package src.model.map.constructs;
  */
 public interface PrimaryHandHoldable {
 	 DrawableThingStatsPack getStatsPack();
+
+	String getName();
     
 }

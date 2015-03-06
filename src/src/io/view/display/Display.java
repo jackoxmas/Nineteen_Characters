@@ -208,7 +208,6 @@ public class Display {
      * 
      */
     public void printView() {
-    	System.out.println("Got here");
     	if(guard()){return;}
         char[][] in = current_view_.getCharContents();
         Color[][] colors = current_view_.getColorContents();

@@ -13,5 +13,6 @@ public class OneHandedSword extends OneHandedWeapon {
 
     public OneHandedSword(String name, char representation) {
         super(name, representation);
+        this.getStatsPack().addOn(new DrawableThingStatsPack(5,5));
     }
 }

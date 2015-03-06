@@ -13,6 +13,7 @@ public class Sheild extends EquipableItem implements SecondaryHandHoldable {
 
     public Sheild(String name, char representation) {
         super(name, representation);
+        this.getStatsPack().addOn(new DrawableThingStatsPack(0,10));
     }
     public int equipMyselfTo(Entity to_equip) {
         return to_equip.equipSheild(this);

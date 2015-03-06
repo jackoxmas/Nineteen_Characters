@@ -59,7 +59,17 @@ public class Display {
 	 * @param m The string to output
 	 */
 	public void setMessage(String m){
-		Key_Listener_GUI.getGUI().addMessage(m);
+		EventQueue.invokeLater(new messageRunnable(m));
+	}
+	class messageRunnable implements Runnable{
+		String message_;
+		public messageRunnable(String m) {
+			message_ = m;
+		}
+		@Override
+		public void run() {
+			Key_Listener_GUI.getGUI().addMessage(message_);
+		}
 	}
     private static final long serialVersionUID = Long.parseLong("Display", 35);
 

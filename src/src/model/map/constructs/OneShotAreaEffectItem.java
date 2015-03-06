@@ -33,8 +33,8 @@ public class OneShotAreaEffectItem extends Item {
      * @param power
      */
     public OneShotAreaEffectItem(String name, char representation,
-            boolean goes_in_inventory, Effect effect, int power) {
-        super(name, representation, goes_in_inventory, true, true);
+            Effect effect, int power) {
+        super(name, representation, false, true, true);
         effect_ = effect;
         power_ = power;
         hasBeenActivated = false;

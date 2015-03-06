@@ -6,7 +6,7 @@ public class Trap extends OneShotAreaEffectItem {
 
 	public Trap(String name, char representation, boolean goes_in_inventory,
 			Effect effect, int power) {
-		super(name, representation, goes_in_inventory, effect, power);
+		super(name, representation, effect, power);
 		this.setViewable(false);
 	}
 

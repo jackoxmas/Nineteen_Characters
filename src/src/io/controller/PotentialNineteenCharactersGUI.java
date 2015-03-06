@@ -1,3 +1,14 @@
+
+import java.awt.Font;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseWheelListener;
+import java.io.InputStream;
+
+import javax.swing.JComponent;
+import javax.swing.text.StyledDocument;
+
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,14 +24,51 @@
 public class PotentialNineteenCharactersGUI extends javax.swing.JFrame {
 
     // private variables are declared are the bottom [do not modify]
-    
-    /**
-     * Creates new form NumberAdditionUI
-     */
-    public PotentialNineteenCharactersGUI() {
-        initComponents();
-    }
-
+	 // private variables are declared are the bottom [do not modify]
+		public void setGameContent(StyledDocument doc){
+			game_jTextPane.setDocument(doc);
+		}
+		public void addGameKeyListener(KeyListener listen){
+			game_jTextPane.addKeyListener(listen);
+		}
+		public void addGameMouseWheelListener(MouseWheelListener listen){
+			game_jTextPane.addMouseWheelListener(listen);
+		}
+	    private static PotentialNineteenCharactersGUI gui_ = null;
+	    /**
+	     * Creates new form NumberAdditionUI
+	     */
+	    private PotentialNineteenCharactersGUI() {
+	        initComponents();
+	        incoming_text_jTextArea.setEditable((false));
+	        game_jTextPane.setEditable(false);
+	        setFont(game_jTextPane);
+	        game_jTextPane.setFocusable(true);
+	        game_jTextPane.requestFocus();
+	    }
+	    public static PotentialNineteenCharactersGUI getGUI(){
+	    	if(gui_ == null){gui_ = new PotentialNineteenCharactersGUI();}
+	    	return gui_;
+	    	
+	    }
+		private float fontSize_ = 14f;
+	    private Font loadFont(){
+	    	InputStream in = this.getClass().getResourceAsStream("Font/DejaVuSansMono.ttf");
+	    	try{
+	    		return Font.createFont(Font.TRUETYPE_FONT, in);
+	    	}
+	    	catch(Exception e){
+	    		System.err.println(e.toString());
+	    		return null;
+	    	}
+	    }
+	    private void setFont(JComponent object){
+	    	Font font = loadFont();
+	    	if(font == null){return;}//If we failed to load the font, do nothing
+	    	Font  resized = font.deriveFont(fontSize_);//This line sets the size of the game, not sure how to make it dynamic atm
+	    	object.setFont(resized);
+	    	return;
+	    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

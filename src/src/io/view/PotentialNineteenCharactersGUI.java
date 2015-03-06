@@ -1,4 +1,5 @@
 package src.io.view;
+
 import java.awt.Font;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelListener;
@@ -8,59 +9,67 @@ import javax.swing.JComponent;
 import javax.swing.text.StyledDocument;
 
 
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
 /**
  * Made with Netbeans GUI builder using instruction from:
  * https://netbeans.org/kb/docs/java/gui-functionality.html
  * @author JohnReedLOL
  */
- class PotentialNineteenCharactersGUI extends javax.swing.JFrame {
+class PotentialNineteenCharactersGUI extends javax.swing.JFrame {
 
     // private variables are declared are the bottom [do not modify]
-	public void setGameContent(StyledDocument doc){
-		game_jTextArea.setDocument(doc);
-	}
-	public void addGameKeyListener(KeyListener listen){
-		game_jTextArea.addKeyListener(listen);
-	}
-	public void addGameMouseWheelListener(MouseWheelListener listen){
-		game_jTextArea.addMouseWheelListener(listen);
-	}
-    private static PotentialNineteenCharactersGUI gui_ = null;
-    /**
-     * Creates new form NumberAdditionUI
-     */
-    private PotentialNineteenCharactersGUI() {
-        initComponents();
-        incoming_text_jTextArea.setEditable((false));
-        game_jTextArea.setEditable(false);
-        setFont(game_jTextArea);
-        game_jTextArea.setFocusable(true);
-        game_jTextArea.requestFocus();
-    }
-    public static PotentialNineteenCharactersGUI getGUI(){
-    	if(gui_ == null){gui_ = new PotentialNineteenCharactersGUI();}
-    	return gui_;
-    	
-    }
-	private float fontSize_ = 14f;
-    private Font loadFont(){
-    	InputStream in = this.getClass().getResourceAsStream("Font/DejaVuSansMono.ttf");
-    	try{
-    		return Font.createFont(Font.TRUETYPE_FONT, in);
-    	}
-    	catch(Exception e){
-    		System.err.println(e.toString());
-    		return null;
-    	}
-    }
-    private void setFont(JComponent object){
-    	Font font = loadFont();
-    	if(font == null){return;}//If we failed to load the font, do nothing
-    	Font  resized = font.deriveFont(fontSize_);//This line sets the size of the game, not sure how to make it dynamic atm
-    	object.setFont(resized);
-    	return;
-    }
-
+	 // private variables are declared are the bottom [do not modify]
+		public void setGameContent(StyledDocument doc){
+			game_jTextPane.setStyledDocument(doc);
+		}
+		public void addGameKeyListener(KeyListener listen){
+			game_jTextPane.addKeyListener(listen);
+		}
+		public void addGameMouseWheelListener(MouseWheelListener listen){
+			game_jTextPane.addMouseWheelListener(listen);
+		}
+	    private static PotentialNineteenCharactersGUI gui_ = null;
+	    /**
+	     * Creates new form NumberAdditionUI
+	     */
+	    private PotentialNineteenCharactersGUI() {
+	        initComponents();
+	        incoming_text_jTextArea.setEditable((false));
+	        game_jTextPane.setEditable(false);
+	        setFont(game_jTextPane);
+	        game_jTextPane.setFocusable(true);
+	        game_jTextPane.requestFocus();
+	    }
+	    public static PotentialNineteenCharactersGUI getGUI(){
+	    	if(gui_ == null){gui_ = new PotentialNineteenCharactersGUI();}
+	    	return gui_;
+	    	
+	    }
+		private float fontSize_ = 14f;
+	    private Font loadFont(){
+	    	InputStream in = this.getClass().getResourceAsStream("Font/DejaVuSansMono.ttf");
+	    	try{
+	    		return Font.createFont(Font.TRUETYPE_FONT, in);
+	    	}
+	    	catch(Exception e){
+	    		System.err.println(e.toString());
+	    		return null;
+	    	}
+	    }
+	    private void setFont(JComponent object){
+	    	Font font = loadFont();
+	    	if(font == null){return;}//If we failed to load the font, do nothing
+	    	Font  resized = font.deriveFont(fontSize_);//This line sets the size of the game, not sure how to make it dynamic atm
+	    	object.setFont(resized);
+	    	return;
+	    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -88,26 +97,28 @@ import javax.swing.text.StyledDocument;
         occupation_skill_1_jButton = new javax.swing.JButton();
         occupation_skill_3_jButton = new javax.swing.JButton();
         occupation_skill_4_jButton = new javax.swing.JButton();
-        game_text_area_jScrollPane = new javax.swing.JScrollPane();
-        game_jTextArea = new javax.swing.JTextArea();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        game_jTextPane = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        equipment_jTextArea.setEditable(false);
         equipment_jTextArea.setColumns(20);
         equipment_jTextArea.setRows(5);
         equip_text_area_jScrollPane.setViewportView(equipment_jTextArea);
 
         equipment_and_inventory_jTabbedPane.addTab("Equip", equip_text_area_jScrollPane);
 
+        inventory_jTextArea.setEditable(false);
         inventory_jTextArea.setColumns(20);
         inventory_jTextArea.setRows(5);
-        inventory_jTextArea.setText("Inventory:\nTwo_hander\nExcalibur\n\n");
         inventory_text_area_jScrollPane.setViewportView(inventory_jTextArea);
 
         equipment_and_inventory_jTabbedPane.addTab("Inventory", inventory_text_area_jScrollPane);
 
         outgoing_text_jTextField.setText("Outgoing text.");
 
+        incoming_text_jTextArea.setEditable(false);
         incoming_text_jTextArea.setColumns(20);
         incoming_text_jTextArea.setRows(5);
         incoming_text_jTextArea.setText("Incoming text.");
@@ -182,10 +193,8 @@ import javax.swing.text.StyledDocument;
 
         regular_and_special_skills_jTabbedPane.addTab("Special", special_skills_jPanel);
 
-        game_jTextArea.setColumns(20);
-        game_jTextArea.setRows(5);
-        game_jTextArea.setText("║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨⚔▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨♥▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨♥▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨♨▨▨♥▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨♨♨▨♥▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨♨♨♨♥▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨♨♨▨▨☣▨☣▨☣▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨♨▨▨▨▨☣▨☣▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨O▨▨▨▨▨▨▨▨☣▨☣▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨☣▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨☣▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               V▨▨▨▨|▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨T▨▨▨★▨▨✚▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨▨■h▨▨u▨▨k▨▨l▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n║               ▨|▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨▨                       ║\n╚═════════════════════════════════════════════╝\n");
-        game_text_area_jScrollPane.setViewportView(game_jTextArea);
+        game_jTextPane.setEditable(false);
+        jScrollPane1.setViewportView(game_jTextPane);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -199,12 +208,12 @@ import javax.swing.text.StyledDocument;
                     .addComponent(outgoing_chat_text_area_jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(equipment_and_inventory_jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(game_text_area_jScrollPane)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(game_text_area_jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(regular_and_special_skills_jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -261,11 +270,11 @@ import javax.swing.text.StyledDocument;
     private javax.swing.JScrollPane equip_text_area_jScrollPane;
     private javax.swing.JTabbedPane equipment_and_inventory_jTabbedPane;
     private javax.swing.JTextArea equipment_jTextArea;
-    private javax.swing.JTextArea game_jTextArea;
-    private javax.swing.JScrollPane game_text_area_jScrollPane;
+    private javax.swing.JTextPane game_jTextPane;
     private javax.swing.JTextArea incoming_text_jTextArea;
     private javax.swing.JTextArea inventory_jTextArea;
     private javax.swing.JScrollPane inventory_text_area_jScrollPane;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton observe_jButton;
     private javax.swing.JButton occupation_skill_1_jButton;
     private javax.swing.JButton occupation_skill_2_jButton;

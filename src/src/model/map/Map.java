@@ -526,11 +526,13 @@ public class Map implements MapUser_Interface {
             trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getArmor_rating_())));
             e_stats.appendChild(trans_eStat);
         }
+        /*
         if (stats.getDefensive_rating_() != 0) {
             trans_eStat = doc.createElement("def_rating");
             trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getDefensive_rating_())));
             e_stats.appendChild(trans_eStat);
         }
+        */
         if (stats.getOffensive_rating_() != 0) {
             trans_eStat = doc.createElement("off_rating");
             trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getOffensive_rating_())));

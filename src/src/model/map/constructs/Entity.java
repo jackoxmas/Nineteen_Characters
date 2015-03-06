@@ -50,15 +50,15 @@ abstract public class Entity extends DrawableThing {
      *
      * @param item
      */
-    public void addItemStatsToMyStats(Item item) {
-        stats_pack_.addOn(item.getStatsPack());
+    private void addItemStatsToMyStats(Item item) {
+        equipped_stats_pack_.addOn(item.getStatsPack());
     }
 
     /**
      * Entities should check their health after they are damaged.
      */
     public void checkHealth() {
-        if (stats_pack_.getCurrent_life_() <= 0) {
+        if (base_stats_pack_.getCurrent_life_() <= 0) {
             commitSuicide();
         }
     }
@@ -67,10 +67,10 @@ abstract public class Entity extends DrawableThing {
      * Entity dies, Game Over.
      */
     public void commitSuicide() {
-        int health_left = stats_pack_.getCurrent_life_();
-        stats_pack_.deductCurrentLifeBy(health_left);
+        int health_left = base_stats_pack_.getCurrent_life_();
+        base_stats_pack_.deductCurrentLifeBy(health_left);
         getMapRelation().respawn();
-        if (stats_pack_.getLives_left_() < 0) {
+        if (base_stats_pack_.getLives_left_() < 0) {
             gameOver();
         }
     }
@@ -100,7 +100,10 @@ abstract public class Entity extends DrawableThing {
      * @return
      */
     public int equip(EquipableItem item) {
-        return item.equipMyselfTo(this);
+        int temp= item.equipMyselfTo(this);
+        this.recalculateStats();
+        return temp;
+        
     }
 
     /**
@@ -240,7 +243,7 @@ abstract public class Entity extends DrawableThing {
      * @author John
      */
     public void gainEnoughExperienceTolevelUp() {
-        stats_pack_.increaseQuantityOfExperienceToNextLevel();
+        base_stats_pack_.increaseQuantityOfExperienceToNextLevel();
     }
 
     public boolean hasEquippedPrimaryHand() {
@@ -331,12 +334,12 @@ abstract public class Entity extends DrawableThing {
      * @return number of level ups;
      */
     public int gainExperiencePoints(int amount) {
-        int num_level_ups = stats_pack_.increaseQuantityOfExperienceBy(amount);
+        int num_level_ups = base_stats_pack_.increaseQuantityOfExperienceBy(amount);
         return num_level_ups;
     }
 
     public int checkLevel() {
-        return stats_pack_.getCached_current_level_();
+        return base_stats_pack_.getCached_current_level_();
     }
 
     // map_relationship_ is used in place of a map_referance_
@@ -406,13 +409,15 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     * Adds default stats to item stats and updates my_stats_after_powerups
+     * Resets the equipped stats pack, and adds back into it. 
      *
-     * @author Jessan
+     * @author Jessan/Mbregg
      */
     private void recalculateStats() {
-        //my_stats_after_powerups_.equals(my_stats_after_powerups_.add(equipped_item_.get_stats_pack_()));
-
+    	System.out.println("Was run");
+    	equipped_stats_pack_.reset();
+    	if(primary_hand_!= null){System.out.println(primary_hand_.getStatsPack());equipped_stats_pack_.addOn(primary_hand_.getStatsPack());}
+    	if(secondary_hand_!=null){equipped_stats_pack_.addOn(secondary_hand_.getStatsPack());}
     }
 
     /**
@@ -422,10 +427,10 @@ abstract public class Entity extends DrawableThing {
      * @param attacker - who the attack is coming from
      */
     public void receiveAttack(int damage, Entity attacker) {
-        int did_I_run_out_of_health = stats_pack_.deductCurrentLifeBy(damage - stats_pack_.getDefensive_rating_() - stats_pack_.getArmor_rating_());
+        int did_I_run_out_of_health = base_stats_pack_.deductCurrentLifeBy(damage - getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_());
         if (did_I_run_out_of_health != 0) {
             getMapRelation().respawn();
-            if (stats_pack_.getLives_left_() < 0) {
+            if (base_stats_pack_.getLives_left_() < 0) {
                 gameOver();
             }
         } else {
@@ -436,7 +441,7 @@ abstract public class Entity extends DrawableThing {
     }
 
     public void receiveHeal(int strength) {
-        this.stats_pack_.increaseCurrentLifeBy(strength);
+        this.base_stats_pack_.increaseCurrentLifeBy(strength);
     }
 
     // reply(greeting, this);
@@ -467,25 +472,21 @@ abstract public class Entity extends DrawableThing {
     public abstract int replyToAttackFrom(Entity attacker);
 
     //private final int max_level_;
-    private EntityStatsPack stats_pack_ = new EntityStatsPack(this);
+    private EntityStatsPack base_stats_pack_ = new EntityStatsPack(this);
+    private DrawableThingStatsPack equipped_stats_pack_ = new DrawableThingStatsPack();
 
     /**
-     * Get Entities StatsPack - only to be used by the view for displaying
+     * Return the combined stats of the entity, includes armour
      * stats.
      */
     public EntityStatsPack getStatsPack() {
-        return stats_pack_;
+    	recalculateStats();
+        EntityStatsPack combined = new EntityStatsPack(base_stats_pack_);
+        combined.addOn(equipped_stats_pack_);
+        return combined;
     }
 
-    /**
-     * Removes state increase from item i.e., item with stat increase is
-     * unequipped
-     *
-     * @param item
-     */
-    public void subtractItemStatsFromMyStats(Item item) {
-        stats_pack_.reduceBy(item.getStatsPack());
-    }
+
 
     public String toString() {
         String s = "Entity name: " + name_;

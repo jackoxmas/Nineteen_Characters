@@ -303,15 +303,36 @@ public class Display {
      * @param listener
      */
 	public void addGameKeyListener(KeyListener listener) {
-		PotentialNineteenCharactersGUI.getGUI().addGameKeyListener(listener);
+		EventQueue.invokeLater(new addKeyListenerRunnable(listener));
+	}
+	class addKeyListenerRunnable implements Runnable{
+		private KeyListener listener = null;
+		public addKeyListenerRunnable(KeyListener Listen){listener = Listen;}
+		@Override
+		public void run() {
+			PotentialNineteenCharactersGUI.getGUI().addGameKeyListener(listener);
+			
+		}
+		
 	}
 	/** 
 	 * Adds a Mouselistener to the main game pane
 	 * @param listener
 	 */
 	public void addGameMouseWheelListener(MouseWheelListener listener){
-		PotentialNineteenCharactersGUI.getGUI().addGameMouseWheelListener(listener);
+		EventQueue.invokeLater(new addMouseWheelListenerRunnable(listener));
 	}
+	class addMouseWheelListenerRunnable implements Runnable{
+		private MouseWheelListener listener = null;
+		public addMouseWheelListenerRunnable(MouseWheelListener Listen){listener = Listen;}
+		@Override
+		public void run() {
+			PotentialNineteenCharactersGUI.getGUI().addGameMouseWheelListener(listener);
+			
+		}
+		
+	}
+
 	/**
 	 * Adds a Function<Void,String> object to the list of things called by chatbox on enter
 	 * @param Function<Void,String> listen

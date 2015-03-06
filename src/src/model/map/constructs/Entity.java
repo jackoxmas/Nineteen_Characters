@@ -44,7 +44,14 @@ abstract public class Entity extends DrawableThing {
     public void setFacingDirection(FacingDirection dir) {
         direction_ = dir;
     }
-    private static final int experience_between_levels = 100;
+
+    public int getExperienceBetweenLevels() {
+        if (stats_pack_ != null) {
+            return stats_pack_.NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL;
+        } else {
+            return -1;
+        }
+    }
 
     /**
      * Include stat increase from item i.e., item with stat increase is equipped
@@ -139,8 +146,7 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     * @author John-Michael Reed
-     * Equips the weapon and modifies stats
+     * @author John-Michael Reed Equips the weapon and modifies stats
      * @param one_hand_weapon
      * @return
      */
@@ -261,7 +267,17 @@ abstract public class Entity extends DrawableThing {
      * @author John
      */
     public void gainEnoughExperienceTolevelUp() {
-        stats_pack_.increaseQuantityOfExperienceToNextLevel();
+        final int number_of_experience_points_per_level = getExperienceBetweenLevels();
+        int exp_to_next = number_of_experience_points_per_level
+                - (stats_pack_.getQuantity_of_experience_() % number_of_experience_points_per_level);
+        int old_level = stats_pack_.getCached_current_level_();
+        gainExperiencePoints(exp_to_next);
+        int new_level = stats_pack_.getCached_current_level_();
+        if (new_level - old_level != 1) {
+            System.err.println("Error in Entity.gainEnoughExperienceTolevelUp()");
+            System.exit(-45);
+        }
+
     }
 
     public boolean hasEquippedPrimaryHand() {

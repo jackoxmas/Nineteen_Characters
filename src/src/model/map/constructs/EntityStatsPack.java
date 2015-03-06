@@ -203,23 +203,13 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
         final int old_div_100 = old_experience / NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL;
         
         final int new_div_100 = quantity_of_experience_ / NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL;
-        int num_level_ups = (Math.abs(new_div_100 - old_div_100));
-        while (num_level_ups > 0) {
+        int num_level_ups_counter = (Math.abs(new_div_100 - old_div_100));
+        final int num_level_ups = num_level_ups_counter;
+        while (num_level_ups_counter > 0) {
             increaseCurrentLevelByOne();
-            --num_level_ups;
+            --num_level_ups_counter;
         }
         return num_level_ups;
-    }
-
-    public void increaseQuantityOfExperienceToNextLevel() {
-        int exp_to_next = NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL
-                - (quantity_of_experience_ % NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL);
-        int old_level = this.getCached_current_level_();
-        increaseQuantityOfExperienceBy(exp_to_next);
-        int new_level = this.getCached_current_level_();
-        if(new_level - old_level != 1) {
-            System.exit(-45);
-        }
     }
 
     public void increaseMovementLevelByOne() {

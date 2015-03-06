@@ -13,6 +13,7 @@ import src.model.map.constructs.Item;
 import src.model.map.constructs.OneHandedSword;
 import src.model.map.constructs.Sheild;
 import src.model.map.constructs.Terrain;
+import src.model.map.constructs.Villager;
 import src.model.map.Map;
 import src.io.view.Viewport;
 import src.model.map.MapUser_Interface;
@@ -73,6 +74,10 @@ public class RunGame {
         Item onehandedsword = new OneHandedSword("Excalibur", '|');
         Item twohandedsword = new TwoHandedSword("Two_hander", '|');
         Item sheild = new Sheild("Sheildy",'O');
+        
+        Villager villager =new Villager("Tom", 'V');
+        map_.addEntity(villager,0,5);
+        
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
         map_.addItem(teleport, 2, 4);
         map_.addItem(twohandedsword, 1, 1);

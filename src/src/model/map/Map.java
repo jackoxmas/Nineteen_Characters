@@ -339,8 +339,9 @@ public class Map implements MapUser_Interface {
     public IO_Bundle sendCommandToMap(String username, Enum command, int width_from_center, int height_from_center) {
         Avatar to_recieve_command = this.getAvatarByName(username);
         if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null) {
+            ArrayList<String> Strings_for_IO_Bundle = null;
             if (command != CompassEnum.STANDING_STILL) {
-                int error_code = to_recieve_command.acceptKeyCommand(command);
+                Strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command);
             }
             char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
                     to_recieve_command.getMapRelation().getMyYCoordinate(),

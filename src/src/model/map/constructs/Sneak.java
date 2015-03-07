@@ -89,7 +89,7 @@ public final class Sneak extends Occupation {
                 // Case that you have enough mana:
                 if (has_run_out_of_mana == 0) {
                     for (int num_attacks = 0; num_attacks <= super.getSkill_4_(); ++num_attacks) {
-                        getEntity().getMapRelation().sendAttack();
+                        getEntity().getMapRelation().sendAttackInFacingDirection();
                     }
                 } else {
                     // Not enough mana to case spell. Do nothing.

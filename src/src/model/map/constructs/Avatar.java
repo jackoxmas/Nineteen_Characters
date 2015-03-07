@@ -95,8 +95,10 @@ public final class Avatar extends Entity {
         ArrayList<String> options = new ArrayList<String>();
         if (what_you_just_said_to_me == "Hello") {
             options.add("Goodbye");
+            return options;
+        } else {
+            return endConversation();
         }
-        return options;
     }
 
     public ArrayList<String> getListOfItemsYouCanUseOnMe() {
@@ -485,7 +487,7 @@ public final class Avatar extends Entity {
         if (attacker == null) {
             return -1;
         }
-        // return this.getMapRelation().sendAttack(attacker);
+        // return this.getMapRelation().sendAttackInFacingDirection(attacker);
         return 0;
     }
 

@@ -44,6 +44,11 @@ abstract public class Entity extends DrawableThing {
     public abstract ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me);
 
     public abstract ArrayList<String> getListOfItemsYouCanUseOnMe();
+    
+    public ArrayList<String> endConversation() {
+        ArrayList<String> silence = new ArrayList<>();
+        return silence;
+    }
 
     public int getExperienceBetweenLevels() {
         if (stats_pack_ != null) {
@@ -346,6 +351,22 @@ abstract public class Entity extends DrawableThing {
             return inventory_.remove(inventory_.size() - 1);
         } else {
             return null;
+        }
+    }
+
+    /**
+     * Sends an attack to an entity.
+     *
+     * @author John-Michael Reed
+     * @param target - entity to hit
+     * @return -1 if target is null, 0 if success
+     */
+    public int sendAttack(Entity target_entity) {
+        if (target_entity == null) {
+            return -1;
+        } else {
+            target_entity.receiveAttack(3 + this.getStatsPack().getOffensive_rating_(), this);
+            return 0;
         }
     }
 

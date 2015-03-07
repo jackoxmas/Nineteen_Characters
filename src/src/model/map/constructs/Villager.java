@@ -32,8 +32,10 @@ public class Villager extends Entity {
         ArrayList<String> options = new ArrayList<String>();
         if (what_you_just_said_to_me == "Hello") {
             options.add("Goodbye");
+            return options;
+        } else {
+            return endConversation();
         }
-        return options;
     }
 
     public ArrayList<String> getListOfItemsYouCanUseOnMe() {

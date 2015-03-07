@@ -121,7 +121,7 @@ public final class Smasher extends Occupation {
                 // Case that you have enough mana:
                 if (getEntity().getStatsPack().deductCurrentManaBy(cost) == 0) {
                     for (int num_attacks = 0; num_attacks <= super.getSkill_1_(); ++num_attacks) {
-                        getEntity().getMapRelation().sendAttack();
+                        getEntity().getMapRelation().sendAttackInFacingDirection();
                     }
                 } else {
                     // Not enough mana to case spell. You are out of mana.
@@ -133,7 +133,7 @@ public final class Smasher extends Occupation {
                 // Case that you have enough mana:
                 if (getEntity().getStatsPack().deductCurrentManaBy(cost) == 0) {
                     for (int num_attacks = 0; num_attacks <= super.getSkill_2_(); ++num_attacks) {
-                        getEntity().getMapRelation().sendAttack();
+                        getEntity().getMapRelation().sendAttackInFacingDirection();
                     }
                 } else {
                     // Not enough mana to case spell. You are out of mana.
@@ -145,7 +145,7 @@ public final class Smasher extends Occupation {
                 // Case that you have enough mana:
                 if (getEntity().getStatsPack().deductCurrentManaBy(cost) == 0) {
                     for (int num_attacks = 0; num_attacks <= super.getSkill_3_(); ++num_attacks) {
-                        getEntity().getMapRelation().sendAttack();
+                        getEntity().getMapRelation().sendAttackInFacingDirection();
                     }
                 } else {
                     // Not enough mana to case spell. You are out of mana.

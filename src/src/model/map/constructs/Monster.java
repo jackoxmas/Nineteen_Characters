@@ -29,8 +29,7 @@ public class Monster extends Entity {
     }
 
     public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me) {
-        ArrayList<String> options = new ArrayList<String>();
-        return options;
+        return endConversation();
     }
 
     public ArrayList<String> getListOfItemsYouCanUseOnMe() {
@@ -51,7 +50,7 @@ public class Monster extends Entity {
         if (attacker == null) {
             return -1;
         }
-        this.getMapRelation().sendAttack(attacker);
+        this.sendAttack(attacker);
         return 0;
     }
 }

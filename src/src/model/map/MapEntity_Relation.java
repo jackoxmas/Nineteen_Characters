@@ -294,28 +294,12 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     }
 
     /**
-     * Sends an attack to an entity.
-     *
-     * @author John-Michael Reed
-     * @param target - entity to hit
-     * @return -1 if target is null, 0 if success
-     */
-    public int sendAttack(Entity target_entity) {
-        if (target_entity == null) {
-            return -1;
-        } else {
-            target_entity.receiveAttack(3 + entity_.getStatsPack().getOffensive_rating_(), entity_);
-            return 0;
-        }
-    }
-
-    /**
      * Sends an attack in the direction the entity is facing.
      *
      * @author John-Michael Reed
      * @return -1 if tile is off the map, -2 if entity does not exist
      */
-    public int sendAttack() {
+    public int sendAttackInFacingDirection() {
         int error_code = 0;
         FacingDirection f = entity_.getFacingDirection();
         switch (f) {
@@ -368,7 +352,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      * @author John-Michael Reed
      * @return reply string
      */
-    public String sendGreeting() {
+    public String sendGreetingInFacingDirection() {
         int error_code = 0;
         String greeting = "hello";
         String reply = "";

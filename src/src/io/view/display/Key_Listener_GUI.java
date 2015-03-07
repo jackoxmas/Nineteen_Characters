@@ -26,8 +26,22 @@ import src.Function;
 class Key_Listener_GUI extends javax.swing.JFrame {
 	//These two arraylists hold the things to apply when input is received by either the map, or by the chatbox
 	
-	private ArrayList<Function<Void,Character>> game_inputHandlers_ = new ArrayList<Function<Void,Character>>();;
+	private ArrayList<Function<Void,Character>> game_inputHandlers_ = new ArrayList<Function<Void,Character>>();
 	private ArrayList<Function<Void,String>> chatbox_inputHandlers_ = new ArrayList<Function<Void,String>>();
+	/**
+	 *
+	 * @param in What to write to the equipped box
+	 */
+	public void takeInEquipped(String in){
+		equipment_jTextArea.setText(in);
+	}
+	/**
+	 * 
+	 * @param in What to write to the inventory box.
+	 */
+	public void takeInInventory(String in){
+		inventory_jTextArea.setText(in);
+	}
 	/**
 	 * Puts a string in the output box
 	 * @param message The string to display in a new line

@@ -186,6 +186,16 @@ public class Display {
 			}
 		}
     		EventQueue.invokeLater(new setDocumentRunnable(doc));
+    		//And lastly, take care of the inventory and equipped
+    		final String inventory = current_view_.getItemList();
+    		final String equipped = current_view_.getEquippedList();
+    		EventQueue.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					Key_Listener_GUI.getGUI().takeInEquipped(equipped);
+					Key_Listener_GUI.getGUI().takeInInventory(inventory);
+				}
+			});
     }
    
     /** 

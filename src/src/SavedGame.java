@@ -67,7 +67,7 @@ public class SavedGame {
             e_keymap.setAttribute("username", controller.getUserName());
 
             Element e_key;
-            for (Map.Entry<Character, Character> e : controller.getRemap().entrySet()) {
+            for (Map.Entry<Character, Enum> e : controller.getRemap().entrySet()) {
                 e_key = save.createElement("remap");
                 e_key.setAttribute("key", e.getKey().toString());
                 e_key.appendChild(save.createTextNode(e.getValue().toString()));

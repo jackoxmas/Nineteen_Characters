@@ -11,7 +11,10 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.HashMap;
 
+import src.CharactarCreationEnum;
+import src.CompassEnum;
 import src.Function;
+import src.InteractEnum;
 import src.model.map.MapUser_Interface;
 import src.io.view.AvatarCreationView;
 import src.io.view.MapView;
@@ -25,56 +28,57 @@ import src.io.view.display.Display;
 public final class UserController implements Function<Void, Character>
 {
 	private class KeyRemapper{
-		private char remapTrigger_ = '~';
-		private HashMap<Character, Character> map_ = new HashMap<Character, Character>();
-		private boolean rebindMode_ = false;
-		private char rebindA_ = nullChar_;
-
-        /**
-         * Gets a copy of the key remapping
-         * @return A HashMap copy of the key remapping
-         * @author Alex Stewart
-         */
-        public HashMap<Character, Character> getMap() { return map_; }
-
-        /**
-         * Validates and sets the key remapping, if successful; overwrites the entire remapping
-         * <p>ie. it does not mix the maps</p>
-         * @param newMap A new key remapping to be applied
-         * @auhtor Alex Stewart
-         */
-        public void setMap(HashMap<Character, Character> newMap) {
-            // validate entries in the map
-            if (newMap == null) return;
-            // Add code here if we want to reject some characters
-            map_ = newMap;
-        }
-
-		public char remapInput(char c){
-			if(rebindMode_){
-				if(rebindA_ == nullChar_){rebindA_ = c;}
-				else{
-					map_.put(c, rebindA_);//The value at A is now bound to C.
-					//Also, it would be worth it to add a textoutput showing remappings. For now, println
-					System.out.println(c +" was remapped to original value for " +rebindA_);
-					rebindA_ = nullChar_;
-					rebindMode_ = false; //Reset it all.
-				}
-			return stillChar_;//In this case, we want to stand still while the remapping occurs.
-			}
-			else{
-				Character value = map_.get(c);
-				if(value != null){c = value;}
-			}
-			if(c == remapTrigger_){rebindMode_ = true;}
-			return c;
+		private HashMap<Character,Enum> remap_ = new HashMap<Character,Enum>();
+		public KeyRemapper(){
+			initBindings();
+		}
+		private void initBindings(){
+			//Character Creation
+			remap_.put('Z',CharactarCreationEnum.SMASHER);
+			remap_.put('X',CharactarCreationEnum.SUMMONER);
+			remap_.put('C',CharactarCreationEnum.SNEAKER);
+			//Directions NUMPAD
+			remap_.put('1',CompassEnum.SOUTH_WEST);
+			remap_.put('2',CompassEnum.SOUTH);
+			remap_.put('3',CompassEnum.SOUTH_EAST);
+			remap_.put('4',CompassEnum.WEST);
+			remap_.put('5',CompassEnum.STANDING_STILL);
+			remap_.put('6',CompassEnum.EAST);
+			remap_.put('7',CompassEnum.NORTH_WEST);
+			remap_.put('8',CompassEnum.NORTH);
+			remap_.put('9',CompassEnum.NORTH_EAST);
+			//Directions Keyboard
+			remap_.put('z',CompassEnum.SOUTH_WEST);
+			remap_.put('x',CompassEnum.SOUTH);
+			remap_.put('c',CompassEnum.SOUTH_EAST);
+			remap_.put('a',CompassEnum.WEST);
+			remap_.put('s',CompassEnum.STANDING_STILL);
+			remap_.put('d',CompassEnum.EAST);
+			remap_.put('q',CompassEnum.NORTH_WEST);
+			remap_.put('w',CompassEnum.NORTH);
+			remap_.put('e',CompassEnum.NORTH_EAST);
+			//Interact up bindings.
+			remap_.put('p',InteractEnum.PICK_UP);
+			remap_.put('D', InteractEnum.DROP);
+			remap_.put('E',InteractEnum.EQUIP);
+			remap_.put('U', InteractEnum.UNEQUIP);
+			remap_.put('i', InteractEnum.TOGGLE_VIEW);
+		}
+		public void setMap(HashMap<Character, Enum> remap) {
+			remap_ = remap;
+		}
+		public HashMap<Character, Enum> getMap() {
+			return remap_;
+		}
+		public Enum mapInput(char input){
+			return remap_.get(input);
 		}
 	}
 
     public UserController(MapUser_Interface mui, String uName) {
         MapUserAble_ = mui;
         userName_ = uName;
-        setView(nullChar_);
+        setView(null);
     	Display.getDisplay().addGameInputerHandler(this);
     	Display.getDisplay().setView(currentView_);
         Display.getDisplay().printView();
@@ -90,30 +94,33 @@ public final class UserController implements Function<Void, Character>
     
     //Handles the view switching, uses the  instanceof operator in a slightly evil way, 
     //ideally we should look into refactoring this to not
-    private void setView(char c){
+    private void setView(Enum input){
     	boolean taken = false;
+    	if(input == null){return;}
     	if(currentView_ instanceof AvatarCreationView){
-    		if(c == 'Z' || c == 'C' || c == 'X' || c == 'V'){
-    			currentView_ = new MapView(); 
+    		for(Enum e : CharactarCreationEnum.values()){
+    			if(e.equals(input)){
+    				currentView_ = new MapView();
+    			}
     		}
     	}	
     	if(currentView_ instanceof MapView){
-    		if(c == 'i'){currentView_ = new StatsView(userName_); taken = true;}
+    		if(InteractEnum.TOGGLE_VIEW.equals(input)){currentView_ = new StatsView(userName_); taken = true;}
     	}
     	else if(currentView_ instanceof StatsView){
-    		if(c == 'i'){currentView_ = new MapView(); taken = true;}
+    		if(InteractEnum.TOGGLE_VIEW.equals(input)){currentView_ = new MapView(); taken = true;}
     	}
     	if(!taken){
-    	currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, c, currentView_.getWidth()/2,currentView_.getHeight()/2));
+    	currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, input, currentView_.getWidth()/2,currentView_.getHeight()/2));
     	}
     	else{
-    		currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, stillChar_, currentView_.getWidth()/2,currentView_.getHeight()/2));
+    		currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, CompassEnum.STANDING_STILL, currentView_.getWidth()/2,currentView_.getHeight()/2));
     		//I need to get this info without sending a command, sending ' ' is a hack for now.
     	}
     }
     private void takeTurn(char foo) {
-    	char remapped = remap_.remapInput(foo);
-    	setView(remapped);
+    	Enum input = remap_.mapInput(foo);
+    	setView(input);
     	//my_avatar_.getInput((char)input);
 		//my_avatar_.getMapRelation().getSimpleAngle();//Example of simpleangle
 		//my_avatar_.getMapRelation().getAngle();//Example of how to use getAngle
@@ -135,7 +142,7 @@ public final class UserController implements Function<Void, Character>
      * @return A HashMap with the remapped key values in it
      * @author Alex Stewart
      */
-    public HashMap<Character, Character> getRemap() {
+    public HashMap<Character, Enum> getRemap() {
         if (remap_ == null) return null;
         return remap_.getMap();
     }
@@ -145,7 +152,7 @@ public final class UserController implements Function<Void, Character>
      * @param remap The new key remapping to be applied
      * @author Alex Stewart
      */
-    public void setRemap(HashMap<Character, Character> remap) {
+    public void setRemap(HashMap<Character, Enum> remap) {
         if (remap_ == null) remap_ = new KeyRemapper();
         remap_.setMap(remap);
     }

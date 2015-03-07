@@ -50,7 +50,7 @@ abstract public class Entity extends DrawableThing {
         return silence;
     }
     
-    public String saySomethingTo(Entity target, String words) {
+    public ArrayList<String> saySomethingTo(Entity target, String words) {
         return target.reply(words, this);
     }
 
@@ -506,18 +506,18 @@ abstract public class Entity extends DrawableThing {
      * @param speaker - the person who I am talking to
      * @return - what I said back
      */
-    public String reply(String recieved_text, Entity speaker) {
-        String reply = "";
+    public ArrayList<String> reply(String recieved_text, Entity speaker) {
+        ArrayList<String> reply = new ArrayList<>();
         if (recieved_text.equalsIgnoreCase("Hello")) {
-            reply = "Goodbye";
+            reply.add("Goodbye");
             return reply;
         } else if (recieved_text.equalsIgnoreCase("Goodbye")) {
-            reply = "";
+            reply.add("");
             return reply;
         } else if (recieved_text.equalsIgnoreCase("")) {
-            return "";
+            return reply;
         } else {
-            return "";
+            return reply;
         }
     }
 

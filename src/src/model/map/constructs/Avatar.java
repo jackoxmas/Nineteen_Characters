@@ -11,6 +11,7 @@ import java.util.Random;
 
 import src.CompassEnum;
 import src.CharacterCreationEnum;
+import src.ConverseEnum;
 import src.FacingDirection;
 import src.InteractEnum;
 import src.RunGame;
@@ -295,6 +296,7 @@ public final class Avatar extends Entity {
      * Accepts a key command from the map
      *
      * @param command
+     * @param optional_text - either the last thing that was said to you or the thing you are about to say.
      * @return ArrayList of strings for IO_Bundle or null if nothing to display
      */
     public ArrayList<String> acceptKeyCommand(Enum command, String optional_text) {
@@ -438,6 +440,24 @@ public final class Avatar extends Entity {
                     case SPEND_SKILLPOINT_ON_SKILL_4:
                         this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_4);
                         return null;
+                }
+            }
+        }
+        for (ConverseEnum action : ConverseEnum.values()) {
+            Entity target = this.getMapRelation().getEntityInFacingDirection();
+            if (target != null) {
+                if (action.equals(command)) {
+                    switch (action) {
+                        case GET_INTERACTION_OPTIONS:
+                            return target.getInteractionOptionStrings();
+                        case GET_CONVERSATION_STARTERS:
+                            return target.getConversationStarterStrings();
+                        case GET_CONVERSATION_CONTINUATION_OPTIONS:
+                            return target.getConversationContinuationStrings(optional_text);
+                            // optional text is what the Entity said to you last.
+                        case TALK_USING_STRING:
+                            return target.reply(optional_text, target);
+                    }
                 }
             }
         }

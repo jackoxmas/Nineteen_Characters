@@ -35,16 +35,13 @@ public class IO_Bundle {
         observation_ = ob;
         primary_ = pri;
         second_ = sec;
-        option_string_1_ = null;
-        option_string_2_ = null;
-        option_string_3_ = null;
-        option_string_4_ = null;
+        strings_for_communication_ = null;
     }
 
     public IO_Bundle(char[][] v, Color[][] c, ArrayList<PickupableItem> i,
             EntityStatsPack s, Occupation o, int n, int bi, int ba, int ob,
             PrimaryHandHoldable pri, SecondaryHandHoldable sec,
-            String s1, String s2, String s3, String s4
+            ArrayList<String> sfc
     ) {
         view_for_display_ = v;
         color_for_display_ = c;
@@ -57,10 +54,7 @@ public class IO_Bundle {
         observation_ = ob;
         primary_ = pri;
         second_ = sec;
-        option_string_1_ = s1;
-        option_string_2_ = s2;
-        option_string_3_ = s3;
-        option_string_4_ = s4;
+        strings_for_communication_ = sfc;
     }
     public final char[][] view_for_display_;
     public final Color[][] color_for_display_;
@@ -73,10 +67,7 @@ public class IO_Bundle {
     public final int bind_wounds_;
     public final int bargain_;
     public final int observation_;
-    public final String option_string_1_;
-    public final String option_string_2_;
-    public final String option_string_3_;
-    public final String option_string_4_;
+    public final ArrayList<String> strings_for_communication_;
 
     public EntityStatsPack getStatsPack() {
         return stats_for_display_;

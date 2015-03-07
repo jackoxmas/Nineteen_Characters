@@ -12,8 +12,6 @@ import src.FacingDirection;
 import src.Key_Commands;
 import src.RunGame;
 import src.SkillEnum;
-import src.io.view.MapView;
-import src.io.view.StatsView;
 import src.io.view.display.Display;
 import src.model.map.MapAvatar_Relation;
 
@@ -25,8 +23,6 @@ import src.model.map.MapAvatar_Relation;
 public final class Avatar extends Entity {
 
 	// map_relationship_ is used in place of a map_referance_
-	private MapView map_view_;
-	private StatsView stats_view_;
 
 	private int num_skillpoints_ = 1;
 

@@ -1,24 +1,23 @@
 package src.model.map;
 
-import org.w3c.dom.Node;
-
-import src.CompassEnum;
-import src.IO_Bundle;
+import java.awt.Color;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
-import src.RunGame;
-import src.model.map.constructs.*;
-import src.model.*;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
-import java.awt.Color;
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import src.IO_Bundle;
+import src.Key_Commands;
+import src.RunGame;
+import src.model.map.constructs.Avatar;
+import src.model.map.constructs.DrawableThingStatsPack;
+import src.model.map.constructs.Entity;
+import src.model.map.constructs.EntityStatsPack;
+import src.model.map.constructs.Item;
+import src.model.map.constructs.PickupableItem;
+import src.model.map.constructs.Terrain;
 
 /**
  *
@@ -329,17 +328,17 @@ public class Map implements MapUser_Interface {
      * @param command - signal to send to avatar
      * @return IO_Bundle of stuff that can be displayed.
      */
-    public IO_Bundle sendCommandToMap(String username, Enum command) {
+    public IO_Bundle sendCommandToMap(String username, Key_Commands command) {
         final int default_width_from_center = 10;
         final int default_height_from_center = 20;
         return sendCommandToMap(username, command, default_width_from_center, default_height_from_center);
     }
 
-    public IO_Bundle sendCommandToMap(String username, Enum command, int width_from_center, int height_from_center) {
+    public IO_Bundle sendCommandToMap(String username, Key_Commands command, int width_from_center, int height_from_center) {
         Avatar to_recieve_command = this.getAvatarByName(username);
         if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null) {
             ArrayList<String> Strings_for_IO_Bundle = null;
-            if (command != CompassEnum.STANDING_STILL) {
+            if (command != Key_Commands.STANDING_STILL) {
                 Strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, null);
             }
             char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
@@ -388,11 +387,11 @@ public class Map implements MapUser_Interface {
      * @param text
      * @return
      */
-    public IO_Bundle sendCommandToMapWithText(String username, Enum command, int width_from_center, int height_from_center, String text) {
+    public IO_Bundle sendCommandToMapWithText(String username, Key_Commands command, int width_from_center, int height_from_center, String text) {
         Avatar to_recieve_command = this.getAvatarByName(username);
         if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null) {
             ArrayList<String> Strings_for_IO_Bundle = null;
-            if (command != src.ConverseEnum.GET_CONVERSATION_CONTINUATION_OPTIONS && command != src.ConverseEnum.TALK_USING_STRING) {
+            if (command != Key_Commands.GET_CONVERSATION_CONTINUATION_OPTIONS && command != Key_Commands.TALK_USING_STRING) {
                 System.err.println("This function's extra string parameter does not work with the provided enum");
                 System.exit(-6);
             } else {

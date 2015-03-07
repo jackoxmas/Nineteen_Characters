@@ -15,3 +15,4 @@ public enum SkillEnum {
 }
 
 
+//Note that this isn't to be used for input!'

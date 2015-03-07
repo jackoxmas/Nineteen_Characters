@@ -6,13 +6,10 @@
 package src.model.map.constructs;
 
 import java.util.ArrayList;
-import src.FacingDirection;
 
-import src.model.map.MapEntity_Relation;
-import src.io.view.display.Display;
 import src.FacingDirection;
-import src.model.map.constructs.PrimaryHandHoldable;
-import src.model.map.constructs.SecondaryHandHoldable;
+import src.io.view.display.Display;
+import src.model.map.MapEntity_Relation;
 
 /**
  * Entity inherits from DrawableThing. Entity is a DrawableThing that can move

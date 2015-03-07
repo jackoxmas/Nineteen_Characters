@@ -9,10 +9,6 @@ package src.io.view;
 import java.util.ArrayList;
 
 import src.IO_Bundle;
-import src.model.map.constructs.Avatar;
-import src.model.map.constructs.Smasher;
-import src.model.map.constructs.Sneak;
-import src.model.map.constructs.Summoner;
 
 /**
  * Players see the AvatarCreationView when they chose their occupation.

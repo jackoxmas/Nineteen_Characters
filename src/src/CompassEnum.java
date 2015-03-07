@@ -1,7 +1,0 @@
-package src;
-
-
-public enum CompassEnum {
-		WEST, NORTH_WEST, NORTH, NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, STANDING_STILL
-}
-

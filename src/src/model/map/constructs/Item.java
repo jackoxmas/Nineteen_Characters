@@ -6,7 +6,6 @@
 package src.model.map.constructs;
 
 import src.model.map.MapItem_Relation;
-import src.io.view.display.Display;
 
 /**
  * Class item represents a stackable entity that cannot move itself.

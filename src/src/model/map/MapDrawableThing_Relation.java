@@ -5,16 +5,11 @@
  */
 package src.model.map;
 
-import src.Effect;
-import src.FacingDirection;
-import src.model.map.constructs.Entity;
-import src.model.map.constructs.EntityStatsPack;
-import src.model.map.constructs.Item;
-import src.io.view.display.Display;
-
 import java.awt.Color;
-import java.math.*;
-import src.model.map.constructs.DrawableThing;
+
+import src.Effect;
+import src.model.map.constructs.Entity;
+import src.model.map.constructs.Item;
 
 /**
  * This should be abstract because you can't make drawable things

@@ -1,8 +1,5 @@
 package src.io.controller;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 import src.Function;
 import src.io.view.display.Display;
 /**

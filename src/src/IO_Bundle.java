@@ -7,9 +7,10 @@ package src;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import src.model.map.constructs.PickupableItem;
+
 import src.model.map.constructs.EntityStatsPack;
 import src.model.map.constructs.Occupation;
+import src.model.map.constructs.PickupableItem;
 import src.model.map.constructs.PrimaryHandHoldable;
 import src.model.map.constructs.SecondaryHandHoldable;
 

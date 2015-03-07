@@ -7,6 +7,7 @@ package src.model.map.constructs;
 
 import src.SkillEnum;
 
+
 /**
  * Smasher Occupation, Strength +1.
  */

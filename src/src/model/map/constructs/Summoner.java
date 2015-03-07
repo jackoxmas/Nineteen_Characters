@@ -7,6 +7,7 @@ package src.model.map.constructs;
 
 import src.SkillEnum;
 
+
 /**
  * Summoner Occupation, intellect +1.
  */

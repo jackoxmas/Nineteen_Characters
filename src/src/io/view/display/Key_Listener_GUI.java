@@ -2,17 +2,10 @@ package src.io.view.display;
 
 import java.awt.Font;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseWheelListener;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.text.StyledDocument;
 
 import src.Function;

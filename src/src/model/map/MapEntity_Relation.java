@@ -5,14 +5,13 @@
  */
 package src.model.map;
 
+import java.awt.Color;
+
 import src.Effect;
 import src.FacingDirection;
+import src.io.view.display.Display;
 import src.model.map.constructs.Entity;
 import src.model.map.constructs.Item;
-import src.io.view.display.Display;
-
-import java.awt.Color;
-import java.util.regex.*;
 import src.model.map.constructs.PickupableItem;
 
 /**

@@ -1,6 +1,5 @@
 package src.model.map.constructs;
 
-import src.SkillEnum;
 
 /**
  * Stats Pack for an Entity. Inherits from DrawableThingStatsPack.

@@ -5,13 +5,9 @@
  */
 
 package src.io.view;
-import java.util.*;
+import java.util.ArrayList;
 
 import src.IO_Bundle;
-import src.model.map.constructs.Avatar;
-import src.model.map.constructs.Item;
-
-import java.lang.Character;
 import src.model.map.constructs.PickupableItem;
 /**
  * Players see the StatsView when they are checking their stats

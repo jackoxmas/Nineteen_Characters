@@ -6,8 +6,10 @@ package src;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import javax.xml.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -15,10 +17,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Element;
 import org.w3c.dom.Document;
-import org.w3c.dom.Attr;
-import src.model.map.constructs.Avatar;
+import org.w3c.dom.Element;
 
 /**
  * This class manages a saved game object. A saved game has a file path and 
@@ -67,7 +67,7 @@ public class SavedGame {
             e_keymap.setAttribute("username", controller.getUserName());
 
             Element e_key;
-            for (Map.Entry<Character, Enum> e : controller.getRemap().entrySet()) {
+            for (Map.Entry<Character, Key_Commands> e : controller.getRemap().entrySet()) {
                 e_key = save.createElement("remap");
                 e_key.setAttribute("key", e.getKey().toString());
                 e_key.appendChild(save.createTextNode(e.getValue().toString()));

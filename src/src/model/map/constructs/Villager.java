@@ -6,7 +6,6 @@
 package src.model.map.constructs;
 
 import java.util.ArrayList;
-import src.FacingDirection;
 
 /**
  *

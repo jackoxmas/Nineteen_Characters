@@ -6,6 +6,7 @@
 package src.model.map;
 
 import java.util.LinkedList;
+
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Entity;
 import src.model.map.constructs.Item;

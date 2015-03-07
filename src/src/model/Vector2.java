@@ -3,7 +3,6 @@
  */
 package src.model;
 
-import java.lang.Math.*;
 
 /**
  * Vector2 objects represent a 2 dimensional, mathematical, integer vector or -

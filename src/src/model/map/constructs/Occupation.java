@@ -7,6 +7,7 @@ package src.model.map.constructs;
 
 import src.SkillEnum;
 
+
 /**
  * Interface for Occupations (Smasher, Sneak, Summoner). Different Occupations
  * have different advantages.

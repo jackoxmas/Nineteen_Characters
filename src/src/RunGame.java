@@ -6,21 +6,20 @@ import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import src.model.map.constructs.Avatar;
 import src.io.controller.ChatBoxController;
 import src.io.controller.UserController;
+import src.model.map.Map;
+import src.model.map.MapUser_Interface;
+import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Item;
 import src.model.map.constructs.OneHandedSword;
-import src.model.map.constructs.Sheild;
-import src.model.map.constructs.Terrain;
-import src.model.map.constructs.Villager;
-import src.model.map.Map;
-import src.io.view.Viewport;
-import src.model.map.MapUser_Interface;
 import src.model.map.constructs.OneShotAreaEffectItem;
 import src.model.map.constructs.OneWayTeleportItem;
 import src.model.map.constructs.PermanentObstacleItem;
+import src.model.map.constructs.Sheild;
+import src.model.map.constructs.Terrain;
 import src.model.map.constructs.TwoHandedSword;
+import src.model.map.constructs.Villager;
 
 /**
  * Initializes, opens the program.
@@ -127,7 +126,7 @@ public class RunGame {
         System.out.println("y position of avatar: " + avatar_.getMapRelation().getMyYCoordinate());
 
         for (int i = 0; i < 20; ++i) {
-            ((MapUser_Interface) map_).sendCommandToMap("avatar", CompassEnum.SOUTH, 10, 20);
+            ((MapUser_Interface) map_).sendCommandToMap("avatar", Key_Commands.MOVE_DOWN, 10, 20);
         }
 
     }

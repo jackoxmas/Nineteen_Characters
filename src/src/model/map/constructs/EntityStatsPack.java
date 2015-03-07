@@ -261,15 +261,15 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
     }
 
     /**
-     *
+     * Sets health to max if increase produces more than max health
      * @param amount
-     * @return -1 if your health maxed out, 0 if you did not
+     * @return -1 if your health exceeded its max, 0 if you did not
      */
     public int increaseCurrentLifeBy(int amount) {
         if (amount < 0) {
             System.exit(-1);
         }
-        if (current_life_ + amount >= max_life_) {
+        if (current_life_ + amount > max_life_) {
             current_life_ = max_life_;
             return -1;
         } else {
@@ -279,15 +279,15 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
     }
 
     /**
-     *
+     * Sets mana to zero if decrease produces less than max mana
      * @param amount
-     * @return -1 if your mana ran out, 0 if it did not
+     * @return -1 if your mana became negative, 0 if it did not
      */
     public int deductCurrentManaBy(int amount) {
         if (amount < 0) {
             System.exit(-1);
         }
-        if (current_mana_ - amount <= 0) {
+        if (current_mana_ - amount < 0) {
             current_mana_ = 0;
             return -1;
         } else {
@@ -297,15 +297,15 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
     }
 
     /**
-     *
+     * Sets mana to maximum if increase produces more than max mana
      * @param amount
-     * @return -1 if your mana maxed out, 0 if it did not
+     * @return -1 if your mana exceeded its max, 0 if it did not
      */
     public int increaseCurrentManaBy(int amount) {
         if (amount < 0) {
             System.exit(-1);
         }
-        if (current_mana_ + amount >= max_mana_) {
+        if (current_mana_ + amount > max_mana_) {
             current_mana_ = max_mana_;
             return -1;
         } else {

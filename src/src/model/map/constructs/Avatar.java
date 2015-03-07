@@ -438,9 +438,9 @@ public final class Avatar extends Entity {
     public String toString() {
         String s = "Avatar name: " + name_;
 
-        s += "\n Inventory " + "(" + inventory_.size() + ")" + ":";
-        for (int i = 0; i < inventory_.size(); ++i) {
-            s += " " + inventory_.get(i).name_;
+        s += "\n Inventory " + "(" + getInventory().size() + ")" + ":";
+        for (int i = 0; i < getInventory().size(); ++i) {
+            s += " " + getInventory().get(i).name_;
         }
 
         s += "\n";

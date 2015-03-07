@@ -15,7 +15,10 @@ import src.SkillEnum;
  */
 public abstract class Occupation {
 
-    protected final Entity occupation_holder_;
+    private final Entity occupation_holder_;
+    protected Entity getEntity() {
+        return occupation_holder_;
+    }
 
     private Occupation() {
         occupation_holder_ = null;

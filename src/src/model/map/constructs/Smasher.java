@@ -106,10 +106,50 @@ public final class Smasher extends Occupation {
             return -99999; // F***ing impossible
         }
     }
+
     @Override
     public int performOccupationSkill(int number) {
+        final int cost = 1;
         if (number == 1) {
-            //...
+            // one-handed weapon
+            if (current_weapon == ActiveWeapon.ONE_HANDED_SWORD) {
+                // Case that you have enough mana:
+                if (getEntity().getStatsPack().deductCurrentManaBy(cost) == 0) {
+                    for (int num_attacks = 0; num_attacks <= super.getSkill_1_(); ++num_attacks) {
+                        getEntity().getMapRelation().sendAttack();
+                    }
+                } else {
+                    // Not enough mana to case spell. You are out of mana.
+                }
+            }
+        } else if (number == 2) {
+            if (current_weapon == ActiveWeapon.TWO_HANDED_SWORD) {
+                // Case that you have enough mana:
+                if (getEntity().getStatsPack().deductCurrentManaBy(cost) == 0) {
+                    for (int num_attacks = 0; num_attacks <= super.getSkill_2_(); ++num_attacks) {
+                        getEntity().getMapRelation().sendAttack();
+                    }
+                } else {
+                    // Not enough mana to case spell. You are out of mana.
+                }
+            }
+        } else if (number == 3) {
+            // brawling 
+            if (current_weapon == ActiveWeapon.FISTS) {
+                // Case that you have enough mana:
+                if (getEntity().getStatsPack().deductCurrentManaBy(cost) == 0) {
+                    for (int num_attacks = 0; num_attacks <= super.getSkill_3_(); ++num_attacks) {
+                        getEntity().getMapRelation().sendAttack();
+                    }
+                } else {
+                    // Not enough mana to case spell. You are out of mana.
+                }
+            }
+        } else if (number == 4) {
+            //Do nothing
+        } else {
+            System.err.println("Error in Smasher.performOccupationSkill()");
+            System.exit(-99);
         }
         return 0;
     }

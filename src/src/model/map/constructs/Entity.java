@@ -23,9 +23,11 @@ abstract public class Entity extends DrawableThing {
     private PrimaryHandHoldable primary_hand_ = null;
     private SecondaryHandHoldable secondary_hand_ = null;
     private FacingDirection direction_ = FacingDirection.UP;
-    protected ArrayList<PickupableItem> inventory_;
+    private ArrayList<PickupableItem> inventory_;
     private EntityStatsPack stats_pack_ = new EntityStatsPack(this);
-
+    public ArrayList<PickupableItem> getInventory() {
+        return this.inventory_;
+    }
     /**
      * Entity Constructor
      *
@@ -322,15 +324,6 @@ abstract public class Entity extends DrawableThing {
         } else {
             return null;
         }
-    }
-
-    /**
-     * Gets the Inventory of Entity.
-     *
-     * @return ArrayList of Items that are in the Entities Inventory
-     */
-    public ArrayList<PickupableItem> getInventory() {
-        return inventory_;
     }
 
     /**

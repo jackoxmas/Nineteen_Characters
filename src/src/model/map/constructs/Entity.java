@@ -49,6 +49,10 @@ abstract public class Entity extends DrawableThing {
         ArrayList<String> silence = new ArrayList<>();
         return silence;
     }
+    
+    public String saySomethingTo(Entity target, String words) {
+        return target.reply(words, this);
+    }
 
     public int getExperienceBetweenLevels() {
         if (stats_pack_ != null) {
@@ -496,16 +500,21 @@ abstract public class Entity extends DrawableThing {
         this.stats_pack_.increaseCurrentLifeBy(strength);
     }
 
-    // reply(greeting, this);
+    /**
+     * @author John-Michael Reed
+     * @param recieved_text - what was said to me
+     * @param speaker - the person who I am talking to
+     * @return - what I said back
+     */
     public String reply(String recieved_text, Entity speaker) {
         String reply = "";
-        if (recieved_text == "hello") {
-            reply = "goodbye";
-            return speaker.reply(reply, this);
-        } else if (recieved_text == "goodbye") {
+        if (recieved_text.equalsIgnoreCase("Hello")) {
+            reply = "Goodbye";
+            return reply;
+        } else if (recieved_text.equalsIgnoreCase("Goodbye")) {
             reply = "";
-            return speaker.reply(reply, this);
-        } else if (recieved_text == "") {
+            return reply;
+        } else if (recieved_text.equalsIgnoreCase("")) {
             return "";
         } else {
             return "";

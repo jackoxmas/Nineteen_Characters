@@ -6,7 +6,7 @@
 package src;
 
 /**
- * The map is obligated to accept these 38 key commands.
+ * The map is obligated to accept these 39 key commands.
  * @author JohnReedLOL
  */
 public enum Key_Commands {
@@ -19,7 +19,7 @@ public enum Key_Commands {
     
     BECOME_SMASHER, BECOME_SUMMONER, BECOME_SNEAK, BECOME_UNEMPLOYED,
     
-    GET_INTERACTION_OPTIONS, GET_CONVERSATION_STARTERS, TALK_USING_STRING,
+    GET_INTERACTION_OPTIONS, GET_CONVERSATION_STARTERS, GET_CONVERSATION_CONTINUATION_OPTIONS, TALK_USING_STRING,
     // IO_Bundle will return 4 strings
     // Must provide additional string parameter for talk.
     

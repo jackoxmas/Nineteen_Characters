@@ -245,6 +245,8 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
      */
     public int deductCurrentLifeBy(int amount) {
         if (amount < 0) {
+            System.err.println("Error in EntityStatsPack.deductCurrentLifeBy(int amount).");
+            System.err.println("You are not allowed to do negative damage.");
             System.exit(-1);
         }
         if (current_life_ - amount <= 0) {

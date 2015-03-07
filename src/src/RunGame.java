@@ -19,6 +19,7 @@ import src.io.view.Viewport;
 import src.model.map.MapUser_Interface;
 import src.model.map.constructs.OneShotAreaEffectItem;
 import src.model.map.constructs.OneWayTeleportItem;
+import src.model.map.constructs.PermanentObstacleItem;
 import src.model.map.constructs.TwoHandedSword;
 
 /**
@@ -108,9 +109,12 @@ public class RunGame {
             }
         }
 
-        Terrain obstacle = new Terrain("boulder", '■', true, false);
-        map_.addTerrain(obstacle, 2, 2);
+        //Terrain obstacle = new Terrain("boulder", '■', true, false);
+        //map_.addTerrain(obstacle, 2, 2);
 
+        PermanentObstacleItem obstacle = new PermanentObstacleItem("boulder", '■');
+        map_.addItem(obstacle, 2, 2);
+        
         avatar_.getMapRelation().moveInDirection(18, 0);
         avatar_.getMapRelation().moveInDirection(0, 12);
         avatar_.getMapRelation().areaEffectFunctor.effectAreaWithinLine(5, 20, Effect.HEAL);

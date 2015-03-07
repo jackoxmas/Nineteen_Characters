@@ -449,7 +449,11 @@ abstract public class Entity extends DrawableThing {
      * @param attacker - who the attack is coming from
      */
     public void receiveAttack(int damage, Entity attacker) {
-        int did_I_run_out_of_health = stats_pack_.deductCurrentLifeBy(damage - getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_());
+        int amount_of_damage = damage - getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_();
+        if(amount_of_damage < 0) {
+            amount_of_damage = 0;
+        }
+        int did_I_run_out_of_health = stats_pack_.deductCurrentLifeBy(amount_of_damage);
         if (did_I_run_out_of_health != 0) {
             getMapRelation().respawn();
             if (stats_pack_.getLives_left_() < 0) {
@@ -458,6 +462,8 @@ abstract public class Entity extends DrawableThing {
         } else {
             if (attacker != null) {
                 this.replyToAttackFrom(attacker);
+            } else {
+                // This attack is from a null source
             }
         }
     }

@@ -6,7 +6,7 @@
 package src;
 
 /**
- * The map is obligated to accept these 30 key commands.
+ * The map is obligated to accept these 31 key commands.
  * @author JohnReedLOL
  */
 public enum Key_Commands {
@@ -23,7 +23,9 @@ public enum Key_Commands {
     // IO_Bundle will return 4 strings
     // Must provide additional string parameter for talk.
     
-    BIND_WOUNDS, BARGAIN_AND_BARTER, OBSERVE, 
+    BIND_WOUNDS, BARGAIN_AND_BARTER, OBSERVE,
+    // BARGAIN_AND_BARTER returns a list of item names and prices as strings
+    BUY_ITEM_BY_NAME, // also accepts a string
     
     USE_SKILL_1, USE_SKILL_2, USE_SKILL_3, USE_SKILL_4,
     

@@ -27,6 +27,9 @@ public class enumHandler {
                 try {
                     SpendSkillpointEnum e = SpendSkillpointEnum.valueOf(in);
                 }catch(IllegalArgumentException e){}
+                try {
+                    ConverseEnum e= ConverseEnum.valueOf(in);
+                }catch(IllegalArgumentException e) {}
 		return null;//Didn't find any matching enums
 	}
 	public static String getAllEnums(){
@@ -45,6 +48,9 @@ public class enumHandler {
 		}
                 for(SpendSkillpointEnum e : SpendSkillpointEnum.values()){
                         enums+=e.toString()+", ";
+                }
+                for(ConverseEnum e : ConverseEnum.values()) {
+                    enums+=e.toString()+", ";
                 }
 	return enums;
 	}

@@ -25,7 +25,7 @@ import java.util.*;
  * @author John-Michael Reed
  */
 public class Map implements MapUser_Interface {
-
+    
     public static final int MAX_NUMBER_OF_WORLDS = 1;
     private static int number_of_worlds_generated_ = 0;
 
@@ -53,11 +53,11 @@ public class Map implements MapUser_Interface {
     public Entity getEntityByName(String name) {
         return this.entity_list_.get(name);
     }
-
+    
     public LinkedList<Item> getItemsList() {
         return items_list_;
     }
-
+    
     public MapTile[][] getMapGrid() {
         return map_grid_;
     }
@@ -92,7 +92,7 @@ public class Map implements MapUser_Interface {
             return tile_at_x_y.getTopCharacter();
         }
     }
-
+    
     public Color getColorRepresentation(int x, int y) {
         MapTile tile_at_x_y = this.getTile(x, y);
         if (tile_at_x_y == null) {
@@ -113,7 +113,7 @@ public class Map implements MapUser_Interface {
         /*
          Exception e = new Exception("Do not use this constructor");
          throw e;*/
-
+        
     }
 
     /**
@@ -131,13 +131,13 @@ public class Map implements MapUser_Interface {
             System.err.println("Please don't make more than "
                     + MAX_NUMBER_OF_WORLDS + " worlds.");
             System.exit(-4);
-
+            
         } else {
             ++number_of_worlds_generated_;
-
+            
             height_ = y;
             width_ = x;
-
+            
             map_grid_ = new MapTile[height_][width_];
             for (int i = 0; i < height_; ++i) {
                 for (int j = 0; j < width_; ++j) {
@@ -260,7 +260,6 @@ public class Map implements MapUser_Interface {
         }
         return view;
     }
-
     
     public Color[][] makeColors(int x_center, int y_center, int width_from_center, int height_from_center) {
         Color[][] colors = new Color[1 + 2 * height_from_center][1 + 2 * width_from_center];
@@ -335,7 +334,7 @@ public class Map implements MapUser_Interface {
         final int default_height_from_center = 20;
         return sendCommandToMap(username, command, default_width_from_center, default_height_from_center);
     }
-
+    
     public IO_Bundle sendCommandToMap(String username, Enum command, int width_from_center, int height_from_center) {
         Avatar to_recieve_command = this.getAvatarByName(username);
         if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null) {
@@ -377,22 +376,27 @@ public class Map implements MapUser_Interface {
             return null;
         }
     }
+
     /**
-     * Use this when the command the map is receiving requires a string parameter
+     * Use this when the command the map is receiving requires a string
+     * parameter
+     *
      * @param username
      * @param command
      * @param width_from_center
      * @param height_from_center
      * @param text
-     * @return 
+     * @return
      */
-        public IO_Bundle sendCommandToMapWithText(String username, Enum command, int width_from_center, int height_from_center, String text) {
+    public IO_Bundle sendCommandToMapWithText(String username, Enum command, int width_from_center, int height_from_center, String text) {
         Avatar to_recieve_command = this.getAvatarByName(username);
         if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null) {
             ArrayList<String> Strings_for_IO_Bundle = null;
-            if (command != CompassEnum.STANDING_STILL) {
-                Strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, null);
+            if (command != src.ConverseEnum.GET_CONVERSATION_CONTINUATION_OPTIONS && command != src.ConverseEnum.TALK_USING_STRING) {
+                System.err.println("This function's extra string parameter does not work with the provided enum");
+                System.exit(-6);
             }
+            Strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, null);
             char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
                     to_recieve_command.getMapRelation().getMyYCoordinate(),
                     width_from_center, height_from_center);
@@ -447,7 +451,7 @@ public class Map implements MapUser_Interface {
         Element e_map_grid = doc.createElement("map_grid");
         e_map_grid.setAttribute("width", Integer.toString(this.width_));
         e_map_grid.setAttribute("height", Integer.toString(this.height_));
-
+        
         Element e_l;
         for (int j = 0; j < this.height_; j++) {
             for (int i = 0; i < this.width_; i++) {
@@ -477,7 +481,7 @@ public class Map implements MapUser_Interface {
                     }
                     e_l.appendChild(e_itemlist);
                 }
-
+                
                 e_map_grid.appendChild(e_l);
             }
         }
@@ -485,7 +489,7 @@ public class Map implements MapUser_Interface {
         // MAP - APPEND
         e_map.appendChild(e_time);
         e_map.appendChild(e_map_grid);
-
+        
         return 0; // Return success
     }
 
@@ -502,7 +506,7 @@ public class Map implements MapUser_Interface {
 
         // Name
         e_entity.setAttribute("name", entity.getName());
-
+        
         if (this.avatar_list_.containsValue(entity)) {
             e_entity.appendChild(doc.createElement("b_avatar"));
         }
@@ -521,19 +525,19 @@ public class Map implements MapUser_Interface {
         Element tmp_eInvItem; // temp inventory item
         for (int i = 0; i < entity.getInventory().size(); i++) {
             tmp_eInvItem = xml_writeItem(doc, e_itemList, tmp_inv.get(i));
-
+            
             if (tmp_inv.get(i) == equipped1) {
                 tmp_eInvItem.appendChild(doc.createElement("b_equipped"));
             }
             e_itemList.appendChild(tmp_eInvItem);
         }
         e_entity.appendChild(e_itemList);
-
+        
         xml_writeStatsDrawable(doc, e_entity, (DrawableThingStatsPack) entity.getStatsPack());
         xml_writeStatsEntity(doc, e_entity, entity.getStatsPack());
-
+        
         parent.appendChild(e_entity);
-
+        
         return e_entity;
     }
 
@@ -562,53 +566,53 @@ public class Map implements MapUser_Interface {
         if (item.goesInInventory()) {
             e_item.appendChild(doc.createElement("b_inventory-able"));
         }
-
+        
         xml_writeStatsDrawable(doc, e_item, item.getStatsPack());
-
+        
         parent.appendChild(e_item);
         return e_item;
     }
-
+    
     private Element xml_writeStatsDrawable(Document doc, Element parent, DrawableThingStatsPack stats) {
         if (stats == null) {
             RunGame.errOut("xml_writeStatsDrawable: null statspack");
             return null;
         }
-
+        
         Element e_stats = doc.createElement("stats_drawable");
         Element trans_eStat;
-
+        
         if (stats.getArmor_rating_() != 0) {
             trans_eStat = doc.createElement("armor_rating");
             trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getArmor_rating_())));
             e_stats.appendChild(trans_eStat);
         }
         /*
-        if (stats.getDefensive_rating_() != 0) {
-            trans_eStat = doc.createElement("def_rating");
-            trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getDefensive_rating_())));
-            e_stats.appendChild(trans_eStat);
-        }
-        */
+         if (stats.getDefensive_rating_() != 0) {
+         trans_eStat = doc.createElement("def_rating");
+         trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getDefensive_rating_())));
+         e_stats.appendChild(trans_eStat);
+         }
+         */
         if (stats.getOffensive_rating_() != 0) {
             trans_eStat = doc.createElement("off_rating");
             trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getOffensive_rating_())));
             e_stats.appendChild(trans_eStat);
         }
-
+        
         parent.appendChild(e_stats);
         return e_stats;
     }
-
+    
     private Element xml_writeStatsEntity(Document doc, Element parent, EntityStatsPack stats) {
         if (stats == null) {
             RunGame.errOut("xml_writeStatsEntity: null statspack");
             return null;
         }
-
+        
         Element e_stats = doc.createElement("stats_entity");
         Element tra_eStat;
-
+        
         if (stats.getLives_left_() != 0) {
             tra_eStat = doc.createElement("lives");
             tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getLives_left_())));
@@ -674,14 +678,14 @@ public class Map implements MapUser_Interface {
             tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getCurrent_mana_())));
             e_stats.appendChild(tra_eStat);
         }
-
+        
         parent.appendChild(e_stats);
         return e_stats;
     }
-
+    
     private Element xml_writeTerrain(Document doc, Element parent, Terrain terr) {
         Element e_Terrain = doc.createElement("terrain");
-
+        
         if (terr.getName() == null) {
             RunGame.errOut("xml_writeTerrain: null Terrain name");
             return null;
@@ -692,7 +696,7 @@ public class Map implements MapUser_Interface {
         if (terr.isMountain()) {
             e_Terrain.appendChild(doc.createElement("b_mountain"));
         }
-
+        
         if (terr.isWater()) {
             e_Terrain.appendChild(doc.createElement("b_water"));
         }

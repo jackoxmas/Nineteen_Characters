@@ -297,7 +297,7 @@ public final class Avatar extends Entity {
      * @param command
      * @return ArrayList of strings for IO_Bundle or null if nothing to display
      */
-    public ArrayList<String> acceptKeyCommand(Enum command) {
+    public ArrayList<String> acceptKeyCommand(Enum command, String optional_text) {
         MapAvatar_Relation mar = this.getMapRelation();
         if (mar == null) {
             System.out

@@ -25,9 +25,7 @@ abstract public class Entity extends DrawableThing {
     private FacingDirection direction_ = FacingDirection.UP;
     private ArrayList<PickupableItem> inventory_;
     private EntityStatsPack stats_pack_ = new EntityStatsPack(this);
-    public ArrayList<PickupableItem> getInventory() {
-        return this.inventory_;
-    }
+
     /**
      * Entity Constructor
      *
@@ -39,6 +37,22 @@ abstract public class Entity extends DrawableThing {
         inventory_ = new ArrayList<PickupableItem>();
     }
 
+    public abstract ArrayList<String> getInteractionOptionStrings();
+
+    public abstract ArrayList<String> getConversationStarterStrings();
+
+    public abstract ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me);
+
+    public abstract ArrayList<String> getListOfItemsYouCanUseOnMe();
+
+    public int getExperienceBetweenLevels() {
+        if (stats_pack_ != null) {
+            return stats_pack_.NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL;
+        } else {
+            return -1;
+        }
+    }
+
     public FacingDirection getFacingDirection() {
         return direction_;
     }
@@ -47,12 +61,8 @@ abstract public class Entity extends DrawableThing {
         direction_ = dir;
     }
 
-    public int getExperienceBetweenLevels() {
-        if (stats_pack_ != null) {
-            return stats_pack_.NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL;
-        } else {
-            return -1;
-        }
+    public ArrayList<PickupableItem> getInventory() {
+        return this.inventory_;
     }
 
     /**
@@ -187,30 +197,6 @@ abstract public class Entity extends DrawableThing {
         }
     }
 
-    public int unEquipEverything() {
-        if (primary_hand_ == secondary_hand_ && primary_hand_ != null) {
-            inventory_.add((PickupableItem) primary_hand_);
-            stats_pack_.reduceBy(primary_hand_.getStatsPack());
-        } else if (primary_hand_ != secondary_hand_) {
-            if (primary_hand_ != null) {
-                inventory_.add((PickupableItem) primary_hand_);
-                stats_pack_.reduceBy(primary_hand_.getStatsPack());
-            }
-            if (secondary_hand_ != null) {
-                inventory_.add((PickupableItem) secondary_hand_);
-                stats_pack_.reduceBy(secondary_hand_.getStatsPack());
-            }
-        }
-        primary_hand_ = null;
-        secondary_hand_ = null;
-
-        if (occupation_ == null) {
-            return 0;
-        } else {
-            return occupation_.unEquipEverything();
-        }
-    }
-
     /**
      * @author John-Michael Reed
      * @param two_hand_weapon
@@ -259,6 +245,30 @@ abstract public class Entity extends DrawableThing {
             }
         } else {
             return -5;
+        }
+    }
+
+    public int unEquipEverything() {
+        if (primary_hand_ == secondary_hand_ && primary_hand_ != null) {
+            inventory_.add((PickupableItem) primary_hand_);
+            stats_pack_.reduceBy(primary_hand_.getStatsPack());
+        } else if (primary_hand_ != secondary_hand_) {
+            if (primary_hand_ != null) {
+                inventory_.add((PickupableItem) primary_hand_);
+                stats_pack_.reduceBy(primary_hand_.getStatsPack());
+            }
+            if (secondary_hand_ != null) {
+                inventory_.add((PickupableItem) secondary_hand_);
+                stats_pack_.reduceBy(secondary_hand_.getStatsPack());
+            }
+        }
+        primary_hand_ = null;
+        secondary_hand_ = null;
+
+        if (occupation_ == null) {
+            return 0;
+        } else {
+            return occupation_.unEquipEverything();
         }
     }
 
@@ -443,7 +453,7 @@ abstract public class Entity extends DrawableThing {
      */
     public void receiveAttack(int damage, Entity attacker) {
         int amount_of_damage = damage - getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_();
-        if(amount_of_damage < 0) {
+        if (amount_of_damage < 0) {
             amount_of_damage = 0;
         }
         int did_I_run_out_of_health = stats_pack_.deductCurrentLifeBy(amount_of_damage);

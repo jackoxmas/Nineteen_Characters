@@ -39,13 +39,13 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 // If there is no decal, fuck shit up
                 if (infliction.getTerrain() != null && !infliction.getTerrain().hasDecal()) {
                     if (effect == Effect.HURT) {
-                        infliction.getTerrain().addDecal('♨',Color.magenta);
+                        infliction.getTerrain().addDecal('♨', Color.magenta);
                     } else if (effect == Effect.HEAL) {
-                        infliction.getTerrain().addDecal('♥',Color.red);
+                        infliction.getTerrain().addDecal('♥', Color.red);
                     } else if (effect == Effect.LEVEL) {
-                        infliction.getTerrain().addDecal('↑',Color.black);
+                        infliction.getTerrain().addDecal('↑', Color.black);
                     } else if (effect == Effect.KILL) {
-                        infliction.getTerrain().addDecal('☣',Color.orange);
+                        infliction.getTerrain().addDecal('☣', Color.orange);
                     }
                 }
                 Entity to_effect = infliction.getEntity();
@@ -435,6 +435,138 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 break;
         }
         return reply;
+    }
+
+    /**
+     * Gets the Entity you are facing
+     * @author John-Michael Reed
+     * @return null if no entity is there.
+     */
+    public Entity getEntityInFacingDirection() {
+        MapTile target_tile = null;
+        final int x = this.getMyXCoordinate();
+        final int y = this.getMyYCoordinate();
+        FacingDirection f = entity_.getFacingDirection();
+        switch (f) {
+            case UP:
+                target_tile = current_map_reference_.getTile(x, y + 1);
+                if (target_tile != null) {
+                    return target_tile.getEntity();
+                }
+                break;
+            case DOWN:
+                target_tile = current_map_reference_.getTile(x, y - 1);
+                if (target_tile != null) {
+                    return target_tile.getEntity();
+                }
+                break;
+            case RIGHT:
+                target_tile = current_map_reference_.getTile(x + 1, y);
+                if (target_tile != null) {
+                    return target_tile.getEntity();
+                }
+                break;
+            case LEFT:
+                target_tile = current_map_reference_.getTile(x - 1, y);
+                if (target_tile != null) {
+                    return target_tile.getEntity();
+                }
+                break;
+            case UP_RIGHT:
+                target_tile = current_map_reference_.getTile(x + 1, y + 1);
+                if (target_tile != null) {
+                    return target_tile.getEntity();
+                }
+                break;
+            case UP_LEFT:
+                target_tile = current_map_reference_.getTile(x - 1, y + 1);
+                if (target_tile != null) {
+                    return target_tile.getEntity();
+                }
+                break;
+            case DOWN_RIGHT:
+                target_tile = current_map_reference_.getTile(x + 1, y - 1);
+                if (target_tile != null) {
+                    return target_tile.getEntity();
+                }
+                break;
+            case DOWN_LEFT:
+                target_tile = current_map_reference_.getTile(x - 1, y - 1);
+                if (target_tile != null) {
+                    return target_tile.getEntity();
+                }
+            default:
+                System.err.println("Impossible");
+                System.exit(-44);
+                break;
+        }
+        return null;
+    }
+
+    /**
+     * Gets the Item you are facing
+     * @author John-Michael Reed
+     * @return null if no item is there.
+     */
+    public Item getTopmostItemInFacingDirection() {
+        MapTile target_tile = null;
+        final int x = this.getMyXCoordinate();
+        final int y = this.getMyYCoordinate();
+        FacingDirection f = entity_.getFacingDirection();
+        switch (f) {
+            case UP:
+                target_tile = current_map_reference_.getTile(x, y + 1);
+                if (target_tile != null) {
+                    return target_tile.viewTopItem();
+                }
+                break;
+            case DOWN:
+                target_tile = current_map_reference_.getTile(x, y - 1);
+                if (target_tile != null) {
+                    return target_tile.viewTopItem();
+                }
+                break;
+            case RIGHT:
+                target_tile = current_map_reference_.getTile(x + 1, y);
+                if (target_tile != null) {
+                    return target_tile.viewTopItem();
+                }
+                break;
+            case LEFT:
+                target_tile = current_map_reference_.getTile(x - 1, y);
+                if (target_tile != null) {
+                    return target_tile.viewTopItem();
+                }
+                break;
+            case UP_RIGHT:
+                target_tile = current_map_reference_.getTile(x + 1, y + 1);
+                if (target_tile != null) {
+                    return target_tile.viewTopItem();
+                }
+                break;
+            case UP_LEFT:
+                target_tile = current_map_reference_.getTile(x - 1, y + 1);
+                if (target_tile != null) {
+                    return target_tile.viewTopItem();
+                }
+                break;
+            case DOWN_RIGHT:
+                target_tile = current_map_reference_.getTile(x + 1, y - 1);
+                if (target_tile != null) {
+                    return target_tile.viewTopItem();
+                }
+                break;
+            case DOWN_LEFT:
+                target_tile = current_map_reference_.getTile(x - 1, y - 1);
+                if (target_tile != null) {
+                    return target_tile.viewTopItem();
+                }
+            default:
+                System.err.println("Impossible");
+                System.exit(-44);
+                break;
+        }
+        return null;
     }
 
     /**

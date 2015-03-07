@@ -77,6 +77,33 @@ public final class Avatar extends Entity {
         return observation_;
     }
 
+    public ArrayList<String> getInteractionOptionStrings() {
+        ArrayList<String> options = new ArrayList<String>();
+        options.add("Attack me. [ Attack ]");
+        options.add("Start a convetsation with me. [ Greet ]");
+        options.add("Get a list of items that you can use on me. [ Item ]");
+        return options;
+    }
+
+    public ArrayList<String> getConversationStarterStrings() {
+        ArrayList<String> options = new ArrayList<String>();
+        options.add("Hello");
+        return options;
+    }
+
+    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me) {
+        ArrayList<String> options = new ArrayList<String>();
+        if (what_you_just_said_to_me == "Hello") {
+            options.add("Goodbye");
+        }
+        return options;
+    }
+
+    public ArrayList<String> getListOfItemsYouCanUseOnMe() {
+        ArrayList<String> options = new ArrayList<String>();
+        return options;
+    }
+
     /**
      * Gets information based on observation level. If the entity is facing up,
      * observation will work in the up direction.

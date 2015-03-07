@@ -16,6 +16,7 @@ import src.InteractEnum;
 import src.RunGame;
 import src.SavedGame;
 import src.SkillEnum;
+import src.SpendSkillpointEnum;
 import src.model.map.MapAvatar_Relation;
 import src.io.view.AvatarCreationView;
 import src.io.view.MapView;
@@ -380,6 +381,33 @@ public final class Avatar extends Entity {
                         return null;
                     default:
                         System.err.println("Error in the avatar skills enum switch");
+                        return null;
+                }
+            }
+        }
+        for (SpendSkillpointEnum skill : SpendSkillpointEnum.values()) {
+            if (skill.equals(command)) {
+                switch (skill) {
+                    case SPEND_SKILLPOINT_ON_BIND:
+                        this.spendSkillpointOn(SkillEnum.BIND_WOUNDS);
+                        return null;
+                    case SPEND_SKILLPOINT_ON_BARGAIN:
+                        this.spendSkillpointOn(SkillEnum.BARGAIN);
+                        return null;
+                    case SPEND_SKILLPOINT_ON_OBSERVE:
+                        this.spendSkillpointOn(SkillEnum.OBSERVATION);
+                        return null;
+                    case SPEND_SKILLPOINT_ON_SKILL_1:
+                        this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_1);
+                        return null;
+                    case SPEND_SKILLPOINT_ON_SKILL_2:
+                        this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_2);
+                        return null;
+                    case SPEND_SKILLPOINT_ON_SKILL_3:
+                        this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_3);
+                        return null;
+                    case SPEND_SKILLPOINT_ON_SKILL_4:
+                        this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_4);
                         return null;
                 }
             }

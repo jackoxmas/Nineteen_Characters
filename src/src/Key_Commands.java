@@ -6,7 +6,7 @@
 package src;
 
 /**
- * The map is obligated to accept these 31 key commands.
+ * The map is obligated to accept these 38 key commands.
  * @author JohnReedLOL
  */
 public enum Key_Commands {
@@ -28,6 +28,9 @@ public enum Key_Commands {
     BUY_ITEM_BY_NAME, // also accepts a string
     
     USE_SKILL_1, USE_SKILL_2, USE_SKILL_3, USE_SKILL_4,
+    
+    SPEND_SKILLPOINT_ON_BIND, SPEND_SKILLPOINT_ON_BARGAIN, SPEND_SKILLPOINT_ON_OBSERVE,
+    SPEND_SKILLPOINT_ON_SKILL_1, SPEND_SKILLPOINT_ON_SKILL_2, SPEND_SKILLPOINT_ON_SKILL_3, SPEND_SKILLPOINT_ON_SKILL_4,
     
     SAVE_MAP, DO_ABSOLUTELY_NOTHING
 }

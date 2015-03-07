@@ -1,6 +1,6 @@
 package src;
 
-public enum CharactarCreationEnum {
+public enum CharacterCreationEnum {
 SMASHER,SNEAKER,SUMMONER
 
 }

@@ -123,7 +123,7 @@ public class RunGame {
         System.out.println("y position of avatar: " + avatar_.getMapRelation().getMyYCoordinate());
 
         for (int i = 0; i < 20; ++i) {
-            ((MapUser_Interface) map_).sendCommandToMap("avatar", 'x', 10, 20);
+            ((MapUser_Interface) map_).sendCommandToMap("avatar", CompassEnum.SOUTH, 10, 20);
         }
 
     }

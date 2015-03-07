@@ -12,7 +12,7 @@ import src.IO_Bundle;
  * @author JohnReedLOL
  */
 public interface MapUser_Interface {
-    public IO_Bundle sendCommandToMap(String username, char command);
+    public IO_Bundle sendCommandToMap(String username, Enum command);
     /**
      * Note that the IO_Bundle contains a 2D array of characters in which the 
      * y coordinates are stored in the first [] and the x_cordinates are in the second.
@@ -22,5 +22,5 @@ public interface MapUser_Interface {
      * @param height_from_center
      * @return 
      */
-    public IO_Bundle sendCommandToMap(String username, char command, int width_from_center, int height_from_center);
+    public IO_Bundle sendCommandToMap(String username, Enum command, int width_from_center, int height_from_center);
 }

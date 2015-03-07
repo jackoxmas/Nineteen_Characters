@@ -11,7 +11,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.HashMap;
 
-import src.CharactarCreationEnum;
+import src.CharacterCreationEnum;
 import src.CompassEnum;
 import src.Function;
 import src.InteractEnum;
@@ -34,9 +34,9 @@ public final class UserController implements Function<Void, Character>
 		}
 		private void initBindings(){
 			//Character Creation
-			remap_.put('Z',CharactarCreationEnum.SMASHER);
-			remap_.put('X',CharactarCreationEnum.SUMMONER);
-			remap_.put('C',CharactarCreationEnum.SNEAKER);
+			remap_.put('Z',CharacterCreationEnum.SMASHER);
+			remap_.put('X',CharacterCreationEnum.SUMMONER);
+			remap_.put('C',CharacterCreationEnum.SNEAKER);
 			//Directions NUMPAD
 			remap_.put('1',CompassEnum.SOUTH_WEST);
 			remap_.put('2',CompassEnum.SOUTH);
@@ -63,6 +63,8 @@ public final class UserController implements Function<Void, Character>
 			remap_.put('E',InteractEnum.EQUIP);
 			remap_.put('U', InteractEnum.UNEQUIP);
 			remap_.put('i', InteractEnum.TOGGLE_VIEW);
+			remap_.put('S', InteractEnum.SAVE_GAME);
+			remap_.put('u',InteractEnum.USE_ITEM);
 		}
 		public void setMap(HashMap<Character, Enum> remap) {
 			remap_ = remap;
@@ -96,9 +98,8 @@ public final class UserController implements Function<Void, Character>
     //ideally we should look into refactoring this to not
     private void setView(Enum input){
     	boolean taken = false;
-    	if(input == null){return;}
     	if(currentView_ instanceof AvatarCreationView){
-    		for(Enum e : CharactarCreationEnum.values()){
+    		for(Enum e : CharacterCreationEnum.values()){
     			if(e.equals(input)){
     				currentView_ = new MapView();
     			}

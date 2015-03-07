@@ -1,6 +1,8 @@
 package src.model.map;
 
 import org.w3c.dom.Node;
+
+import src.CompassEnum;
 import src.IO_Bundle;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -328,16 +330,16 @@ public class Map implements MapUser_Interface {
      * @param command - signal to send to avatar
      * @return IO_Bundle of stuff that can be displayed.
      */
-    public IO_Bundle sendCommandToMap(String username, char command) {
+    public IO_Bundle sendCommandToMap(String username, Enum command) {
         final int default_width_from_center = 10;
         final int default_height_from_center = 20;
         return sendCommandToMap(username, command, default_width_from_center, default_height_from_center);
     }
 
-    public IO_Bundle sendCommandToMap(String username, char command, int width_from_center, int height_from_center) {
+    public IO_Bundle sendCommandToMap(String username, Enum command, int width_from_center, int height_from_center) {
         Avatar to_recieve_command = this.getAvatarByName(username);
-        if (command != '\u0000' && to_recieve_command != null && to_recieve_command.getMapRelation() != null) {
-            if (command != 'M') {
+        if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null) {
+            if (command != CompassEnum.STANDING_STILL) {
                 int error_code = to_recieve_command.acceptKeyCommand(command);
             }
             char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),

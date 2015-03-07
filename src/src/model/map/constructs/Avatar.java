@@ -8,7 +8,10 @@ package src.model.map.constructs;
 import java.util.LinkedList;
 import java.util.Random;
 
+import src.CompassEnum;
+import src.CharacterCreationEnum;
 import src.FacingDirection;
+import src.InteractEnum;
 import src.RunGame;
 import src.SavedGame;
 import src.SkillEnum;
@@ -261,125 +264,119 @@ public final class Avatar extends Entity {
      * @param command
      * @return 0 on success, not zero if command cannot be accepted
      */
-    public int acceptKeyCommand(char command) {
+    public int acceptKeyCommand(Enum command) {
         MapAvatar_Relation mar = this.getMapRelation();
         if (mar == null) {
             System.out
                     .println("Avatar cannot be controlled without a MapAvatar_Relation");
             System.exit(-8);
         }
-        switch (command) {
-            case '1':// Move SW
-                mar.moveInDirection(-1, -1);
-                break;
-            case '2':// Move S
-                mar.moveInDirection(0, -1);
-                break;
-            case '3':// Move SE
-                mar.moveInDirection(1, -1);
-                break;
-            case '4': // Move W
-                mar.moveInDirection(-1, 0);
-                break;
-            case '6':// Move E
-                mar.moveInDirection(1, 0);
-                break;
-            case '7':// Move NW
-                mar.moveInDirection(-1, 1);
-                break;
-            case '8':// Move N
-                mar.moveInDirection(0, 1);
-                break;
-            case '9': // Move NE
-                mar.moveInDirection(1, 1);
-                break;
-            case 'S': // Save game
-                RunGame.saveGameToDisk(); // TODO: this is for testing, remove for
-                // deployment
-                break;
-		// case 'v': //Open stats
-            // break;
-            // case 'i': //Use item in direction
-            // switchToStatsView();
-            // break;
-            case 'u': // Use item in inventory
-                int error_code_u = this.useLastInventoryItem();
-                return error_code_u;
-            case 'q':// move NW
-                mar.moveInDirection(-1, 1);
-                break;
-            case 'w': // move N
-                mar.moveInDirection(0, 1);
-                break;
-            case 'e':// move NE
-                mar.moveInDirection(1, 1);
-                break;
-            case 'a': // move W
-                mar.moveInDirection(-1, 0);
-                break;
-            case 's':// Move stationary?
-                mar.moveInDirection(0, 0);
-                break;
-            case 'd':// Move E
-                mar.moveInDirection(1, 0);
-                break;
-            case 'z':// Move SW
-                mar.moveInDirection(-1, -1);
-                break;
-            case 'x':// move s
-                mar.moveInDirection(0, -1);
-                break;
-            case 'c':// move SE
-                mar.moveInDirection(1, -1);
-                break;
-            case 'E': // equipMyselfTo
-                try {
-                    EquipableItem item = (EquipableItem) this.getLastItemInInventory();
-                    if (item != null) {
-                        Display.getDisplay().setMessage("Attempted to Equip " + item.toString());
-                    } else {
-                        Display.getDisplay().setMessage("No item(s) to equip");
-                    }
-                    if (item != null) {
-                        return item.equipMyselfTo(this);
-                    }
-                } catch (ClassCastException e) {
-                    // ignore it
-                    Display.getDisplay().setMessage("Cannot Equip From Inventory");
-                }
-                return -1;
-            case 'U': // unEquip
-                this.unEquipEverything();
-                Display.getDisplay().setMessage("Unequipped Everything");
-                break;
-            case 'D': // drop item
-                int error_code_D = mar.dropItem();
-                return error_code_D;
-            case 'p':// pickup item
-                int error_code_p = mar.pickUpItemInDirection(0, 0);
-                return error_code_p;
-            case 'Z': // switch to Smasher
-                this.setRepresentation('⚔');
-                return this.becomeSmasher();
-            case 'X': // switch to Summoner
-                this.setRepresentation('☃');
-                return this.becomeSummoner();
-            case 'C': // switch to Sneaker
-                this.setRepresentation('☭');
-                return this.becomeSneak();
-            case 'V': // switch to Smasher
-                this.setOccupation(null);
-                return 0;
-            case 'I':
-                // return this.interactInFacingDirection; // Returns 4 strings
-            case 'G':
-                // return this.greetInFacingDirection; // Returns 1 long string
-            case 'l':
-                this.observe();
-                break;
-            default: // no valid input
-                System.out.println("Invalid input in Avatar.acceptKeyCommand() ");
-                break;
+        for(CompassEnum direction : CompassEnum.values()){
+        	if(direction.equals(command)){
+        		switch (direction) {
+        		case SOUTH_WEST:// Move SW
+        			mar.moveInDirection(-1, -1);
+        			break;
+        		case SOUTH:// Move S
+        			mar.moveInDirection(0, -1);
+        			break;
+        		case SOUTH_EAST:// Move SE
+        			mar.moveInDirection(1, -1);
+        			break;
+        		case WEST: // Move W
+        			mar.moveInDirection(-1, 0);
+        			break;
+        		case EAST:// Move E
+        			mar.moveInDirection(1, 0);
+        			break;
+        		case NORTH_WEST:// Move NW
+        			mar.moveInDirection(-1, 1);
+        			break;
+        		case NORTH:// Move N
+        			mar.moveInDirection(0, 1);
+        			break;
+        		case NORTH_EAST: // Move NE
+        			mar.moveInDirection(1, 1);
+        			break;
+        		default:
+        			System.err.println("Error in the avatar direction enum switch");
+        			return 0;
+        		}
+        	}
+        }
+        for(InteractEnum interact : InteractEnum.values()){
+        	if(interact.equals(command)){
+        		switch(interact){
+
+        		case SAVE_GAME: // Save game
+        			RunGame.saveGameToDisk(); // TODO: this is for testing, remove for
+        			// deployment
+        			break;
+        		case USE_ITEM: // Use item in inventory
+        			int error_code_u = this.useLastInventoryItem();
+        			return error_code_u;
+        		case EQUIP: // equipMyselfTo
+        			try {
+        				EquipableItem item = (EquipableItem) this.getLastItemInInventory();
+        				if (item != null) {
+        					Display.getDisplay().setMessage("Attempted to Equip " + item.toString());
+        				} else {
+        					Display.getDisplay().setMessage("No item(s) to equip");
+        				}
+        				if (item != null) {
+        					return item.equipMyselfTo(this);
+        				}
+        			} catch (ClassCastException e) {
+        				// ignore it
+        				Display.getDisplay().setMessage("Cannot Equip From Inventory");
+        			}
+        			return -1;
+        		case UNEQUIP: // unEquip
+        			this.unEquipEverything();
+        			Display.getDisplay().setMessage("Unequipped Everything");
+        			break;
+        		case DROP: // drop item
+        			int error_code_D = mar.dropItem();
+        			return error_code_D;
+        		case PICK_UP:// pickup item
+        			int error_code_p = mar.pickUpItemInDirection(0, 0);
+        			return error_code_p;
+        		default:
+        			System.err.println("Error in the avatar interact enum switch");
+        			return 0;
+        		}
+        	}
+        }
+        for(CharacterCreationEnum cc : CharacterCreationEnum.values()){
+        	if(cc.equals(command)){
+        		switch(cc){
+        		case SMASHER: // switch to Smasher
+        			this.setRepresentation('⚔');
+        			return this.becomeSmasher();
+        		case SUMMONER: // switch to Summoner
+        			this.setRepresentation('☃');
+        			return this.becomeSummoner();
+        		case SNEAKER: // switch to Sneaker
+        			this.setRepresentation('☭');
+        			return this.becomeSneak();
+        		default:
+        			System.err.println("Error in the avatar creation enum switch");
+        			return 0;
+        			
+        		}
+        	}
+        }
+        for(SkillEnum skill : SkillEnum.values()){
+        	if(skill.equals(command)){
+        		switch(skill){
+        		case OBSERVATION:
+        			this.observe();
+        			break;
+        		default:
+        			System.err.println("Error in the avatar skills enum switch");
+        			return 0;
+        		}
+        	}
         }
         return 0;
     }

@@ -74,7 +74,7 @@ public final class Avatar extends Entity {
     /**
      * Gets information based on observation level. If the entity is facing up,
      * observation will work in the up direction.
-     *
+     * @author Reid Olsen
      * @return
      */
     public int observe() {
@@ -94,8 +94,7 @@ public final class Avatar extends Entity {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
                     try {
-                        s += getTileInfo(map_relationship_.getMyXCoordinate(),
-                                map_relationship_.getMyYCoordinate() + (i + 1));
+                        s += map_relationship_.getTileInfo(0,(i + 1));
                         s += "\n";
                     } catch (NullPointerException e) {
                         s += "No tile here.\n";
@@ -106,8 +105,7 @@ public final class Avatar extends Entity {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
                     try {
-                        s += getTileInfo(map_relationship_.getMyXCoordinate() + (i + 1),
-                                map_relationship_.getMyYCoordinate() + (i + 1));
+                        s += map_relationship_.getTileInfo((i + 1),(i + 1));
                         s += "\n";
                     } catch (NullPointerException e) {
                         s += "No tile here.\n";
@@ -118,8 +116,7 @@ public final class Avatar extends Entity {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
                     try {
-                        s += getTileInfo(map_relationship_.getMyXCoordinate() + (i + 1),
-                                map_relationship_.getMyYCoordinate());
+                        s += map_relationship_.getTileInfo((i + 1),0);
                         s += "\n";
                     } catch (NullPointerException e) {
                         s += "No tile here.\n";
@@ -130,8 +127,7 @@ public final class Avatar extends Entity {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
                     try {
-                        s += getTileInfo(map_relationship_.getMyXCoordinate() + (i + 1),
-                                map_relationship_.getMyYCoordinate() - (i + 1));
+                        s += map_relationship_.getTileInfo((i + 1),(i + 1));
                         s += "\n";
                     } catch (NullPointerException e) {
                         s += "No tile here.\n";
@@ -142,8 +138,7 @@ public final class Avatar extends Entity {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
                     try {
-                        s += getTileInfo(map_relationship_.getMyXCoordinate(),
-                                map_relationship_.getMyYCoordinate() - (i + 1));
+                        s += map_relationship_.getTileInfo(0,(i + 1));
                         s += "\n";
                     } catch (NullPointerException e) {
                         s += "No tile here.\n";
@@ -154,8 +149,7 @@ public final class Avatar extends Entity {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
                     try {
-                        s += getTileInfo(map_relationship_.getMyXCoordinate() - (i + 1),
-                                map_relationship_.getMyYCoordinate() - (i + 1));
+                        s += map_relationship_.getTileInfo((i + 1),(i + 1));
                         s += "\n";
                     } catch (NullPointerException e) {
                         s += "No tile here.\n";
@@ -166,8 +160,7 @@ public final class Avatar extends Entity {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
                     try {
-                        s += getTileInfo(map_relationship_.getMyXCoordinate() - (i + 1),
-                                map_relationship_.getMyYCoordinate());
+                        s += map_relationship_.getTileInfo((i + 1),0);
                         s += "\n";
                     } catch (NullPointerException e) {
                         s += "No tile here.\n";
@@ -178,8 +171,7 @@ public final class Avatar extends Entity {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
                     try {
-                        s += getTileInfo(map_relationship_.getMyXCoordinate() - (i + 1),
-                                map_relationship_.getMyYCoordinate() + (i + 1));
+                        s += map_relationship_.getTileInfo((i + 1),(i + 1));
                         s += "\n";
                     } catch (NullPointerException e) {
                         s += "No tile here.\n";
@@ -193,52 +185,6 @@ public final class Avatar extends Entity {
                     "Failed to look in direction: " + getFacingDirection());
             return -1;
         }
-    }
-
-    /**
-     * This function will be called from observe() to get info for a tile at
-     * (x,y).
-     *
-     * @param x coordinate of tile.
-     * @param y coordinate of tile.
-     * @return String of info on tile (x,y).
-     */
-    private String getTileInfo(int x, int y) {
-        String s = "";
-        if (map_relationship_.getMap().getTile(x, y).isPassable()) {
-            s += "This tile is passable.";
-        } else {
-            s += "This tile is not passable.";
-        }
-        LinkedList<Item> items = map_relationship_.getMap().getTile(x, y)
-                .getItemList();
-        if (!items.isEmpty()) {
-            s += " Items on this tile:";
-            for (int j = 0; j < items.size(); j++) {
-                s += " " + items.get(j).name_;
-                if (j + 1 == items.size()) {
-                    s += ".";
-                } else {
-                    s += ",";
-                }
-            }
-        }
-        Entity e = map_relationship_.getMap().getTile(x, y).getEntity();
-        if (e != null) {
-            if (observation_ < 3) {
-                s += " Entity: " + e.name_;
-            } else if (observation_ >= 3 && observation_ < 6) {
-                s += " Entity: " + e.name_ + " with "
-                        + e.getStatsPack().getOffensive_rating_() + " offense.";
-            } else {
-                s += " Entity: " + e.name_ + " with "
-                        + e.getStatsPack().getOffensive_rating_()
-                        + " offense and "
-                        + e.getStatsPack().getDefensive_rating_() + " defense.";
-            }
-        }
-
-        return s;
     }
 
     /**
@@ -424,6 +370,10 @@ public final class Avatar extends Entity {
             case 'V': // switch to Smasher
                 this.setOccupation(null);
                 return 0;
+            case 'I':
+                // return this.interactInFacingDirection; // Returns 4 strings
+            case 'G':
+                // return this.greetInFacingDirection; // Returns 1 long string
             case 'l':
                 this.observe();
                 break;

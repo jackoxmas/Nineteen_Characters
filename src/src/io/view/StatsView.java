@@ -15,11 +15,10 @@ import src.model.map.constructs.PickupableItem;
  */
 public final class StatsView extends Viewport
 {
-    // Converts the class name into a base 35 number
-    private static final long serialVersionUID = Long.parseLong("StatsView", 35);
+    // Converts the class name into a base 35 numbers
 	
-    private char[][] view_contents_;
-    private ArrayList< ArrayList<Character>> render;
+    @SuppressWarnings("unused")
+	private char[][] view_contents_;
 
     private ArrayList<String> template_;    
     private boolean display_index = false;

@@ -87,9 +87,6 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
     public int getDefensive_rating_(){
     	return defensive_rating_;
     }
-    private EntityStatsPack() {
-        owner_ = null;
-    }
 
     private final Entity owner_;
 

@@ -8,8 +8,6 @@ package src.io.view.display;
 import java.awt.Color;
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JTextPane;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
@@ -37,9 +35,6 @@ public class Display {
 
     // Converts the class name into a base 35 number
 	static private Display display_ = null;
-	private JTextPane pane_ = null;
-	private JFrame frame_ = null;
-	private float fontSize_ = 14f;
 
 	/**
 	 * Puts the given message in the chatboxes output box
@@ -63,7 +58,6 @@ public class Display {
 			Key_Listener_GUI.getGUI().addMessage(message_);
 		}
 	}
-    private static final long serialVersionUID = Long.parseLong("Display", 35);
 
     /**
      * Create a display from a Viewport
@@ -195,8 +189,8 @@ public class Display {
      * @param attr
      */
     private void colorChar(StyledDocument doc, int x, int y, Color color, int length){
-    	if(color.equals(color.white)){return;}
-    	if(color.equals(color.black)){return;}//White is only used for space, so no need to render it. 
+    	if(color.equals(Color.white)){return;}
+    	if(color.equals(Color.black)){return;}//White is only used for space, so no need to render it. 
     	MutableAttributeSet attr = new SimpleAttributeSet();
     	StyleConstants.setForeground(attr, color);
     	doc.setCharacterAttributes(y*(current_view_.getWidth()+(System.lineSeparator().length()))+x,

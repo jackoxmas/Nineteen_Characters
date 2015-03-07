@@ -18,7 +18,6 @@ import src.IO_Bundle;
 public final class AvatarCreationView extends Viewport
 {
     // Converts the class name into a base 35 number
-    private static final long serialVersionUID = Long.parseLong("CCView", 35);
 	
 
  

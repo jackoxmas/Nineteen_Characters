@@ -72,10 +72,32 @@ public final class Sneak extends Occupation {
             return -99999; // F***ing impossible
         }
     }
+
     @Override
     public int performOccupationSkill(int number) {
-        if(number == 1) {
+        if (number == 1) {
             //...
+        } else if (number == 2) {
+
+        } else if (number == 3) {
+
+        } else if (number == 4) {
+            // Bow attack
+            final int cost = 1;
+            if (bow_ != null) {
+                int has_run_out_of_mana = getEntity().getStatsPack().deductCurrentManaBy(cost);
+                // Case that you have enough mana:
+                if (has_run_out_of_mana == 0) {
+                    for (int num_attacks = 0; num_attacks <= super.getSkill_4_(); ++num_attacks) {
+                        getEntity().getMapRelation().sendAttack();
+                    }
+                } else {
+                    // Not enough mana to case spell. Do nothing.
+                }
+            }
+        } else {
+            System.err.println("Error in Sneak.performOccupationSkill()");
+            System.exit(-89);
         }
         return 0;
     }

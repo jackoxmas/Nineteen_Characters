@@ -107,6 +107,11 @@ public final class Smasher extends Occupation {
         }
     }
 
+    /**
+     * @author John-Michael Reed
+     * @param number - 1 for occupation skill #1, 2 for occupation skill #2, etc.
+     * @return 0
+     */
     @Override
     public int performOccupationSkill(int number) {
         final int cost = 1;
@@ -123,6 +128,7 @@ public final class Smasher extends Occupation {
                 }
             }
         } else if (number == 2) {
+            // two-handed weapon
             if (current_weapon == ActiveWeapon.TWO_HANDED_SWORD) {
                 // Case that you have enough mana:
                 if (getEntity().getStatsPack().deductCurrentManaBy(cost) == 0) {

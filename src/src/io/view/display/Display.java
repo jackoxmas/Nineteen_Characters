@@ -15,6 +15,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import src.Function;
+import src.Key_Commands;
 import src.io.view.Viewport;
 
 /**
@@ -244,8 +245,14 @@ public class Display {
 	 * Adds a Function<Void,String> object to the list of things called by chatbox on enter
 	 * @param Function<Void,String> listen
 	 */
-	public void addChatBoxFunctionEvent(Function<Void,String> listen){
+	public void addInputBoxTextEnteredFunction(Function<Void,String> listen){
 		//chat_.addFunction(listen);
+	}
+	public void addOutputBoxCharacterFunction(Function<Void,Character> receiver){
+		
+	}
+	public void addDirectCommandReceiver(Function<Void,Key_Commands> receiver){
+		
 	}
 
 }

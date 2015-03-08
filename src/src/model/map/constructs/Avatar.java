@@ -325,7 +325,8 @@ public final class Avatar extends Entity {
 			// deployment
 			return null;
 		case USE_LAST_ITEM: // Use item in inventory
-			this.useLastInventoryItem();
+			super.useThingInFacingDirectionOnMyself();
+                        System.out.println("using item!");
 			return null;
 		case EQUIP_LAST_ITEM: // equipMyselfTo
 			try {
@@ -407,6 +408,8 @@ public final class Avatar extends Entity {
 			if(target!=null){
 			return target.reply(optional_text, target);
 			}else{return null;}
+                case ATTACK:
+                    getMapRelation().sendAttackInFacingDirection();
 		default: System.out.println("Invalid command sent to avatar");
 		break;
 		}

@@ -11,7 +11,7 @@ import src.IO_Bundle;
 import src.model.map.constructs.PickupableItem;
 /**
  * Players see the StatsView when they are checking their stats
- * @author Matthew B, Jessan, Jack C,JohnReedLOL
+ * @author Matthew B, Jessan, Jack C
  */
 public final class StatsView extends Viewport
 {

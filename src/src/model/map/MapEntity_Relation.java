@@ -289,6 +289,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 return -2;
             } else {
                 target_entity.receiveAttack(3 + entity_.getStatsPack().getOffensive_rating_(), entity_);
+                System.out.println("You attacked an entity");
                 return 0;
             }
         }

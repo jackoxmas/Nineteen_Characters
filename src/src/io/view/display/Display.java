@@ -21,7 +21,7 @@ import src.io.view.Viewport;
 /**
  * Represents a single player's display. Has a static game wide message.
  *
- * @author Matthew B, JohnReedLOL
+ * @author Matthew B
  */
 public class Display {
 	/**

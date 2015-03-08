@@ -13,7 +13,7 @@ import src.model.map.constructs.Item;
 /**
  * Abstract view class that the views inherit from.
  * Contains some basic drawing functions, and a map relation.
- * @author Matthew B, JohnReedLOL
+ * @author Matthew B
  */
 public abstract class Viewport {
 

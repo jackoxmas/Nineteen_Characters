@@ -372,19 +372,16 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     * Uses first item in inventory Does not destroy the item
-     *
+     * Uses the item I am facing on myself. If I have a key the door will unlock itself.\
      * @return 0 on success, -1 on fail (no item to use)
      */
-    public int useLastInventoryItem() {
-        Item i = getLastItemInInventory();
-        if (i == null) {
-            Display.getDisplay().setMessage("You have no items to use.");
-            return -1;
-        } else {
-            i.use(this);
+    public int useThingInFacingDirectionOnMyself() {
+        Item target = getMapRelation().getTopmostItemInFacingDirection();
+        if(target != null) {
+            target.use(this);
             return 0;
-        }
+        } 
+        return -1;
     }
 
     /**

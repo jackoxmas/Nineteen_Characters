@@ -47,7 +47,7 @@ class KeyRemapper {
         remap_.put('i', Key_Commands.TOGGLE_VIEW);
         remap_.put('S', Key_Commands.SAVE_GAME);
         remap_.put('u', Key_Commands.USE_LAST_ITEM);
-        remap_.put('T', Key_Commands.GET_INTERACTION_OPTIONS);
+        remap_.put('t', Key_Commands.GET_INTERACTION_OPTIONS);
         //Spend skillpoints
         remap_.put('R', Key_Commands.SPEND_SKILLPOINT_ON_BIND);
         remap_.put('T', Key_Commands.SPEND_SKILLPOINT_ON_BARGAIN);

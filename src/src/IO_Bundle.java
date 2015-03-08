@@ -23,24 +23,6 @@ public class IO_Bundle {
 
     public IO_Bundle(char[][] v, Color[][] c, ArrayList<PickupableItem> i,
             EntityStatsPack s, Occupation o, int n, int bi, int ba, int ob,
-            PrimaryHandHoldable pri, SecondaryHandHoldable sec
-    ) {
-        view_for_display_ = v;
-        color_for_display_ = c;
-        inventory_ = i;
-        stats_for_display_ = s;
-        occupation_ = o;
-        num_skillpoints_ = n;
-        bind_wounds_ = bi;
-        bargain_ = ba;
-        observation_ = ob;
-        primary_ = pri;
-        second_ = sec;
-        strings_for_communication_ = null;
-    }
-
-    public IO_Bundle(char[][] v, Color[][] c, ArrayList<PickupableItem> i,
-            EntityStatsPack s, Occupation o, int n, int bi, int ba, int ob,
             PrimaryHandHoldable pri, SecondaryHandHoldable sec,
             ArrayList<String> sfc
     ) {

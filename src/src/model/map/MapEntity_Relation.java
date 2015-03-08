@@ -277,7 +277,31 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      * @param y - y position of attack relative to sender
      * @return -1 if tile is off the map, -2 if entity does not exist
      */
-    public int sendAttack(int x, int y) {
+    public int sendAttackToRelativePosition(int x, int y) {
+        MapTile target_tile = this.current_map_reference_.
+                getTile(getMyXCoordinate() + x, getMyYCoordinate() + y);
+        if (target_tile == null) {
+            return -1;
+        } else {
+            Entity target_entity = target_tile.getEntity();
+            if (target_entity == null) {
+                return -2;
+            } else {
+                target_entity.receiveAttack(3 + entity_.getStatsPack().getOffensive_rating_(), entity_);
+                return 0;
+            }
+        }
+    }
+
+    /**
+     * Sends an attack to absolute position (x,y)
+     *
+     * @author John-Michael Reed
+     * @param x - x position of attack
+     * @param y - y position of attack
+     * @return -1 if tile is off the map, -2 if entity does not exist
+     */
+    public int sendAttackToAbsolutePosition(int x, int y) {
         MapTile target_tile = this.current_map_reference_.getTile(x, y);
         if (target_tile == null) {
             return -1;
@@ -303,28 +327,28 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         FacingDirection f = entity_.getFacingDirection();
         switch (f) {
             case UP:
-                error_code = sendAttack(0, 1);
+                error_code = sendAttackToRelativePosition(0, 1);
                 break;
             case DOWN:
-                error_code = sendAttack(0, -1);
+                error_code = sendAttackToRelativePosition(0, -1);
                 break;
             case LEFT:
-                error_code = sendAttack(-1, 0);
+                error_code = sendAttackToRelativePosition(-1, 0);
                 break;
             case RIGHT:
-                error_code = sendAttack(1, 0);
+                error_code = sendAttackToRelativePosition(1, 0);
                 break;
             case UP_RIGHT:
-                error_code = sendAttack(1, 1);
+                error_code = sendAttackToRelativePosition(1, 1);
                 break;
             case UP_LEFT:
-                error_code = sendAttack(-1, 1);
+                error_code = sendAttackToRelativePosition(-1, 1);
                 break;
             case DOWN_RIGHT:
-                error_code = sendAttack(1, -1);
+                error_code = sendAttackToRelativePosition(1, -1);
                 break;
             case DOWN_LEFT:
-                error_code = sendAttack(-1, -1);
+                error_code = sendAttackToRelativePosition(-1, -1);
                 break;
         }
         return error_code;
@@ -332,6 +356,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     /**
      * Gets the Entity you are facing
+     *
      * @author John-Michael Reed
      * @return null if no entity is there.
      */
@@ -398,6 +423,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     /**
      * Gets the Item you are facing
+     *
      * @author John-Michael Reed
      * @return null if no item is there.
      */

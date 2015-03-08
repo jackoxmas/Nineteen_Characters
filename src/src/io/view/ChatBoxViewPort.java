@@ -34,7 +34,7 @@ private ArrayList<String> headings_ = new ArrayList<String>();
 	public ArrayList<String> getContents(){
 		ArrayList<String> result = new ArrayList<String>(headings_.size());
 		for(int i = 0;i!=headings_.size();++i){
-			result.set(i, headings_.get(i)+view_content_strings_.get(i));
+			result.add(i, headings_.get(i)+view_content_strings_.get(i));
 		}
 		return result;
 	}

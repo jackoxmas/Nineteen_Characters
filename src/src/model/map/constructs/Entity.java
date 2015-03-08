@@ -68,10 +68,6 @@ abstract public class Entity extends DrawableThing {
         return silence;
     }
 
-    public ArrayList<String> saySomethingTo(Entity target, String words) {
-        return target.reply(words, this);
-    }
-
     /**
      * @author John-Michael Reed
      * @param recieved_text - what was said to me

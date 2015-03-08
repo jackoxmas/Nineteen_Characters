@@ -534,6 +534,10 @@ abstract public class Entity extends DrawableThing {
         this.stats_pack_.increaseCurrentLifeBy(strength);
     }
 
+    public void receiveMana(int strength) {
+        this.stats_pack_.increaseCurrentManaBy(strength);
+    }
+
     /**
      * Return the combined stats of the entity, includes armour stats.
      */

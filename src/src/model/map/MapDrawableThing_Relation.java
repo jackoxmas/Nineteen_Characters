@@ -77,6 +77,7 @@ public class MapDrawableThing_Relation {
                         to_effect.receiveAttack(strength, null); // kills avatar if health is negative
                     } else if (effect == Effect.HEAL) {
                         to_effect.receiveHeal(strength);
+                        to_effect.receiveMana(strength);
                     } else if (effect == Effect.LEVEL) {
                         to_effect.gainEnoughExperienceTolevelUp();
                     } else if (effect == Effect.KILL) {

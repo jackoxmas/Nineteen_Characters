@@ -406,7 +406,9 @@ public final class Avatar extends Entity {
                 this.getOccupation().performOccupationSkill(1);
                 return null;
             case USE_SKILL_2:
+                System.out.println("Performing Skill 2");
                 this.getOccupation().performOccupationSkill(2);
+                System.out.println("Already performed Skill 2");
                 return null;
             case USE_SKILL_3:
                 this.getOccupation().performOccupationSkill(3);

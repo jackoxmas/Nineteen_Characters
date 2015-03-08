@@ -116,18 +116,13 @@ public final class Sneak extends Occupation {
             } else if (number == 4) {
                 // Bow attack
                 if (bow_ != null) {
-                    // Case that you have enough mana:
-                    if (has_run_out_of_mana == 0) {
-                        for (int num_attacks = 0; num_attacks <= super.getSkill_4_(); ++num_attacks) {
-                            getEntity().getMapRelation().sendAttackInFacingDirection();
-                        }
-                    } else {
-                        // Not enough mana to case spell. Do nothing.
+                    for (int num_attacks = 0; num_attacks <= super.getSkill_4_(); ++num_attacks) {
+                        getEntity().getMapRelation().sendAttackInFacingDirection();
                     }
                 }
             }
         } else {
-            // you don't have enought manna and wasted it on trying to cast a spell
+            System.out.println("Sneak out of mana");
         }
         return 0;
     }

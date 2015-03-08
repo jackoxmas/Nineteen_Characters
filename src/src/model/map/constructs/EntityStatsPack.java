@@ -261,7 +261,8 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
      */
     public int increaseCurrentLifeBy(int amount) {
         if (amount < 0) {
-            System.exit(-1);
+            System.err.println("Warning! Current life increasing function cannot increase life by negative amount: " + amount);
+            amount = 0;
         }
         if (current_life_ + amount > max_life_) {
             current_life_ = max_life_;
@@ -279,7 +280,8 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
      */
     public int deductCurrentManaBy(int amount) {
         if (amount < 0) {
-            System.exit(-1);
+            System.err.println("Warning! Current mana reducing function cannot reduce mana by negative amount: " + amount);
+            amount = 0;
         }
         if (current_mana_ - amount < 0) {
             current_mana_ = 0;
@@ -297,7 +299,8 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
      */
     public int increaseCurrentManaBy(int amount) {
         if (amount < 0) {
-            System.exit(-1);
+            System.err.println("Warning! Current mana increasing function cannot increase mana by negative amount: " + amount);
+            amount = 0;
         }
         if (current_mana_ + amount > max_mana_) {
             current_mana_ = max_mana_;

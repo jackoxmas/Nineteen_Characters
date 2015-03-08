@@ -125,7 +125,7 @@ public final class Smasher extends Occupation {
                         getEntity().getMapRelation().sendAttackInFacingDirection();
                     }
                 } else {
-                    // Not enough mana to case spell. You are out of mana.
+                    System.out.println("Out of mana in Smasher1");
                 }
             }
         } else if (number == 2) {
@@ -137,7 +137,7 @@ public final class Smasher extends Occupation {
                         getEntity().getMapRelation().sendAttackInFacingDirection();
                     }
                 } else {
-                    // Not enough mana to case spell. You are out of mana.
+                    System.out.println("Out of mana in Smasher2");
                 }
             }
         } else if (number == 3) {
@@ -149,7 +149,7 @@ public final class Smasher extends Occupation {
                         getEntity().getMapRelation().sendAttackInFacingDirection();
                     }
                 } else {
-                    // Not enough mana to case spell. You are out of mana.
+                    System.out.println("Out of mana in Smasher3");
                 }
             }
         } else if (number == 4) {

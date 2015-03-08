@@ -12,7 +12,7 @@ private ArrayList<String> result_ = new ArrayList<String>();
 	}
 	public void renderToDisplay(IO_Bundle bundle){
 		result_.clear();
-		if(bundle == null){result_.add("GAME OVER YOU ARE DEAD"); return;}
+		if(bundle == null){result_.add("GAME OVER YOU ARE DEAD"); return;}//If null we are dead, so simply say that and do nothing else
 		if(bundle.strings_for_communication_ == null){return;}
 			clear();
 		for(int i = 0; i!=bundle.strings_for_communication_ .size();++i){

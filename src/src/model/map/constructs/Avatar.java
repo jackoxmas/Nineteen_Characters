@@ -392,8 +392,27 @@ public final class Avatar extends Entity {
                 this.setRepresentation('☭');
                 this.becomeSneak();
                 return null;
+            case BIND_WOUNDS:
+                this.bindWounds();
+                return null;
+            case BARGAIN_AND_BARTER:
+                //this.observe();
+                System.out.println("BARGAIN_AND_BARTER not yet implemented in Avatar");
+                return null;
             case OBSERVE:
                 this.observe();
+                return null;
+            case USE_SKILL_1:
+                this.getOccupation().performOccupationSkill(1);
+                return null;
+            case USE_SKILL_2:
+                this.getOccupation().performOccupationSkill(2);
+                return null;
+            case USE_SKILL_3:
+                this.getOccupation().performOccupationSkill(3);
+                return null;
+            case USE_SKILL_4:
+                this.getOccupation().performOccupationSkill(4);
                 return null;
             case SPEND_SKILLPOINT_ON_BIND:
                 this.spendSkillpointOn(SkillEnum.BIND_WOUNDS);

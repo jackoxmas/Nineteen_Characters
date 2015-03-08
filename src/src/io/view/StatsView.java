@@ -36,7 +36,7 @@ public final class StatsView extends Viewport
 	}
     
 	@Override
-	public void renderToDisplay(IO_Bundle bundle) {
+	public void renderToDisplayInternally(IO_Bundle bundle) {
 		renderArray(bundle);
 		populateEquipped(bundle);
 		populateItems(bundle);

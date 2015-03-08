@@ -174,21 +174,10 @@ public final class UserController implements Function<Void, Character> {
     }
 
     private void takeTurnandPrintTurn(Key_Commands input) {
-        IO_Bundle bundle = updateViewsAndMap(input);
-        if (bundle != null) {
-            if (bundle.strings_for_communication_ != null) {
-                System.out.println("Incoming " + bundle.strings_for_communication_.size());
-            }
-            updateDisplay(bundle);
-        } else {
-            System.out.println("Avatar is unreachable in UserController.takeTurnandPrintTurn() \nAvatar is either dead or invalid.");
-            IO_Bundle game_over = makeGameOverView();
-        }
+    	IO_Bundle bundle = updateViewsAndMap(input);
+    	updateDisplay(bundle);
     }
-    private IO_Bundle makeGameOverView() {
-        // ...
-        return null;
-    }
+
 
     // FIELD ACCESSORS
     /**

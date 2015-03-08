@@ -91,7 +91,7 @@ public final class AvatarCreationView extends Viewport
      * @see src.view.Viewport#renderToDisplay()
      */
 	@Override
-	public void renderToDisplay(IO_Bundle bundle) {
+	public void renderToDisplayInternally(IO_Bundle bundle) {
 		clear();
 		renderArray();
 		populateEquipped(bundle);

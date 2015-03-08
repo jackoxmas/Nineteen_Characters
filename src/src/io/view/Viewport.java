@@ -25,6 +25,7 @@ public abstract class Viewport {
 	private transient String equipped_list_ = "";
 	public int getHeight(){return height_;}
 	public int getWidth(){return width_;}
+    private static ArrayList<String> game_over_ = null;
 	public abstract boolean getInput(char c);
 
 	public Viewport(){
@@ -32,8 +33,11 @@ public abstract class Viewport {
 		width_ = 80;
 		view_contents_ = new char[width_][height_];
 		color_contents_ = new Color[width_][height_];
-
+		if(game_over_ == null){
+			game_over_ = getAsciiArtFromFile("ASCIIART/gameover.txt");
 		}
+
+	}
 	public Viewport(int height,int width){
 		height_ = height;
 		width_ = width;
@@ -44,7 +48,15 @@ public abstract class Viewport {
 	/**
 	 * Tells the view to update it's array contents. 
 	 */
-	public abstract void renderToDisplay(IO_Bundle bundle);
+	public final void renderToDisplay(IO_Bundle bundle){
+		if(bundle == null){
+			clear();
+			for(int i = 0; i!=game_over_.size();++i){writeStringToContents(0, i, game_over_.get(i));}
+			return;
+		}
+		renderToDisplayInternally(bundle);
+	}
+	protected abstract void renderToDisplayInternally(IO_Bundle bundle);
 	/**
 	 * returns the contents of a view as a 2D array
 	 * @return the 2D array of characters that represents the view

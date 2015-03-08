@@ -6,7 +6,7 @@
 package src.io.view;
 
 import java.awt.Color;
-
+import java.util.ArrayList;
 import src.IO_Bundle;
 
 
@@ -24,7 +24,7 @@ public final class MapView extends Viewport {
 
 
 	@Override
-	public void renderToDisplay(IO_Bundle bundle) {
+	protected void renderToDisplayInternally(IO_Bundle bundle) {
 		render(bundle);//All that's needed for now.
 		populateEquipped(bundle);
 		populateItems(bundle);

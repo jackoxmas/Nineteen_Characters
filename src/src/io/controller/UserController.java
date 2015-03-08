@@ -45,7 +45,6 @@ public final class UserController implements Function<Void, Character>
 		public void chatBoxHandleMapInputAndPrintNewContents(IO_Bundle bundle){
 			chatview_.renderToDisplay(bundle);
 			ArrayList<String> list = chatview_.getContents();
-			System.out.println("I was run " + list.size());
 			for(String i : list){Display.getDisplay().setMessage(i);}
 		}
 		private class outputBoxFunction implements Function<Void,Character>{
@@ -127,6 +126,9 @@ public final class UserController implements Function<Void, Character>
     private void takeTurnandPrintTurn(char foo) {
     	Key_Commands input = remap_.mapInput(foo);
     	IO_Bundle bundle = updateViewsAndMap(input);
+		if(bundle.strings_for_communication_!= null){
+			System.out.println("Incoming " + bundle.strings_for_communication_.size());
+		}
     	updateDisplay(bundle);
     	}
 

@@ -218,6 +218,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         } else if (x < 0 && y < 0) {
             entity_.setFacingDirection(FacingDirection.DOWN_LEFT);
         } else {
+            System.err.print("An impossible error occured in MapEntity_Relation.moveInDirection()");
             System.exit(-1); // Impossible
         }
         return super.pushEntityInDirection(entity_, x, y);
@@ -413,8 +414,9 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 if (target_tile != null) {
                     return target_tile.getEntity();
                 }
+            break;
             default:
-                System.err.println("Impossible");
+                System.err.println("Impossible error in getEntityInFacingDirection");
                 System.exit(-44);
                 break;
         }
@@ -480,6 +482,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 if (target_tile != null) {
                     return target_tile.viewTopItem();
                 }
+            break;
             default:
                 System.err.println("Impossible");
                 System.exit(-44);

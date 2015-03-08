@@ -67,6 +67,7 @@ public class Villager extends Entity {
         final int myY = this.getMapRelation().getMyYCoordinate();
 
         if (myX == attackerX && myY == attackerY) {
+            System.err.println("impossible error in Villager.replyToAttackFrom");
             System.exit(-6); // Impossible
             return -999;
         } else if (myX == attackerX && myY > attackerY) {
@@ -86,6 +87,7 @@ public class Villager extends Entity {
         } else if (myX < attackerX && myY > attackerY) {
             return this.getMapRelation().moveInDirection(-1, 1);
         } else {
+            System.err.println("Impossible error in Villager.replyToAttackFrom");
             System.exit(-9); // Impossible
             return -999;
         }

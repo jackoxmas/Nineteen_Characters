@@ -17,8 +17,8 @@ import src.model.map.constructs.Item;
  */
 public abstract class Viewport {
 
-    private final int height_=40;
-    private final int width_=80;
+    private final int height_;
+    private final int width_;
 	private transient char[][] view_contents_;
 	private transient Color[][] color_contents_;
 	private transient String item_list_ = "";
@@ -28,9 +28,18 @@ public abstract class Viewport {
 	public abstract boolean getInput(char c);
 
 	public Viewport(){
+		height_ = 40;
+		width_ = 80;
 		view_contents_ = new char[width_][height_];
 		color_contents_ = new Color[width_][height_];
+
 		}
+	public Viewport(int height,int width){
+		height_ = height;
+		width_ = width;
+		view_contents_ = new char[width_][height_];
+		color_contents_ = new Color[width_][height_];
+	}
 	    
 	/**
 	 * Tells the view to update it's array contents. 

@@ -123,7 +123,7 @@ public final class MapTile {
                 return ret;
             } else {
                 System.err.println("Impossible error occured in MapTile");
-                System.exit(-97);
+                System.exit(-98);
                 return ret;
             }
         } else if (terrain_ != null && terrain_.isVisible()) {

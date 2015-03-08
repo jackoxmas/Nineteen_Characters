@@ -15,6 +15,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import src.Function;
+import src.Key_Commands;
 import src.io.view.Viewport;
 
 /**
@@ -244,8 +245,65 @@ public class Display {
 	 * Adds a Function<Void,String> object to the list of things called by chatbox on enter
 	 * @param Function<Void,String> listen
 	 */
-	public void addChatBoxFunctionEvent(Function<Void,String> listen){
-		//chat_.addFunction(listen);
+	public void addInputBoxTextEnteredFunction(Function<Void,String> listen){
+		EventQueue.invokeLater(new inputHandlerRunnable(listen));
 	}
+    private class inputHandlerRunnable implements Runnable{
+    	private Function<Void,String> handler_;
+    	public inputHandlerRunnable(Function<Void,String> foo) {
+			handler_ = foo;
+		}
+		@Override
+		public void run() {
+			Key_Listener_GUI.getGUI().addInputBoxReceiver(handler_);	
+		}
+    	
+    }
+	/**
+	 * Adds something to listen for characters from the output box. 
+	 * @param receiver
+	 */
+	public void addOutputBoxCharacterFunction(Function<Void,Character> receiver){
+		EventQueue.invokeLater(new outputBoxHandlerRunnable(receiver));
+	}
+	/**
+	 * Handles the outbox box input fetching
+	 * @author mbregg
+	 *
+	 */
+    private class outputBoxHandlerRunnable implements Runnable{
+    	private Function<Void,Character> handler_;
+    	public outputBoxHandlerRunnable(Function<Void,Character> foo) {
+			handler_ = foo;
+		}
+		@Override
+		public void run() {
+			Key_Listener_GUI.getGUI().addoutputBoxReceiver(handler_);	
+		}
+    	
+    }
+	/**
+	 * Adds a function to be triggered by direct, unremappable things, like buttons. 
+	 * @param receiver
+	 */
+	public void addDirectCommandReceiver(Function<Void,Key_Commands> receiver){
+		java.awt.EventQueue.invokeLater(new directHandlerRunnable(receiver));
+	}
+	 /** 
+     * The class handles giving the Function interface to the GUI
+     * @author mbregg
+     *
+     */
+    private class directHandlerRunnable implements Runnable{
+    	private Function<Void,Key_Commands> handler_;
+    	public directHandlerRunnable(Function<Void,Key_Commands> foo) {
+			handler_ = foo;
+		}
+		@Override
+		public void run() {
+			Key_Listener_GUI.getGUI().addDirectCommandReceiver(handler_);	
+		}
+    	
+    }
 
 }

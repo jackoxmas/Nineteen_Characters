@@ -24,4 +24,6 @@ public interface MapUser_Interface {
      * @return 
      */
     public IO_Bundle sendCommandToMap(String username, Key_Commands command, int width_from_center, int height_from_center);
+    public IO_Bundle sendCommandToMapWithText(String username, Key_Commands command, int width_from_center, int height_from_center, String text);
+    
 }

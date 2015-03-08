@@ -9,6 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.text.StyledDocument;
 
 import src.Function;
+import src.Key_Commands;
 
 
 /**
@@ -24,13 +25,38 @@ class Key_Listener_GUI extends javax.swing.JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Function<Void,Character>> game_inputHandlers_ = new ArrayList<Function<Void,Character>>();
-	private ArrayList<Function<Void,String>> chatbox_inputHandlers_ = new ArrayList<Function<Void,String>>();
+	private ArrayList<Function<Void,Character>> outputbox_inputHandlers_ = new ArrayList<Function<Void,Character>>();
+	private ArrayList<Function<Void,String>> inputchatbox_Handlers_ = new ArrayList<Function<Void,String>>();
+	private ArrayList<Function<Void,Key_Commands>> direct_command_receivers_=new ArrayList<Function<Void,Key_Commands>>();
 	/**
 	 *
 	 * @param in What to write to the equipped box
 	 */
 	public void takeInEquipped(String in){
 		equipment_jTextArea.setText(in);
+	}
+	/**
+	 * Adds something for the buttons to call with a direct command when pressed. 
+	 * @param receiver
+	 */
+	public void addDirectCommandReceiver(Function<Void,Key_Commands> receiver){
+		direct_command_receivers_.add(receiver);
+	}
+	/**
+	 * Adds a event to be triggered when chars typed in out box.
+	 * @param handler_
+	 */
+	public void addoutputBoxReceiver(Function<Void, Character> handler_) {
+		outputbox_inputHandlers_.add(handler_);
+		
+	}
+	/**
+	 * Adds an handler for when the input box receives a string. 
+	 * @param handler_
+	 */
+	public void addInputBoxReceiver(Function<Void, String> handler_) {
+		inputchatbox_Handlers_.add(handler_);
+		
 	}
 	/**
 	 * 
@@ -97,7 +123,7 @@ class Key_Listener_GUI extends javax.swing.JFrame {
 	 * @param foo : the class to call
 	 */
 	public void addChatboxInputerHandler(Function<Void,String> foo){
-		chatbox_inputHandlers_.add((foo));
+		inputchatbox_Handlers_.add((foo));
 	}
 	private float fontSize_ = 14f;//The font size
 	/**
@@ -314,15 +340,17 @@ class Key_Listener_GUI extends javax.swing.JFrame {
 	}// </editor-fold>//GEN-END:initComponents
 
 
-
+	private void sendKeyCommand(Key_Commands command){
+		for(Function<Void,Key_Commands> foo : direct_command_receivers_){foo.apply(command);}
+	}
 	private void incoming_text_jTextAreaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_incoming_text_jTextAreaKeyTyped
-		// TODO add your handling code here:
+		for(Function<Void,Character> foo : outputbox_inputHandlers_){foo.apply(evt.getKeyChar());}
 	}//GEN-LAST:event_incoming_text_jTextAreaKeyTyped
 
 	private void outgoing_text_jTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_outgoing_text_jTextFieldKeyPressed
 		if(evt.getKeyCode() == KeyEvent.VK_ENTER){
 			String S = outgoing_text_jTextField.getText();
-			for(Function<Void,String> functor : chatbox_inputHandlers_){
+			for(Function<Void,String> functor : inputchatbox_Handlers_){
 				functor.apply(S);
 			}
 
@@ -345,15 +373,15 @@ class Key_Listener_GUI extends javax.swing.JFrame {
 	}//GEN-LAST:event_outgoing_text_jTextFieldKeyPressed
 
 	private void bind_wounds_jButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bind_wounds_jButtonMouseClicked
-		// TODO add your handling code here:
+		sendKeyCommand(Key_Commands.BIND_WOUNDS);
 	}//GEN-LAST:event_bind_wounds_jButtonMouseClicked
 
 	private void bargain_barter_jButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bargain_barter_jButtonMouseClicked
-		// TODO add your handling code here:
+		sendKeyCommand(Key_Commands.BARGAIN_AND_BARTER);
 	}//GEN-LAST:event_bargain_barter_jButtonMouseClicked
 
 	private void observe_jButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_observe_jButtonMouseClicked
-		// TODO add your handling code here:
+		sendKeyCommand(Key_Commands.OBSERVE);
 	}//GEN-LAST:event_observe_jButtonMouseClicked
 
 	private void game_jTextPaneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_game_jTextPaneKeyTyped
@@ -384,4 +412,6 @@ class Key_Listener_GUI extends javax.swing.JFrame {
 	private javax.swing.JPanel regular_skills_jPanel;
 	private javax.swing.JPanel special_skills_jPanel;
 	// End of variables declaration//GEN-END:variables
+
+
 }

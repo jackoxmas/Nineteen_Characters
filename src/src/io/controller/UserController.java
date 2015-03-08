@@ -5,11 +5,14 @@
  */
 
 package src.io.controller;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import src.Function;
+import src.IO_Bundle;
 import src.Key_Commands;
 import src.io.view.AvatarCreationView;
+import src.io.view.ChatBoxViewPort;
 import src.io.view.MapView;
 import src.io.view.StatsView;
 import src.io.view.Viewport;
@@ -21,60 +24,55 @@ import src.model.map.MapUser_Interface;
  */
 public final class UserController implements Function<Void, Character>
 {
-	private class KeyRemapper{
-		private HashMap<Character,Key_Commands> remap_ = new HashMap<Character,Key_Commands>();
-		public KeyRemapper(){
-			initBindings();
+	private final class ChatBoxMiniController implements Function<Void, String>{
+		private ChatBoxViewPort chatview_ = new ChatBoxViewPort();
+		public ChatBoxMiniController(){
+			Display.getDisplay().addInputBoxTextEnteredFunction(this);
+			Display.getDisplay().addOutputBoxCharacterFunction(new outputBoxFunction());
 		}
-		private void initBindings(){
-			//Character Creation
-			remap_.put('Z',Key_Commands.BECOME_SMASHER );
-			remap_.put('X',Key_Commands.BECOME_SUMMONER);
-			remap_.put('C',Key_Commands.BECOME_SNEAK);
-			//Directions NUMPAD
-			remap_.put('1',Key_Commands.MOVE_DOWNLEFT);
-			remap_.put('2',Key_Commands.MOVE_DOWN);
-			remap_.put('3',Key_Commands.MOVE_DOWNRIGHT);
-			remap_.put('4',Key_Commands.MOVE_LEFT);
-			remap_.put('5',Key_Commands.STANDING_STILL);
-			remap_.put('6',Key_Commands.MOVE_RIGHT);
-			remap_.put('7',Key_Commands.MOVE_UPLEFT);
-			remap_.put('8',Key_Commands.MOVE_UP);
-			remap_.put('9',Key_Commands.MOVE_UPRIGHT);
-			//Directions Keyboard
-			remap_.put('z',Key_Commands.MOVE_DOWNLEFT);
-			remap_.put('x',Key_Commands.MOVE_DOWN);
-			remap_.put('c',Key_Commands.MOVE_DOWNRIGHT);
-			remap_.put('a',Key_Commands.MOVE_LEFT);
-			remap_.put('s',Key_Commands.STANDING_STILL);
-			remap_.put('d',Key_Commands.MOVE_RIGHT);
-			remap_.put('q',Key_Commands.MOVE_UPLEFT);
-			remap_.put('w',Key_Commands.MOVE_UP);
-			remap_.put('e',Key_Commands.MOVE_UPRIGHT);
-			//Interact up bindings.
-			remap_.put('p',Key_Commands.PICK_UP_ITEM);
-			remap_.put('D', Key_Commands.DROP_LAST_ITEM);
-			remap_.put('E',Key_Commands.EQUIP_LAST_ITEM);
-			remap_.put('U', Key_Commands.UNEQUIP_EVERYTHING);
-			remap_.put('i', Key_Commands.TOGGLE_VIEW);
-			remap_.put('S', Key_Commands.SAVE_GAME);
-			remap_.put('u',Key_Commands.USE_LAST_ITEM);
+		/**
+		 * The function that is called by the chat box when enter is hit. Receives contents of input box. 
+		 */
+		@Override
+		public Void apply(String foo) {
+			sendTextCommandAndUpdate(foo);
+			return null;
 		}
-		public void setMap(HashMap<Character, Key_Commands> remap) {
-			remap_ = remap;
+		private Void sendTextCommandAndUpdate(String foo){
+			Key_Commands command = Key_Commands.GET_CONVERSATION_CONTINUATION_OPTIONS;
+			if(foo.contains("[ Attack ]")){command = Key_Commands.ATTACK; updateDisplay(sendCommandToMap(command)); return null;}
+			if(foo.contains("[ Greet ]")){command = Key_Commands.GET_CONVERSATION_STARTERS; updateDisplay(sendCommandToMap(command)); return null;}
+			updateDisplay(sendCommandToMapWithText(command,foo));
+			return null;
 		}
-		public HashMap<Character, Key_Commands> getMap() {
-			return remap_;
+		public void chatBoxHandleMapInputAndPrintNewContents(IO_Bundle bundle){
+			chatview_.renderToDisplay(bundle);
+			ArrayList<String> list = chatview_.getContents();
+			for(String i : list){Display.getDisplay().setMessage(i);}
 		}
-		public Key_Commands mapInput(char input){
-			return remap_.get(input);
+		private class outputBoxFunction implements Function<Void,Character>{
+			@Override
+			public Void apply(Character foo) {
+				sendTextCommandAndUpdate(chatview_.getChoice(Character.getNumericValue(foo)));
+				return null;
+			}
 		}
+
 	}
 
     public UserController(MapUser_Interface mui, String uName) {
         MapUserAble_ = mui;
         userName_ = uName;
-        setView(null);
+        takeTurnandPrintTurn('5');//For some reason need to take a empty turn for fonts to load...
+        Display.getDisplay().addDirectCommandReceiver(new Function<Void,Key_Commands>(){
+
+			@Override
+			public Void apply(Key_Commands foo) {
+				takeTurnandPrintTurn(foo);
+				return null;
+			}
+        	
+        });
     	Display.getDisplay().addGameInputerHandler(this);
     	Display.getDisplay().setView(currentView_);
         Display.getDisplay().printView();
@@ -85,10 +83,36 @@ public final class UserController implements Function<Void, Character>
     private final String userName_;
     private Viewport currentView_ = new AvatarCreationView(); 
     private KeyRemapper remap_ = new KeyRemapper();
-    
+    private ChatBoxMiniController chatbox_ = new ChatBoxMiniController();
+    /**
+     * Takes in a bundle, and updates and then prints the dispaly with it.
+     * @param bundle
+     */
+    public void updateDisplay(IO_Bundle bundle){
+    	currentView_.renderToDisplay(bundle);
+    	chatbox_.chatBoxHandleMapInputAndPrintNewContents(bundle);
+    	Display.getDisplay().setView(currentView_);
+        Display.getDisplay().printView();
+    }
+    /**
+     * Sends the given command to the map
+     * @param input
+     */
+    private IO_Bundle sendCommandToMap(Key_Commands command){
+    	return (MapUserAble_.sendCommandToMap(userName_, command, currentView_.getWidth()/2,currentView_.getHeight()/2));
+    }
+    /**
+     * Sends the command and string to the map.
+     * @param command
+     * @param in
+     * @return
+     */
+    private IO_Bundle sendCommandToMapWithText(Key_Commands command, String in){
+    	return (MapUserAble_.sendCommandToMapWithText(userName_, command, currentView_.getWidth()/2,currentView_.getHeight()/2, in));
+    }
     //Handles the view switching, uses the  instance of operator in a slightly evil way, 
     //ideally we should look into refactoring this to not
-    private void setView(Key_Commands input){
+    private IO_Bundle updateViewsAndMap(Key_Commands input){
     	boolean taken = false;
     	if(currentView_ instanceof AvatarCreationView){
     			if(Key_Commands.BECOME_SNEAK.equals(input)||Key_Commands.BECOME_SMASHER.equals(input)
@@ -102,23 +126,26 @@ public final class UserController implements Function<Void, Character>
     	else if(currentView_ instanceof StatsView){
     		if(Key_Commands.TOGGLE_VIEW.equals(input)){currentView_ = new MapView(); taken = true;}
     	}
+    	IO_Bundle bundle = null;
     	if(!taken){
-    	currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, input, currentView_.getWidth()/2,currentView_.getHeight()/2));
+    		return sendCommandToMap(input);
     	}
     	else{
-    		currentView_.renderToDisplay(MapUserAble_.sendCommandToMap(userName_, Key_Commands.STANDING_STILL, currentView_.getWidth()/2,currentView_.getHeight()/2));
-    		//I need to get this info without sending a command, sending ' ' is a hack for now.
+    		return sendCommandToMap(Key_Commands.DO_ABSOLUTELY_NOTHING);
     	}
+    
     }
-    private void takeTurn(char foo) {
+    private void takeTurnandPrintTurn(char foo){
     	Key_Commands input = remap_.mapInput(foo);
-    	setView(input);
-    	//my_avatar_.getInput((char)input);
-		//my_avatar_.getMapRelation().getSimpleAngle();//Example of simpleangle
-		//my_avatar_.getMapRelation().getAngle();//Example of how to use getAngle
-    	Display.getDisplay().setView(currentView_);
-        Display.getDisplay().printView();
+    	takeTurnandPrintTurn(input);
+    }
+    private void takeTurnandPrintTurn(Key_Commands input) {
+    	IO_Bundle bundle = updateViewsAndMap(input);
+    	if(bundle.strings_for_communication_!= null){
+    		System.out.println("Incoming " + bundle.strings_for_communication_.size());
     	}
+    	updateDisplay(bundle);
+    }
 
     // FIELD ACCESSORS
     /**
@@ -153,7 +180,7 @@ public final class UserController implements Function<Void, Character>
 
 	@Override
 	public Void apply(Character foo) {
-		takeTurn(foo);
+		takeTurnandPrintTurn(foo);
 		return null;
 	}
     

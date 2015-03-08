@@ -23,7 +23,7 @@ public enum Key_Commands {
     // IO_Bundle will return 4 strings
     // Must provide additional string parameter for talk.
     
-    BIND_WOUNDS, BARGAIN_AND_BARTER, OBSERVE,
+    BIND_WOUNDS, BARGAIN_AND_BARTER, OBSERVE, ATTACK,
     // BARGAIN_AND_BARTER returns a list of item names and prices as strings
     BUY_ITEM_BY_NAME, // also accepts a string
     
@@ -34,4 +34,5 @@ public enum Key_Commands {
     
     SAVE_GAME, DO_ABSOLUTELY_NOTHING
     //The save class itself is named SAVE_GAME, so I'd going with that over save_map
+
 }

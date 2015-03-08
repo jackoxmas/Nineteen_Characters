@@ -336,8 +336,8 @@ public class Map implements MapUser_Interface {
 
     public IO_Bundle sendCommandToMap(String username, Key_Commands command, int width_from_center, int height_from_center) {
         Avatar to_recieve_command = this.getAvatarByName(username);
+        ArrayList<String> Strings_for_IO_Bundle = null;
         if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null) {
-            ArrayList<String> Strings_for_IO_Bundle = null;
             if (command != Key_Commands.STANDING_STILL) {
                 Strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, null);
             }
@@ -356,7 +356,8 @@ public class Map implements MapUser_Interface {
                     to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
                     to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
                     to_recieve_command.getPrimaryEquipped(),
-                    to_recieve_command.getSecondaryEquipped()
+                    to_recieve_command.getSecondaryEquipped(),
+                    Strings_for_IO_Bundle
             );
             return return_package;
         } else if (to_recieve_command != null) {
@@ -366,7 +367,8 @@ public class Map implements MapUser_Interface {
                     to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
                     to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
                     to_recieve_command.getPrimaryEquipped(),
-                    to_recieve_command.getSecondaryEquipped()
+                    to_recieve_command.getSecondaryEquipped(),
+                    Strings_for_IO_Bundle
             );
             return return_package;
         } else {
@@ -389,8 +391,8 @@ public class Map implements MapUser_Interface {
      */
     public IO_Bundle sendCommandToMapWithText(String username, Key_Commands command, int width_from_center, int height_from_center, String text) {
         Avatar to_recieve_command = this.getAvatarByName(username);
+        ArrayList<String> Strings_for_IO_Bundle = null;
         if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null) {
-            ArrayList<String> Strings_for_IO_Bundle = null;
             if (command != Key_Commands.GET_CONVERSATION_CONTINUATION_OPTIONS && command != Key_Commands.TALK_USING_STRING) {
                 System.err.println("This function's extra string parameter does not work with the provided enum");
                 System.exit(-6);
@@ -412,7 +414,8 @@ public class Map implements MapUser_Interface {
                     to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
                     to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
                     to_recieve_command.getPrimaryEquipped(),
-                    to_recieve_command.getSecondaryEquipped()
+                    to_recieve_command.getSecondaryEquipped(),
+                    Strings_for_IO_Bundle
             );
             return return_package;
         } else if (to_recieve_command != null) {
@@ -422,7 +425,8 @@ public class Map implements MapUser_Interface {
                     to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
                     to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
                     to_recieve_command.getPrimaryEquipped(),
-                    to_recieve_command.getSecondaryEquipped()
+                    to_recieve_command.getSecondaryEquipped(),
+                    Strings_for_IO_Bundle
             );
             return return_package;
         } else {

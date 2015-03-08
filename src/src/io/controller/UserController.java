@@ -39,7 +39,7 @@ public final class UserController implements Function<Void, Character>
 			return null;
 		}
 		private Void sendTextCommandAndUpdate(String foo){
-			Key_Commands command = Key_Commands.CONTINUE_CONVERSATION;
+			Key_Commands command = Key_Commands.DO_ABSOLUTELY_NOTHING;
 			if(foo.contains("[ Attack ]")){command = Key_Commands.ATTACK;}
 			if(foo.contains("[ Greet ]")){command = Key_Commands.GET_CONVERSATION_STARTERS;}
 			updateDisplay(sendCommandToMapWithText(command,foo));

@@ -274,9 +274,12 @@ public class Map implements MapUser_Interface {
         if (this.map_grid_[a.getMapRelation().getMyYCoordinate()][a.getMapRelation().getMyXCoordinate()].getEntity() == a) {
             this.map_grid_[a.getMapRelation().getMyYCoordinate()][a.getMapRelation().getMyXCoordinate()].removeEntity();
             a.setMapRelation(null);
+            a = null;
+            System.gc();
             return 0;
         } else {
             System.err.println("The avatar to be removed cannot be found on the map.");
+            System.exit(-88);
             return -1;
         }
     }
@@ -297,11 +300,14 @@ public class Map implements MapUser_Interface {
         if (this.map_grid_[e.getMapRelation().getMyYCoordinate()][e.getMapRelation().getMyXCoordinate()].getEntity() == e) {
             this.map_grid_[e.getMapRelation().getMyYCoordinate()][e.getMapRelation().getMyXCoordinate()].removeEntity();
             e.setMapRelation(null);
+            e = null;
+            System.gc();
             return 0;
         } else {
-            System.err.println("The entity to be removed cannot be found on the map.");
+            System.err.println("The avatar to be removed cannot be found on the map.");
+            System.exit(-88);
+            return -1;
         }
-        return -1;
     }
 
     /**

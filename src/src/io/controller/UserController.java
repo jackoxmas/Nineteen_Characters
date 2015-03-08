@@ -181,7 +181,7 @@ public final class UserController implements Function<Void, Character> {
             }
             updateDisplay(bundle);
         } else {
-            System.out.println("Avatar us unreachable in UserController.takeTurnandPrintTurn() \nAvatar is either dead or invalid.");
+            System.out.println("Avatar is unreachable in UserController.takeTurnandPrintTurn() \nAvatar is either dead or invalid.");
             IO_Bundle game_over = makeGameOverView();
         }
     }

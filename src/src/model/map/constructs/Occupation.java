@@ -5,6 +5,8 @@
  */
 package src.model.map.constructs;
 
+import java.util.ArrayList;
+
 import src.SkillEnum;
 
 
@@ -30,6 +32,8 @@ public abstract class Occupation {
     }
 
     private int[] skills_levels_ = {1,1,1,1};
+    private String[] skill_names_ = {"Skill 1","Skill 2","Skills 3", "Skill 4"};
+    //This should really use the enum....
     
     /**
      * Goes from one to four
@@ -83,12 +87,36 @@ public abstract class Occupation {
 
      public abstract int incrementSkill(SkillEnum skill);
      public String getSkillsName(int i){
-    	 return "";
+    	 if(i > 0 && i < skills_levels_.length){
+    		 return skill_names_[i];
+    	 }
+    	 return "INVALID SKILL";
+     }
+     public boolean setSkillName(String name, int i){
+    	 if(i > 0 && i < skill_names_.length){
+    		 skill_names_[i] = name;
+    		 return true;
+    	 }
+    	 return false;
      }
      public int getSkillLevel(int i){
     	 if(i > 0 && i < skills_levels_.length){
     		 return skills_levels_[i];
     	 }
     	 return -1;
+     }
+     public ArrayList<Integer> getAllSkillLevels(){
+    	 ArrayList<Integer> result = new ArrayList<Integer>(skills_levels_.length);
+    	 for(int i : skills_levels_){
+    		 result.add(i);
+    	 }
+    	 return result;
+     }
+     public ArrayList<String> getAllSkillNames(){
+    	 ArrayList<String> result = new ArrayList<String>(skill_names_.length);
+    	 for(String i : skill_names_){
+    		 result.add(i);
+    	 }
+    	 return result;
      }
 }

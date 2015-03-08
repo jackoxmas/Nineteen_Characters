@@ -49,7 +49,7 @@ public final class StatsView extends Viewport
     		writeStringToContents(0, 0+i, template_.get(i));
     	}
     	renderStats(bundle);
-    	renderInventory(bundle);
+    	renderInventoryAndSkill(bundle);//These must be rendered in the correct order...
     }
 /*
  * helps renderToDisplay
@@ -105,7 +105,7 @@ public final class StatsView extends Viewport
     	writeStringToContents(72, 13, rightAlign(3, "" + bundle_.getStatsPack().getArmor_rating_()));
         writeStringToContents(72, 14, rightAlign(3, "" + bundle_.num_skillpoints_));
     }
-    private void printItemName(String item_name, int row){
+    private void printName(String item_name, int row){
     	if (item_name.length() > 22)
 			item_name = item_name.substring(0, 21);
 		if (row < 10) {
@@ -119,32 +119,48 @@ public final class StatsView extends Viewport
 		} else if (row < 24) {
 			if (display_index)
 				writeStringToContents(19+row, 2, "" + (char)(97+row));
-			writeStringToContents(30, 19+row, item_name);
+			writeStringToContents(4, 19+row, item_name);//4 used to be 30
 		} else if (row < 36) {
 			if (display_index)
 				writeStringToContents(19+row, 2, "" + (char)(97+row));
-			writeStringToContents(56, 19+row, item_name);
+			writeStringToContents(4, 19+row, item_name);//4 used to be 56
 		}
     }
 /*
  * Helps renderToDisplay
  */
-    private void renderInventory(IO_Bundle bundle_) {
-    	ArrayList<PickupableItem> inventory = bundle_.getInventory();
+    private void renderInventoryAndSkill(IO_Bundle bundle_) {
     	int i = 0;
-    	for (i = 0; i < inventory.size(); i++) {
-    		String item_name = inventory.get(i).name_;
-    		printItemName(item_name, i);	
+    	i = renderInventory(bundle_, i);
+    	i = renderSkills(bundle_,i);
+    }
+    private int renderSkills(IO_Bundle bundle_, int i){
+    	printName("Skills:", i++);
+    	ArrayList<String> skills = bundle_.getSkillNames();
+    	ArrayList<Integer> levels = bundle_.getSkillLevels();
+    	for(int j = 0; j< skills.size(); ++j,++i){
+    		printName(tab+skills.get(j)+": "+String.valueOf(levels.get(j)), i);
     	}
-    	printItemName("Equipped:",++i);
+    	return i;
+    }
+    private int renderInventory(IO_Bundle bundle_, int i){
+    	printName("Items:", i++);
+    	ArrayList<PickupableItem> inventory = bundle_.getInventory();
+    	for (int j = 0; j < inventory.size(); j++,i++) {
+    		String item_name = inventory.get(j).name_;
+    		printName(tab+item_name, i);	
+    	}
+    	printName("Equipped:",++i);
     	if(bundle_.primary_!=null){
-    		printItemName(tab+"Primary:",++i);
-    		printItemName(tab+tab+bundle_.primary_.getName(),++i);
+    		printName(tab+"Primary:",++i);
+    		printName(tab+tab+bundle_.primary_.getName(),++i);
     	}
     	if(bundle_.second_!=null){
-    		printItemName(tab+"Secondary:",++i);
-    		printItemName(tab+tab+bundle_.second_.getName(), ++i);
+    		printName(tab+"Secondary:",++i);
+    		printName(tab+tab+bundle_.second_.getName(), ++i);
     	}
+    	++i;
+    	return i;
     }
 
 	@Override

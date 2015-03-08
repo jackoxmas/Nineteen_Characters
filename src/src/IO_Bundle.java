@@ -59,8 +59,22 @@ public class IO_Bundle {
     public Occupation getOccupation() {
         return occupation_;
     }
-
-    public ArrayList<PickupableItem> getInventory() {
-        return inventory_;
+    public ArrayList<PickupableItem> getInventory(){
+    	return inventory_;
+    }
+    public ArrayList<String> getSkillNames(){
+    	ArrayList<String> result = getOccupation().getAllSkillNames();
+    	result.add(0,"bind_wounds_");
+    	result.add(0,"bargain_");
+    	result.add(0,"observation_");
+    	return result;
+    }
+    public ArrayList<Integer> getSkillLevels(){
+    	ArrayList<Integer> result =  getOccupation().getAllSkillLevels();
+    	result.add(0,bind_wounds_);
+    	result.add(0,bargain_);
+    	result.add(0,observation_);
+    	return result;
+    	
     }
 }

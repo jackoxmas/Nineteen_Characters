@@ -42,6 +42,7 @@ class KeyRemapper{
 		remap_.put('i', Key_Commands.TOGGLE_VIEW);
 		remap_.put('S', Key_Commands.SAVE_GAME);
 		remap_.put('u',Key_Commands.USE_LAST_ITEM);
+		remap_.put('T',Key_Commands.GET_INTERACTION_OPTIONS);
 	}
 	public void setMap(HashMap<Character, Key_Commands> remap) {
 		remap_ = remap;
@@ -50,7 +51,9 @@ class KeyRemapper{
 		return remap_;
 	}
 	public Key_Commands mapInput(char input){
-		return remap_.get(input);
+		Key_Commands command = remap_.get(input);
+		if(command == null){return Key_Commands.DO_ABSOLUTELY_NOTHING;}
+		return command;
 	}
 	public void bind(char input, Key_Commands command){
 		remap_.put(input,command);

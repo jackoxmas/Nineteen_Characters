@@ -39,7 +39,7 @@ public final class UserController implements Function<Void, Character>
 			return null;
 		}
 		private Void sendTextCommandAndUpdate(String foo){
-			updateDisplay(sendCommandToMapWithText(Key_Commands.STANDING_STILL,foo));
+			updateDisplay(sendCommandToMapWithText(foo));
 			return null;
 		}
 		public void chatBoxHandleMapInputAndPrintNewContents(IO_Bundle bundle){
@@ -96,8 +96,8 @@ public final class UserController implements Function<Void, Character>
      * @param in
      * @return
      */
-    private IO_Bundle sendCommandToMapWithText(Key_Commands command,String in){
-    	return (MapUserAble_.sendCommandToMapWithText(userName_, command, currentView_.getWidth()/2,currentView_.getHeight()/2, in));
+    private IO_Bundle sendCommandToMapWithText(String in){
+    	return (MapUserAble_.sendCommandToMapWithText(userName_, Key_Commands.TALK_USING_STRING, currentView_.getWidth()/2,currentView_.getHeight()/2, in));
     }
     //Handles the view switching, uses the  instance of operator in a slightly evil way, 
     //ideally we should look into refactoring this to not
@@ -120,7 +120,7 @@ public final class UserController implements Function<Void, Character>
     		return sendCommandToMap(input);
     	}
     	else{
-    		return sendCommandToMap(Key_Commands.STANDING_STILL);
+    		return sendCommandToMap(Key_Commands.DO_ABSOLUTELY_NOTHING);
     	}
     
     }

@@ -64,7 +64,8 @@ public class RunGame {
         avatar_ = new Avatar("avatar", '☃');
         map_.addAvatar(avatar_, 0, 0);
 
-
+        Avatar buddy_ = new Avatar("buddy", '웃');
+        map_.addAvatar(buddy_, 3, 0);
     }
 
     private static void populateMap() {

@@ -391,14 +391,22 @@ public final class Avatar extends Entity {
 			this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_4);
 			return null;
 		case GET_INTERACTION_OPTIONS:
+			if(target!=null){
 			return target.getInteractionOptionStrings();
+			}else{return null;}
 		case GET_CONVERSATION_STARTERS:
+			if(target!=null){
 			return target.getConversationStarterStrings();
+			}else{return null;}
 		case GET_CONVERSATION_CONTINUATION_OPTIONS:
+			if(target!=null){
 			return target.getConversationContinuationStrings(optional_text);
+			}else{return null;}
 			// optional text is what the Entity said to you last.
 		case TALK_USING_STRING:
+			if(target!=null){
 			return target.reply(optional_text, target);
+			}else{return null;}
 		default: System.out.println("Invalid command sent to avatar");
 		break;
 		}

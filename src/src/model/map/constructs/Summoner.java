@@ -5,8 +5,9 @@
  */
 package src.model.map.constructs;
 
+import java.util.Random;
+import src.Effect;
 import src.SkillEnum;
-
 
 /**
  * Summoner Occupation, intellect +1.
@@ -74,26 +75,41 @@ public final class Summoner extends Occupation {
 
     @Override
     public int performOccupationSkill(int number) {
-        if (number == 1) {
-        } else if (number == 2) {
-        } else if (number == 3) {
-        } else if (number == 4) {
-            // Staff attack
-            final int cost = 1;
-            if (staff_ != null) {
-                int has_run_out_of_mana = getEntity().getStatsPack().deductCurrentManaBy(cost);
-                // Case that you have enough mana:
-                if (has_run_out_of_mana == 0) {
+        if (number <= 0 || number > 4) {
+            System.err.println("Error in Summoner.performOccupationSkill()");
+            System.exit(-109);
+        }
+        final int cost = 1;
+        int has_run_out_of_mana = getEntity().getStatsPack().deductCurrentManaBy(cost);
+        if (has_run_out_of_mana == 0) {
+            if (number == 1) {
+                // influencing another's behavior [Confusion spell]
+                Random randomGenerator = new Random();
+                Boolean isConfused = randomGenerator.nextBoolean();
+                if (isConfused) {
+                    super.getEntity().getMapRelation().sendAttackInFacingDirection();
+                    super.getEntity().receiveAttack(10, null); // hurt myself
+                } else {
+                    super.getEntity().getMapRelation().getEntityInFacingDirection().
+                            receiveAttack(getSkill_1_() * 5, null); // hurt enemy [no attack-back]
+                }
+            } else if (number == 2) {
+                // boon - magic that heals
+                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_2_() * 2, getSkill_2_(), Effect.HEAL);
+                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinLine(getSkill_2_() * 3, getSkill_2_(), Effect.HURT);
+            } else if (number == 3) {
+                // bane - magic that does damage or harm.
+                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinLine(getSkill_3_() * 4, 2 * getSkill_3_(), Effect.HURT);
+            } else if (number == 4) {
+                // Staff attack
+                if (staff_ != null) {
                     for (int num_attacks = 0; num_attacks <= super.getSkill_4_(); ++num_attacks) {
                         getEntity().getMapRelation().sendAttackInFacingDirection();
                     }
-                } else {
-                    // Not enough mana to case spell. Do nothing.
                 }
             }
         } else {
-            System.err.println("Error in Summoner.performOccupationSkill()");
-            System.exit(-109);
+            // you don't have enought manna and wasted it on trying to cast a spell
         }
         return 0;
     }

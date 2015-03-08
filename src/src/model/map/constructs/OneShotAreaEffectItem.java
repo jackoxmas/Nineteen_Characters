@@ -40,22 +40,6 @@ public class OneShotAreaEffectItem extends Item {
         hasBeenActivated = false;
     }
 
-    /**
-     * Constructor: Does not contain power parameter.
-     *
-     * @param name
-     * @param representation
-     * @param is_passable
-     * @param goes_in_inventory
-     * @param is_one_shot
-     * @param effect
-     */
-    public OneShotAreaEffectItem(String name, char representation, boolean is_passable,
-            boolean goes_in_inventory, boolean is_one_shot, Effect effect) {
-        super(name, representation, goes_in_inventory, true, true);
-        effect_ = effect;
-    }
-
     public int getPower() {
         return power_;
     }

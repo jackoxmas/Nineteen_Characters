@@ -38,6 +38,12 @@ abstract public class Entity extends DrawableThing {
 
     public abstract ArrayList<String> getConversationStarterStrings();
 
+    /**
+     * This function returns a list of appropriate responses to the string that you recieved last.
+     * @author John-Michael Reed
+     * @param what_you_just_said_to_me - same as "what you last said to me"
+     * @return conversation options
+     */
     public abstract ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me);
 
     public abstract ArrayList<String> getListOfItemsYouCanUseOnMe();

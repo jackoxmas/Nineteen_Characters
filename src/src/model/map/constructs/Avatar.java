@@ -7,6 +7,7 @@ package src.model.map.constructs;
 
 import java.util.ArrayList;
 import java.util.Random;
+import src.Effect;
 
 import src.FacingDirection;
 import src.Key_Commands;
@@ -23,7 +24,6 @@ import src.model.map.MapAvatar_Relation;
 public final class Avatar extends Entity {
 
 	// map_relationship_ is used in place of a map_referance_
-
 	private int num_skillpoints_ = 1;
 
 	public int getNum_skillpoints_() {
@@ -51,6 +51,7 @@ public final class Avatar extends Entity {
 	}
 
 	public int bindWounds() {
+		this.getMapRelation().areaEffectFunctor.effectAreaWithinRadius(0, bind_wounds_+1, Effect.HEAL);
 		return 0;
 	}
 
@@ -284,7 +285,8 @@ public final class Avatar extends Entity {
 	 * Accepts a key command from the map
 	 *
 	 * @param command
-	 * @param optional_text - either the last thing that was said to you or the thing you are about to say.
+	 * @param optional_text - either the last thing that was said to you or the
+	 * thing you are about to say.
 	 * @return ArrayList of strings for IO_Bundle or null if nothing to display
 	 */
 	public ArrayList<String> acceptKeyCommand(Key_Commands command, String optional_text) {
@@ -294,7 +296,7 @@ public final class Avatar extends Entity {
 			.println("Avatar cannot be controlled without a MapAvatar_Relation");
 			System.exit(-8);
 		}
-		 Entity target = this.getMapRelation().getEntityInFacingDirection();
+		Entity target = this.getMapRelation().getEntityInFacingDirection();
 		switch (command) {
 		case MOVE_DOWNLEFT:// Move SW
 			mar.moveInDirection(-1, -1);
@@ -390,98 +392,99 @@ public final class Avatar extends Entity {
 		case SPEND_SKILLPOINT_ON_SKILL_4:
 			this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_4);
 			return null;
+
 		case GET_INTERACTION_OPTIONS:
 			if(target!=null){
-			return target.getInteractionOptionStrings();
+				return target.getInteractionOptionStrings();
 			}else{return null;}
 		case GET_CONVERSATION_STARTERS:
 			if(target!=null){
-			return target.getConversationStarterStrings();
+				return target.getConversationStarterStrings();
 			}else{return null;}
 		case GET_CONVERSATION_CONTINUATION_OPTIONS:
 			if(target!=null){
-			return target.getConversationContinuationStrings(optional_text);
+				return target.getConversationContinuationStrings(optional_text);
 			}else{return null;}
 			// optional text is what the Entity said to you last.
 		case TALK_USING_STRING:
 			if(target!=null){
-			return target.reply(optional_text, target);
+				return target.reply(optional_text, target);
 			}else{return null;}
 		default: System.out.println("Invalid command sent to avatar");
 		break;
 		}
-	return null;
-}
-
-public Avatar(String name, char representation) {
-	super(name, representation);
-}
-
-// map_relationship_ is used in place of a map_reference_
-private MapAvatar_Relation map_relationship_;
-
-/**
- * Use this to call functions contained within the MapAvatar relationship
- *
- * @return map_relationship_
- * @author Reed, John
- */
-@Override
-public MapAvatar_Relation getMapRelation() {
-	return map_relationship_;
-}
-
-/**
- * Sets MapAvatar_Relation
- *
- * @param a
- */
-public void setMapRelation(MapAvatar_Relation a) {
-	map_relationship_ = a;
-}
-
-/*
- * Make sure to call set map after this!
- */
-/**
- * Avatars automatically do nothing when attacked
- *
- * @author John-Michael Reed
- * @param attacker
- * @return 0 if reply succeeded, non-zero otherwise [ex. if entity is null
- * or off the map]
- */
-@Override
-public int replyToAttackFrom(Entity attacker) {
-	if (attacker == null) {
-		return -1;
+		return null;
 	}
-	// return this.getMapRelation().sendAttackInFacingDirection(attacker);
-	return 0;
-}
-
-@Override
-public String toString() {
-	String s = "Avatar name: " + name_;
-
-	s += "\n Inventory " + "(" + getInventory().size() + ")" + ":";
-	for (int i = 0; i < getInventory().size(); ++i) {
-		s += " " + getInventory().get(i).name_;
+	public Avatar(String name, char representation) {
+		super(name, representation);
 	}
 
-	s += "\n";
 
-	s += " map_relationship_: ";
-	if (map_relationship_ == null) {
-		s += "null";
-	} else {
-		s += "Not null";
+	// map_relationship_ is used in place of a map_reference_
+	private MapAvatar_Relation map_relationship_;
+
+	/**
+	 * Use this to call functions contained within the MapAvatar relationship
+	 *
+	 * @return map_relationship_
+	 * @author Reed, John
+	 */
+	@Override
+	public MapAvatar_Relation getMapRelation() {
+		return map_relationship_;
 	}
 
-	s += "\n associated with map:"
-			+ map_relationship_.isAssociatedWithMap();
+	/**
+	 * Sets MapAvatar_Relation
+	 *
+	 * @param a
+	 */
+	public void setMapRelation(MapAvatar_Relation a) {
+		map_relationship_ = a;
+	}
 
-	return s;
-}
+	/*
+	 * Make sure to call set map after this!
+	 */
+	/**
+	 * Avatars automatically do nothing when attacked
+	 *
+	 * @author John-Michael Reed
+	 * @param attacker
+	 * @return 0 if reply succeeded, non-zero otherwise [ex. if entity is null
+	 * or off the map]
+	 */
+	@Override
+	public int replyToAttackFrom(Entity attacker) {
+		if (attacker == null) {
+			return -1;
+		}
+		// return this.getMapRelation().sendAttackInFacingDirection(attacker);
+		return 0;
+	}
+
+	@Override
+	public String toString() {
+		String s = "Avatar name: " + name_;
+
+		s += "\n Inventory " + "(" + getInventory().size() + ")" + ":";
+		for (int i = 0; i < getInventory().size(); ++i) {
+			s += " " + getInventory().get(i).name_;
+		}
+
+		s += "\n";
+
+		s += " map_relationship_: ";
+		if (map_relationship_ == null) {
+			s += "null";
+		} else {
+			s += "Not null";
+		}
+
+		s += "\n associated with map:"
+				+ map_relationship_.isAssociatedWithMap();
+
+		return s;
+	}
 
 }

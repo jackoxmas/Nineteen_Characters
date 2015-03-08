@@ -135,7 +135,7 @@ public final class StatsView extends Viewport
     	i = renderSkills(bundle_,i);
     }
     private int renderSkills(IO_Bundle bundle_, int i){
-    	printName("Skills:", i++);
+    	printName("Skills (Points: " + String.valueOf(bundle_.num_skillpoints_)+"):", i++);
     	ArrayList<String> skills = bundle_.getSkillNames();
     	ArrayList<Integer> levels = bundle_.getSkillLevels();
     	for(int j = 0; j< skills.size(); ++j,++i){

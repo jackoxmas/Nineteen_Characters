@@ -38,19 +38,22 @@ public class Monster extends Entity {
     }
 
     /**
-     * Monsters automatically attack back when attacked
-     *
-     * @author John-Michael Reed
-     * @param attacker
-     * @return 0 if reply succeeded, non-zero otherwise [ex. if entity is null
-     * or off the map]
+     * Monsters will attack back.
+     * @param damage
+     * @param attacker 
      */
     @Override
-    public int replyToAttackFrom(Entity attacker) {
-        if (attacker == null) {
-            return -1;
+    public void receiveAttack(int damage, Entity attacker) {
+        int amount_of_damage = damage - getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_();
+        if (amount_of_damage < 0) {
+            amount_of_damage = 0;
         }
-        this.sendAttack(attacker);
-        return 0;
+        getStatsPack().deductCurrentLifeBy(amount_of_damage);
+        boolean isAlive = checkIfAlive();
+        if (isAlive) {
+            if (attacker != null) {
+                this.sendAttack(attacker);
+            }
+        }
     }
 }

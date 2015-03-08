@@ -168,12 +168,16 @@ public class Map implements MapUser_Interface {
      * @return -1 if the entity to be removed does not exist.
      */
     public int removeAvatar(Avatar a) {
-        this.avatar_list_.remove(a.name_);
-        if (this.map_grid_[a.getMapRelation().getMyXCoordinate()][a.getMapRelation().getMyYCoordinate()].getEntity() == a) {
-            this.map_grid_[a.getMapRelation().getMyXCoordinate()][a.getMapRelation().getMyYCoordinate()].removeEntity();
+        Avatar removed = this.avatar_list_.remove(a.name_);
+        if (removed == null) {
+            System.err.println("The avatar to be removed does not exist in the list of avatars");
+        }
+        if (this.map_grid_[a.getMapRelation().getMyYCoordinate()][a.getMapRelation().getMyXCoordinate()].getEntity() == a) {
+            this.map_grid_[a.getMapRelation().getMyYCoordinate()][a.getMapRelation().getMyXCoordinate()].removeEntity();
             a.setMapRelation(null);
             return 0;
         } else {
+            System.err.println("The avatar to be removed cannot be found on the map.");
             return -1;
         }
     }
@@ -225,10 +229,16 @@ public class Map implements MapUser_Interface {
      * @return -1 on fail, 0 on success
      */
     public int addAvatar(Avatar a, int x, int y) {
+        System.out.println("Adding avatar: " + a.name_ + " to the map");
         a.setMapRelation(new MapAvatar_Relation(this, a, x, y));
         int error_code = this.map_grid_[y][x].addEntity(a);
         if (error_code == 0) {
             this.avatar_list_.put(a.name_, a);
+            Avatar aa = this.avatar_list_.get(a.name_);
+            if(aa == null) {
+                System.err.println("Something is seriously wrong with the avatar list");
+                System.exit(-5);
+            }
         } else {
             a.setMapRelation(null);
         }
@@ -281,11 +291,16 @@ public class Map implements MapUser_Interface {
      * @return -1 if the entity to be removed does not exist.
      */
     public int removeEntity(Entity e) {
-        this.avatar_list_.remove(e.name_);
-        if (this.map_grid_[e.getMapRelation().getMyXCoordinate()][e.getMapRelation().getMyYCoordinate()].getEntity() == e) {
-            this.map_grid_[e.getMapRelation().getMyXCoordinate()][e.getMapRelation().getMyYCoordinate()].removeEntity();
+        Entity removed = this.entity_list_.remove(e.name_);
+        if (removed == null) {
+            System.err.println("The entity to be removed does not exist in the list of entities");
+        }
+        if (this.map_grid_[e.getMapRelation().getMyYCoordinate()][e.getMapRelation().getMyXCoordinate()].getEntity() == e) {
+            this.map_grid_[e.getMapRelation().getMyYCoordinate()][e.getMapRelation().getMyXCoordinate()].removeEntity();
             e.setMapRelation(null);
             return 0;
+        } else {
+            System.err.println("The entity to be removed cannot be found on the map.");
         }
         return -1;
     }

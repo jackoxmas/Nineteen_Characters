@@ -43,9 +43,15 @@ public class MapAvatar_Relation extends MapEntity_Relation {
         avatar_ = avatar;
     }
 
+    @Override
+    public void removeMyselfFromTheMapCompletely() {
+        current_map_reference_.removeAvatar(avatar_);
+    }
+
     /**
      * This function will be called from observe() to get info for a tile at
      * (x,y).
+     *
      * @author Reid Olsen
      * @param x coordinate of tile relative to avatar.
      * @param y coordinate of tile relative to avatar.

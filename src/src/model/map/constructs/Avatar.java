@@ -23,10 +23,10 @@ import src.model.map.MapAvatar_Relation;
  */
 public final class Avatar extends Entity {
     
-    private boolean isAlive = true;
+    private boolean isInExistance = true;
     
-    public boolean getIsAlive() {
-        return isAlive;
+    public boolean getIsInExistance() {
+        return isInExistance;
     }
 
     public Avatar(String name, char representation) {
@@ -339,7 +339,7 @@ public final class Avatar extends Entity {
                 // deployment
                 return null;
             case USE_LAST_ITEM: // Use item in inventory
-                super.useThingInFacingDirectionOnMyself();
+                super.useItemInFacingDirectionOnMyself();
                 System.out.println("using item!");
                 return null;
             case EQUIP_LAST_ITEM: // equipMyselfTo
@@ -463,34 +463,26 @@ public final class Avatar extends Entity {
     @Override
     public void gameOver() {
         System.out.println("An avatar has run out of lives and is gone forever.");
-        this.isAlive = false;
+        this.isInExistance = false;
         this.map_relationship_.removeMyselfFromTheMapCompletely();
     }
 
-    /*
-     * Make sure to call set map after this!
-     */
     /**
-     * Avatars automatically do nothing when attacked
-     *
+     * Avatars don't do anything when attacked.
      * @author John-Michael Reed
-     * @param attacker
-     * @return 0 if reply succeeded, non-zero otherwise [ex. if entity is null
-     * or off the map]
+     * @param damage - see super.receiveAttack()
+     * @param attacker - see super.receiveAttack()
+     * @return - see super.receiveAttack()
      */
     @Override
-    public void receiveAttack(int damage, Entity attacker) {
-        int amount_of_damage = damage - getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_();
-        if (amount_of_damage < 0) {
-            amount_of_damage = 0;
-        }
-        getStatsPack().deductCurrentLifeBy(amount_of_damage);
-        boolean isAlive = isAlive();
+    public boolean receiveAttack(int damage, Entity attacker) {
+        boolean isAlive = super.receiveAttack(damage, attacker);
         if (isAlive) {
             if (attacker != null) {
                 System.out.println(name_ + " got attacked.");
             }
         }
+        return isAlive;
     }
 
     @Override

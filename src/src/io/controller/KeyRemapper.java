@@ -56,6 +56,14 @@ class KeyRemapper {
         remap_.put('G', Key_Commands.SPEND_SKILLPOINT_ON_SKILL_2);
         remap_.put('H', Key_Commands.SPEND_SKILLPOINT_ON_SKILL_3);
         remap_.put('V', Key_Commands.SPEND_SKILLPOINT_ON_SKILL_4);
+        //Use special abilities
+        remap_.put('!', Key_Commands.BIND_WOUNDS);
+        remap_.put('@', Key_Commands.BARGAIN_AND_BARTER);
+        remap_.put('#', Key_Commands.OBSERVE);
+        remap_.put('$', Key_Commands.USE_SKILL_1);
+        remap_.put('%', Key_Commands.USE_SKILL_2);
+        remap_.put('^', Key_Commands.USE_SKILL_3);
+        remap_.put('&', Key_Commands.USE_SKILL_4);
     }
 
     public void setMap(HashMap<Character, Key_Commands> remap) {

@@ -46,19 +46,21 @@ public class Villager extends Entity {
         super(name, representation);
     }
 
+    /**
+     * Runs away if attacked
+     * @param damage - see super.receiveAttack()
+     * @param attacker - see super.receiveAttack()
+     * @return - see super.receiveAttack()
+     */
     @Override
-    public void receiveAttack(int damage, Entity attacker) {
-        int amount_of_damage = damage - getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_();
-        if (amount_of_damage < 0) {
-            amount_of_damage = 0;
-        }
-        getStatsPack().deductCurrentLifeBy(amount_of_damage);
-        boolean isAlive = isAlive();
+    public boolean receiveAttack(int damage, Entity attacker) {
+        boolean isAlive = super.receiveAttack(damage, attacker);
         if (isAlive) {
             if (attacker != null) {
                 replyToAttackFrom(attacker);
             }
         }
+        return isAlive;
     }
 
     /**

@@ -39,7 +39,9 @@ abstract public class Entity extends DrawableThing {
     public abstract ArrayList<String> getConversationStarterStrings();
 
     /**
-     * This function returns a list of appropriate responses to the string that you recieved last.
+     * This function returns a list of appropriate responses to the string that
+     * you recieved last.
+     *
      * @author John-Michael Reed
      * @param what_you_just_said_to_me - same as "what you last said to me"
      * @return conversation options
@@ -47,14 +49,35 @@ abstract public class Entity extends DrawableThing {
     public abstract ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me);
 
     public abstract ArrayList<String> getListOfItemsYouCanUseOnMe();
-    
+
     public ArrayList<String> endConversation() {
         ArrayList<String> silence = new ArrayList<>();
         return silence;
     }
-    
+
     public ArrayList<String> saySomethingTo(Entity target, String words) {
         return target.reply(words, this);
+    }
+
+    /**
+     * @author John-Michael Reed
+     * @param recieved_text - what was said to me
+     * @param speaker - the person who I am talking to
+     * @return - what I said back
+     */
+    public ArrayList<String> reply(String recieved_text, Entity speaker) {
+        ArrayList<String> reply = new ArrayList<>();
+        if (recieved_text.equalsIgnoreCase("Hello")) {
+            reply.add("Goodbye");
+            return reply;
+        } else if (recieved_text.equalsIgnoreCase("Goodbye")) {
+            reply.add("");
+            return reply;
+        } else if (recieved_text.equalsIgnoreCase("")) {
+            return reply;
+        } else {
+            return reply;
+        }
     }
 
     public int getExperienceBetweenLevels() {
@@ -88,6 +111,7 @@ abstract public class Entity extends DrawableThing {
 
     /**
      * Entities must check their health after they are damaged.
+     *
      * @return true if alive false is dead
      */
     public boolean isAlive() {
@@ -384,15 +408,17 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     * Uses the item I am facing on myself. If I have a key the door will unlock itself.\
+     * Uses the item I am facing on myself. If I have a key the door will unlock
+     * itself.\
+     *
      * @return 0 on success, -1 on fail (no item to use)
      */
-    public int useThingInFacingDirectionOnMyself() {
+    public int useItemInFacingDirectionOnMyself() {
         Item target = getMapRelation().getTopmostItemInFacingDirection();
-        if(target != null) {
+        if (target != null) {
             target.use(this);
             return 0;
-        } 
+        }
         return -1;
     }
 
@@ -477,36 +503,24 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     * Specify null if the attacker is not an entity that can be attacked.
+     * 
      * Override for villager/monster
+     * @author John-Michael Reed
      * @param damage - damage received
-     * @param attacker - who the attack is coming from
+     * @param attacker - who the attack is coming from. Specify null if the attacker is from an unreachable source i.e. the map
+     * @return true if I am still alive, false if I am dead
      */
-    public abstract void receiveAttack(int damage, Entity attacker);
+    public boolean receiveAttack(int damage, Entity attacker) {
+        int amount_of_damage = damage - getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_();
+        if (amount_of_damage < 0) {
+            amount_of_damage = 0;
+        }
+        getStatsPack().deductCurrentLifeBy(amount_of_damage);
+        return isAlive();
+    }
 
     public void receiveHeal(int strength) {
         this.stats_pack_.increaseCurrentLifeBy(strength);
-    }
-
-    /**
-     * @author John-Michael Reed
-     * @param recieved_text - what was said to me
-     * @param speaker - the person who I am talking to
-     * @return - what I said back
-     */
-    public ArrayList<String> reply(String recieved_text, Entity speaker) {
-        ArrayList<String> reply = new ArrayList<>();
-        if (recieved_text.equalsIgnoreCase("Hello")) {
-            reply.add("Goodbye");
-            return reply;
-        } else if (recieved_text.equalsIgnoreCase("Goodbye")) {
-            reply.add("");
-            return reply;
-        } else if (recieved_text.equalsIgnoreCase("")) {
-            return reply;
-        } else {
-            return reply;
-        }
     }
 
     /**

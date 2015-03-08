@@ -43,17 +43,13 @@ public class Monster extends Entity {
      * @param attacker 
      */
     @Override
-    public void receiveAttack(int damage, Entity attacker) {
-        int amount_of_damage = damage - getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_();
-        if (amount_of_damage < 0) {
-            amount_of_damage = 0;
-        }
-        getStatsPack().deductCurrentLifeBy(amount_of_damage);
-        boolean isAlive = isAlive();
+    public boolean receiveAttack(int damage, Entity attacker) {
+        boolean isAlive = super.receiveAttack(damage, attacker);
         if (isAlive) {
             if (attacker != null) {
                 this.sendAttack(attacker);
             }
         }
+        return isAlive;
     }
 }

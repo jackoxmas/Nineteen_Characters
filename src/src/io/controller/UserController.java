@@ -180,7 +180,14 @@ public final class UserController implements Function<Void, Character> {
                 System.out.println("Incoming " + bundle.strings_for_communication_.size());
             }
             updateDisplay(bundle);
+        } else {
+            System.out.println("Avatar us unreachable in UserController.takeTurnandPrintTurn() \nAvatar is either dead or invalid.");
+            IO_Bundle game_over = makeGameOverView();
         }
+    }
+    private IO_Bundle makeGameOverView() {
+        // ...
+        return null;
     }
 
     // FIELD ACCESSORS

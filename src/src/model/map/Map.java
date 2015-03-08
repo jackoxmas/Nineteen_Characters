@@ -351,11 +351,11 @@ public class Map implements MapUser_Interface {
     public IO_Bundle sendCommandToMap(String username, Key_Commands command, int width_from_center, int height_from_center) {
         Avatar to_recieve_command = this.avatar_list_.get(username);
         ArrayList<String> Strings_for_IO_Bundle = null;
-        if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null && to_recieve_command.getIsAlive()) {
+        if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null && to_recieve_command.getIsInExistance()) {
             if (command != Key_Commands.STANDING_STILL) {
                 Strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, null);
             }
-            if (to_recieve_command.getIsAlive() == true) {
+            if (to_recieve_command.getIsInExistance() == true) {
                 char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
                         to_recieve_command.getMapRelation().getMyYCoordinate(),
                         width_from_center, height_from_center);
@@ -411,7 +411,7 @@ public class Map implements MapUser_Interface {
     public IO_Bundle sendCommandToMapWithText(String username, Key_Commands command, int width_from_center, int height_from_center, String text) {
         Avatar to_recieve_command = this.avatar_list_.get(username);
         ArrayList<String> Strings_for_IO_Bundle = null;
-        if (to_recieve_command != null && to_recieve_command.getIsAlive()) {
+        if (to_recieve_command != null && to_recieve_command.getIsInExistance()) {
             if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null ) {
                 if (command != Key_Commands.GET_CONVERSATION_CONTINUATION_OPTIONS && command != Key_Commands.TALK_USING_STRING) {
                     System.err.println("This function's extra string parameter does not work with the provided enum");
@@ -419,7 +419,7 @@ public class Map implements MapUser_Interface {
                 } else {
                     Strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, text);
                 }
-                if (to_recieve_command.getIsAlive() == true) {
+                if (to_recieve_command.getIsInExistance() == true) {
                     char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);

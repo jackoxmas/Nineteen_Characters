@@ -15,8 +15,7 @@ private ArrayList<String> result_ = new ArrayList<String>();
 		if(bundle.strings_for_communication_ == null){return;}
 			clear();
 		for(int i = 0; i!=bundle.strings_for_communication_ .size();++i){
-			String temp = "";
-			if(i != 0){temp = String.valueOf(i) + ": ";}
+			String temp = String.valueOf(i) + ": ";
 			view_content_strings_.add(bundle.strings_for_communication_.get(i));
 			headings_.add(temp);
 		}

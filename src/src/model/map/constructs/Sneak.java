@@ -5,8 +5,8 @@
  */
 package src.model.map.constructs;
 
+import java.util.Random;
 import src.SkillEnum;
-
 
 /**
  * Sneak Occupation, agility +1.
@@ -76,29 +76,58 @@ public final class Sneak extends Occupation {
 
     @Override
     public int performOccupationSkill(int number) {
-        if (number == 1) {
-            //...
-        } else if (number == 2) {
-
-        } else if (number == 3) {
-
-        } else if (number == 4) {
-            // Bow attack
-            final int cost = 1;
-            if (bow_ != null) {
-                int has_run_out_of_mana = getEntity().getStatsPack().deductCurrentManaBy(cost);
-                // Case that you have enough mana:
-                if (has_run_out_of_mana == 0) {
-                    for (int num_attacks = 0; num_attacks <= super.getSkill_4_(); ++num_attacks) {
-                        getEntity().getMapRelation().sendAttackInFacingDirection();
+        if (number <= 0 || number > 4) {
+            System.err.println("Error in Sneak.performOccupationSkill()");
+            System.exit(-68);
+        }
+        final int cost = 1;
+        int has_run_out_of_mana = getEntity().getStatsPack().deductCurrentManaBy(cost);
+        if (has_run_out_of_mana == 0) {
+            if (number == 1) {
+                //...
+            } else if (number == 2) {
+                // detect & remove trap
+                Item potential_trap = getEntity().getMapRelation().getTopmostItemInFacingDirection();
+                Trap trap = null;
+                try {
+                    trap = (Trap) potential_trap;
+                    // it is actually a trap
+                    Random randomGenerator = new Random();
+                    final int chance_of_detection = randomGenerator.nextInt(10) + super.getSkill_2_();
+                    if (chance_of_detection < 5) {
+                        // failed to detect the trap
+                        System.out.println("Failed to detect trap.");
+                    } else {
+                        // detected the trap
+                        trap.setViewable(true);
+                        System.out.println("Trap detected.");
+                        trap.removeMyselfFromMap();
                     }
-                } else {
-                    // Not enough mana to case spell. Do nothing.
+                } catch (ClassCastException e) {
+                    // it is not a trap. 
+                    // Take back your manna
+                    getEntity().getStatsPack().increaseCurrentManaBy(cost);
+                    return 0;
+                }
+            } else if (number == 3) {
+                // become invisible [or visible]
+                boolean is_visible = getEntity().isVisible();
+                getEntity().setViewable(!is_visible);
+            } else if (number == 4) {
+                // Bow attack
+                if (bow_ != null) {
+                    // Case that you have enough mana:
+                    if (has_run_out_of_mana == 0) {
+                        for (int num_attacks = 0; num_attacks <= super.getSkill_4_(); ++num_attacks) {
+                            getEntity().getMapRelation().sendAttackInFacingDirection();
+                        }
+                    } else {
+                        // Not enough mana to case spell. Do nothing.
+                    }
                 }
             }
         } else {
-            System.err.println("Error in Sneak.performOccupationSkill()");
-            System.exit(-89);
+            // you don't have enought manna and wasted it on trying to cast a spell
         }
         return 0;
     }

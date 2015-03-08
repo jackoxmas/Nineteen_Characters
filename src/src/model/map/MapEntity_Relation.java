@@ -413,6 +413,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 if (target_tile != null) {
                     return target_tile.getEntity();
                 }
+                break;
             default:
                 System.err.println("Impossible");
                 System.exit(-44);
@@ -480,6 +481,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 if (target_tile != null) {
                     return target_tile.viewTopItem();
                 }
+                break;
             default:
                 System.err.println("Impossible");
                 System.exit(-44);

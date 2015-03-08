@@ -146,16 +146,19 @@ public final class UserController implements Function<Void, Character> {
             if (Key_Commands.BECOME_SNEAK.equals(input) || Key_Commands.BECOME_SMASHER.equals(input)
                     || Key_Commands.BECOME_SUMMONER.equals(input)) {
                 currentView_ = new MapView();
+                System.gc();
             }
         }
         if (currentView_ instanceof MapView) {
             if (Key_Commands.TOGGLE_VIEW.equals(input)) {
                 currentView_ = new StatsView(userName_);
+                System.gc();
                 taken = true;
             }
         } else if (currentView_ instanceof StatsView) {
             if (Key_Commands.TOGGLE_VIEW.equals(input)) {
                 currentView_ = new MapView();
+                System.gc();
                 taken = true;
             }
         }

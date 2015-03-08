@@ -29,10 +29,7 @@ public abstract class Occupation {
         occupation_holder_ = occupation_holder;
     }
 
-    private int skill_1_ = 1;
-    private int skill_2_ = 1;
-    private int skill_3_ = 1;
-    private int skill_4_ = 1;
+    private int[] skills_levels_ = {1,1,1,1};
     
     /**
      * Goes from one to four
@@ -42,35 +39,35 @@ public abstract class Occupation {
     abstract public int performOccupationSkill(int number);
 
     public int getSkill_1_() {
-        return skill_1_;
+        return skills_levels_[0];
     }
 
     public int getSkill_2_() {
-        return skill_2_;
+        return skills_levels_[1];
     }
 
     public int getSkill_3_() {
-        return skill_3_;
+        return skills_levels_[2];
     }
 
     public int getSkill_4_() {
-        return skill_4_;
+        return skills_levels_[3];
     }
 
     public int incrementSkill_1_() {
-        return ++skill_1_;
+        return ++skills_levels_[0];
     }
 
     public int incrementSkill_2_() {
-        return ++skill_2_;
+        return ++skills_levels_[1];
     }
 
     public int incrementSkill_3_() {
-        return ++skill_3_;
+        return ++skills_levels_[2];
     }
 
     public int incrementSkill_4_() {
-        return ++skill_4_;
+        return ++skills_levels_[3];
     }
 
     /**
@@ -85,4 +82,13 @@ public abstract class Occupation {
      public abstract void change_stats(EntityStatsPack current_stats);
 
      public abstract int incrementSkill(SkillEnum skill);
+     public String getSkillsName(int i){
+    	 return "";
+     }
+     public int getSkillLevel(int i){
+    	 if(i > 0 && i < skills_levels_.length){
+    		 return skills_levels_[i];
+    	 }
+    	 return -1;
+     }
 }

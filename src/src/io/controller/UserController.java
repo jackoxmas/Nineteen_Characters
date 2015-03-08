@@ -39,7 +39,10 @@ public final class UserController implements Function<Void, Character>
 			return null;
 		}
 		private Void sendTextCommandAndUpdate(String foo){
-			updateDisplay(sendCommandToMapWithText(foo));
+			Key_Commands command = Key_Commands.CONTINUE_CONVERSATION;
+			if(foo.contains("[ Attack ]")){command = Key_Commands.ATTACK;}
+			if(foo.contains("[ Greet ]")){command = Key_Commands.GET_CONVERSATION_STARTERS;}
+			updateDisplay(sendCommandToMapWithText(command,foo));
 			return null;
 		}
 		public void chatBoxHandleMapInputAndPrintNewContents(IO_Bundle bundle){
@@ -61,6 +64,15 @@ public final class UserController implements Function<Void, Character>
         MapUserAble_ = mui;
         userName_ = uName;
         takeTurnandPrintTurn('5');//For some reason need to take a empty turn for fonts to load...
+        Display.getDisplay().addDirectCommandReceiver(new Function<Void,Key_Commands>(){
+
+			@Override
+			public Void apply(Key_Commands foo) {
+				takeTurnandPrintTurn(foo);
+				return null;
+			}
+        	
+        });
     	Display.getDisplay().addGameInputerHandler(this);
     	Display.getDisplay().setView(currentView_);
         Display.getDisplay().printView();
@@ -95,8 +107,8 @@ public final class UserController implements Function<Void, Character>
      * @param in
      * @return
      */
-    private IO_Bundle sendCommandToMapWithText(String in){
-    	return (MapUserAble_.sendCommandToMapWithText(userName_, Key_Commands.TALK_USING_STRING, currentView_.getWidth()/2,currentView_.getHeight()/2, in));
+    private IO_Bundle sendCommandToMapWithText(Key_Commands command, String in){
+    	return (MapUserAble_.sendCommandToMapWithText(userName_, command, currentView_.getWidth()/2,currentView_.getHeight()/2, in));
     }
     //Handles the view switching, uses the  instance of operator in a slightly evil way, 
     //ideally we should look into refactoring this to not
@@ -123,14 +135,17 @@ public final class UserController implements Function<Void, Character>
     	}
     
     }
-    private void takeTurnandPrintTurn(char foo) {
+    private void takeTurnandPrintTurn(char foo){
     	Key_Commands input = remap_.mapInput(foo);
+    	takeTurnandPrintTurn(input);
+    }
+    private void takeTurnandPrintTurn(Key_Commands input) {
     	IO_Bundle bundle = updateViewsAndMap(input);
-		if(bundle.strings_for_communication_!= null){
-			System.out.println("Incoming " + bundle.strings_for_communication_.size());
-		}
-    	updateDisplay(bundle);
+    	if(bundle.strings_for_communication_!= null){
+    		System.out.println("Incoming " + bundle.strings_for_communication_.size());
     	}
+    	updateDisplay(bundle);
+    }
 
     // FIELD ACCESSORS
     /**

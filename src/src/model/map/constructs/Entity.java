@@ -22,6 +22,19 @@ abstract public class Entity extends DrawableThing {
     private FacingDirection direction_ = FacingDirection.UP;
     private ArrayList<PickupableItem> inventory_;
     private EntityStatsPack stats_pack_ = new EntityStatsPack(this);
+    private int numGoldCoins = 10;
+
+    public int getNumGoldCoins() {
+        return numGoldCoins;
+    }
+
+    public int decrementNumGoldCoinsBy(int amount) {
+        return (numGoldCoins -= amount);
+    }
+
+    public int incrementNumGoldCoinsBy(int amount) {
+        return (numGoldCoins += amount);
+    }
 
     /**
      * Entity Constructor
@@ -503,11 +516,13 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     * 
+     *
      * Override for villager/monster
+     *
      * @author John-Michael Reed
      * @param damage - damage received
-     * @param attacker - who the attack is coming from. Specify null if the attacker is from an unreachable source i.e. the map
+     * @param attacker - who the attack is coming from. Specify null if the
+     * attacker is from an unreachable source i.e. the map
      * @return true if I am still alive, false if I am dead
      */
     public boolean receiveAttack(int damage, Entity attacker) {

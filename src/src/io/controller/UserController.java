@@ -123,7 +123,7 @@ public final class UserController implements Function<Void, Character> {
      * @param input
      */
     private IO_Bundle sendCommandToMap(Key_Commands command) {
-        return (MapUserAble_.sendCommandToMap(userName_, command, currentView_.getWidth() / 2, currentView_.getHeight() / 2));
+        return MapUserAble_.sendCommandToMapWithOptionalText(userName_, command, currentView_.getWidth() / 2, currentView_.getHeight() / 2, "");
     }
 
     /**
@@ -134,7 +134,7 @@ public final class UserController implements Function<Void, Character> {
      * @return
      */
     private IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
-        return (MapUserAble_.sendCommandToMapWithText(userName_, command, currentView_.getWidth() / 2, currentView_.getHeight() / 2, in));
+        return (MapUserAble_.sendCommandToMapWithOptionalText(userName_, command, currentView_.getWidth() / 2, currentView_.getHeight() / 2, in));
     }
 
     //Handles the view switching, uses the  instance of operator in a slightly evil way, 

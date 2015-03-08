@@ -38,9 +38,21 @@ public class Monster extends Entity {
     }
 
     /**
+     * @author John-Michael Reed
+     * @param recieved_text - what was said to me
+     * @param speaker - the person who I am talking to
+     * @return - what I said back
+     */
+    @Override
+    public ArrayList<String> reply(String recieved_text, Entity speaker) {
+        return super.reply(recieved_text, speaker);
+    }
+
+    /**
      * Monsters will attack back.
+     *
      * @param damage
-     * @param attacker 
+     * @param attacker
      */
     @Override
     public boolean receiveAttack(int damage, Entity attacker) {

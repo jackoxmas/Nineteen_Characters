@@ -13,6 +13,10 @@ import java.util.ArrayList;
  */
 public class Villager extends Entity {
 
+    public Villager(String name, char representation) {
+        super(name, representation);
+    }
+
     public ArrayList<String> getInteractionOptionStrings() {
         ArrayList<String> options = new ArrayList<String>();
         options.add("Attack me. [ Attack ]");
@@ -42,12 +46,20 @@ public class Villager extends Entity {
         return options;
     }
 
-    public Villager(String name, char representation) {
-        super(name, representation);
+    /**
+     * @author John-Michael Reed
+     * @param recieved_text - what was said to me
+     * @param speaker - the person who I am talking to
+     * @return - what I said back
+     */
+    @Override
+    public ArrayList<String> reply(String recieved_text, Entity speaker) {
+        return super.reply(recieved_text, speaker);
     }
 
     /**
      * Runs away if attacked
+     *
      * @param damage - see super.receiveAttack()
      * @param attacker - see super.receiveAttack()
      * @return - see super.receiveAttack()

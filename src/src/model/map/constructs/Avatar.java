@@ -22,9 +22,9 @@ import src.model.map.MapAvatar_Relation;
  * @author JohnReedLOL
  */
 public final class Avatar extends Entity {
-
+    
     private boolean isInExistance = true;
-
+    
     public boolean getIsInExistance() {
         return isInExistance;
     }
@@ -106,17 +106,6 @@ public final class Avatar extends Entity {
     public ArrayList<String> getListOfItemsYouCanUseOnMe() {
         ArrayList<String> options = new ArrayList<String>();
         return options;
-    }
-
-    /**
-     * @author John-Michael Reed
-     * @param recieved_text - what was said to me
-     * @param speaker - the person who I am talking to
-     * @return - what I said back
-     */
-    @Override
-    public ArrayList<String> reply(String recieved_text, Entity speaker) {
-        return super.reply(recieved_text, speaker);
     }
 
     /**
@@ -480,7 +469,6 @@ public final class Avatar extends Entity {
 
     /**
      * Avatars don't do anything when attacked.
-     *
      * @author John-Michael Reed
      * @param damage - see super.receiveAttack()
      * @param attacker - see super.receiveAttack()

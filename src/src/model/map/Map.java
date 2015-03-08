@@ -153,32 +153,6 @@ public class Map implements MapUser_Interface {
 
     //<editor-fold desc="Map Methods" defaultstate="collapsed">
     /**
-     *
-     * @param name - name of Avatar
-     * @return Avatar with the name of of input.
-     */
-    public Avatar getAvatarByName(String name) {
-        return this.avatar_list_.get(name);
-    }
-
-    /**
-     * Removes and Avatar from map.
-     *
-     * @param a - Avatar to be removed.
-     * @return -1 if the entity to be removed does not exist.
-     */
-    public int removeAvatar(Avatar a) {
-        this.avatar_list_.remove(a.name_);
-        if (this.map_grid_[a.getMapRelation().getMyXCoordinate()][a.getMapRelation().getMyYCoordinate()].getEntity() == a) {
-            this.map_grid_[a.getMapRelation().getMyXCoordinate()][a.getMapRelation().getMyYCoordinate()].removeEntity();
-            a.setMapRelation(null);
-            return 0;
-        } else {
-            return -1;
-        }
-    }
-
-    /**
      * Adds an entity to the map.
      *
      * @param e - Entity to be added
@@ -225,10 +199,16 @@ public class Map implements MapUser_Interface {
      * @return -1 on fail, 0 on success
      */
     public int addAvatar(Avatar a, int x, int y) {
+        System.out.println("Adding avatar: " + a.name_ + " to the map");
         a.setMapRelation(new MapAvatar_Relation(this, a, x, y));
         int error_code = this.map_grid_[y][x].addEntity(a);
         if (error_code == 0) {
             this.avatar_list_.put(a.name_, a);
+            Avatar aa = this.avatar_list_.get(a.name_);
+            if (aa == null) {
+                System.err.println("Something is seriously wrong with the avatar list");
+                System.exit(-5);
+            }
         } else {
             a.setMapRelation(null);
         }
@@ -275,17 +255,51 @@ public class Map implements MapUser_Interface {
     }
 
     /**
+     * Removes and Avatar from map.
+     *
+     * @param a - Avatar to be removed.
+     * @return -1 if the entity to be removed does not exist.
+     */
+    public int removeAvatar(Avatar a) {
+        Avatar removed = this.avatar_list_.remove(a.name_);
+        if (removed == null) {
+            System.err.println("The avatar to be removed does not exist in the list of avatars");
+        } else {
+            System.out.println("Avatar " + a.name_ + " has been removed from the map");
+            if (this.avatar_list_.get(a.name_) != null) {
+                System.out.println("Impossible error in Map.removeAvatar");
+                System.exit(-999);
+            }
+        }
+        if (this.map_grid_[a.getMapRelation().getMyYCoordinate()][a.getMapRelation().getMyXCoordinate()].getEntity() == a) {
+            this.map_grid_[a.getMapRelation().getMyYCoordinate()][a.getMapRelation().getMyXCoordinate()].removeEntity();
+            a.setMapRelation(null);
+            return 0;
+        } else {
+            System.err.println("The avatar to be removed cannot be found on the map.");
+            return -1;
+        }
+    }
+
+    /**
      * Removes entity from map.
      *
      * @param e - entity to be removed
      * @return -1 if the entity to be removed does not exist.
      */
     public int removeEntity(Entity e) {
-        this.avatar_list_.remove(e.name_);
-        if (this.map_grid_[e.getMapRelation().getMyXCoordinate()][e.getMapRelation().getMyYCoordinate()].getEntity() == e) {
-            this.map_grid_[e.getMapRelation().getMyXCoordinate()][e.getMapRelation().getMyYCoordinate()].removeEntity();
+        Entity removed = this.entity_list_.remove(e.name_);
+        if (removed == null) {
+            System.err.println("The entity to be removed does not exist in the list of entities");
+        } else {
+            System.out.println("Entity " + removed.name_ + " has been removed from the map");
+        }
+        if (this.map_grid_[e.getMapRelation().getMyYCoordinate()][e.getMapRelation().getMyXCoordinate()].getEntity() == e) {
+            this.map_grid_[e.getMapRelation().getMyYCoordinate()][e.getMapRelation().getMyXCoordinate()].removeEntity();
             e.setMapRelation(null);
             return 0;
+        } else {
+            System.err.println("The entity to be removed cannot be found on the map.");
         }
         return -1;
     }
@@ -335,31 +349,36 @@ public class Map implements MapUser_Interface {
     }
 
     public IO_Bundle sendCommandToMap(String username, Key_Commands command, int width_from_center, int height_from_center) {
-        Avatar to_recieve_command = this.getAvatarByName(username);
+        Avatar to_recieve_command = this.avatar_list_.get(username);
         ArrayList<String> Strings_for_IO_Bundle = null;
-        if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null) {
+        if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null && to_recieve_command.getIsAlive()) {
             if (command != Key_Commands.STANDING_STILL) {
                 Strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, null);
             }
-            char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
-                    to_recieve_command.getMapRelation().getMyYCoordinate(),
-                    width_from_center, height_from_center);
-            Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
-                    to_recieve_command.getMapRelation().getMyYCoordinate(),
-                    width_from_center, height_from_center);
-            IO_Bundle return_package = new IO_Bundle(
-                    view,
-                    colors,
-                    to_recieve_command.getInventory(),
-                    // Don't for get left and right hand items
-                    to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
-                    to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
-                    to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
-                    to_recieve_command.getPrimaryEquipped(),
-                    to_recieve_command.getSecondaryEquipped(),
-                    Strings_for_IO_Bundle
-            );
-            return return_package;
+            if (to_recieve_command.getIsAlive() == true) {
+                char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                        to_recieve_command.getMapRelation().getMyYCoordinate(),
+                        width_from_center, height_from_center);
+                Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                        to_recieve_command.getMapRelation().getMyYCoordinate(),
+                        width_from_center, height_from_center);
+                IO_Bundle return_package = new IO_Bundle(
+                        view,
+                        colors,
+                        to_recieve_command.getInventory(),
+                        // Don't for get left and right hand items
+                        to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
+                        to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
+                        to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
+                        to_recieve_command.getPrimaryEquipped(),
+                        to_recieve_command.getSecondaryEquipped(),
+                        Strings_for_IO_Bundle
+                );
+                return return_package;
+            } else {
+                System.out.println("Your beloved avatar " + username + " has died.");
+                return null;
+            }
         } else if (to_recieve_command != null) {
             IO_Bundle return_package = new IO_Bundle(null, null, to_recieve_command.getInventory(),
                     // Don't for get left and right hand items
@@ -390,48 +409,58 @@ public class Map implements MapUser_Interface {
      * @return
      */
     public IO_Bundle sendCommandToMapWithText(String username, Key_Commands command, int width_from_center, int height_from_center, String text) {
-        Avatar to_recieve_command = this.getAvatarByName(username);
+        Avatar to_recieve_command = this.avatar_list_.get(username);
         ArrayList<String> Strings_for_IO_Bundle = null;
-        if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null) {
-            if (command != Key_Commands.GET_CONVERSATION_CONTINUATION_OPTIONS && command != Key_Commands.TALK_USING_STRING) {
-                System.err.println("This function's extra string parameter does not work with the provided enum");
-                System.exit(-6);
+        if (to_recieve_command != null && to_recieve_command.getIsAlive()) {
+            if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null ) {
+                if (command != Key_Commands.GET_CONVERSATION_CONTINUATION_OPTIONS && command != Key_Commands.TALK_USING_STRING) {
+                    System.err.println("This function's extra string parameter does not work with the provided enum");
+                    System.exit(-6);
+                } else {
+                    Strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, text);
+                }
+                if (to_recieve_command.getIsAlive() == true) {
+                    char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                            to_recieve_command.getMapRelation().getMyYCoordinate(),
+                            width_from_center, height_from_center);
+                    Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                            to_recieve_command.getMapRelation().getMyYCoordinate(),
+                            width_from_center, height_from_center);
+                    IO_Bundle return_package = new IO_Bundle(
+                            view,
+                            colors,
+                            to_recieve_command.getInventory(),
+                            // Don't for get left and right hand items
+                            to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
+                            to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
+                            to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
+                            to_recieve_command.getPrimaryEquipped(),
+                            to_recieve_command.getSecondaryEquipped(),
+                            Strings_for_IO_Bundle
+                    );
+                    return return_package;
+                } else {
+                    System.out.println("Your beloved avatar " + username + " has died.");
+                    return null;
+                }
+            } else if (to_recieve_command != null) {
+                IO_Bundle return_package = new IO_Bundle(null, null, to_recieve_command.getInventory(),
+                        // Don't for get left and right hand items
+                        to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
+                        to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
+                        to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
+                        to_recieve_command.getPrimaryEquipped(),
+                        to_recieve_command.getSecondaryEquipped(),
+                        Strings_for_IO_Bundle
+                );
+                return return_package;
             } else {
-                Strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, text);
+                System.err.println("avatar + " + username + " is invalid. \n"
+                        + "Please check username and make sure he is on the map.");
+                return null;
             }
-            char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
-                    to_recieve_command.getMapRelation().getMyYCoordinate(),
-                    width_from_center, height_from_center);
-            Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
-                    to_recieve_command.getMapRelation().getMyYCoordinate(),
-                    width_from_center, height_from_center);
-            IO_Bundle return_package = new IO_Bundle(
-                    view,
-                    colors,
-                    to_recieve_command.getInventory(),
-                    // Don't for get left and right hand items
-                    to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
-                    to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
-                    to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
-                    to_recieve_command.getPrimaryEquipped(),
-                    to_recieve_command.getSecondaryEquipped(),
-                    Strings_for_IO_Bundle
-            );
-            return return_package;
-        } else if (to_recieve_command != null) {
-            IO_Bundle return_package = new IO_Bundle(null, null, to_recieve_command.getInventory(),
-                    // Don't for get left and right hand items
-                    to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
-                    to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
-                    to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
-                    to_recieve_command.getPrimaryEquipped(),
-                    to_recieve_command.getSecondaryEquipped(),
-                    Strings_for_IO_Bundle
-            );
-            return return_package;
         } else {
-            System.err.println("avatar + " + username + " is invalid. \n"
-                    + "Please check username and make sure he is on the map.");
+            System.out.println("Avatar " + username + " is no longer a part of the map. They area either dead or non-existant.");
             return null;
         }
     }

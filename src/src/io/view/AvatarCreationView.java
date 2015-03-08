@@ -13,16 +13,11 @@ import src.IO_Bundle;
 /**
  * Players see the AvatarCreationView when they chose their occupation.
  *Generates the view, loads the ascii art, and then gives it to display to print
- * @author Matthew B, Jessan, JohnReedLOL
+ * @author Matthew B, Jessan
  */
 public final class AvatarCreationView extends Viewport
 {
     // Converts the class name into a base 35 number
-	
-
- 
-
-
     private ArrayList<String> title_;
     private ArrayList<String> smasherArt_;
     private ArrayList<String> sneakerArt_;

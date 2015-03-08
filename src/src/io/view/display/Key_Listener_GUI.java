@@ -13,9 +13,9 @@ import src.Key_Commands;
 
 
 /**
- * Made with Netbeans GUI builder using instruction from:
+ * Computer generated code made with Netbeans GUI builder using instruction from:
  * https://netbeans.org/kb/docs/java/gui-functionality.html
- * @author JohnReedLOL
+ * @author Matthew B [human-written code]
  */
 class Key_Listener_GUI extends javax.swing.JFrame {
 	//These two arraylists hold the things to apply when input is received by either the map, or by the chatbox

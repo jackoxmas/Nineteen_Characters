@@ -259,14 +259,18 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      * @return -1 if respawn point is occupied
      */
     public int respawn() {
+        System.out.println("Entity is respawning");
         //super.pushEntityInDirection(toSpawn, x_respawn_point_, y_respawn_point_);
-        int error_code = this.teleportTo(x_respawn_point_, x_respawn_point_);
+        int error_code = this.teleportTo(x_respawn_point_, y_respawn_point_);
         if (error_code != 0) {
-            error_code = this.teleportTo(x_respawn_point_ + 1, x_respawn_point_);
+            error_code = this.teleportTo(x_respawn_point_ + 1, y_respawn_point_);
             if (error_code != 0) {
-                return this.teleportTo(x_respawn_point_, x_respawn_point_ + 1);
+                return this.teleportTo(x_respawn_point_, y_respawn_point_ + 1);
             }
         }
+        // set health and manna to max on respawn
+        entity_.getStatsPack().increaseCurrentLifeBy(Integer.MAX_VALUE);
+        entity_.getStatsPack().increaseCurrentManaBy(Integer.MAX_VALUE);
         return 0;
     }
 
@@ -288,10 +292,15 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             if (target_entity == null) {
                 return -2;
             } else {
+                System.out.println("You attacking an entity");
                 target_entity.receiveAttack(3 + entity_.getStatsPack().getOffensive_rating_(), entity_);
                 return 0;
             }
         }
+    }
+    
+    public void removeMyselfFromTheMapCompletely() {
+        current_map_reference_.removeEntity(entity_);
     }
 
     /**

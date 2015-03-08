@@ -87,11 +87,15 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     * Entities should check their health after they are damaged.
+     * Entities must check their health after they are damaged.
+     * @return true if alive false is dead
      */
-    public void checkHealth() {
+    public boolean isAlive() {
         if (stats_pack_.getCurrent_life_() <= 0) {
             commitSuicide();
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -101,6 +105,7 @@ abstract public class Entity extends DrawableThing {
     public void commitSuicide() {
         int health_left = stats_pack_.getCurrent_life_();
         stats_pack_.deductCurrentLifeBy(health_left);
+        stats_pack_.decreaseLivesLeftByOne();
         getMapRelation().respawn();
         if (stats_pack_.getLives_left_() < 0) {
             gameOver();
@@ -108,7 +113,8 @@ abstract public class Entity extends DrawableThing {
     }
 
     public void gameOver() {
-        System.out.println("game over");
+        System.out.println("An entity has run out of lives and is gone forever.");
+        getMapRelation().removeMyselfFromTheMapCompletely();
     }
 
     public PrimaryHandHoldable getPrimaryEquipped() {
@@ -378,19 +384,16 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     * Uses first item in inventory Does not destroy the item
-     *
+     * Uses the item I am facing on myself. If I have a key the door will unlock itself.\
      * @return 0 on success, -1 on fail (no item to use)
      */
-    public int useLastInventoryItem() {
-        Item i = getLastItemInInventory();
-        if (i == null) {
-            Display.getDisplay().setMessage("You have no items to use.");
-            return -1;
-        } else {
-            i.use(this);
+    public int useThingInFacingDirectionOnMyself() {
+        Item target = getMapRelation().getTopmostItemInFacingDirection();
+        if(target != null) {
+            target.use(this);
             return 0;
-        }
+        } 
+        return -1;
     }
 
     /**
@@ -475,29 +478,11 @@ abstract public class Entity extends DrawableThing {
 
     /**
      * Specify null if the attacker is not an entity that can be attacked.
-     *
+     * Override for villager/monster
      * @param damage - damage received
      * @param attacker - who the attack is coming from
      */
-    public void receiveAttack(int damage, Entity attacker) {
-        int amount_of_damage = damage - getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_();
-        if (amount_of_damage < 0) {
-            amount_of_damage = 0;
-        }
-        int did_I_run_out_of_health = stats_pack_.deductCurrentLifeBy(amount_of_damage);
-        if (did_I_run_out_of_health != 0) {
-            getMapRelation().respawn();
-            if (stats_pack_.getLives_left_() < 0) {
-                gameOver();
-            }
-        } else {
-            if (attacker != null) {
-                this.replyToAttackFrom(attacker);
-            } else {
-                // This attack is from a null source
-            }
-        }
-    }
+    public abstract void receiveAttack(int damage, Entity attacker);
 
     public void receiveHeal(int strength) {
         this.stats_pack_.increaseCurrentLifeBy(strength);
@@ -523,17 +508,6 @@ abstract public class Entity extends DrawableThing {
             return reply;
         }
     }
-
-    /**
-     * Called by an entity that was attacked by another entity. Override for
-     * monster/villager.
-     *
-     * @author John-Michael Reed
-     * @param attacker
-     * @return 0 if reply succeeded, non-zero otherwise [ex. if entity is null
-     * or off the map]
-     */
-    public abstract int replyToAttackFrom(Entity attacker);
 
     /**
      * Return the combined stats of the entity, includes armour stats.

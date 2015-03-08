@@ -13,7 +13,7 @@ import src.IO_Bundle;
 /**
  * Players see the MapView while they are interacting with the map
  *
- * @author Matthew B, Jessan, JohnReedLOL
+ * @author Matthew B, Jessan
  */
 
 public final class MapView extends Viewport {

@@ -46,6 +46,21 @@ public class Villager extends Entity {
         super(name, representation);
     }
 
+    @Override
+    public void receiveAttack(int damage, Entity attacker) {
+        int amount_of_damage = damage - getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_();
+        if (amount_of_damage < 0) {
+            amount_of_damage = 0;
+        }
+        getStatsPack().deductCurrentLifeBy(amount_of_damage);
+        boolean isAlive = isAlive();
+        if (isAlive) {
+            if (attacker != null) {
+                replyToAttackFrom(attacker);
+            }
+        }
+    }
+
     /**
      * Villagers automatically run away [in the opposite direction of attacker]
      * when attacked
@@ -55,8 +70,7 @@ public class Villager extends Entity {
      * @return 0 if reply succeeded, non-zero otherwise [failed to run away,
      * trapped]
      */
-    @Override
-    public int replyToAttackFrom(Entity attacker) {
+    private int replyToAttackFrom(Entity attacker) {
         if (attacker == null) {
             return -1;
         }
@@ -65,7 +79,7 @@ public class Villager extends Entity {
 
         final int myX = this.getMapRelation().getMyXCoordinate();
         final int myY = this.getMapRelation().getMyYCoordinate();
-
+        System.out.println("You attacked a villager");
         if (myX == attackerX && myY == attackerY) {
             System.err.println("impossible error in Villager.replyToAttackFrom");
             System.exit(-6); // Impossible

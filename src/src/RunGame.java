@@ -11,11 +11,14 @@ import src.model.map.Map;
 import src.model.map.MapUser_Interface;
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Item;
+import src.model.map.constructs.Monster;
+import src.model.map.constructs.ObstacleRemovingItem;
 import src.model.map.constructs.OneHandedSword;
 import src.model.map.constructs.OneShotAreaEffectItem;
 import src.model.map.constructs.OneWayTeleportItem;
 import src.model.map.constructs.PermanentObstacleItem;
 import src.model.map.constructs.Sheild;
+import src.model.map.constructs.TemporaryObstacleItem;
 import src.model.map.constructs.Terrain;
 import src.model.map.constructs.TwoHandedSword;
 import src.model.map.constructs.Villager;
@@ -64,8 +67,16 @@ public class RunGame {
         avatar_ = new Avatar("avatar", '☃');
         map_.addAvatar(avatar_, 0, 0);
 
-        Avatar buddy_ = new Avatar("buddy", '웃');
-        map_.addAvatar(buddy_, 3, 0);
+        Avatar buddy = new Avatar("buddy", '웃');
+        map_.addAvatar(buddy, 3, 0);
+        
+        Villager villager = new Villager("villager1", '웃');
+        villager.getStatsPack().increaseQuantityOfExperienceBy(300);
+        map_.addEntity(villager, 3, 13);
+        
+        Monster monster = new Monster("monster1", 'M');
+        monster.getStatsPack().increaseQuantityOfExperienceBy(400);
+        map_.addEntity(monster, 13, 3);
     }
 
     private static void populateMap() {
@@ -77,6 +88,11 @@ public class RunGame {
         OneShotAreaEffectItem hurt = new OneShotAreaEffectItem("hurter", 'u', Effect.HURT, 10);
         OneShotAreaEffectItem kill = new OneShotAreaEffectItem("killer", 'k', Effect.KILL, 10);
         OneShotAreaEffectItem level = new OneShotAreaEffectItem("leveler", 'l', Effect.LEVEL, 10);
+        
+        ObstacleRemovingItem key = new ObstacleRemovingItem("Key", 'K');
+        TemporaryObstacleItem door = new TemporaryObstacleItem("Door", 'D', key);
+        map_.addItem(key, 11, 0);
+        map_.addItem(door, 13, 0);
         
         map_.addItem(heal, 3, 2);
         map_.addItem(hurt, 6, 2);

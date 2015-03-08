@@ -247,8 +247,6 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
         }
         if (current_life_ - amount <= 0) {
             current_life_ = 0;
-            this.decreaseLivesLeftByOne();
-            current_life_ = max_life_;
             return -1;
         } else {
             current_life_ -= amount;

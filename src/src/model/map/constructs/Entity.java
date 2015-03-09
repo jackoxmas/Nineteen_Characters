@@ -536,7 +536,7 @@ abstract public class Entity extends DrawableThing {
             amount_of_damage = 0;
         }
         getStatsPack().deductCurrentLifeBy(amount_of_damage);
-        if (stats_pack_.getCurrent_life_() <= 0) {
+        if (stats_pack_.getCurrent_life_() <= 0 && attacker != null) {
             int money = this.num_gold_coins_possessed_;
             this.decrementNumGoldCoinsBy(money); // All money goes to my attacker.
             attacker.incrementNumGoldCoinsBy(money);

@@ -8,6 +8,7 @@ public class ChatBoxViewPort {
 private ArrayList<String> view_content_strings_ = new ArrayList<String>();
 private ArrayList<String> headings_ = new ArrayList<String>();
 private ArrayList<String> result_ = new ArrayList<String>();
+private int whiteSpaceCount_ = 1;
 	public ChatBoxViewPort() {
 	}
 	public void renderToDisplay(IO_Bundle bundle){
@@ -21,10 +22,15 @@ private ArrayList<String> result_ = new ArrayList<String>();
 			headings_.add(temp);
 		}
 		result_ = new ArrayList<String>(headings_.size());
+		addWhiteSpace(result_);
 		for(int i = 0;i!=headings_.size();++i){
-			result_.add(i, headings_.get(i)+view_content_strings_.get(i));
+			result_.add(headings_.get(i)+view_content_strings_.get(i));
 		}
+		addWhiteSpace(result_);
 		
+	}
+	private void addWhiteSpace(ArrayList<String> list){
+		for(int i = 0; i!=whiteSpaceCount_;++i){list.add(System.lineSeparator());}
 	}
 	private void clear(){
 		view_content_strings_.clear();

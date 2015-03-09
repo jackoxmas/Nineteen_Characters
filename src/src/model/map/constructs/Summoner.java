@@ -17,6 +17,10 @@ public final class Summoner extends Occupation {
     public Summoner(Entity e) {
         super(e);
     }
+
+    public Summoner(Occupation o) {
+        super(o);
+    }
     private Staff staff_ = null;
 
     public void change_stats(EntityStatsPack current_stats) {
@@ -74,6 +78,25 @@ public final class Summoner extends Occupation {
     }
 
     @Override
+    public String getSkillNameFromNumber(int skill_number) {
+        super.getSkillNameFromNumber(skill_number); // checks input
+        switch (skill_number) {
+            case 1:
+                return "Confuse";
+            case 2:
+                return "Boon";
+            case 3:
+                return "Bane";
+            case 4:
+                return "Staff";
+            default:
+                System.err.println("Error in Summoner");
+                System.exit(-54);
+                return "";
+        }
+    }
+
+    @Override
     public int performOccupationSkill(int number) {
         if (number <= 0 || number > 4) {
             System.err.println("Error in Summoner.performOccupationSkill()");
@@ -104,7 +127,7 @@ public final class Summoner extends Occupation {
                 super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_2_() + 1, getSkill_2_() * 2, Effect.HEAL);
             } else if (number == 3) {
                 // bane - magic that does damage or harm.
-                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinLine(getSkill_3_() + 8, 2 * getSkill_3_() * 3, Effect.HURT);
+                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinArc(getSkill_3_() + 8, 2 * getSkill_3_() * 3, Effect.HURT);
             } else if (number == 4) {
                 // Staff attack
                 if (staff_ != null) {

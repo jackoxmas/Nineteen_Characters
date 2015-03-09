@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 import src.SkillEnum;
 
-
 /**
  * Interface for Occupations (Smasher, Sneak, Summoner). Different Occupations
  * have different advantages.
@@ -19,6 +18,7 @@ import src.SkillEnum;
 public abstract class Occupation {
 
     private final Entity occupation_holder_;
+
     protected Entity getEntity() {
         return occupation_holder_;
     }
@@ -31,47 +31,59 @@ public abstract class Occupation {
         occupation_holder_ = occupation_holder;
     }
 
-    private int[] skills_levels_ = {1,1,1,1};
-    private String[] skill_names_ = {"Skill 1","Skill 2","Skills 3", "Skill 4"};
+    public Occupation(Occupation old) {
+        occupation_holder_ = old.occupation_holder_;
+        skill_1_level_ = old.getSkill_1_();
+        skill_2_level_ = old.getSkill_2_();
+        skill_3_level_ = old.getSkill_3_();
+        skill_4_level_ = old.getSkill_4_();
+    }
+
+    //private int[] skills_levels_ = {1, 1, 1, 1};
+    private int skill_1_level_ = 1;
+    private int skill_2_level_ = 1;
+    private int skill_3_level_ = 1;
+    private int skill_4_level_ = 1;
     //This should really use the enum....
-    
+
     /**
      * Goes from one to four
+     *
      * @param number
-     * @return 
+     * @return
      */
     abstract public int performOccupationSkill(int number);
 
     public int getSkill_1_() {
-        return skills_levels_[0];
+        return skill_1_level_;
     }
 
     public int getSkill_2_() {
-        return skills_levels_[1];
+        return skill_2_level_;
     }
 
     public int getSkill_3_() {
-        return skills_levels_[2];
+        return skill_3_level_;
     }
 
     public int getSkill_4_() {
-        return skills_levels_[3];
+        return skill_4_level_;
     }
 
     public int incrementSkill_1_() {
-        return ++skills_levels_[0];
+        return ++skill_1_level_;
     }
 
     public int incrementSkill_2_() {
-        return ++skills_levels_[1];
+        return ++skill_2_level_;
     }
 
     public int incrementSkill_3_() {
-        return ++skills_levels_[2];
+        return ++skill_3_level_;
     }
 
     public int incrementSkill_4_() {
-        return ++skills_levels_[3];
+        return ++skill_4_level_;
     }
 
     /**
@@ -79,44 +91,26 @@ public abstract class Occupation {
      * @param weapon weapon to be equipped
      * @return 0 on success, -1 on failure
      */
-    
-     public abstract int equipOneHandWeapon(OneHandedWeapon weapon);
-     public abstract int equipTwoHandWeapon(TwoHandedWeapon weapon);
-     public abstract int unEquipEverything();
-     public abstract void change_stats(EntityStatsPack current_stats);
+    public abstract int equipOneHandWeapon(OneHandedWeapon weapon);
 
-     public abstract int incrementSkill(SkillEnum skill);
-     public String getSkillsName(int i){
-    	 if(i > 0 && i < skills_levels_.length){
-    		 return skill_names_[i];
-    	 }
-    	 return "INVALID SKILL";
-     }
-     public boolean setSkillName(String name, int i){
-    	 if(i > 0 && i < skill_names_.length){
-    		 skill_names_[i] = name;
-    		 return true;
-    	 }
-    	 return false;
-     }
-     public int getSkillLevel(int i){
-    	 if(i > 0 && i < skills_levels_.length){
-    		 return skills_levels_[i];
-    	 }
-    	 return -1;
-     }
-     public ArrayList<Integer> getAllSkillLevels(){
-    	 ArrayList<Integer> result = new ArrayList<Integer>(skills_levels_.length);
-    	 for(int i : skills_levels_){
-    		 result.add(i);
-    	 }
-    	 return result;
-     }
-     public ArrayList<String> getAllSkillNames(){
-    	 ArrayList<String> result = new ArrayList<String>(skill_names_.length);
-    	 for(String i : skill_names_){
-    		 result.add(i);
-    	 }
-    	 return result;
-     }
+    public abstract int equipTwoHandWeapon(TwoHandedWeapon weapon);
+
+    public abstract int unEquipEverything();
+
+    public abstract void change_stats(EntityStatsPack current_stats);
+
+    public abstract int incrementSkill(SkillEnum skill);
+
+    /**
+     * Must be called before subclass getSkillNameFromNumber is called.
+     * @param skill_number
+     * @return 
+     */
+    public String getSkillNameFromNumber(int skill_number) {
+        if (skill_number <= 0 || skill_number > 4) {
+            System.err.println("Error in Occupation.getSkillsName(int skill_number)");
+            System.exit(-108);
+        }
+        return "";
+    }
 }

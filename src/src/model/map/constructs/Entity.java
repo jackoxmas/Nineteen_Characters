@@ -491,7 +491,11 @@ abstract public class Entity extends DrawableThing {
      * Sets Entities Occupation to smasher. Resets stats
      */
     public int becomeSmasher() {
-        occupation_ = new Smasher(this);
+        if (occupation_ != null) {
+            occupation_ = new Smasher(this.occupation_);
+        } else {
+            occupation_ = new Smasher(this);
+        }
         return 0;
     }
 
@@ -499,7 +503,11 @@ abstract public class Entity extends DrawableThing {
      * Sets Entities Occupation to smasher. Resets stats
      */
     public int becomeSummoner() {
-        occupation_ = new Summoner(this);
+        if (occupation_ != null) {
+            occupation_ = new Summoner(this.occupation_);
+        } else {
+            occupation_ = new Summoner(this);
+        }
         return 0;
     }
 
@@ -507,7 +515,11 @@ abstract public class Entity extends DrawableThing {
      * Sets Entities Occupation to smasher. Resets stats
      */
     public int becomeSneak() {
-        occupation_ = new Sneak(this);
+        if (occupation_ != null) {
+            occupation_ = new Sneak(this.occupation_);
+        } else {
+            occupation_ = new Sneak(this);
+        }
         return 0;
     }
 

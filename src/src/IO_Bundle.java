@@ -63,14 +63,22 @@ public class IO_Bundle {
     	return inventory_;
     }
     public ArrayList<String> getSkillNames(){
-    	ArrayList<String> result = getOccupation().getAllSkillNames();
+    	ArrayList<String> result = new ArrayList<String>();
+        result.add(occupation_.getSkillNameFromNumber(1));
+        result.add(occupation_.getSkillNameFromNumber(2));
+        result.add(occupation_.getSkillNameFromNumber(3));
+        result.add(occupation_.getSkillNameFromNumber(4));
     	result.add(0,"bind_wounds_");
     	result.add(0,"bargain_");
     	result.add(0,"observation_");
     	return result;
     }
     public ArrayList<Integer> getSkillLevels(){
-    	ArrayList<Integer> result =  getOccupation().getAllSkillLevels();
+    	ArrayList<Integer> result = new ArrayList<Integer>();
+        result.add(occupation_.getSkill_1_());
+        result.add(occupation_.getSkill_2_());
+        result.add(occupation_.getSkill_3_());
+        result.add(occupation_.getSkill_4_());
     	result.add(0,bind_wounds_);
     	result.add(0,bargain_);
     	result.add(0,observation_);

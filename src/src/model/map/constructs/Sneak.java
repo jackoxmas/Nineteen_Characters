@@ -16,6 +16,10 @@ public final class Sneak extends Occupation {
     public Sneak(Entity e) {
         super(e);
     }
+
+    public Sneak(Occupation o) {
+        super(o);
+    }
     private Bow bow_ = null;
 
     @Override
@@ -71,6 +75,25 @@ public final class Sneak extends Occupation {
         } else {
             System.exit(-1);
             return -99999; // F***ing impossible
+        }
+    }
+
+    @Override
+    public String getSkillNameFromNumber(int skill_number) {
+        super.getSkillNameFromNumber(skill_number); // checks input
+        switch (skill_number) {
+            case 1:
+                return "Steal";
+            case 2:
+                return "Detect";
+            case 3:
+                return "Cloak";
+            case 4:
+                return "Bow";
+            default:
+                System.err.println("Error in Sneak");
+                System.exit(-57);
+                return "";
         }
     }
 

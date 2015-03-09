@@ -7,7 +7,6 @@ package src.model.map.constructs;
 
 import src.SkillEnum;
 
-
 /**
  * Smasher Occupation, Strength +1.
  */
@@ -15,6 +14,10 @@ public final class Smasher extends Occupation {
 
     public Smasher(Entity e) {
         super(e);
+    }
+
+    public Smasher(Occupation o) {
+        super(o);
     }
     private TwoHandedSword two_handed_sword_ = null;
     private OneHandedSword one_handed_sword_ = null;
@@ -108,9 +111,29 @@ public final class Smasher extends Occupation {
         }
     }
 
+    @Override
+    public String getSkillNameFromNumber(int skill_number) {
+        super.getSkillNameFromNumber(skill_number); // checks input
+        switch (skill_number) {
+            case 1:
+                return "1-H";
+            case 2:
+                return "2-H";
+            case 3:
+                return "Fists";
+            case 4:
+                return "";
+            default:
+                System.err.println("Error");
+                System.exit(-56);
+                return "";
+        }
+    }
+
     /**
      * @author John-Michael Reed
-     * @param number - 1 for occupation skill #1, 2 for occupation skill #2, etc.
+     * @param number - 1 for occupation skill #1, 2 for occupation skill #2,
+     * etc.
      * @return 0
      */
     @Override

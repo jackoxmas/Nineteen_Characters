@@ -20,6 +20,8 @@ public class CommandMiniController {
 		if(foo.startsWith("/commands")){return this.processCommands();}
 		if(foo.startsWith("/help")){return this.processHelp();}
 		if(foo.startsWith("/pwd")){return System.getProperty("user.dir");}
+		if(foo.startsWith("/cat")){return "meow";}
+		if(foo.startsWith("/tiger")){return "ROAR!";}
 
 		return "No valid command given!";
 	}

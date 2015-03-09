@@ -105,9 +105,20 @@ public final class Sneak extends Occupation {
         }
         final int cost = 1;
         int has_run_out_of_mana = getEntity().getStatsPack().deductCurrentManaBy(cost);
+        Random randomGenerator = new Random();
         if (has_run_out_of_mana == 0) {
             if (number == 1) {
-                //...
+                Entity target = getEntity().getMapRelation().getEntityInFacingDirection();
+                final int chance_to_steal = randomGenerator.nextInt(10) + super.getSkill_1_();
+                if(chance_to_steal < 5) {
+                    // fail to steal
+                    System.out.println("Failed to steal.");
+                } else {
+                    int money = target.getNumGoldCoins();
+                    getEntity().incrementNumGoldCoinsBy(money);
+                    target.decrementNumGoldCoinsBy(money);
+                    System.out.println("Successful pickpocket.");
+                }
             } else if (number == 2) {
                 // detect & remove trap
                 Item potential_trap = getEntity().getMapRelation().getTopmostItemInFacingDirection();
@@ -115,7 +126,6 @@ public final class Sneak extends Occupation {
                 try {
                     trap = (Trap) potential_trap;
                     // it is actually a trap
-                    Random randomGenerator = new Random();
                     final int chance_of_detection = randomGenerator.nextInt(10) + super.getSkill_2_();
                     if (chance_of_detection < 5) {
                         // failed to detect the trap

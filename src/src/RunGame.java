@@ -129,6 +129,7 @@ public class RunGame {
         PermanentObstacleItem obstacle = new PermanentObstacleItem("boulder", '■');
         map_.addItem(obstacle, 2, 2);
         
+        /*
         avatar_.getMapRelation().moveInDirection(18, 0);
         avatar_.getMapRelation().moveInDirection(0, 12);
         avatar_.getMapRelation().areaEffectFunctor.effectAreaWithinLine(5, 20, Effect.HEAL);
@@ -143,6 +144,7 @@ public class RunGame {
         for (int i = 0; i < 20; ++i) {
             ((MapUser_Interface) map_).sendCommandToMapWithOptionalText("avatar", Key_Commands.MOVE_DOWN, 10, 20, "");
         }
+        */
 
     }
 

@@ -24,7 +24,7 @@ public class IO_Bundle {
     public IO_Bundle(char[][] v, Color[][] c, ArrayList<PickupableItem> i,
             EntityStatsPack s, Occupation o, int n, int bi, int ba, int ob,
             PrimaryHandHoldable pri, SecondaryHandHoldable sec,
-            ArrayList<String> sfc
+            ArrayList<String> sfc, int num_coins
     ) {
         view_for_display_ = v;
         color_for_display_ = c;
@@ -38,6 +38,7 @@ public class IO_Bundle {
         primary_ = pri;
         second_ = sec;
         strings_for_communication_ = sfc;
+        num_coins_ = num_coins;
     }
     public final char[][] view_for_display_;
     public final Color[][] color_for_display_;
@@ -51,6 +52,7 @@ public class IO_Bundle {
     public final int bargain_;
     public final int observation_;
     public final ArrayList<String> strings_for_communication_;
+    public final int num_coins_;
 
     public EntityStatsPack getStatsPack() {
         return stats_for_display_;

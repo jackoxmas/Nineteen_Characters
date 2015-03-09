@@ -22,18 +22,25 @@ abstract public class Entity extends DrawableThing {
     private FacingDirection direction_ = FacingDirection.UP;
     private ArrayList<PickupableItem> inventory_;
     private EntityStatsPack stats_pack_ = new EntityStatsPack(this);
-    private int numGoldCoins = 10;
+    private int num_gold_coins_ = 10;
 
     public int getNumGoldCoins() {
-        return numGoldCoins;
+        return num_gold_coins_;
     }
 
     public int decrementNumGoldCoinsBy(int amount) {
-        return (numGoldCoins -= amount);
+        num_gold_coins_ -= amount;
+        if(num_gold_coins_ >= 0) {
+            return num_gold_coins_;
+        } else {
+            System.err.println("Number of coins going negative in Entity.decrementNumGoldCoinsBy(int amount)");
+            num_gold_coins_ = 0;
+            return num_gold_coins_;
+        }
     }
 
     public int incrementNumGoldCoinsBy(int amount) {
-        return (numGoldCoins += amount);
+        return (num_gold_coins_ += amount);
     }
 
     /**

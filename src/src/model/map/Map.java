@@ -380,7 +380,8 @@ public class Map implements MapUser_Interface {
                             to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
                             to_recieve_command.getPrimaryEquipped(),
                             to_recieve_command.getSecondaryEquipped(),
-                            Strings_for_IO_Bundle
+                            Strings_for_IO_Bundle,
+                            to_recieve_command.getNumGoldCoins()
                     );
                     return return_package;
                 } else {
@@ -395,7 +396,8 @@ public class Map implements MapUser_Interface {
                         to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
                         to_recieve_command.getPrimaryEquipped(),
                         to_recieve_command.getSecondaryEquipped(),
-                        Strings_for_IO_Bundle
+                        Strings_for_IO_Bundle,
+                        to_recieve_command.getNumGoldCoins()
                 );
                 return return_package;
             } else {

@@ -8,7 +8,6 @@ package src.model.map.constructs;
 import java.util.ArrayList;
 
 import src.FacingDirection;
-import src.io.view.display.Display;
 import src.model.map.MapEntity_Relation;
 
 /**

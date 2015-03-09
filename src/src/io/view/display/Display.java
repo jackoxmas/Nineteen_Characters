@@ -305,5 +305,27 @@ public class Display {
 		}
     	
     }
+    /**
+     * Request focus in the outgoing message box.
+     */
+	public void requestOutBoxFocus() {
+        src.io.view.display.Key_Listener_GUI.getGUI().getIncomingText().requestFocusInWindow();
+	}
+	/** 
+	 * Returns  of how many skill buttons there are.
+	 * @return Returns  of how many skill buttons there are.
+	 */
+	public int getSkillButtonCount(){
+		return Key_Listener_GUI.getGUI().getSkillButtonCount();
+	}
+	/**
+	 * Returns the skill button of index i. 
+	 * Should i not be a valid skill button, returns null.
+	 * @param i
+	 * @return
+	 */
+	public javax.swing.JButton getSkillButton(int i) {
+		return Key_Listener_GUI.getGUI().getSkillButton(i);
+	}
 
 }

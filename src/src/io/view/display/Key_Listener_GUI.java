@@ -13,33 +13,42 @@ import src.Key_Commands;
 
 /**
  * Computer generated code made with Netbeans GUI builder using instruction
- * from: https://netbeans.org/kb/docs/java/gui-functionality.html Sorry I made
- * the singleton public instead of package private [John]
+ * from: https://netbeans.org/kb/docs/java/gui-functionality.html 
  *
  * @author Matthew B [human-written code]
  */
-public class Key_Listener_GUI extends javax.swing.JFrame {
+class Key_Listener_GUI extends javax.swing.JFrame {
     //These two arraylists hold the things to apply when input is received by either the map, or by the chatbox
 
     public javax.swing.JTextArea getIncomingText() {
         return incoming_text_jTextArea;
     }
-
-    public javax.swing.JButton getSkillButton1() {
-        return occupation_skill_1_jButton;
+/**
+ * Returns the skill button of index i. 
+ * Should i not be a valid skill button, returns null.
+ * @param i
+ * @return
+ */
+    public javax.swing.JButton getSkillButton(int i) {
+    	switch(i){
+    	case 1:
+    		return occupation_skill_1_jButton;
+    	case 2:
+    		return occupation_skill_2_jButton;
+    	case 3:
+    		return occupation_skill_3_jButton;
+    	case 4:
+    		return occupation_skill_4_jButton;
+    	default: 
+    		return null;
+    	}
     }
-
-    public javax.swing.JButton getSkillButton2() {
-        return occupation_skill_2_jButton;
-    }
-
-    public javax.swing.JButton getSkillButton3() {
-        return occupation_skill_3_jButton;
-    }
-
-    public javax.swing.JButton getSkillButton4() {
-        return occupation_skill_4_jButton;
-    }
+    /**
+     * The number of skill buttons.
+     * @return
+     */
+    public int getSkillButtonCount(){return 4;}
+    
     /**
      *
      */

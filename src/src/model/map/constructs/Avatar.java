@@ -7,7 +7,6 @@ package src.model.map.constructs;
 
 import java.util.ArrayList;
 import java.util.Random;
-import src.Effect;
 
 import src.FacingDirection;
 import src.HardCodedStrings;

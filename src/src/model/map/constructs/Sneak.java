@@ -6,6 +6,7 @@
 package src.model.map.constructs;
 
 import java.util.Random;
+
 import src.SkillEnum;
 
 /**

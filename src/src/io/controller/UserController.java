@@ -27,13 +27,21 @@ import src.model.map.MapUser_Interface;
 public final class UserController implements Function<Void, Character> {
 
     private final class ChatBoxMiniController implements Function<Void, String> {
-
+    	private CommandMiniController commandController_ = new CommandMiniController(remap_);
         private ChatBoxViewPort chatview_ = new ChatBoxViewPort();
 
         public ChatBoxMiniController() {
             Display.getDisplay().addInputBoxTextEnteredFunction(this);
             Display.getDisplay().addOutputBoxCharacterFunction(new outputBoxFunction());
         }
+        /**
+         * Processes a command entered into the chatbox. Commands begin with a /
+         * Prints the result of running that command to the chatbox.
+         * @param foo
+         */
+        private void processCommandAndDisplayOutput(String foo) {
+			Display.getDisplay().setMessage(commandController_.processCommand(foo));
+		}
 
         /**
          * The function that is called by the chat box when enter is hit.
@@ -41,11 +49,15 @@ public final class UserController implements Function<Void, Character> {
          */
         @Override
         public Void apply(String foo) {
+        	if(foo.startsWith("/")){processCommandAndDisplayOutput(foo); return null;}
+        	//IF it starts with a /, it's a command, so send it
+        	//To the command function, not the map.
             sendTextCommandAndUpdate(foo);
             return null;
         }
 
-        private Void sendTextCommandAndUpdate(String foo) {
+
+		private Void sendTextCommandAndUpdate(String foo) {
             Key_Commands command = Key_Commands.GET_CONVERSATION_CONTINUATION_OPTIONS;
             if (foo.contains("[ Attack ]")) {
                 command = Key_Commands.ATTACK;

@@ -18,7 +18,7 @@ public class enumHandler {
 	public static String getAllEnums(){
 		String enums = "";
 		for(Key_Commands direction : Key_Commands.values()){
-			enums+=direction.toString()+", ";
+			enums+=direction.toString()+System.lineSeparator();
 		}
 	return enums;
 	}

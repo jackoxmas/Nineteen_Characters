@@ -103,7 +103,6 @@ public final class StatsView extends Viewport
         // Replacing current_defensive_rating with defensive_rating
     	writeStringToContents(72, 12, rightAlign(3, "" + bundle_.getStatsPack().getDefensive_rating_()));
     	writeStringToContents(72, 13, rightAlign(3, "" + bundle_.getStatsPack().getArmor_rating_()));
-        writeStringToContents(72, 14, rightAlign(3, "" + bundle_.num_skillpoints_));
     }
     private void printName(String item_name, int row){
     	if (item_name.length() > 22)

@@ -70,6 +70,8 @@ public final class StatsView extends Viewport
     	else
     		writeStringToContents(5, 8, level + "th Level " + bundle_.getOccupation().toString());
 
+    	writeStringToContents(5, 9, "Coins: " + bundle_.num_coins_); //QUICK AND DIRTY FOR DEMONSTRATION PURPOSES
+    	
     	writeStringToContents(18, 10, rightAlign(3, "" + bundle_.getStatsPack().getStrength_level_()));
     	writeStringToContents(18, 11, rightAlign(3, "" + bundle_.getStatsPack().getAgility_level_()));
     	writeStringToContents(18, 12, rightAlign(3, "" + bundle_.getStatsPack().getIntellect_level_()));

@@ -189,6 +189,14 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         y_respawn_point_ = y_respawn_point;
     }
 
+    protected int getXrespawnPoint() {
+        return x_respawn_point_;
+    }
+
+    protected int getYrespawnPoint() {
+        return y_respawn_point_;
+    }
+
     /**
      * Moves the entity that this relation refers to over x and up y
      *
@@ -259,8 +267,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      * @return -1 if respawn point is occupied
      */
     public int respawn() {
-        System.out.println("Entity is respawning");
-        //super.pushEntityInDirection(toSpawn, x_respawn_point_, y_respawn_point_);
+        System.out.println("Entity [or subclass] is respawning");
         int error_code = this.teleportTo(x_respawn_point_, y_respawn_point_);
         if (error_code != 0) {
             error_code = this.teleportTo(x_respawn_point_ + 1, y_respawn_point_);
@@ -271,6 +278,8 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         // set health and manna to max on respawn
         entity_.getStatsPack().increaseCurrentLifeBy(Integer.MAX_VALUE);
         entity_.getStatsPack().increaseCurrentManaBy(Integer.MAX_VALUE);
+        // reset money on respawn
+        entity_.reinstateNumGoldCoins();
         return 0;
     }
 
@@ -298,7 +307,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             }
         }
     }
-    
+
     public void removeMyselfFromTheMapCompletely() {
         current_map_reference_.removeEntity(entity_);
     }
@@ -423,7 +432,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 if (target_tile != null) {
                     return target_tile.getEntity();
                 }
-            break;
+                break;
             default:
                 System.err.println("Impossible error in getEntityInFacingDirection");
                 System.exit(-44);
@@ -491,7 +500,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 if (target_tile != null) {
                     return target_tile.viewTopItem();
                 }
-            break;
+                break;
             default:
                 System.err.println("Impossible");
                 System.exit(-44);

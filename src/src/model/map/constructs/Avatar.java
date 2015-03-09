@@ -31,6 +31,7 @@ public final class Avatar extends Entity {
 
     public Avatar(String name, char representation) {
         super(name, representation);
+        setNumGoldCoinsWhenSpawned(0); // Avatars re-spawn with no cold coins.
     }
 
     // map_relationship_ is used in place of a map_reference_

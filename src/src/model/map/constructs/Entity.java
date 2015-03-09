@@ -21,25 +21,39 @@ abstract public class Entity extends DrawableThing {
     private FacingDirection direction_ = FacingDirection.UP;
     private ArrayList<PickupableItem> inventory_;
     private EntityStatsPack stats_pack_ = new EntityStatsPack(this);
-    private int num_gold_coins_ = 10;
+    private int num_gold_coins_when_spawned_ = 10;
+    private int num_gold_coins_possessed_ = num_gold_coins_when_spawned_;
 
     public int getNumGoldCoins() {
-        return num_gold_coins_;
+        return num_gold_coins_possessed_;
+    }
+    
+    protected void setNumGoldCoinsWhenSpawned(int amount) {
+        num_gold_coins_when_spawned_ = amount;
+    }
+
+    /**
+     * Reset the num_gold_coins to the original amount. Used after re-spawning.
+     *
+     * @author John-Michael Reed
+     */
+    public void reinstateNumGoldCoins() {
+        num_gold_coins_possessed_ = num_gold_coins_when_spawned_;
     }
 
     public int decrementNumGoldCoinsBy(int amount) {
-        num_gold_coins_ -= amount;
-        if(num_gold_coins_ >= 0) {
-            return num_gold_coins_;
+        num_gold_coins_possessed_ -= amount;
+        if (num_gold_coins_possessed_ >= 0) {
+            return num_gold_coins_possessed_;
         } else {
             System.err.println("Number of coins going negative in Entity.decrementNumGoldCoinsBy(int amount)");
-            num_gold_coins_ = 0;
-            return num_gold_coins_;
+            num_gold_coins_possessed_ = 0;
+            return num_gold_coins_possessed_;
         }
     }
 
     public int incrementNumGoldCoinsBy(int amount) {
-        return (num_gold_coins_ += amount);
+        return (num_gold_coins_possessed_ += amount);
     }
 
     /**
@@ -108,7 +122,7 @@ abstract public class Entity extends DrawableThing {
      *
      * @return true if alive false is dead
      */
-    public boolean isAlive() {
+    public boolean checkHealthAndCommitSuicideIfDead() {
         if (stats_pack_.getCurrent_life_() <= 0) {
             commitSuicide();
             return false;
@@ -527,7 +541,12 @@ abstract public class Entity extends DrawableThing {
             amount_of_damage = 0;
         }
         getStatsPack().deductCurrentLifeBy(amount_of_damage);
-        return isAlive();
+        if (stats_pack_.getCurrent_life_() <= 0) {
+            int money = this.num_gold_coins_possessed_;
+            this.decrementNumGoldCoinsBy(money); // All money goes to my attacker.
+            attacker.incrementNumGoldCoinsBy(money);
+        }
+        return checkHealthAndCommitSuicideIfDead(); // returns true if alive, false if dead
     }
 
     public void receiveHeal(int strength) {

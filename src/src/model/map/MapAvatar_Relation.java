@@ -43,6 +43,16 @@ public class MapAvatar_Relation extends MapEntity_Relation {
         avatar_ = avatar;
     }
 
+    /**
+     * Causes an entity to tele-port to the place where it was spawned
+     *
+     * @param toSpawn
+     * @return -1 if respawn point is occupied
+     */
+    public int respawn() {
+        return super.respawn();
+    }
+
     @Override
     public void removeMyselfFromTheMapCompletely() {
         current_map_reference_.removeAvatar(avatar_);

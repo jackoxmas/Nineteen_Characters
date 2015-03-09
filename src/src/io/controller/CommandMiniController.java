@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import src.enumHandler;
 
-public class CommandMiniController {
+class CommandMiniController {
 	KeyRemapper remap_  = null;
 	public CommandMiniController(KeyRemapper remap) {
 		remap_ = remap;

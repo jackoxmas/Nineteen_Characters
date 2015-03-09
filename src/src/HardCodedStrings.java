@@ -13,8 +13,7 @@ public class HardCodedStrings {
     public final static String getChatOptions = "[ Greet ]"; // lists all greetings
     public final static String getReplyOptions = "[ Continue ]"; // lists all replies
     public final static String attack = "[ Attack ]"; // causes the entity to engage in combat with you
-    public final static String getSpecialSkillsOptions = "[ Special ]"; // lists all special skills
-    public final static String getsSkills = "[ Skill ]";
+    public final static String getAllSkills = "[ Skill ]";
     public final static String bind = "[ Bind ]"; // uses your bind ability
     public final static String barter = "[ Barter ]"; // lists items and prices
     public final static String observe = "[ Observe ]";

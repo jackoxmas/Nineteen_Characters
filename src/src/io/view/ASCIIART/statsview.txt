@@ -12,7 +12,7 @@
 ║    Agility:                                       Offensive Rating:          ║
 ║    Intellect:           Experience:               Defensive Rating:          ║
 ║    Hardiness:                        (   /100)    Armor Rating:              ║
-║                                                                              ║
+║    Coins:                                                                    ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║                                                                              ║
 ║  Inventory:                                                                  ║

@@ -76,6 +76,7 @@ public final class StatsView extends Viewport
     	writeStringToContents(18, 11, rightAlign(3, "" + bundle_.getStatsPack().getAgility_level_()));
     	writeStringToContents(18, 12, rightAlign(3, "" + bundle_.getStatsPack().getIntellect_level_()));
     	writeStringToContents(18, 13, rightAlign(3, "" + bundle_.getStatsPack().getHardiness_level_()));
+    	writeStringToContents(18,14,rightAlign(3,""+bundle_.num_coins_));
     	
     	StringBuilder hearts = new StringBuilder();
     	for (int i = 0; i < (bundle_.getStatsPack().current_life_/bundle_.getStatsPack().getMax_life_())*10; i++)

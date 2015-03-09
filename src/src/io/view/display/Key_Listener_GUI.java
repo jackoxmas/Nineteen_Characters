@@ -14,12 +14,15 @@ import src.Key_Commands;
 /**
  * Computer generated code made with Netbeans GUI builder using instruction
  * from: https://netbeans.org/kb/docs/java/gui-functionality.html
- *
+ * Sorry I made the singleton public instead of package private [John]
  * @author Matthew B [human-written code]
  */
-class Key_Listener_GUI extends javax.swing.JFrame {
+public class Key_Listener_GUI extends javax.swing.JFrame {
     //These two arraylists hold the things to apply when input is received by either the map, or by the chatbox
 
+    public javax.swing.JTextArea getIncomingText() {
+        return incoming_text_jTextArea;
+    }
     /**
      *
      */

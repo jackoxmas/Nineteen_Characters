@@ -7,8 +7,10 @@ package src.io.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.SwingUtilities;
 
 import src.Function;
+import src.HardCodedStrings;
 import src.IO_Bundle;
 import src.Key_Commands;
 import src.io.view.AvatarCreationView;
@@ -27,21 +29,24 @@ import src.model.map.MapUser_Interface;
 public final class UserController implements Function<Void, Character> {
 
     private final class ChatBoxMiniController implements Function<Void, String> {
-    	private CommandMiniController commandController_ = new CommandMiniController(remap_);
+
+        private CommandMiniController commandController_ = new CommandMiniController(remap_);
         private ChatBoxViewPort chatview_ = new ChatBoxViewPort();
 
         public ChatBoxMiniController() {
             Display.getDisplay().addInputBoxTextEnteredFunction(this);
             Display.getDisplay().addOutputBoxCharacterFunction(new outputBoxFunction());
         }
+
         /**
          * Processes a command entered into the chatbox. Commands begin with a /
          * Prints the result of running that command to the chatbox.
+         *
          * @param foo
          */
         private void processCommandAndDisplayOutput(String foo) {
-			Display.getDisplay().setMessage(commandController_.processCommand(foo));
-		}
+            Display.getDisplay().setMessage(commandController_.processCommand(foo));
+        }
 
         /**
          * The function that is called by the chat box when enter is hit.
@@ -49,22 +54,24 @@ public final class UserController implements Function<Void, Character> {
          */
         @Override
         public Void apply(String foo) {
-        	if(foo.startsWith("/")){processCommandAndDisplayOutput(foo); return null;}
-        	//IF it starts with a /, it's a command, so send it
-        	//To the command function, not the map.
+            if (foo.startsWith("/")) {
+                processCommandAndDisplayOutput(foo);
+                return null;
+            }
+            //IF it starts with a /, it's a command, so send it
+            //To the command function, not the map.
             sendTextCommandAndUpdate(foo);
             return null;
         }
 
-
-		private Void sendTextCommandAndUpdate(String foo) {
+        private Void sendTextCommandAndUpdate(String foo) {
             Key_Commands command = Key_Commands.GET_CONVERSATION_CONTINUATION_OPTIONS;
-            if (foo.contains("[ Attack ]")) {
+            if (foo.contains(HardCodedStrings.attack)) {
                 command = Key_Commands.ATTACK;
                 updateDisplay(sendCommandToMap(command));
                 return null;
             }
-            if (foo.contains("[ Greet ]")) {
+            if (foo.contains(HardCodedStrings.getChatOptions)) {
                 command = Key_Commands.GET_CONVERSATION_STARTERS;
                 updateDisplay(sendCommandToMap(command));
                 return null;
@@ -130,11 +137,20 @@ public final class UserController implements Function<Void, Character> {
     }
 
     /**
-     * Sends the given command to the map
+     * Sends the given command to the map. Focuses on the TextBox for inputting
+     * chat options.
      *
      * @param input
      */
     private IO_Bundle sendCommandToMap(Key_Commands command) {
+        System.out.println("Sending command: " + command.toString());
+        if (command == Key_Commands.GET_INTERACTION_OPTIONS) {
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    src.io.view.display.Key_Listener_GUI.getGUI().getIncomingText().requestFocusInWindow();
+                }
+            });
+        }
         return MapUserAble_.sendCommandToMapWithOptionalText(userName_, command, currentView_.getWidth() / 2, currentView_.getHeight() / 2, "");
     }
 
@@ -146,12 +162,12 @@ public final class UserController implements Function<Void, Character> {
      * @return
      */
     private IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
+        System.out.println("Sending command: " + command.toString());
         return (MapUserAble_.sendCommandToMapWithOptionalText(userName_, command, currentView_.getWidth() / 2, currentView_.getHeight() / 2, in));
     }
 
     //Handles the view switching, uses the  instance of operator in a slightly evil way, 
     //ideally we should look into refactoring this to not
-
     private IO_Bundle updateViewsAndMap(Key_Commands input) {
         boolean taken = false;
         if (currentView_ instanceof AvatarCreationView) {
@@ -189,10 +205,9 @@ public final class UserController implements Function<Void, Character> {
     }
 
     private void takeTurnandPrintTurn(Key_Commands input) {
-    	IO_Bundle bundle = updateViewsAndMap(input);
-    	updateDisplay(bundle);
+        IO_Bundle bundle = updateViewsAndMap(input);
+        updateDisplay(bundle);
     }
-
 
     // FIELD ACCESSORS
     /**

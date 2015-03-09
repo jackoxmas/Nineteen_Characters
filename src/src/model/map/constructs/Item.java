@@ -106,8 +106,6 @@ public abstract class Item extends DrawableThing {
             s += "Not null";
         }
 
-        s += "\n associated with map: " + map_relationship_.isAssociatedWithMap();
-
         return s;
     }
     public String getName(){

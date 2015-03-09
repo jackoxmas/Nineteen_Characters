@@ -66,34 +66,13 @@ abstract public class Entity extends DrawableThing {
      * @param what_you_just_said_to_me - same as "what you last said to me"
      * @return conversation options
      */
-    public abstract ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me);
+    public abstract ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Entity who_is_talking_to_me);
 
     public abstract ArrayList<String> getListOfItemsYouCanUseOnMe();
 
     public ArrayList<String> endConversation() {
         ArrayList<String> silence = new ArrayList<>();
         return silence;
-    }
-
-    /**
-     * @author John-Michael Reed
-     * @param recieved_text - what was said to me
-     * @param speaker - the person who I am talking to
-     * @return - what I said back
-     */
-    public ArrayList<String> reply(String recieved_text, Entity speaker) {
-        ArrayList<String> reply = new ArrayList<>();
-        if (recieved_text.equalsIgnoreCase("Hello")) {
-            reply.add("Goodbye");
-            return reply;
-        } else if (recieved_text.equalsIgnoreCase("Goodbye")) {
-            reply.add("");
-            return reply;
-        } else if (recieved_text.equalsIgnoreCase("")) {
-            return reply;
-        } else {
-            return reply;
-        }
     }
 
     public int getExperienceBetweenLevels() {

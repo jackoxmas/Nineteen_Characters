@@ -10,6 +10,7 @@ import java.util.Random;
 import src.Effect;
 
 import src.FacingDirection;
+import src.HardCodedStrings;
 import src.Key_Commands;
 import src.RunGame;
 import src.SkillEnum;
@@ -81,9 +82,10 @@ public final class Avatar extends Entity {
 
     public ArrayList<String> getInteractionOptionStrings() {
         ArrayList<String> options = new ArrayList<String>();
-        options.add("Attack me. [ Attack ]");
-        options.add("Start a convetsation with me. [ Greet ]");
-        options.add("Get a list of items that you can use on me. [ Item ]");
+        options.add("Attack me. " + HardCodedStrings.attack);
+        options.add("Start a conversation with me. " + HardCodedStrings.getChatOptions);
+        options.add("Select a skill to use on me. " + HardCodedStrings.getsSkills);
+        options.add("Get a list of items that you can use on me. " + HardCodedStrings.getItemList);
         return options;
     }
 
@@ -93,7 +95,7 @@ public final class Avatar extends Entity {
         return options;
     }
 
-    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me) {
+    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Entity who_is_talking_to_me) {
         ArrayList<String> options = new ArrayList<String>();
         if (what_you_just_said_to_me == "Hello") {
             options.add("Goodbye");
@@ -106,17 +108,6 @@ public final class Avatar extends Entity {
     public ArrayList<String> getListOfItemsYouCanUseOnMe() {
         ArrayList<String> options = new ArrayList<String>();
         return options;
-    }
-
-    /**
-     * @author John-Michael Reed
-     * @param recieved_text - what was said to me
-     * @param speaker - the person who I am talking to
-     * @return - what I said back
-     */
-    @Override
-    public ArrayList<String> reply(String recieved_text, Entity speaker) {
-        return super.reply(recieved_text, speaker);
     }
 
     /**
@@ -451,14 +442,7 @@ public final class Avatar extends Entity {
                 }
             case GET_CONVERSATION_CONTINUATION_OPTIONS:
                 if (target != null) {
-                    return target.getConversationContinuationStrings(optional_text);
-                } else {
-                    return null;
-                }
-            // optional text is what the Entity said to you last.
-            case TALK_USING_STRING:
-                if (target != null) {
-                    return target.reply(optional_text, target);
+                    return target.getConversationContinuationStrings(optional_text, this);
                 } else {
                     return null;
                 }

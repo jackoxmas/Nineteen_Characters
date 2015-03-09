@@ -11,6 +11,7 @@ import src.model.map.Map;
 import src.model.map.MapUser_Interface;
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Item;
+import src.model.map.constructs.Merchant;
 import src.model.map.constructs.Monster;
 import src.model.map.constructs.ObstacleRemovingItem;
 import src.model.map.constructs.OneHandedSword;
@@ -71,12 +72,16 @@ public class RunGame {
         map_.addAvatar(buddy, 3, 0);
         
         Villager villager = new Villager("villager1", '웃');
-        villager.getStatsPack().increaseQuantityOfExperienceBy(300);
+        villager.getStatsPack().increaseQuantityOfExperienceBy(200);
         map_.addEntity(villager, 3, 13);
         
-        Monster monster = new Monster("monster1", 'M');
-        monster.getStatsPack().increaseQuantityOfExperienceBy(400);
+        Monster monster = new Monster("monster1", '웃');
+        monster.getStatsPack().increaseQuantityOfExperienceBy(300);
         map_.addEntity(monster, 13, 3);
+        
+        Merchant merchant = new Merchant("merchant1", '웃');
+        merchant.getStatsPack().increaseQuantityOfExperienceBy(1000);
+        map_.addEntity(merchant, 1, 1);
     }
 
     private static void populateMap() {

@@ -6,6 +6,7 @@
 package src.model.map.constructs;
 
 import java.util.ArrayList;
+import src.HardCodedStrings;
 
 /**
  *
@@ -19,7 +20,8 @@ public class Monster extends Entity {
 
     public ArrayList<String> getInteractionOptionStrings() {
         ArrayList<String> options = new ArrayList<String>();
-        options.add("Attack me. [ Attack ]");
+        options.add("Attack me. " + HardCodedStrings.attack);
+        options.add("Select a skill to use on me. " + HardCodedStrings.getsSkills);
         return options;
     }
 
@@ -28,24 +30,13 @@ public class Monster extends Entity {
         return options;
     }
 
-    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me) {
+    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Entity who_is_talking_to_me) {
         return endConversation();
     }
 
     public ArrayList<String> getListOfItemsYouCanUseOnMe() {
         ArrayList<String> options = new ArrayList<String>();
         return options;
-    }
-
-    /**
-     * @author John-Michael Reed
-     * @param recieved_text - what was said to me
-     * @param speaker - the person who I am talking to
-     * @return - what I said back
-     */
-    @Override
-    public ArrayList<String> reply(String recieved_text, Entity speaker) {
-        return super.reply(recieved_text, speaker);
     }
 
     /**

@@ -24,7 +24,6 @@ public class Villager extends Entity {
         options.add("Attack me. " + HardCodedStrings.attack);
         options.add("Start a conversation with me. " + HardCodedStrings.getChatOptions);
         options.add("Select a skill to use on me. " + HardCodedStrings.getAllSkills);
-        options.add("Get a list of items that you can use on me. " + HardCodedStrings.getItemList);
         return options;
     }
 
@@ -36,7 +35,7 @@ public class Villager extends Entity {
     @Override
     public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Avatar who_is_talking_to_me) {
         ArrayList<String> options = new ArrayList<String>();
-        if (what_you_just_said_to_me == "Hello") {
+        if (what_you_just_said_to_me.equals("Hello")) {
             options.add("Goodbye");
             return options;
         } else {

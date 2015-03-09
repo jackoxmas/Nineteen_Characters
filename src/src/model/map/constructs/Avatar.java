@@ -97,7 +97,7 @@ public final class Avatar extends Entity {
 
     public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Avatar who_is_talking_to_me) {
         ArrayList<String> options = new ArrayList<String>();
-        if (what_you_just_said_to_me == "Hello") {
+        if (what_you_just_said_to_me.equals("Hello")) {
             options.add("Goodbye");
             return options;
         } else {
@@ -311,6 +311,7 @@ public final class Avatar extends Entity {
             System.exit(-8);
         }
         Entity target = this.getMapRelation().getEntityInFacingDirection();
+        Item target_item_ = this.getMapRelation().getTopmostItemInFacingDirection();
         switch (command) {
             case MOVE_DOWNLEFT:// Move SW
                 mar.moveInDirection(-1, -1);
@@ -433,21 +434,27 @@ public final class Avatar extends Entity {
             case GET_INTERACTION_OPTIONS:
                 if (target != null) {
                     return target.getInteractionOptionStrings();
-                } else {
-                    return null;
                 }
+                if (target_item_ != null) {
+                    return target_item_.getInteractionOptionStrings();
+                }
+                return null;
+
             case GET_CONVERSATION_STARTERS:
                 if (target != null) {
                     return target.getConversationStarterStrings();
-                } else {
-                    return null;
                 }
+                return null;
             case GET_CONVERSATION_CONTINUATION_OPTIONS:
                 if (target != null) {
                     return target.getConversationContinuationStrings(optional_text, this);
+                } else if (target_item_ != null) {
+                    System.out.println("optional text in Item GET_CONVERSATION_CONTINUATION_OPTIONS: \n" + optional_text);
+                    return target_item_.getConversationContinuationStrings(optional_text, this);
                 } else {
                     return null;
                 }
+
             case ATTACK:
                 getMapRelation().sendAttackInFacingDirection();
                 return null;

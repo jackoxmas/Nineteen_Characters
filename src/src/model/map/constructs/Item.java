@@ -5,6 +5,8 @@
  */
 package src.model.map.constructs;
 
+import java.util.ArrayList;
+import src.HardCodedStrings;
 import src.model.map.MapItem_Relation;
 
 /**
@@ -108,8 +110,9 @@ public abstract class Item extends DrawableThing {
 
         return s;
     }
-    public String getName(){
-    	return name_;
+
+    public String getName() {
+        return name_;
     }
 
     /**

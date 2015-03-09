@@ -1,6 +1,8 @@
 package src.model.map.constructs;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import src.HardCodedStrings;
 
 import src.model.map.MapDrawableThing_Relation;
 /*
@@ -16,13 +18,18 @@ import src.model.map.MapDrawableThing_Relation;
  * @author JohnReedLOL
  */
 abstract public class DrawableThing {
+
     // names of items and terrain should be non-unique.
     // names of entities should be unique to fit in a hashmap.
     public final String name_;
 
-    public String getName() { return name_; }
+    public String getName() {
+        return name_;
+    }
 
-    public char getDChar() { return single_character_representation_; }
+    public char getDChar() {
+        return single_character_representation_;
+    }
 
     protected DrawableThing(String name, char representation) {
         name_ = name;
@@ -35,6 +42,7 @@ abstract public class DrawableThing {
         single_character_representation_ = representation;
         is_visible_ = is_visible;
     }
+
     protected DrawableThing(String name, char representation, Color col_) {
         name_ = name;
         single_character_representation_ = representation;
@@ -85,8 +93,14 @@ abstract public class DrawableThing {
     // For things that take up only  1 tile or need to appear on a minimap
     private char single_character_representation_;
     private Color color_ = Color.BLACK;//Default color to black
-    public Color getColor(){return color_;}
-    protected void setColor(Color col_){color_ = col_;}
+
+    public Color getColor() {
+        return color_;
+    }
+
+    protected void setColor(Color col_) {
+        color_ = col_;
+    }
 
     /**
      * Get character representation.
@@ -107,4 +121,29 @@ abstract public class DrawableThing {
     }
 
     private DrawableThingStatsPack stats_pack_ = new DrawableThingStatsPack();
+
+    public ArrayList<String> getInteractionOptionStrings() {
+        ArrayList<String> options = new ArrayList<String>();
+        return options;
+    }
+
+    public ArrayList<String> getConversationStarterStrings() {
+        ArrayList<String> options = new ArrayList<String>();
+        return options;
+    }
+
+    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Avatar who_is_talking_to_me) {
+        ArrayList<String> options = new ArrayList<String>();
+        return options;
+    }
+
+    public ArrayList<String> getListOfItemsYouCanUseOnMe() {
+        ArrayList<String> options = new ArrayList<String>();
+        return options;
+    }
+
+    public ArrayList<String> endConversation() {
+        ArrayList<String> silence = new ArrayList<>();
+        return silence;
+    }
 }

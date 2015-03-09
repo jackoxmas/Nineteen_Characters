@@ -5,6 +5,9 @@
  */
 package src.model.map.constructs;
 
+import java.util.ArrayList;
+import src.HardCodedStrings;
+
 /**
  *
  * @author JohnReedLOL
@@ -16,6 +19,22 @@ public class TemporaryObstacleItem extends ObstacleItem {
     public TemporaryObstacleItem(String name, char representation, ObstacleRemovingItem keyItem) {
         super(name, representation);
         keyItem_ = keyItem;
+    }
+
+    public ArrayList<String> getInteractionOptionStrings() {
+        ArrayList<String> options = new ArrayList<String>();
+        options.add("Give me a list of items that I can use on you. " + HardCodedStrings.getItemList);
+        return options;
+    }
+
+    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Avatar who_is_talking_to_me) {
+        ArrayList<String> options = new ArrayList<String>();
+        if(what_you_just_said_to_me.equals("Give me a list of items that I can use on you. " + HardCodedStrings.getItemList)) {
+            options.add(keyItem_.name_ + HardCodedStrings.useItem);
+        } else if(what_you_just_said_to_me.equals(keyItem_.name_ + HardCodedStrings.useItem)) {
+            this.use(who_is_talking_to_me);
+        }
+        return options;
     }
 
     /**
@@ -34,8 +53,11 @@ public class TemporaryObstacleItem extends ObstacleItem {
      */
     @Override
     public void use(Entity target) {
-        if(target.getInventory().contains(keyItem_)) {
+        if (target.getInventory().contains(keyItem_)) {
+            System.out.println("You have the key");
             this.setPassable(true);
+        } else {
+            System.out.println("You don't have the key");
         }
     }
 
@@ -46,7 +68,7 @@ public class TemporaryObstacleItem extends ObstacleItem {
      */
     @Override
     public void use(Item target) {
-        if(target == keyItem_) {
+        if (target == keyItem_) {
             this.setPassable(true);
         }
     }

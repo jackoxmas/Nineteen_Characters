@@ -24,10 +24,21 @@ abstract public class Entity extends DrawableThing {
     private int num_gold_coins_when_spawned_ = 10;
     private int num_gold_coins_possessed_ = num_gold_coins_when_spawned_;
 
+    /**
+     * Entity Constructor
+     *
+     * @param name
+     * @param representation - What will represent the Entity on the screen.
+     */
+    public Entity(String name, char representation) {
+        super(name, representation);
+        inventory_ = new ArrayList<PickupableItem>();
+    }
+
     public int getNumGoldCoins() {
         return num_gold_coins_possessed_;
     }
-    
+
     protected void setNumGoldCoinsWhenSpawned(int amount) {
         num_gold_coins_when_spawned_ = amount;
     }
@@ -56,17 +67,6 @@ abstract public class Entity extends DrawableThing {
         return (num_gold_coins_possessed_ += amount);
     }
 
-    /**
-     * Entity Constructor
-     *
-     * @param name
-     * @param representation - What will represent the Entity on the screen.
-     */
-    public Entity(String name, char representation) {
-        super(name, representation);
-        inventory_ = new ArrayList<PickupableItem>();
-    }
-
     public abstract ArrayList<String> getInteractionOptionStrings();
 
     public abstract ArrayList<String> getConversationStarterStrings();
@@ -82,11 +82,6 @@ abstract public class Entity extends DrawableThing {
     public abstract ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Avatar who_is_talking_to_me);
 
     public abstract ArrayList<String> getListOfItemsYouCanUseOnMe();
-
-    public ArrayList<String> endConversation() {
-        ArrayList<String> silence = new ArrayList<>();
-        return silence;
-    }
 
     public int getExperienceBetweenLevels() {
         if (stats_pack_ != null) {

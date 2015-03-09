@@ -45,22 +45,22 @@ public class Merchant extends Villager {
     @Override
     public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Avatar who_is_talking_to_me) {
         ArrayList<String> options = new ArrayList<String>();
-        if (what_you_just_said_to_me == "Super_Sword : 10 gold : " + HardCodedStrings.getReplyOptions) {
+        if (what_you_just_said_to_me.equals("Super_Sword : 10 gold : " + HardCodedStrings.getReplyOptions)) {
             options.add("Buy Super_Sword! " + HardCodedStrings.trade);
             options.add("Nevermind.");
-        } else if (what_you_just_said_to_me == "Super_Staff : 10 gold : " + HardCodedStrings.getReplyOptions) {
+        } else if (what_you_just_said_to_me.equals("Super_Staff : 10 gold : " + HardCodedStrings.getReplyOptions)) {
             options.add("Buy Super_Staff! " + HardCodedStrings.trade);
             options.add("Nevermind.");
-        } else if (what_you_just_said_to_me == "Super_Bow : 10 gold : " + HardCodedStrings.getReplyOptions) {
+        } else if (what_you_just_said_to_me.equals("Super_Bow : 10 gold : " + HardCodedStrings.getReplyOptions)) {
             options.add("Buy Super_Bow! " + HardCodedStrings.trade);
             options.add("Nevermind.");
-        } else if (what_you_just_said_to_me == "Nevermind.") {
+        } else if (what_you_just_said_to_me.equals("Nevermind.")) {
             options.add("Bye.");
-        } else if (what_you_just_said_to_me == "Buy Super_Sword! " + HardCodedStrings.trade) {
+        } else if (what_you_just_said_to_me.equals("Buy Super_Sword! " + HardCodedStrings.trade)) {
             return makePurchase("Super_Sword", who_is_talking_to_me);
-        } else if (what_you_just_said_to_me == "Buy Super_Staff! " + HardCodedStrings.trade) {
+        } else if (what_you_just_said_to_me.equals("Buy Super_Staff! " + HardCodedStrings.trade)) {
             return makePurchase("Super_Staff", who_is_talking_to_me);
-        } else if (what_you_just_said_to_me == "Buy Super_Bow! " + HardCodedStrings.trade) {
+        } else if (what_you_just_said_to_me.equals("Buy Super_Bow! " + HardCodedStrings.trade)) {
             return makePurchase("Super_Bow", who_is_talking_to_me);
         } else {
             return endConversation();

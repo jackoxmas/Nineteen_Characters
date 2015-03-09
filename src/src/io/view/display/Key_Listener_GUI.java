@@ -137,6 +137,7 @@ class Key_Listener_GUI extends javax.swing.JFrame {
     private Key_Listener_GUI() {
         initComponents();
         setFont();
+        bargain_barter_jButton.setText("Talk / Bargain");
         occupation_skill_1_jButton.setText("Reassign Me");
         occupation_skill_1_jButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -482,6 +483,7 @@ class Key_Listener_GUI extends javax.swing.JFrame {
 
     private void bargain_barter_jButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bargain_barter_jButtonMouseClicked
         sendKeyCommand(Key_Commands.BARGAIN_AND_BARTER);
+        incoming_text_jTextArea.requestFocusInWindow();
     }//GEN-LAST:event_bargain_barter_jButtonMouseClicked
 
     private void observe_jButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_observe_jButtonMouseClicked

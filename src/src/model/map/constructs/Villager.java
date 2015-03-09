@@ -34,7 +34,7 @@ public class Villager extends Entity {
         return options;
     }
     @Override
-    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Entity who_is_talking_to_me) {
+    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Avatar who_is_talking_to_me) {
         ArrayList<String> options = new ArrayList<String>();
         if (what_you_just_said_to_me == "Hello") {
             options.add("Goodbye");

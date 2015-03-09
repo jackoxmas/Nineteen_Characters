@@ -94,7 +94,7 @@ public final class Avatar extends Entity {
         return options;
     }
 
-    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Entity who_is_talking_to_me) {
+    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Avatar who_is_talking_to_me) {
         ArrayList<String> options = new ArrayList<String>();
         if (what_you_just_said_to_me == "Hello") {
             options.add("Goodbye");
@@ -386,9 +386,11 @@ public final class Avatar extends Entity {
                 this.bindWounds();
                 return null;
             case BARGAIN_AND_BARTER:
-                //this.observe();
-                System.out.println("BARGAIN_AND_BARTER not yet implemented in Avatar");
-                return null;
+                if (target != null) {
+                    return target.getInteractionOptionStrings();
+                } else {
+                    return null;
+                }
             case OBSERVE:
                 this.observe();
                 return null;

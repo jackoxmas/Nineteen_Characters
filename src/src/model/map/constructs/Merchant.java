@@ -42,7 +42,7 @@ public class Merchant extends Villager {
      * @return conversation options
      */
     @Override
-    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Entity who_is_talking_to_me) {
+    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Avatar who_is_talking_to_me) {
         ArrayList<String> options = new ArrayList<String>();
         if (what_you_just_said_to_me == "Super_Sword : 10 gold : " + HardCodedStrings.getReplyOptions) {
             options.add("Buy Super_Sword! " + HardCodedStrings.trade);
@@ -79,14 +79,15 @@ public class Merchant extends Villager {
      * @param buyer - the person who I am talking to
      * @return - what I said back
      */
-    public ArrayList<String> makePurchase(String weapon_name, Entity buyer) {
+    public ArrayList<String> makePurchase(String weapon_name, Avatar buyer) {
         ArrayList<String> reply = new ArrayList<>();
         if(buyer.getNumGoldCoins() < 10) {
             reply.add("Sorry. You are too poor to afford my wares.");
             return reply;
         } else {
-            reply.add("You will be amazed at what my weapons can do.");
-            buyer.decrementNumGoldCoinsBy(10);
+            //reply.add("You will be amazed at what my weapons can do.");
+            reply.add("With your bargain skill, I give you " + buyer.getBargain_() + " off.");
+            buyer.decrementNumGoldCoinsBy(10 - buyer.getBargain_());
         }
         if (weapon_name.equals("Super_Sword")) {
             OneHandedSword super_sword = new OneHandedSword("Super_Sword", 'S');

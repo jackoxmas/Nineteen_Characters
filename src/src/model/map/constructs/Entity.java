@@ -65,7 +65,7 @@ abstract public class Entity extends DrawableThing {
      * @param what_you_just_said_to_me - same as "what you last said to me"
      * @return conversation options
      */
-    public abstract ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Entity who_is_talking_to_me);
+    public abstract ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Avatar who_is_talking_to_me);
 
     public abstract ArrayList<String> getListOfItemsYouCanUseOnMe();
 

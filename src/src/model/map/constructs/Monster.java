@@ -22,7 +22,7 @@ public class Monster extends Entity {
     public ArrayList<String> getInteractionOptionStrings() {
         ArrayList<String> options = new ArrayList<String>();
         options.add("Attack me. " + HardCodedStrings.attack);
-        options.add("Select a skill to use on me. " + HardCodedStrings.getsSkills);
+        options.add("Select a skill to use on me. " + HardCodedStrings.getAllSkills);
         return options;
     }
 

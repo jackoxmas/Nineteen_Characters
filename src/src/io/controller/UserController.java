@@ -151,7 +151,24 @@ public final class UserController implements Function<Void, Character> {
                 }
             });
         }
-        return MapUserAble_.sendCommandToMapWithOptionalText(userName_, command, currentView_.getWidth() / 2, currentView_.getHeight() / 2, "");
+        final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(userName_, command, currentView_.getWidth() / 2, currentView_.getHeight() / 2, "");
+        // Make the buttons says the right skill names.
+        if(command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER || 
+                command == Key_Commands.BECOME_SNEAK && to_return != null) {
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    src.io.view.display.Key_Listener_GUI.getGUI().getSkillButton1().
+                            setText(to_return.occupation_.getSkillNameFromNumber(1));
+                    src.io.view.display.Key_Listener_GUI.getGUI().getSkillButton2().
+                            setText(to_return.occupation_.getSkillNameFromNumber(2));
+                    src.io.view.display.Key_Listener_GUI.getGUI().getSkillButton3().
+                            setText(to_return.occupation_.getSkillNameFromNumber(3));
+                    src.io.view.display.Key_Listener_GUI.getGUI().getSkillButton4().
+                            setText(to_return.occupation_.getSkillNameFromNumber(4));
+                }
+            });
+        } 
+        return to_return;
     }
 
     /**

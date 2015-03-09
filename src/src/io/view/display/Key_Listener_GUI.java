@@ -13,8 +13,9 @@ import src.Key_Commands;
 
 /**
  * Computer generated code made with Netbeans GUI builder using instruction
- * from: https://netbeans.org/kb/docs/java/gui-functionality.html
- * Sorry I made the singleton public instead of package private [John]
+ * from: https://netbeans.org/kb/docs/java/gui-functionality.html Sorry I made
+ * the singleton public instead of package private [John]
+ *
  * @author Matthew B [human-written code]
  */
 public class Key_Listener_GUI extends javax.swing.JFrame {
@@ -22,6 +23,22 @@ public class Key_Listener_GUI extends javax.swing.JFrame {
 
     public javax.swing.JTextArea getIncomingText() {
         return incoming_text_jTextArea;
+    }
+
+    public javax.swing.JButton getSkillButton1() {
+        return occupation_skill_1_jButton;
+    }
+
+    public javax.swing.JButton getSkillButton2() {
+        return occupation_skill_2_jButton;
+    }
+
+    public javax.swing.JButton getSkillButton3() {
+        return occupation_skill_3_jButton;
+    }
+
+    public javax.swing.JButton getSkillButton4() {
+        return occupation_skill_4_jButton;
     }
     /**
      *

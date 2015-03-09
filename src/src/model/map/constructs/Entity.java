@@ -476,6 +476,7 @@ abstract public class Entity extends DrawableThing {
      * Sets Entities Occupation to smasher. Resets stats
      */
     public int becomeSmasher() {
+        this.unEquipEverything(); // You cannot change classes if you hold weapons of another class
         if (occupation_ != null) {
             occupation_ = new Smasher(this.occupation_);
         } else {
@@ -488,6 +489,7 @@ abstract public class Entity extends DrawableThing {
      * Sets Entities Occupation to smasher. Resets stats
      */
     public int becomeSummoner() {
+        this.unEquipEverything(); // You cannot change classes if you hold weapons of another class
         if (occupation_ != null) {
             occupation_ = new Summoner(this.occupation_);
         } else {
@@ -500,6 +502,7 @@ abstract public class Entity extends DrawableThing {
      * Sets Entities Occupation to smasher. Resets stats
      */
     public int becomeSneak() {
+        this.unEquipEverything(); // You cannot change classes if you hold weapons of another class
         if (occupation_ != null) {
             occupation_ = new Sneak(this.occupation_);
         } else {

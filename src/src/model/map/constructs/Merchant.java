@@ -11,6 +11,7 @@ import src.HardCodedStrings;
 
 /**
  * Merchant runs away from attacks like a villager.
+ *
  * @author JohnReedLOL
  */
 public class Merchant extends Villager {
@@ -53,7 +54,7 @@ public class Merchant extends Villager {
         } else if (what_you_just_said_to_me == "Super_Bow : 10 gold : " + HardCodedStrings.getReplyOptions) {
             options.add("Buy Super_Bow! " + HardCodedStrings.trade);
             options.add("Nevermind.");
-        } else if (what_you_just_said_to_me == "Nevermind."){
+        } else if (what_you_just_said_to_me == "Nevermind.") {
             options.add("Bye.");
         } else if (what_you_just_said_to_me == "Buy Super_Sword! " + HardCodedStrings.trade) {
             return makePurchase("Super_Sword", who_is_talking_to_me);
@@ -61,8 +62,7 @@ public class Merchant extends Villager {
             return makePurchase("Super_Staff", who_is_talking_to_me);
         } else if (what_you_just_said_to_me == "Buy Super_Bow! " + HardCodedStrings.trade) {
             return makePurchase("Super_Bow", who_is_talking_to_me);
-        }
-        else {
+        } else {
             return endConversation();
         }
         return options;
@@ -81,12 +81,16 @@ public class Merchant extends Villager {
      */
     public ArrayList<String> makePurchase(String weapon_name, Avatar buyer) {
         ArrayList<String> reply = new ArrayList<>();
-        if(buyer.getNumGoldCoins() < 10) {
+        if (buyer.getNumGoldCoins() < 10) {
             reply.add("Sorry. You are too poor to afford my wares.");
             return reply;
         } else {
             //reply.add("You will be amazed at what my weapons can do.");
-            reply.add("With your bargain skill, I give you " + buyer.getBargain_() + " off.");
+            if (buyer.getBargain_() == 1) {
+                reply.add("With your bargaining skills, I give you " + buyer.getBargain_() + " coin off.");
+            } else {
+                reply.add("With your bargaining skills, I give you " + buyer.getBargain_() + " coins off.");
+            }
             buyer.decrementNumGoldCoinsBy(10 - buyer.getBargain_());
         }
         if (weapon_name.equals("Super_Sword")) {

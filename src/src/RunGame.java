@@ -45,7 +45,7 @@ public class RunGame {
         handleArgs(args);
 
        
-       if(true){
+       if(false){
     	   startNewGame();
        }else{
     	   startMapEditor();

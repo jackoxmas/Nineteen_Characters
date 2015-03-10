@@ -43,6 +43,7 @@ public class MapEditorController extends Controller {
 		case MOVE_LEFT: --x; break;
 		case MOVE_RIGHT: ++x; break;
 		case MAP_INSERT: mapInsert(Display.getDisplay().getHighlightedItem());
+		case MAP_CENTER: x = 0; y = 0;
 		default: break;
 
 		}
@@ -53,6 +54,7 @@ public class MapEditorController extends Controller {
 
 	private void mapInsert(String spawnName) {
 		if(spawnName == null){spawnName = lastSpawned;}
+		if(!map_.withinMap(x, y)){Display.getDisplay().setMessage("Cannot put stuff off the map!"); return;}
 				switch(spawnName){
 				case "Item":
 					Item onehandedsword = new OneHandedSword("Excalibur", '|');

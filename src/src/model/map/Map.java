@@ -189,6 +189,15 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
         }
         return error_code;
     }
+    /**
+     * Returns true if the given coord is within the map
+     * @param x
+     * @param y
+     * @return
+     */
+    public boolean withinMap(int x, int y){
+    	return ((x >= 0 && x < this.width_) && (y>= 0 && y<this.height_));
+    }
 
     /**
      * Adds an avatar to the map.

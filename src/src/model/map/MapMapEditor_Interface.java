@@ -10,4 +10,5 @@ public interface MapMapEditor_Interface {
 	 public int addTerrain(Terrain t, int x, int y);
 	 public int addEntity(Entity e, int x, int y);
 	 public int addItem(Item i, int x, int y);
+	 public boolean withinMap(int x, int y);
 }

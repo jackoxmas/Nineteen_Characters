@@ -16,7 +16,7 @@ import src.IO_Bundle;
  * @author Matthew B, Jessan
  */
 
-public final class MapView extends Viewport {
+public class MapView extends Viewport {
     
     // map_relationship_ is used in place of a map_referance_
     private transient char[][] view_contents_;
@@ -45,6 +45,7 @@ public final class MapView extends Viewport {
 		clear();
 		makeSquare(0, 0,this.getWidth()-1,this.getHeight()-1);
 		if(bundle.view_for_display_ == null || bundle.view_for_display_.length == 0){return;}
+		if(bundle.color_for_display_ == null || bundle.color_for_display_.length == 0){return;}
 		for(int i = 0;i<this.getWidth()-2 && i < bundle.view_for_display_[0].length;++i){
 			for(int j = 0;j<this.getHeight()-2 && j< bundle.view_for_display_.length;++j){
 				view_contents_[i+1][j+1] = bundle.view_for_display_[bundle.view_for_display_.length-j-1][i];

@@ -47,7 +47,7 @@ public class SavedGame {
         file_path_ = filePath;
     }
 
-    public int saveGame(src.model.map.Map map, src.io.controller.UserController controller) {
+    public int saveGame(src.model.map.Map map, src.io.controller.Controller controller) {
         try {
             // open or create the save file
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

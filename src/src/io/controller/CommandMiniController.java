@@ -42,11 +42,13 @@ class CommandMiniController {
 
 	private String processManCommand(String foo) {
 		Scanner sc = new Scanner(foo);
-		
+		String in = "";
 		try{
 			sc.next(); //Get rid of the command /man
-			String in = sc.next();
-
+			in = sc.next();
+		}
+		catch(Exception e){sc.close(); return HardCodedStrings.command_error;}
+		try{
 			if(in.equals(rebind)){return HardCodedStrings.rebindHelp;}
 			if(in.equals(save)){return HardCodedStrings.saveHelp;}
 			if(in.equals(load)){return HardCodedStrings.loadHelp;}
@@ -56,10 +58,10 @@ class CommandMiniController {
 			if(in.equals(help)){return HardCodedStrings.helpHelp;}
 			if(in.equals(pwd)){return HardCodedStrings.pwdHelp;}
 			if(in.equals(man)){return HardCodedStrings.manHelp;}
-			
 		}
-		catch(Exception e){}
-		sc.close();
+		finally{
+			sc.close();
+		}
 		return HardCodedStrings.command_error;
 	}
 

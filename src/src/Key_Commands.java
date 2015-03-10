@@ -32,7 +32,10 @@ public enum Key_Commands {
     SPEND_SKILLPOINT_ON_BIND, SPEND_SKILLPOINT_ON_BARGAIN, SPEND_SKILLPOINT_ON_OBSERVE,
     SPEND_SKILLPOINT_ON_SKILL_1, SPEND_SKILLPOINT_ON_SKILL_2, SPEND_SKILLPOINT_ON_SKILL_3, SPEND_SKILLPOINT_ON_SKILL_4,
     
-    SAVE_GAME, DO_ABSOLUTELY_NOTHING
+    SAVE_GAME, DO_ABSOLUTELY_NOTHING,
     //The save class itself is named SAVE_GAME, so I'd going with that over save_map
+    
+    //Any commands needed for map editing will go here
+    MAP_INSERT, MAP_CENTER
 
 }

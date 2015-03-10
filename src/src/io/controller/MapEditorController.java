@@ -27,6 +27,8 @@ public class MapEditorController extends Controller {
 		mappy_viewy_.setSpawnableList(spawnables_);
 		this.takeTurnandPrintTurn('5');
 		Display.getDisplay().setMessage("SWITCH TO THE INVENTORY TAB!!!");
+		Display.getDisplay().setMessage("TO USE: Hit space to spawn something. Select what to spawn by " +
+				"clicking on it in the item box. Move around as usual.");
 	}
 
 

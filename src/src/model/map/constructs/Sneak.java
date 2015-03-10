@@ -8,6 +8,7 @@ package src.model.map.constructs;
 import java.util.Random;
 
 import src.SkillEnum;
+import src.io.view.display.Display;
 
 /**
  * Sneak Occupation, agility +1.
@@ -115,10 +116,12 @@ public final class Sneak extends Occupation {
                     // fail to steal
                     System.out.println("Failed to steal.");
                 } else {
+                	if(target!= null){
                     int money = target.getNumGoldCoins();
                     getEntity().incrementNumGoldCoinsBy(money);
                     target.decrementNumGoldCoinsBy(money);
-                    System.out.println("Successful pickpocket.");
+                    Display.getDisplay().setMessage("Successful pickpocket.");
+                	}else{Display.getDisplay().setMessage("No one to pick pocket!");}
                 }
             } else if (number == 2) {
                 // detect & remove trap

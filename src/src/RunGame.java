@@ -38,6 +38,7 @@ public class RunGame {
     private static Controller uc_;
     private static int mapHeight_ = 40;
     private static int mapWidth_ = 40;
+    private static boolean map_editor_mode_ = false;
    
 
     public static void main(String[] args) {
@@ -45,10 +46,10 @@ public class RunGame {
         handleArgs(args);
 
        
-       if(true){
-    	   startNewGame();
-       }else{
+       if(map_editor_mode_){
     	   startMapEditor();
+       }else{
+    	   startNewGame();
        }
     }
     private static int startNewGame(){
@@ -192,7 +193,9 @@ public class RunGame {
 
         // Debug Mode
         String[] dbg_match = {"-d", "--debug"};
+        String[] editor_match = {"-e", "--editor"};
         boolean dbg_flag = false;
+        boolean editor_flag = false;
         int dbg_level = 1;
 
         // Load Saved Game
@@ -319,6 +322,9 @@ public class RunGame {
              }
              }*/
         }
+        if(pOpts_.editor_flag){
+        	map_editor_mode_ = true;
+        }
     }
 
     /**
@@ -359,6 +365,13 @@ public class RunGame {
                 if (m.equals(args[a]) && (args.length > a + 1)) {
                     pOpts_.err_path = a + 1;
                     pOpts_.err_flag = true;
+                    break;
+                }
+            }
+            // Map Editing
+            for (String m : pOpts_.editor_match) {
+                if (m.equals(args[a])) {
+                    pOpts_.editor_flag = true;
                     break;
                 }
             }

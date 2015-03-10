@@ -8,6 +8,7 @@ import java.util.Date;
 
 import src.io.controller.Controller;
 import src.io.controller.GameController;
+import src.io.controller.MapEditorController;
 import src.model.map.Map;
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Item;
@@ -44,7 +45,7 @@ public class RunGame {
         handleArgs(args);
 
        
-       if(true){
+       if(false){
     	   startNewGame();
        }else{
     	   startMapEditor();
@@ -58,7 +59,7 @@ public class RunGame {
     }
     private static int startMapEditor(){
     	 initialize(); // Initialize any data we need to before loading
-         startGame(); // Begin the avatarcontroller loop
+         MapEditorController me_ = new MapEditorController(map_); // Begin the avatarcontroller loop
          return 0;
     }
     private static void loadGame(String file_path) {

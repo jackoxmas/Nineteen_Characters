@@ -23,7 +23,7 @@ import src.model.map.constructs.Terrain;
  *
  * @author John-Michael Reed
  */
-public class Map implements MapUser_Interface {
+public class Map implements MapUser_Interface, MapMapEditor_Interface {
 
     public static final int MAX_NUMBER_OF_WORLDS = 1;
     private static int number_of_worlds_generated_ = 0;
@@ -214,7 +214,13 @@ public class Map implements MapUser_Interface {
         }
         return error_code;
     }
-
+    
+	@Override
+	public IO_Bundle getMapAt(int x, int y, int width, int height) {
+		char[][] view = makeView(x,y,width,height);
+		Color[][] colors = makeColors(x,y,width,height);
+		return new IO_Bundle(view,colors,null,null,null,0,0,0,0,null,null,null,0);
+	}
     /**
      * Makes a rectangular view with y coordinates in first [] of 2D array
      *
@@ -704,4 +710,6 @@ public class Map implements MapUser_Interface {
         return e_Terrain;
     }
     //</editor-fold>
+
+
 }

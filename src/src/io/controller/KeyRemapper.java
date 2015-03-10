@@ -1,6 +1,8 @@
 package src.io.controller;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import src.Key_Commands;
 
@@ -18,6 +20,13 @@ abstract class  KeyRemapper {
 
     public void setMap(HashMap<Character, Key_Commands> remap) {
         remap_ = remap;
+    }
+    public String getBindingList(){
+    	StringBuilder result = new StringBuilder();
+    	for(Entry<Character, Key_Commands> entry : remap_.entrySet()){
+    		result.append(entry.getValue().toString()+": " + entry.getKey()+System.lineSeparator());
+    	}
+    	return result.toString();
     }
 
     public HashMap<Character, Key_Commands> getMap() {

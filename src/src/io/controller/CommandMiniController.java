@@ -19,6 +19,7 @@ class CommandMiniController {
 	private static final String save = "save";
 	private static final String load = "load";
 	private static final String rebind = "rebind";
+	private static final String bindings = "bindings";
 	
 	
 	private static final String commandKey = "/";
@@ -36,6 +37,7 @@ class CommandMiniController {
 		if(foo.startsWith(commandKey + "cat")){return "meow";}
 		if(foo.startsWith(commandKey + "tiger")){return "ROAR!";}
 		if(foo.startsWith(commandKey + man)){return this.processManCommand(foo);}
+		if(foo.startsWith(commandKey+ bindings)){return this.remap_.getBindingList();}
 
 		return "No valid command given!";
 	}
@@ -58,6 +60,7 @@ class CommandMiniController {
 			if(in.equals(help)){return HardCodedStrings.helpHelp;}
 			if(in.equals(pwd)){return HardCodedStrings.pwdHelp;}
 			if(in.equals(man)){return HardCodedStrings.manHelp;}
+			if(in.equals(bindings)){return HardCodedStrings.bindingsHelp;}
 		}
 		finally{
 			sc.close();

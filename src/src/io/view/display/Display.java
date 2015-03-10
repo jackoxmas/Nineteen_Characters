@@ -328,6 +328,25 @@ public class Display {
     	
     }
     /**
+     * When command is double clicked on, the function passed in will receive the highlighted string.
+     * @param receiver
+     */
+    public void addDoubleClickCommandEventReceiver(Function<Void,String> receiver){
+    	java.awt.EventQueue.invokeLater(new commandHandlerRunnable(receiver));
+    }
+    
+    private class commandHandlerRunnable implements Runnable{
+    	private Function<Void,String> handler_;
+    	public commandHandlerRunnable(Function<Void,String> foo) {
+			handler_ = foo;
+		}
+		@Override
+		public void run() {
+			Key_Listener_GUI.getGUI().addCommandBoxReceiver(handler_);	
+		}
+    	
+    }
+    /**
      * Request focus in the outgoing message box.
      */
 	public void requestOutBoxFocus() {

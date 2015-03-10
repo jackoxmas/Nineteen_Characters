@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import javax.crypto.spec.IvParameterSpec;
 import javax.swing.JComponent;
 import javax.swing.text.StyledDocument;
 
@@ -58,6 +57,7 @@ class Key_Listener_GUI extends javax.swing.JFrame {
     private ArrayList<Function<Void, Character>> outputbox_inputHandlers_ = new ArrayList<Function<Void, Character>>();
     private ArrayList<Function<Void, String>> inputchatbox_Handlers_ = new ArrayList<Function<Void, String>>();
     private ArrayList<Function<Void, Key_Commands>> direct_command_receivers_ = new ArrayList<Function<Void, Key_Commands>>();
+    private ArrayList<Function<Void, String>> command_area_double_clicked_ = new ArrayList<Function<Void, String>>();
 
     /**
      *
@@ -96,7 +96,9 @@ class Key_Listener_GUI extends javax.swing.JFrame {
         inputchatbox_Handlers_.add(handler_);
 
     }
-
+    public void addCommandBoxReceiver(Function<Void,String> handler_){
+    	command_area_double_clicked_.add(handler_);
+    }
     /**
      *
      * @param in What to write to the inventory box.
@@ -288,6 +290,12 @@ class Key_Listener_GUI extends javax.swing.JFrame {
         commands_jTextArea.setColumns(20);
         commands_jTextArea.setRows(5);
         command_text_area_jScrollPane.setViewportView(commands_jTextArea);
+        commands_jTextArea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                command_jButtonMouseClicked(evt);
+            }
+        });
+
 
         equipment_and_inventory_jTabbedPane.addTab("Equip", equip_text_area_jScrollPane);
          equipment_and_inventory_jTabbedPane.addTab("Commands",command_text_area_jScrollPane);
@@ -517,6 +525,12 @@ class Key_Listener_GUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_game_jTextPaneKeyTyped
 
+	private void command_jButtonMouseClicked(java.awt.event.MouseEvent evt){
+		if(evt.getClickCount() >= 2){
+			String selected = commands_jTextArea.getSelectedText();
+			for(Function<Void,String> foo : command_area_double_clicked_){foo.apply(selected);}
+		}
+	}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bargain_barter_jButton;
     private javax.swing.JButton bind_wounds_jButton;

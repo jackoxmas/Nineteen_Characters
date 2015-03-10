@@ -6,17 +6,16 @@
 package src.io.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import src.Function;
 import src.HardCodedStrings;
 import src.IO_Bundle;
 import src.Key_Commands;
+import src.enumHandler;
 import src.io.view.AvatarCreationView;
 import src.io.view.ChatBoxViewPort;
 import src.io.view.MapView;
 import src.io.view.StatsView;
-import src.io.view.Viewport;
 import src.io.view.display.Display;
 import src.model.map.MapUser_Interface;
 
@@ -102,6 +101,17 @@ public class GameController extends Controller {
 		super(new AvatarCreationView(), new GameRemapper(),uName);
 		MapUserAble_ = mui;
 		Display.getDisplay().setCommandList(HardCodedStrings.gameCommands);
+		Display.getDisplay().addDoubleClickCommandEventReceiver(new Function<Void, String>() {
+			
+			@Override
+			public Void apply(String foo) {
+				if(foo == null){return null;}
+				Key_Commands command = enumHandler.stringToEnum(foo);
+				if(command == null){return null;}
+				takeTurnandPrintTurn(command);
+				return null;
+			}
+		});
 		takeTurnandPrintTurn('5');//For some reason need to take a empty turn for fonts to load...
 		
 

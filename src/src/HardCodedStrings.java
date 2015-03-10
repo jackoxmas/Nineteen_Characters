@@ -37,7 +37,8 @@ public class HardCodedStrings {
 			"Type /load filename to load a file" + System.lineSeparator()+
 			"Type /load-controls filename to load the current controls" + System.lineSeparator()+
 			"Type /help for this dialog"+System.lineSeparator()+
-			"Type /pwd to print the directory the game will look in";
+			"Type /pwd to print the directory the game will look in" + System.lineSeparator()+
+			"Double click a command in the command box to use it!";;
     public final static String rebindHelp = 
 			"Format is : /rebind CONTROL char" + System.lineSeparator() +
 			"Example : /rebind MOVE_UP u" + System.lineSeparator()+

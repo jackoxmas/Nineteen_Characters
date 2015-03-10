@@ -254,7 +254,9 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             Display.getDisplay().setMessage("Picked up item: " + itemToBePickedUp.name_);
             error_code = 0;
         } else {
-            Display.getDisplay().setMessage("There is nothing here to pick up.");
+	    //There is no need to display an error for failing to pick something up when picking up
+	    //is done automatically
+            //Display.getDisplay().setMessage("There is nothing here to pick up.");
         }
 
         return error_code;

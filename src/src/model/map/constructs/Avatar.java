@@ -314,36 +314,36 @@ public final class Avatar extends Entity {
         switch (command) {
             case MOVE_DOWNLEFT:// Move SW
                 mar.moveInDirection(-1, -1);
-                return null;
+                break;
             case MOVE_DOWN:// Move S
                 mar.moveInDirection(0, -1);
-                return null;
+                break;
             case MOVE_DOWNRIGHT:// Move SE
                 mar.moveInDirection(1, -1);
-                return null;
+                break;
             case MOVE_LEFT: // Move W
                 mar.moveInDirection(-1, 0);
-                return null;
+                break;
             case MOVE_RIGHT:// Move E
                 mar.moveInDirection(1, 0);
-                return null;
+                break;
             case MOVE_UPLEFT:// Move NW
                 mar.moveInDirection(-1, 1);
-                return null;
+                break;
             case MOVE_UP:// Move N
                 mar.moveInDirection(0, 1);
-                return null;
+                break;
             case MOVE_UPRIGHT: // Move NE
                 mar.moveInDirection(1, 1);
-                return null;
+                break;
             case SAVE_GAME: // Save Game
                 RunGame.saveGameToDisk(); // TODO: this is for testing, remove for
                 // deployment
-                return null;
+                break;
             case USE_LAST_ITEM: // Use item in inventory
                 super.useItemInFacingDirectionOnMyself();
                 System.out.println("using item!");
-                return null;
+                break;
             case EQUIP_LAST_ITEM: // equipMyselfTo
                 try {
                     EquipableItem item = (EquipableItem) this.getLastItemInInventory();
@@ -360,32 +360,29 @@ public final class Avatar extends Entity {
                     // ignore it
                     Display.getDisplay().setMessage("Cannot Equip From Inventory");
                 }
-                return null;
+                break;
             case UNEQUIP_EVERYTHING: // unEquip
                 this.unEquipEverything();
                 Display.getDisplay().setMessage("Unequipped Everything");
-                return null;
+                break;
             case DROP_LAST_ITEM: // drop item
                 int error_code_D = mar.dropItem();
-                return null;
-            case PICK_UP_ITEM:// pickup item
-                int error_code_p = mar.pickUpItemInDirection(0, 0);
-                return null;
+                break;
             case BECOME_SMASHER: // switch to Smasher
                 this.setRepresentation('⚔');
                 this.becomeSmasher();
-                return null;
+                break;
             case BECOME_SUMMONER: // switch to Summoner
                 this.setRepresentation('☃');
                 this.becomeSummoner();
-                return null;
+                break;
             case BECOME_SNEAK: // switch to Sneaker
                 this.setRepresentation('☭');
                 this.becomeSneak();
-                return null;
+                break;
             case BIND_WOUNDS:
                 this.bindWounds();
-                return null;
+                break;
             case BARGAIN_AND_BARTER:
                 if (target != null) {
                     return target.getInteractionOptionStrings();
@@ -394,42 +391,42 @@ public final class Avatar extends Entity {
                 }
             case OBSERVE:
                 this.observe();
-                return null;
+                break;
             case USE_SKILL_1:
                 this.getOccupation().performOccupationSkill(1);
-                return null;
+                break;
             case USE_SKILL_2:
                 System.out.println("Performing Skill 2");
                 this.getOccupation().performOccupationSkill(2);
                 System.out.println("Already performed Skill 2");
-                return null;
+                break;
             case USE_SKILL_3:
                 this.getOccupation().performOccupationSkill(3);
-                return null;
+                break;
             case USE_SKILL_4:
                 this.getOccupation().performOccupationSkill(4);
-                return null;
+                break;
             case SPEND_SKILLPOINT_ON_BIND:
                 this.spendSkillpointOn(SkillEnum.BIND_WOUNDS);
-                return null;
+                break;
             case SPEND_SKILLPOINT_ON_BARGAIN:
                 this.spendSkillpointOn(SkillEnum.BARGAIN);
-                return null;
+                break;
             case SPEND_SKILLPOINT_ON_OBSERVE:
                 this.spendSkillpointOn(SkillEnum.OBSERVATION);
-                return null;
+                break;
             case SPEND_SKILLPOINT_ON_SKILL_1:
                 this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_1);
-                return null;
+                break;
             case SPEND_SKILLPOINT_ON_SKILL_2:
                 this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_2);
-                return null;
+                break;
             case SPEND_SKILLPOINT_ON_SKILL_3:
                 this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_3);
-                return null;
+                break;
             case SPEND_SKILLPOINT_ON_SKILL_4:
                 this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_4);
-                return null;
+                break;
             case GET_INTERACTION_OPTIONS:
                 if (target != null) {
                     return target.getInteractionOptionStrings();
@@ -443,7 +440,7 @@ public final class Avatar extends Entity {
                 if (target != null) {
                     return target.getConversationStarterStrings();
                 }
-                return null;
+                break;
             case GET_CONVERSATION_CONTINUATION_OPTIONS:
                 if (target != null) {
                     return target.getConversationContinuationStrings(optional_text, this);
@@ -453,14 +450,14 @@ public final class Avatar extends Entity {
                 } else {
                     return null;
                 }
-
             case ATTACK:
                 getMapRelation().sendAttackInFacingDirection();
-                return null;
+                break;
             default:
                 System.out.println("Invalid command sent to avatar");
                 break;
         }
+        mar.pickUpItemInDirection(0, 0);
         return null;
     }
 

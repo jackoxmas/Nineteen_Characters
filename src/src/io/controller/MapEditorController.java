@@ -2,7 +2,9 @@ package src.io.controller;
 
 import java.util.ArrayList;
 
+import src.Function;
 import src.Key_Commands;
+import src.enumHandler;
 import src.io.view.MapEditorView;
 import src.io.view.display.Display;
 import src.model.map.MapMapEditor_Interface;
@@ -47,9 +49,28 @@ public class MapEditorController extends Controller {
 		default: break;
 
 		}
-		mappy_viewy_.setSpawnableList(spawnables_);
-		updateDisplay(map_.getMapAt(x, y, getView().getWidth()/2, getView().getHeight()/2));
+		Display.getDisplay().addDoubleClickCommandEventReceiver(new Function<Void, String>() {
 
+			@Override
+			public Void apply(String foo) {
+				if(foo == null){return null;}
+				mapInsert(foo);
+				updateDisplay();
+				return null;
+			}
+		});
+		updateDisplay();
+		printSpawnablesToDisplay();
+
+
+	}
+	
+	private void printSpawnablesToDisplay(){
+		mappy_viewy_.setSpawnableList(spawnables_);
+		Display.getDisplay().setCommandList(mappy_viewy_.getItemList());
+	}
+	private void updateDisplay(){
+		updateDisplay(map_.getMapAt(x, y, getView().getWidth()/2, getView().getHeight()/2));
 	}
 
 	private void mapInsert(String spawnName) {

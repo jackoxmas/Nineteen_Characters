@@ -182,7 +182,12 @@ class Key_Listener_GUI extends javax.swing.JFrame {
         setFont(inventory_jTextArea);
     }
     public String getHighlightedItem(){
-    	return inventory_jTextArea.getSelectedText();
+    	String highlighted = inventory_jTextArea.getSelectedText();
+    	if(highlighted!=null){return highlighted;}
+    	highlighted = equipment_jTextArea.getSelectedText();
+    	if(highlighted!=null){return highlighted;}
+    	highlighted = commands_jTextArea.getSelectedText();
+    	return highlighted;
     }
     /**
      * Returns the singleton instance.

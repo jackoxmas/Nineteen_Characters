@@ -173,7 +173,7 @@ public class RunGame {
         if (saveGame_ == null) {
             saveGame_ = SavedGame.newSavedGame();
         }
-        saveGame_.saveGame(map_, uc_,avatar_.name_);
+        saveGame_.saveGame(map_, uc_);
     }
 
 

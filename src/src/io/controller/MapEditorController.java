@@ -17,7 +17,7 @@ public class MapEditorController extends Controller {
 	private ArrayList<String> spawnables_ = new ArrayList<String>();
 	private String lastSpawned = "";
 	public MapEditorController(MapMapEditor_Interface map) {
-		super(new MapEditorView(),new MapEditRemapper());
+		super(new MapEditorView(),new MapEditRemapper(), "Temporary Name Map User");
 		super.setView(mappy_viewy_);
 		map_ = map;
 

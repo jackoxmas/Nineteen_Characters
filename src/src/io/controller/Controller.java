@@ -11,9 +11,11 @@ import src.io.view.display.Display;
 public abstract class Controller implements Function<Void,Character> {
 	private KeyRemapper remap_;
 	private Viewport currentView_;
-	public Controller(Viewport view,KeyRemapper remap) {
+	private final String userName_;
+	public Controller(Viewport view,KeyRemapper remap,String uName) {
 		remap_ = remap;
 		currentView_ = view;
+		userName_ = uName;
 		Display.getDisplay().addDirectCommandReceiver(new Function<Void, Key_Commands>() {
 
 			@Override
@@ -35,7 +37,10 @@ public abstract class Controller implements Function<Void,Character> {
 		takeTurnandPrintTurn(input);
 	}
 	protected abstract void takeTurnandPrintTurn(Key_Commands foo);
-
+	
+	public String getUserName() {
+		return userName_;
+	}
 
 	protected KeyRemapper getRemapper(){return remap_;}
 	/**

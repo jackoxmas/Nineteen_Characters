@@ -99,15 +99,14 @@ public class GameController extends Controller {
 	}
 
 	public GameController(MapUser_Interface mui, String uName) {
-		super(new AvatarCreationView(), new GameRemapper());
+		super(new AvatarCreationView(), new GameRemapper(),uName);
 		MapUserAble_ = mui;
-		userName_ = uName;
 		takeTurnandPrintTurn('5');//For some reason need to take a empty turn for fonts to load...
 
 	}
 
 	private MapUser_Interface MapUserAble_;
-	private final String userName_;
+
 	private ChatBoxMiniController chatbox_ = new ChatBoxMiniController();
 
 	/**
@@ -123,7 +122,7 @@ public class GameController extends Controller {
 	
 	
 	protected IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
-		return (MapUserAble_.sendCommandToMapWithOptionalText(userName_, command, getView().getWidth() / 2, getView().getHeight() / 2, in));
+		return (MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, in));
 	}
 	/**
 	 * Sends the given command to the map. Focuses on the TextBox for inputting
@@ -139,7 +138,7 @@ public class GameController extends Controller {
 				}
 			});
 		}
-		final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(userName_, command, getView().getWidth() / 2, getView().getHeight() / 2, "");
+		final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
 		// Make the buttons says the right skill names.
 		if(command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER || 
 				command == Key_Commands.BECOME_SNEAK && to_return != null) {
@@ -180,7 +179,7 @@ public class GameController extends Controller {
 		}
 		if (getView() instanceof MapView) {
 			if (Key_Commands.TOGGLE_VIEW.equals(input)) {
-				setView(new StatsView(userName_));
+				setView(new StatsView(getUserName()));
 				System.gc();
 				taken = true;
 			}
@@ -215,9 +214,7 @@ public class GameController extends Controller {
 	 * @return A String object with this UserController's user name
 	 * @author Alex Stewart
 	 */
-	public String getUserName() {
-		return userName_;
-	}
+
 
 
 

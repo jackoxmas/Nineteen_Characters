@@ -7,6 +7,7 @@ package src.model.map;
 
 import java.util.LinkedList;
 
+import src.io.view.display.Display;
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Entity;
 import src.model.map.constructs.Item;
@@ -28,6 +29,21 @@ public class MapAvatar_Relation extends MapEntity_Relation {
      */
     public Avatar getAvatar() {
         return avatar_;
+    }
+    /**
+     * override movement to attempt tp ick up an item. 
+     */
+    @Override
+    public int moveInDirection(int x, int y){
+    	int x1 = super.moveInDirection(x, y);
+        this.pickUpItemInDirection(0, 0);
+        return x1;
+    }
+    @Override
+    public int pickUpItemInDirection(int x, int y){
+    	int error_code = super.pickUpItemInDirection(x, y);
+    	if(error_code == 0){Display.getDisplay().setMessage(this.getAvatar().getName()+" picked up an item!");}
+    	return error_code;
     }
 
     /**

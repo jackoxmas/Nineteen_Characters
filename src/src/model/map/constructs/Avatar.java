@@ -457,7 +457,6 @@ public final class Avatar extends Entity {
                 System.out.println("Invalid command sent to avatar");
                 break;
         }
-        mar.pickUpItemInDirection(0, 0);
         return null;
     }
 

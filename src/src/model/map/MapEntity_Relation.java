@@ -251,7 +251,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             } catch (ClassCastException c) {
                 return -2;
             }
-            Display.getDisplay().setMessage("Picked up item: " + itemToBePickedUp.name_);
+            Display.getDisplay().setMessage(itemToBePickedUp.name_+" was picked up off the map!");
             error_code = 0;
         } else {
 	    //There is no need to display an error for failing to pick something up when picking up

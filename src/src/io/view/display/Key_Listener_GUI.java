@@ -114,6 +114,9 @@ class Key_Listener_GUI extends javax.swing.JFrame {
         incoming_text_jTextArea.append(System.lineSeparator() + message);
         updateScroll();
     }
+    public void setCommands(String commands){
+    	commands_jTextArea.setText(commands);
+    }
 
     /**
      * Sends the scroll bar to the buttom, used when new text is added.
@@ -256,6 +259,8 @@ class Key_Listener_GUI extends javax.swing.JFrame {
         equipment_jTextArea = new javax.swing.JTextArea();
         inventory_text_area_jScrollPane = new javax.swing.JScrollPane();
         inventory_jTextArea = new javax.swing.JTextArea();
+        command_text_area_jScrollPane = new javax.swing.JScrollPane();
+        commands_jTextArea = new javax.swing.JTextArea();
         outgoing_text_jTextField = new javax.swing.JTextField();
         outgoing_chat_text_area_jScrollPane = new javax.swing.JScrollPane();
         incoming_text_jTextArea = new javax.swing.JTextArea();
@@ -278,8 +283,15 @@ class Key_Listener_GUI extends javax.swing.JFrame {
         equipment_jTextArea.setColumns(20);
         equipment_jTextArea.setRows(5);
         equip_text_area_jScrollPane.setViewportView(equipment_jTextArea);
+        
+        commands_jTextArea.setEditable(false);
+        commands_jTextArea.setColumns(20);
+        commands_jTextArea.setRows(5);
+        command_text_area_jScrollPane.setViewportView(commands_jTextArea);
 
         equipment_and_inventory_jTabbedPane.addTab("Equip", equip_text_area_jScrollPane);
+         equipment_and_inventory_jTabbedPane.addTab("Commands",command_text_area_jScrollPane);
+         
 
         inventory_jTextArea.setEditable(false);
         inventory_jTextArea.setColumns(20);
@@ -509,8 +521,10 @@ class Key_Listener_GUI extends javax.swing.JFrame {
     private javax.swing.JButton bargain_barter_jButton;
     private javax.swing.JButton bind_wounds_jButton;
     private javax.swing.JScrollPane equip_text_area_jScrollPane;
+    private javax.swing.JScrollPane command_text_area_jScrollPane;
     private javax.swing.JTabbedPane equipment_and_inventory_jTabbedPane;
     private javax.swing.JTextArea equipment_jTextArea;
+    private javax.swing.JTextArea commands_jTextArea;
     private javax.swing.JTextPane game_jTextPane;
     private javax.swing.JTextArea incoming_text_jTextArea;
     private javax.swing.JTextArea inventory_jTextArea;

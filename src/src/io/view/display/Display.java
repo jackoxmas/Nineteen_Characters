@@ -36,6 +36,28 @@ public class Display {
 
     // Converts the class name into a base 35 number
 	static private Display display_ = null;
+	/**
+	 * Sends text to the command text pane.
+	 * @param in
+	 */
+	public void setCommandList(String in){
+		EventQueue.invokeLater(new commandRunnable(in));
+	}
+	/**
+	 * The runnable to handle sending message to the GUI
+	 * @author mbregg
+	 *
+	 */
+	private class commandRunnable implements Runnable{
+		String message_;
+		public commandRunnable(String m) {
+			message_ = m;
+		}
+		@Override
+		public void run() {
+			Key_Listener_GUI.getGUI().setCommands(message_);
+		}
+	}
 
 	/**
 	 * Puts the given message in the chatboxes output box

@@ -101,7 +101,9 @@ public class GameController extends Controller {
 	public GameController(MapUser_Interface mui, String uName) {
 		super(new AvatarCreationView(), new GameRemapper(),uName);
 		MapUserAble_ = mui;
+		Display.getDisplay().setCommandList(HardCodedStrings.gameCommands);
 		takeTurnandPrintTurn('5');//For some reason need to take a empty turn for fonts to load...
+		
 
 	}
 

@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import javax.crypto.spec.IvParameterSpec;
 import javax.swing.JComponent;
 import javax.swing.text.StyledDocument;
 
@@ -175,7 +176,9 @@ class Key_Listener_GUI extends javax.swing.JFrame {
         setFont(equip_text_area_jScrollPane);
         setFont(inventory_jTextArea);
     }
-
+    public String getHighlightedItem(){
+    	return inventory_jTextArea.getSelectedText();
+    }
     /**
      * Returns the singleton instance.
      *

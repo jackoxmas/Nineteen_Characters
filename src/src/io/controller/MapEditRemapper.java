@@ -19,6 +19,7 @@ public class MapEditRemapper extends KeyRemapper {
 	        bind('7', Key_Commands.MOVE_UPLEFT);
 	        bind('8', Key_Commands.MOVE_UP);
 	        bind('9', Key_Commands.MOVE_UPRIGHT);
+	        bind(' ',Key_Commands.MAP_INSERT);
 	}
 
 }

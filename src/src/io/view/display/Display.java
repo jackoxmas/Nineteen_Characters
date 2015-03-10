@@ -327,5 +327,10 @@ public class Display {
 	public javax.swing.JButton getSkillButton(int i) {
 		return Key_Listener_GUI.getGUI().getSkillButton(i);
 	}
+	
+	public String getHighlightedItem(){
+		return Key_Listener_GUI.getGUI().getHighlightedItem();
+
+	}
 
 }

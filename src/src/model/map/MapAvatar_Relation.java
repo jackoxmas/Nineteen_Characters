@@ -5,6 +5,7 @@
  */
 package src.model.map;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import src.io.view.display.Display;
@@ -31,14 +32,19 @@ public class MapAvatar_Relation extends MapEntity_Relation {
         return avatar_;
     }
     /**
-     * override movement to attempt tp ick up an item. 
+     * override movement to attempt to pick up an item. 
      */
     @Override
     public int moveInDirection(int x, int y){
     	int x1 = super.moveInDirection(x, y);
         this.pickUpItemInDirection(0, 0);
+        if(x1 !=0){
+        	Entity bumped_into = getEntityInFacingDirection();
+        	if(bumped_into != null){this.getAvatar().sayStuffToMe(bumped_into.getInteractionOptionStrings());}
+        }
         return x1;
     }
+    
     @Override
     public int pickUpItemInDirection(int x, int y){
     	int error_code = super.pickUpItemInDirection(x, y);

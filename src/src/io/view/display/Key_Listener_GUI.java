@@ -171,6 +171,9 @@ class Key_Listener_GUI extends javax.swing.JFrame {
         setFont(game_jTextPane);
         setFont(incoming_text_jTextArea);
         setFont(outgoing_chat_text_area_jScrollPane);
+        setFont(incoming_text_jTextArea);
+        setFont(equip_text_area_jScrollPane);
+        setFont(inventory_jTextArea);
     }
 
     /**
@@ -439,9 +442,7 @@ class Key_Listener_GUI extends javax.swing.JFrame {
     private void outgoing_text_jTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_outgoing_text_jTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String S = outgoing_text_jTextField.getText();
-            for (Function<Void, String> functor : inputchatbox_Handlers_) {
-                functor.apply(S);
-            }
+
 
             incoming_text_jTextArea.append(System.lineSeparator() + outgoing_text_jTextField.getText());
             if (outgoing_text_jTextField.getText().startsWith("/fontsize")) {
@@ -454,6 +455,11 @@ class Key_Listener_GUI extends javax.swing.JFrame {
                     this.addMessage("Set font to " + fontSize_);
                 } catch (Exception e) {
                     this.addMessage("Invalid Font size! Current size is " + Float.toString(fontSize_));
+                }
+            }
+            else{
+                for (Function<Void, String> functor : inputchatbox_Handlers_) {
+                    functor.apply(S);//Loop through and apply, but ONLY if we haven't already eaten /fontsize.
                 }
             }
             outgoing_text_jTextField.setText("");//Upon enter, clear the input box, and move it's text to output

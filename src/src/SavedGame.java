@@ -47,7 +47,7 @@ public class SavedGame {
         file_path_ = filePath;
     }
 
-    public int saveGame(src.model.map.Map map, src.io.controller.UserController controller) {
+    public int saveGame(src.model.map.Map map, src.io.controller.Controller controller,String name_) {
         try {
             // open or create the save file
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -64,7 +64,7 @@ public class SavedGame {
 
             // CONTROLLER KEYMAP
             Element e_keymap = save.createElement("keymap");
-            e_keymap.setAttribute("username", controller.getUserName());
+            e_keymap.setAttribute("username", name_);
 
             Element e_key;
             for (Map.Entry<Character, Key_Commands> e : controller.getRemap().entrySet()) {

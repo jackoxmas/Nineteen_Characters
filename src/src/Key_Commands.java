@@ -34,5 +34,7 @@ public enum Key_Commands {
     
     SAVE_GAME, DO_ABSOLUTELY_NOTHING
     //The save class itself is named SAVE_GAME, so I'd going with that over save_map
+    
+    //Any commands needed for map editing will go here
 
 }

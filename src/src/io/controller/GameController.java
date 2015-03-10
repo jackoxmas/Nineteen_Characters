@@ -25,11 +25,11 @@ import src.model.map.MapUser_Interface;
  *
  * @author JohnReedLOL
  */
-public final class UserController implements Function<Void, Character> {
+public class GameController extends Controller {
 
 	private final class ChatBoxMiniController implements Function<Void, String> {
 
-		private CommandMiniController commandController_ = new CommandMiniController(remap_);
+		private CommandMiniController commandController_ = new CommandMiniController(getRemapper());
 		private ChatBoxViewPort chatview_ = new ChatBoxViewPort();
 
 		public ChatBoxMiniController() {
@@ -98,29 +98,16 @@ public final class UserController implements Function<Void, Character> {
 
 	}
 
-	public UserController(MapUser_Interface mui, String uName) {
+	public GameController(MapUser_Interface mui, String uName) {
+		super(new AvatarCreationView(), new GameRemapper());
 		MapUserAble_ = mui;
 		userName_ = uName;
 		takeTurnandPrintTurn('5');//For some reason need to take a empty turn for fonts to load...
-		Display.getDisplay().addDirectCommandReceiver(new Function<Void, Key_Commands>() {
-
-			@Override
-			public Void apply(Key_Commands foo) {
-				takeTurnandPrintTurn(foo);
-				return null;
-			}
-
-		});
-		Display.getDisplay().addGameInputerHandler(this);
-		Display.getDisplay().setView(currentView_);
-		Display.getDisplay().printView();
 
 	}
 
 	private MapUser_Interface MapUserAble_;
 	private final String userName_;
-	private Viewport currentView_ = new AvatarCreationView();
-	private KeyRemapper remap_ = new KeyRemapper();
 	private ChatBoxMiniController chatbox_ = new ChatBoxMiniController();
 
 	/**
@@ -128,13 +115,16 @@ public final class UserController implements Function<Void, Character> {
 	 *
 	 * @param bundle
 	 */
+	@Override
 	public void updateDisplay(IO_Bundle bundle) {
-		currentView_.renderToDisplay(bundle);
 		chatbox_.chatBoxHandleMapInputAndPrintNewContents(bundle);
-		Display.getDisplay().setView(currentView_);
-		Display.getDisplay().printView();
+		super.updateDisplay(bundle);
 	}
-
+	
+	
+	protected IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
+		return (MapUserAble_.sendCommandToMapWithOptionalText(userName_, command, getView().getWidth() / 2, getView().getHeight() / 2, in));
+	}
 	/**
 	 * Sends the given command to the map. Focuses on the TextBox for inputting
 	 * chat options.
@@ -142,7 +132,6 @@ public final class UserController implements Function<Void, Character> {
 	 * @param input
 	 */
 	private IO_Bundle sendCommandToMap(Key_Commands command) {
-		System.out.println("Sending command: " + command.toString());
 		if (command == Key_Commands.GET_INTERACTION_OPTIONS) {
 			java.awt.EventQueue.invokeLater(new Runnable() {
 				public void run() {
@@ -150,7 +139,7 @@ public final class UserController implements Function<Void, Character> {
 				}
 			});
 		}
-		final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(userName_, command, currentView_.getWidth() / 2, currentView_.getHeight() / 2, "");
+		final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(userName_, command, getView().getWidth() / 2, getView().getHeight() / 2, "");
 		// Make the buttons says the right skill names.
 		if(command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER || 
 				command == Key_Commands.BECOME_SNEAK && to_return != null) {
@@ -177,36 +166,31 @@ public final class UserController implements Function<Void, Character> {
 	 * @param in
 	 * @return
 	 */
-	private IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
-		System.out.println("Sending command: " + command.toString());
-		return (MapUserAble_.sendCommandToMapWithOptionalText(userName_, command, currentView_.getWidth() / 2, currentView_.getHeight() / 2, in));
-	}
 
 	//Handles the view switching, uses the  instance of operator in a slightly evil way, 
-	//ideally we should look into refactoring this to not
-	private IO_Bundle updateViewsAndMap(Key_Commands input) {
+	//ideally we should look into refactoring this to nots
+	protected IO_Bundle updateViewsAndMap(Key_Commands input) {
 		boolean taken = false;
-		if (currentView_ instanceof AvatarCreationView) {
+		if (getView() instanceof AvatarCreationView) {
 			if (Key_Commands.BECOME_SNEAK.equals(input) || Key_Commands.BECOME_SMASHER.equals(input)
 					|| Key_Commands.BECOME_SUMMONER.equals(input)) {
-				currentView_ = new MapView();
+				setView(new MapView());
 				System.gc();
 			}
 		}
-		if (currentView_ instanceof MapView) {
+		if (getView() instanceof MapView) {
 			if (Key_Commands.TOGGLE_VIEW.equals(input)) {
-				currentView_ = new StatsView(userName_);
+				setView(new StatsView(userName_));
 				System.gc();
 				taken = true;
 			}
-		} else if (currentView_ instanceof StatsView) {
+		} else if (getView() instanceof StatsView) {
 			if (Key_Commands.TOGGLE_VIEW.equals(input)) {
-				currentView_ = new MapView();
+				setView(new MapView());
 				System.gc();
 				taken = true;
 			}
 		}
-		IO_Bundle bundle = null;
 		if (!taken) {
 			return sendCommandToMap(input);
 		} else {
@@ -215,12 +199,9 @@ public final class UserController implements Function<Void, Character> {
 
 	}
 
-	private void takeTurnandPrintTurn(char foo) {
-		Key_Commands input = remap_.mapInput(foo);
-		takeTurnandPrintTurn(input);
-	}
 
-	private void takeTurnandPrintTurn(Key_Commands input) {
+	@Override
+	protected void takeTurnandPrintTurn(Key_Commands input) {
 		IO_Bundle bundle = updateViewsAndMap(input);
 		updateDisplay(bundle);
 	}
@@ -238,36 +219,8 @@ public final class UserController implements Function<Void, Character> {
 		return userName_;
 	}
 
-	/**
-	 * Gets the underlying key remapping values
-	 *
-	 * @return A HashMap with the remapped key values in it
-	 * @author Alex Stewart
-	 */
-	public HashMap<Character, Key_Commands> getRemap() {
-		if (remap_ == null) {
-			return null;
-		}
-		return remap_.getMap();
-	}
 
-	/**
-	 * Sets the underlying key remapping
-	 *
-	 * @param remap The new key remapping to be applied
-	 * @author Alex Stewart
-	 */
-	public void setRemap(HashMap<Character, Key_Commands> remap) {
-		if (remap_ == null) {
-			remap_ = new KeyRemapper();
-		}
-		remap_.setMap(remap);
-	}
 
-	@Override
-	public Void apply(Character foo) {
-		takeTurnandPrintTurn(foo);
-		return null;
-	}
+
 
 }

@@ -6,7 +6,8 @@ import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import src.io.controller.UserController;
+import src.io.controller.Controller;
+import src.io.controller.GameController;
 import src.model.map.Map;
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Item;
@@ -33,7 +34,7 @@ public class RunGame {
     private static SavedGame saveGame_;
     private static Avatar avatar_;
     private static Map map_;
-    private static UserController uc_;
+    private static Controller uc_;
     private static int mapHeight_ = 40;
     private static int mapWidth_ = 40;
    
@@ -42,15 +43,24 @@ public class RunGame {
         parseArgs(args); // Parse command line arguments
         handleArgs(args);
 
-        initialize(); // Initialize any data we need to before loading
-        populateMap();//Add stuff into the map
-        startGame(); // Begin the avatarcontroller loop
-        // testing
-        //saveGameToDisk();
-        //exitGame();
-        //initializeEverything();
+       
+       if(true){
+    	   startNewGame();
+       }else{
+    	   startMapEditor();
+       }
     }
-
+    private static int startNewGame(){
+    	 initialize(); // Initialize any data we need to before loading
+         populateMap();//Add stuff into the map
+         startGame(); // Begin the avatarcontroller loop
+         return 0;
+    }
+    private static int startMapEditor(){
+    	 initialize(); // Initialize any data we need to before loading
+         startGame(); // Begin the avatarcontroller loop
+         return 0;
+    }
     private static void loadGame(String file_path) {
 
     }
@@ -64,26 +74,27 @@ public class RunGame {
         if (saveGame_ == null)
             saveGame_ = SavedGame.newSavedGame();
         map_ = new Map(mapWidth_,mapHeight_);
-        avatar_ = new Avatar("avatar", '☃');
-        map_.addAvatar(avatar_, 0, 0);
-
-        Avatar buddy = new Avatar("buddy", '웃');
-        map_.addAvatar(buddy, 3, 0);
-        
-        Villager villager = new Villager("villager1", '웃');
-        villager.getStatsPack().increaseQuantityOfExperienceBy(200);
-        map_.addEntity(villager, 3, 13);
-        
-        Monster monster = new Monster("monster1", '웃');
-        monster.getStatsPack().increaseQuantityOfExperienceBy(300);
-        map_.addEntity(monster, 13, 3);
-        
-        Merchant merchant = new Merchant("merchant1", '웃');
-        merchant.getStatsPack().increaseQuantityOfExperienceBy(1000);
-        map_.addEntity(merchant, 1, 1);
+       
     }
 
     private static void populateMap() {
+    	 avatar_ = new Avatar("avatar", '☃');
+         map_.addAvatar(avatar_, 0, 0);
+
+         Avatar buddy = new Avatar("buddy", '웃');
+         map_.addAvatar(buddy, 3, 0);
+         
+         Villager villagerA = new Villager("villager1", '웃');
+         villagerA.getStatsPack().increaseQuantityOfExperienceBy(200);
+         map_.addEntity(villagerA, 3, 13);
+         
+         Monster monster = new Monster("monster1", '웃');
+         monster.getStatsPack().increaseQuantityOfExperienceBy(300);
+         map_.addEntity(monster, 13, 3);
+         
+         Merchant merchant = new Merchant("merchant1", '웃');
+         merchant.getStatsPack().increaseQuantityOfExperienceBy(1000);
+         map_.addEntity(merchant, 1, 1);
         Item teleport = new OneWayTeleportItem("tele", 'T', 0, 0);
         Item onehandedsword = new OneHandedSword("Excalibur", '|');
         Item twohandedsword = new TwoHandedSword("Two_hander", '|');
@@ -153,7 +164,7 @@ public class RunGame {
     }
 
     private static void startGame() {
-        uc_ = new UserController(map_,avatar_.name_);
+        uc_ = new GameController(map_,avatar_.name_);
         
     }
 
@@ -161,13 +172,10 @@ public class RunGame {
         if (saveGame_ == null) {
             saveGame_ = SavedGame.newSavedGame();
         }
-        saveGame_.saveGame(map_, uc_);
+        saveGame_.saveGame(map_, uc_,avatar_.name_);
     }
 
-    // TODO: complete
-    private static int startNewGame() {
-        return 0;
-    }
+
     // </editor-fold>
 
     // <editor-fold desc="UTILITIES" defaultstate="collapsed">

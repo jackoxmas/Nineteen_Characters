@@ -1,7 +1,11 @@
 package src.io.controller;
 import src.Key_Commands;
-
-public class GameRemapper extends KeyRemapper {
+/**
+ * Handles the mappings the main game mode.
+ * @author mbregg
+ *
+ */
+class GameRemapper extends KeyRemapper {
 
 	public GameRemapper() {
 		// TODO Auto-generated constructor stub

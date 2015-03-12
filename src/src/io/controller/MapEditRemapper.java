@@ -1,8 +1,12 @@
 package src.io.controller;
 import src.Key_Commands;
 import src.Key_Commands;
-
-public class MapEditRemapper extends KeyRemapper {
+/**
+ * The remapper for the mapeditor game mode
+ * @author mbregg
+ *
+ */
+class MapEditRemapper extends KeyRemapper {
 
 	public MapEditRemapper() {
 

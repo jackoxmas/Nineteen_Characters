@@ -7,7 +7,11 @@ import src.IO_Bundle;
 import src.Key_Commands;
 import src.io.view.Viewport;
 import src.io.view.display.Display;
-
+/**
+ * Abstract controller class
+ * @author mbregg
+ *
+ */
 public abstract class Controller implements Function<Void,Character> {
 	private KeyRemapper remap_;
 	private Viewport currentView_;
@@ -40,7 +44,7 @@ public abstract class Controller implements Function<Void,Character> {
 		takeTurnandPrintTurn(input);
 	}
 	protected abstract void takeTurnandPrintTurn(Key_Commands foo);
-	
+
 	public String getUserName() {
 		return userName_;
 	}
@@ -71,7 +75,7 @@ public abstract class Controller implements Function<Void,Character> {
 		}
 		remap_.setMap(remap);
 	}
-	
+
 
 
 	public void updateDisplay(IO_Bundle bundle){
@@ -79,7 +83,7 @@ public abstract class Controller implements Function<Void,Character> {
 		Display.getDisplay().setView(getView());
 		Display.getDisplay().printView();
 	}
-	
+
 	@Override
 	public Void apply(Character foo) {
 		takeTurnandPrintTurn(foo);

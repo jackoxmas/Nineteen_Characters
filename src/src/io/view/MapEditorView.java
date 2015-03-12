@@ -4,9 +4,13 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import src.IO_Bundle;
-
+/**
+ * View for the mapeditor game mode
+ * @author mbregg
+ *
+ */
 public class MapEditorView extends MapView {
-private ArrayList<String> items_ = new ArrayList<String>();
+	private ArrayList<String> items_ = new ArrayList<String>();
 	public MapEditorView() {
 		// TODO Auto-generated constructor stub
 	}
@@ -43,7 +47,7 @@ private ArrayList<String> items_ = new ArrayList<String>();
 				this.getColorContents()[i][mid_y] = Color.black;
 			}
 		}
-		
+
 	}
 
 }

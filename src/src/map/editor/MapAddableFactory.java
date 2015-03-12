@@ -22,7 +22,12 @@ import src.model.map.constructs.Terrain;
 import src.model.map.constructs.Trap;
 import src.model.map.constructs.TwoHandedSword;
 import src.model.map.constructs.Villager;
-
+/**
+ * Factory to generate things that can be added to the map
+ * Public as it could be useful in save/load/run game methods later on.
+ * @author mbregg
+ *
+ */
 public class MapAddableFactory {
 	private String aveString_;
 	public String mostRecentAvatar(){

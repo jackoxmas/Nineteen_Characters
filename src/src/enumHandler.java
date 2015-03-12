@@ -12,7 +12,7 @@ public class enumHandler {
 			Key_Commands e = Key_Commands.valueOf(in);
 			return e;
 		}catch(IllegalArgumentException e){}
-		
+
 		return null;//Didn't find any matching enums
 	}
 	public static String getAllCommands(){
@@ -20,7 +20,7 @@ public class enumHandler {
 		for(Key_Commands direction : Key_Commands.values()){
 			enums+=direction.toString()+System.lineSeparator();
 		}
-	return enums;
+		return enums;
 	}
 	public static AddableThingEnum stringCommandToAddable(String in){
 		in = in.toUpperCase();
@@ -28,7 +28,7 @@ public class enumHandler {
 			AddableThingEnum e = AddableThingEnum.valueOf(in);
 			return e;
 		}catch(IllegalArgumentException e){}
-		
+
 		return null;//Didn't find any matching enums
 	}
 	public static String getAllAddables(){
@@ -36,6 +36,6 @@ public class enumHandler {
 		for(AddableThingEnum direction : AddableThingEnum.values()){
 			enums+=direction.toString()+System.lineSeparator();
 		}
-	return enums;
+		return enums;
 	}
 }

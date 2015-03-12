@@ -4,7 +4,11 @@ import java.util.Scanner;
 
 import src.HardCodedStrings;
 import src.enumHandler;
-
+/**
+ * Processes /commands given in the chatbox
+ * @author mbregg
+ *
+ */
 class CommandMiniController {
 	KeyRemapper remap_  = null;
 	Controller cont_ = null;

@@ -5,7 +5,11 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import src.Key_Commands;
-
+/**
+ * Abstract class to handle mapping keys to commands for various game modes. 
+ * @author mbregg
+ *
+ */
 abstract class  KeyRemapper {
 
     private HashMap<Character, Key_Commands> remap_ = new HashMap<Character, Key_Commands>();

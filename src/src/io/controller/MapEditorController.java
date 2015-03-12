@@ -14,7 +14,11 @@ import src.model.map.constructs.Item;
 import src.model.map.constructs.Monster;
 import src.model.map.constructs.OneHandedSword;
 import src.model.map.constructs.Terrain;
-
+/**
+ * The controller subclass for the mapeditor game mode
+ * @author mbregg
+ *
+ */
 public class MapEditorController extends Controller {
 	private MapMapEditor_Interface map_;
 	private MapEditorView mappy_viewy_ = new MapEditorView();

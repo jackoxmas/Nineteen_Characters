@@ -21,8 +21,8 @@ import src.model.map.MapUser_Interface;
 
 /**
  * Uses keyboard input to control the avatar
- *
- * @author JohnReedLOL
+ * Handles the main game mode
+ * @author JohnReedLOL/mbregg
  */
 public class GameController extends Controller {
 

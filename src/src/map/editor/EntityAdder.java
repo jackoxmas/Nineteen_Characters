@@ -11,8 +11,16 @@ class EntityAdder implements MapAddable {
 
 	@Override
 	public int addToMap(MapMapEditor_Interface mapp_, int x, int y) {
+		if(isEmpty()){return 2;}
 		if(!mapp_.withinMap(x, y)){return 1;}
-		return mapp_.addEntity(entity_, x, y);
+		int result = mapp_.addEntity(entity_, x, y);
+		entity_ = null;
+		return result;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return(entity_==null);
 	}
 
 }

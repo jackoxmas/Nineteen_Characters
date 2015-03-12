@@ -21,6 +21,7 @@ public class MapEditorController extends Controller {
 	private ArrayList<String> spawnables_ = new ArrayList<String>();
 	private String lastSpawned = "";
 	private MapAddableFactory factory_= new MapAddableFactory();
+	private MapAddable addable = null;
 	public MapEditorController(MapMapEditor_Interface map) {
 		super(new MapEditorView(),new MapEditRemapper(), "Temporary Name Map User");
 		super.setView(mappy_viewy_);
@@ -47,8 +48,8 @@ public class MapEditorController extends Controller {
 		case MOVE_DOWN: --y; break;
 		case MOVE_LEFT: --x; break;
 		case MOVE_RIGHT: ++x; break;
-		case MAP_INSERT: mapInsert(Display.getDisplay().getHighlightedItem());
-		case MAP_CENTER: x = 0; y = 0;
+		case MAP_INSERT: mapInsert(Display.getDisplay().getHighlightedItem()); break;
+		case MAP_CENTER: x = 0; y = 0; break;
 		default: break;
 
 		}
@@ -78,11 +79,14 @@ public class MapEditorController extends Controller {
 
 	private void mapInsert(String spawnName) {
 		if(spawnName == null){spawnName = lastSpawned;}
-		MapAddable addable = factory_.getAddable(spawnName);
+		if(addable == null){
+			addable = factory_.getAddable(spawnName);
+		}
 		if(addable == null){Display.getDisplay().setMessage("Invalid spawnable!"); return;}
 		if(addable.addToMap(map_, x,y) == 0){
 			setLastSpawned(spawnName);
 		}
+		if(addable.isEmpty()){addable=null;}
 	}
 	private  void setLastSpawned(String spawnName){
 		mappy_viewy_.setLastSpawned(spawnName);

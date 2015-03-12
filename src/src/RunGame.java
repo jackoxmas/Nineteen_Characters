@@ -89,9 +89,9 @@ public class RunGame {
          // map_.addAvatar(buddy, 3, 0);
             map_.addEntity(buddy, 3, 0);
          
-         Villager villagerA = new Villager("villager1", '웃');
-         villagerA.getStatsPack().increaseQuantityOfExperienceBy(200);
-         map_.addEntity(villagerA, 3, 13);
+         Villager villager1 = new Villager("villager1", '웃');
+         villager1.getStatsPack().increaseQuantityOfExperienceBy(200);
+         map_.addEntity(villager1, 3, 13);
          
          Monster monster = new Monster("monster1", '웃');
          monster.getStatsPack().increaseQuantityOfExperienceBy(300);

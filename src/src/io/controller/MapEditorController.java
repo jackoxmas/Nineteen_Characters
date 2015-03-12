@@ -92,5 +92,10 @@ public class MapEditorController extends Controller {
 		mappy_viewy_.setLastSpawned(spawnName);
 		lastSpawned = spawnName;
 	}
+	@Override
+	public String getUserName() {
+		return factory_.mostRecentAvatar();
+	}
+
 
 }

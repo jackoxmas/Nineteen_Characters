@@ -1,5 +1,6 @@
 package src.map.editor;
 import java.awt.Color;
+import java.util.UUID;
 
 import src.AddableThingEnum;
 import src.Effect;
@@ -22,7 +23,11 @@ import src.model.map.constructs.TwoHandedSword;
 import src.model.map.constructs.Villager;
 
 public class MapAddableFactory {
-
+	private String aveString_;
+	public String mostRecentAvatar(){
+		if(aveString_==null){return "NO AVATAR ON MAP";}
+		else{return aveString_;}
+	}
 	public MapAddableFactory() {
 		// TODO Auto-generated constructor stub
 	}
@@ -72,7 +77,8 @@ public class MapAddableFactory {
 			monster.getStatsPack().increaseQuantityOfExperienceBy(300);
 			return new EntityAdder(monster);
 		case AVATAR_ENTITY:
-			Avatar buddy = new Avatar("buddy", '웃');
+			aveString_ = UUID.randomUUID().toString();//We use a unique name for each avatar.
+			Avatar buddy = new Avatar(aveString_, '웃');
 			return new EntityAdder(buddy);
 		case HURT_EFFECT_ITEM:
 			OneShotAreaEffectItem heal = new OneShotAreaEffectItem("healer", 'h', Effect.HEAL, 10);

@@ -177,7 +177,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
      * @param t - Terrain
      * @param x - x position for tile
      * @param y - y position for tile
-     * @return error code
+     * @return error code, 0 for success
      */
     public int addTerrain(Terrain t, int x, int y) {
         t.setMapRelation(new MapTerrain_Relation(this, t));

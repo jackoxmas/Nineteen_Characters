@@ -106,7 +106,7 @@ public class GameController extends Controller {
 			@Override
 			public Void apply(String foo) {
 				if(foo == null){return null;}
-				Key_Commands command = enumHandler.stringToEnum(foo);
+				Key_Commands command = enumHandler.stringCommandToKeyCommand(foo);
 				if(command == null){return null;}
 				takeTurnandPrintTurn(command);
 				return null;

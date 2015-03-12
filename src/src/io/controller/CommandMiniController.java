@@ -84,7 +84,7 @@ class CommandMiniController {
 	}
 
 	private String processCommands() {
-		return enumHandler.getAllEnums();
+		return enumHandler.getAllCommands();
 		//The output box seems a bit bugged here....
 		//Scrolling horizontally horrifically garbles the text. This should be avoided.
 	}
@@ -104,7 +104,7 @@ class CommandMiniController {
 			String temp = sc.next();
 			if(temp.length() != 1){sc.close(); return error;}
 			c = temp.charAt(0);
-			remap_.bind(c, enumHandler.stringToEnum(command));
+			remap_.bind(c, enumHandler.stringCommandToKeyCommand(command));
 		}catch(Exception e){ sc.close(); return error;}
 		sc.close();
 		return "Success, Rebound : " + command + " To " + String.valueOf(c);

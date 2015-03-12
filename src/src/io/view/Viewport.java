@@ -186,6 +186,7 @@ public abstract class Viewport {
 		if(x<0 || y < 0){return false;}
 		for(int i = 0; i < in.length();i++){
                     view_contents_[x+i][y] = in.charAt(i);
+                    color_contents_[x+i][y] = Color.black;
                 }
 		return true;
 	}

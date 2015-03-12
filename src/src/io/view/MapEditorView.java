@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import src.IO_Bundle;
-import src.model.Vector2;
 
 public class MapEditorView extends MapView {
 private ArrayList<String> items_ = new ArrayList<String>();
@@ -15,7 +14,7 @@ private ArrayList<String> items_ = new ArrayList<String>();
 	protected void renderToDisplayInternally(IO_Bundle bundle) {
 		super.renderToDisplayInternally(bundle);
 		drawCross();
-		this.writeStringToContents(0, 0, "Last Spawned A: " + lastSpawned);
+		this.writeStringToContents(1, 1, "Last Spawned A: " + lastSpawned);
 	}
 	public void setSpawnableList(ArrayList<String> in){
 		items_ = in;

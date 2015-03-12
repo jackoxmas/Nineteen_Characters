@@ -27,7 +27,7 @@ public class TemporaryObstacleItem extends ObstacleItem {
         return options;
     }
 
-    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Avatar who_is_talking_to_me) {
+    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Entity who_is_talking_to_me) {
         ArrayList<String> options = new ArrayList<String>();
         if(what_you_just_said_to_me.equals("Give me a list of items that I can use on you. " + HardCodedStrings.getItemList)) {
             options.add(keyItem_.name_ + HardCodedStrings.useItem);

@@ -43,7 +43,7 @@ public interface MapMapEditor_Interface {
      * @param y - y posiition of where you want to add Avatar
      * @return -1 on fail, 0 on success
      */
-	public int addAvatar(Avatar avatar_, int x, int y);
+	// public int addAvatar(Avatar avatar_, int x, int y);
 	public boolean withinMap(int x, int y);
 
 }

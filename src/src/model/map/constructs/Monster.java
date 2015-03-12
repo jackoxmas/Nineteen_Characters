@@ -32,7 +32,7 @@ public class Monster extends Entity {
     }
 
     @Override
-    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Avatar who_is_talking_to_me) {
+    public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Entity who_is_talking_to_me) {
         return endConversation();
     }
 

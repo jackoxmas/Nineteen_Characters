@@ -172,6 +172,31 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
     }
 
     /**
+     * Uses function overloading to add an avatar to the map.
+     *
+     * @param a - Avatar to be added
+     * @param x - x position of where you want to add Avatar
+     * @param y - y posiition of where you want to add Avatar
+     * @return -1 on fail, 0 on success
+     */
+    public int addEntity(Avatar a, int x, int y) {
+        System.out.println("Adding avatar: " + a.name_ + " to the map");
+        a.setMapRelation(new MapAvatar_Relation(this, a, x, y));
+        int error_code = this.map_grid_[y][x].addEntity(a);
+        if (error_code == 0) {
+            this.avatar_list_.put(a.name_, a);
+            Avatar aa = this.avatar_list_.get(a.name_);
+            if (aa == null) {
+                System.err.println("Something is seriously wrong with the avatar list");
+                System.exit(-5);
+            }
+        } else {
+            a.setMapRelation(null);
+        }
+        return error_code;
+    }
+
+    /**
      * Once a tile has terrain, that terrain is constant.
      *
      * @param t - Terrain
@@ -189,14 +214,16 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
         }
         return error_code;
     }
+
     /**
      * Returns true if the given coord is within the map
+     *
      * @param x
      * @param y
      * @return
      */
-    public boolean withinMap(int x, int y){
-    	return ((x >= 0 && x < this.width_) && (y>= 0 && y<this.height_));
+    public boolean withinMap(int x, int y) {
+        return ((x >= 0 && x < this.width_) && (y >= 0 && y < this.height_));
     }
 
     /**
@@ -207,29 +234,42 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
      * @param y - y posiition of where you want to add Avatar
      * @return -1 on fail, 0 on success
      */
-    public int addAvatar(Avatar a, int x, int y) {
-        System.out.println("Adding avatar: " + a.name_ + " to the map");
-        a.setMapRelation(new MapAvatar_Relation(this, a, x, y));
-        int error_code = this.map_grid_[y][x].addEntity(a);
-        if (error_code == 0) {
-            this.avatar_list_.put(a.name_, a);
-            Avatar aa = this.avatar_list_.get(a.name_);
-            if (aa == null) {
-                System.err.println("Something is seriously wrong with the avatar list");
-                System.exit(-5);
-            }
-        } else {
-            a.setMapRelation(null);
-        }
-        return error_code;
+    // public int addAvatar(Avatar a, int x, int y) {
+    //    return addEntity(a, x, y);
+    //}
+    /**
+     * Adds an avatar to the map.
+     *
+     * @param a - Avatar to be added
+     * @param x - x position of where you want to add Avatar
+     * @param y - y posiition of where you want to add Avatar
+     * @return -1 on fail, 0 on success
+     */
+    /*
+     public int addAvatar(Avatar a, int x, int y) {
+     System.out.println("Adding avatar: " + a.name_ + " to the map");
+     a.setMapRelation(new MapAvatar_Relation(this, a, x, y));
+     int error_code = this.map_grid_[y][x].addEntity(a);
+     if (error_code == 0) {
+     this.avatar_list_.put(a.name_, a);
+     Avatar aa = this.avatar_list_.get(a.name_);
+     if (aa == null) {
+     System.err.println("Something is seriously wrong with the avatar list");
+     System.exit(-5);
+     }
+     } else {
+     a.setMapRelation(null);
+     }
+     return error_code;
+     }
+     */
+    @Override
+    public IO_Bundle getMapAt(int x, int y, int width, int height) {
+        char[][] view = makeView(x, y, width, height);
+        Color[][] colors = makeColors(x, y, width, height);
+        return new IO_Bundle(view, colors, null, null, null, 0, 0, 0, 0, null, null, null, 0);
     }
-    
-	@Override
-	public IO_Bundle getMapAt(int x, int y, int width, int height) {
-		char[][] view = makeView(x,y,width,height);
-		Color[][] colors = makeColors(x,y,width,height);
-		return new IO_Bundle(view,colors,null,null,null,0,0,0,0,null,null,null,0);
-	}
+
     /**
      * Makes a rectangular view with y coordinates in first [] of 2D array
      *
@@ -275,7 +315,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
      * @param a - Avatar to be removed.
      * @return -1 if the entity to be removed does not exist.
      */
-    public int removeAvatar(Avatar a) {
+    public int removeEntity(Avatar a) {
         Avatar removed = this.avatar_list_.remove(a.name_);
         if (removed == null) {
             System.err.println("The avatar to be removed does not exist in the list of avatars");
@@ -369,7 +409,16 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
      * @return
      */
     public IO_Bundle sendCommandToMapWithOptionalText(String username, Key_Commands command, int width_from_center, int height_from_center, String text) {
-        Avatar to_recieve_command = this.avatar_list_.get(username);
+        // Avatar to_recieve_command = this.avatar_list_.get(username);
+        Entity to_recieve_command = null;
+        if (this.avatar_list_.containsKey(username)) {
+            to_recieve_command = this.avatar_list_.get(username);
+        } else if (this.entity_list_.containsKey(username)) {
+            to_recieve_command = this.entity_list_.get(username);
+        } else {
+            System.err.println("The avatar of entity you are trying to reach does not exist.");
+            System.exit(-77);
+        }
         ArrayList<String> Strings_for_IO_Bundle = null;
         if (to_recieve_command != null && to_recieve_command.getIsInExistance()) {
             if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null) {
@@ -421,7 +470,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                 return null;
             }
         } else {
-            System.out.println("Avatar " + username + " is no longer a part of the map. They area either dead or non-existant.");
+            System.out.println(username + " is no longer alive.");
             return null;
         }
     }
@@ -719,6 +768,5 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
         return e_Terrain;
     }
     //</editor-fold>
-
 
 }

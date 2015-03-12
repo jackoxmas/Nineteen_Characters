@@ -22,15 +22,19 @@ public final class MapTile {
 
     /**
      * Only works if there in no entity there already.
-     *
+     * @author John-Michael Reed
      * @param entity - entity to be added to the tile
      * @return error codes: -1 if an entity is already there.
      */
     public int addEntity(Entity entity) {
-        if (this.entity_ == null && entity != null) {
+        if (this.entity_ == null && entity != null && entity.getMapRelation() != null) {
             entity.getMapRelation().setMapTile(this);
             this.entity_ = entity;
             return 0;
+        } else if (entity.getMapRelation() == null) {
+            System.err.println("entity.getMapRelation() == null in MapTile.addEntity(Entity entity)");
+            System.exit(-55);
+            return -2;
         } else {
             return -1;
         }
@@ -38,7 +42,9 @@ public final class MapTile {
 
     /**
      * Returns a reference to the terrain object used by this map tile
-     * <p>Used in XML writing</p>
+     * <p>
+     * Used in XML writing</p>
+     *
      * @return a Terrain reference to the terrain object used by this map tile
      * @author Alex Stewart
      */
@@ -48,7 +54,9 @@ public final class MapTile {
 
     /**
      * Returns a reference to the Entity located at this map tile
-     * <p>Used in XML writing</p>
+     * <p>
+     * Used in XML writing</p>
+     *
      * @return a reference to the Entity object located at this map tile
      * @author Alex Stewart
      */
@@ -58,11 +66,15 @@ public final class MapTile {
 
     /**
      * Returns a copy of the item list for this map tile
-     * <p>Used in XML writing</p>
+     * <p>
+     * Used in XML writing</p>
+     *
      * @return a copy of the item list for this map tile
      * @author Alex Stewart
      */
-    public LinkedList<Item> getItemList() { return items_; }
+    public LinkedList<Item> getItemList() {
+        return items_;
+    }
 
     /**
      * Will return -1 if entity already equals null
@@ -109,6 +121,7 @@ public final class MapTile {
             return '▩';
         }
     }
+
     public Color getTopColor() {
         if (entity_ != null && entity_.isVisible()) {
             return entity_.getColor();

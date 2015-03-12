@@ -6,8 +6,14 @@
 package src.model.map.constructs;
 
 import java.util.ArrayList;
+import java.util.Random;
+import src.Effect;
 
 import src.FacingDirection;
+import src.Key_Commands;
+import src.RunGame;
+import src.SkillEnum;
+import src.io.view.display.Display;
 import src.model.map.MapEntity_Relation;
 
 /**
@@ -23,6 +29,12 @@ abstract public class Entity extends DrawableThing {
     private EntityStatsPack stats_pack_ = new EntityStatsPack(this);
     private int num_gold_coins_when_spawned_ = 10;
     private int num_gold_coins_possessed_ = num_gold_coins_when_spawned_;
+
+    private boolean isInExistance = true;
+
+    public boolean getIsInExistance() {
+        return isInExistance;
+    }
 
     /**
      * Entity Constructor
@@ -79,7 +91,7 @@ abstract public class Entity extends DrawableThing {
      * @param what_you_just_said_to_me - same as "what you last said to me"
      * @return conversation options
      */
-    public abstract ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Avatar who_is_talking_to_me);
+    public abstract ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Entity who_is_talking_to_me);
 
     public abstract ArrayList<String> getListOfItemsYouCanUseOnMe();
 
@@ -101,6 +113,408 @@ abstract public class Entity extends DrawableThing {
 
     public ArrayList<PickupableItem> getInventory() {
         return this.inventory_;
+    }
+
+    private ArrayList<String> said_to_me_ = new ArrayList<String>();
+
+    public void sayStuffToMe(ArrayList<String> in) {
+        for (String i : in) {
+            said_to_me_.add(i);
+        }
+
+    }
+
+    // map_relationship_ is used in place of a map_referance_
+    private int num_skillpoints_ = 1;
+
+    public int getNum_skillpoints_() {
+        return num_skillpoints_;
+    }
+
+    // Non-occupation specific skills
+    private int bind_wounds_ = 1;
+
+    public int getBind_wounds_() {
+        return bind_wounds_;
+    }
+
+    public int bindWounds() {
+        this.getMapRelation().areaEffectFunctor.effectAreaWithinRadius(0, getBind_wounds_(), Effect.HEAL);
+        return 0;
+    }
+
+    private int bargain_ = 1;
+
+    public int getBargain_() {
+        return bargain_;
+    }
+
+    private int observation_ = 1;
+
+    public int getObservation_() {
+        return observation_;
+    }
+
+    /**
+     * Gets information based on observation level. If the entity is facing up,
+     * observation will work in the up direction.
+     *
+     * @author Reid Olsen
+     * @return
+     */
+    public int observe() {
+        Random rn = new Random();
+
+        String s = "";
+
+        // Get random number between 0 and 10.
+        int chanceForSuccessfulObserve = rn.nextInt(11);
+        // Checks if observe is succuessful, takes observation level into
+        // account. If observation level is 11 or higher, success rate is %100.
+        if (chanceForSuccessfulObserve >= (11 - observation_)) {
+            Display.getDisplay().setMessage(
+                    "Looking in direction: " + getFacingDirection());
+
+            if (getFacingDirection() == FacingDirection.UP) {
+                for (int i = 0; i < observation_; ++i) {
+                    s += " Tile " + (i + 1) + ": ";
+                    try {
+                        s += map_relationship_.getTileInfo(0, (i + 1));
+                        s += "\n";
+                    } catch (NullPointerException e) {
+                        s += "No tile here.\n";
+                    }
+                }
+                Display.getDisplay().setMessage(s);
+            } else if (getFacingDirection() == FacingDirection.UP_RIGHT) {
+                for (int i = 0; i < observation_; ++i) {
+                    s += " Tile " + (i + 1) + ": ";
+                    try {
+                        s += map_relationship_.getTileInfo((i + 1), (i + 1));
+                        s += "\n";
+                    } catch (NullPointerException e) {
+                        s += "No tile here.\n";
+                    }
+                }
+                Display.getDisplay().setMessage(s);
+            } else if (getFacingDirection() == FacingDirection.RIGHT) {
+                for (int i = 0; i < observation_; ++i) {
+                    s += " Tile " + (i + 1) + ": ";
+                    try {
+                        s += map_relationship_.getTileInfo((i + 1), 0);
+                        s += "\n";
+                    } catch (NullPointerException e) {
+                        s += "No tile here.\n";
+                    }
+                }
+                Display.getDisplay().setMessage(s);
+            } else if (getFacingDirection() == FacingDirection.DOWN_RIGHT) {
+                for (int i = 0; i < observation_; ++i) {
+                    s += " Tile " + (i + 1) + ": ";
+                    try {
+                        s += map_relationship_.getTileInfo((i + 1), (i + 1));
+                        s += "\n";
+                    } catch (NullPointerException e) {
+                        s += "No tile here.\n";
+                    }
+                }
+                Display.getDisplay().setMessage(s);
+            } else if (getFacingDirection() == FacingDirection.DOWN) {
+                for (int i = 0; i < observation_; ++i) {
+                    s += " Tile " + (i + 1) + ": ";
+                    try {
+                        s += map_relationship_.getTileInfo(0, (i + 1));
+                        s += "\n";
+                    } catch (NullPointerException e) {
+                        s += "No tile here.\n";
+                    }
+                }
+                Display.getDisplay().setMessage(s);
+            } else if (getFacingDirection() == FacingDirection.DOWN_LEFT) {
+                for (int i = 0; i < observation_; ++i) {
+                    s += " Tile " + (i + 1) + ": ";
+                    try {
+                        s += map_relationship_.getTileInfo((i + 1), (i + 1));
+                        s += "\n";
+                    } catch (NullPointerException e) {
+                        s += "No tile here.\n";
+                    }
+                }
+                Display.getDisplay().setMessage(s);
+            } else if (getFacingDirection() == FacingDirection.LEFT) {
+                for (int i = 0; i < observation_; ++i) {
+                    s += " Tile " + (i + 1) + ": ";
+                    try {
+                        s += map_relationship_.getTileInfo((i + 1), 0);
+                        s += "\n";
+                    } catch (NullPointerException e) {
+                        s += "No tile here.\n";
+                    }
+                }
+                Display.getDisplay().setMessage(s);
+            } else if (getFacingDirection() == FacingDirection.UP_LEFT) {
+                for (int i = 0; i < observation_; ++i) {
+                    s += " Tile " + (i + 1) + ": ";
+                    try {
+                        s += map_relationship_.getTileInfo((i + 1), (i + 1));
+                        s += "\n";
+                    } catch (NullPointerException e) {
+                        s += "No tile here.\n";
+                    }
+                }
+                Display.getDisplay().setMessage(s);
+            }
+            return 0;
+        } else {
+            Display.getDisplay().setMessage(
+                    "Failed to look in direction: " + getFacingDirection());
+            return -1;
+        }
+    }
+
+    /**
+     * Designates a skill point towards a skill.
+     *
+     * @author John-Michael Reed
+     * @param skill
+     * @return -2 if no skill points, -1 if skill cannot be spent [invalid
+     * occupation]
+     */
+    public int spendSkillpointOn(SkillEnum skill) {
+        if (num_skillpoints_ <= 0) {
+            return -2;
+        }
+        Occupation occupation = this.getOccupation();
+        switch (skill) {
+            case BIND_WOUNDS:
+                ++bind_wounds_;
+                --num_skillpoints_;
+                return 0;
+            case BARGAIN:
+                ++bargain_;
+                --num_skillpoints_;
+                return 0;
+            case OBSERVATION:
+                ++observation_;
+                --num_skillpoints_;
+                return 0;
+            case OCCUPATION_SKILL_1:
+                if (occupation == null) {
+                    return -1;
+                }
+                int error_code = occupation.incrementSkill(skill);
+                if (error_code == 0) {
+                    --num_skillpoints_;
+                }
+                return error_code;
+            case OCCUPATION_SKILL_2:
+                if (occupation == null) {
+                    return -1;
+                }
+                int error_code2 = occupation.incrementSkill(skill);
+                if (error_code2 == 0) {
+                    --num_skillpoints_;
+                }
+                return error_code2;
+            case OCCUPATION_SKILL_3:
+                if (occupation == null) {
+                    return -1;
+                }
+                int error_code3 = occupation.incrementSkill(skill);
+                if (error_code3 == 0) {
+                    --num_skillpoints_;
+                }
+                return error_code3;
+            case OCCUPATION_SKILL_4:
+                if (occupation == null) {
+                    return -1;
+                }
+                int error_code4 = occupation.incrementSkill(skill);
+                if (error_code4 == 0) {
+                    --num_skillpoints_;
+                }
+                return error_code4;
+            default:
+                System.exit(-1); // should never happen
+                return -3;
+        }
+    }
+
+    /**
+     * Accepts a key command from the map
+     *
+     * @param command
+     * @param optional_text - either the last thing that was said to you or the
+     * thing you are about to say.
+     * @return ArrayList of strings for IO_Bundle or null if nothing to display
+     */
+    public ArrayList<String> acceptKeyCommand(Key_Commands command, String optional_text) {
+        MapEntity_Relation mar = this.getMapRelation();
+        if (mar == null) {
+            System.out
+                    .println(this.name_ + " cannot be controlled without a MapAvatar_Relation");
+            System.exit(-8);
+        }
+        Entity target = this.getMapRelation().getEntityInFacingDirection();
+        Item target_item_ = this.getMapRelation().getTopmostItemInFacingDirection();
+        switch (command) {
+            case MOVE_DOWNLEFT:// Move SW
+                mar.moveInDirection(-1, -1);
+                break;
+            case MOVE_DOWN:// Move S
+                mar.moveInDirection(0, -1);
+                break;
+            case MOVE_DOWNRIGHT:// Move SE
+                mar.moveInDirection(1, -1);
+                break;
+            case MOVE_LEFT: // Move W
+                mar.moveInDirection(-1, 0);
+                break;
+            case MOVE_RIGHT:// Move E
+                mar.moveInDirection(1, 0);
+                break;
+            case MOVE_UPLEFT:// Move NW
+                mar.moveInDirection(-1, 1);
+                break;
+            case MOVE_UP:// Move N
+                mar.moveInDirection(0, 1);
+                break;
+            case MOVE_UPRIGHT: // Move NE
+                mar.moveInDirection(1, 1);
+                break;
+            case SAVE_GAME: // Save Game
+                RunGame.saveGameToDisk(); // TODO: this is for testing, remove for
+                // deployment
+                break;
+            case USE_LAST_ITEM: // Use item in inventory
+                this.useItemInFacingDirectionOnMyself();
+                System.out.println("using item!");
+                break;
+            case EQUIP_LAST_ITEM: // equipMyselfTo
+                try {
+                    EquipableItem item = (EquipableItem) this.getLastItemInInventory();
+                    if (item != null) {
+                        Display.getDisplay().setMessage("Attempted to Equip " + item.toString());
+                    } else {
+                        Display.getDisplay().setMessage("No item(s) to equip");
+                    }
+                    if (item != null) {
+                        item.equipMyselfTo(this);
+                        break;
+                    }
+                } catch (ClassCastException e) {
+                    // ignore it
+                    Display.getDisplay().setMessage("Cannot Equip From Inventory");
+                }
+                break;
+            case UNEQUIP_EVERYTHING: // unEquip
+                this.unEquipEverything();
+                Display.getDisplay().setMessage("Unequipped Everything");
+                break;
+            case DROP_LAST_ITEM: // drop item
+                mar.dropItem();
+                break;
+            case BECOME_SMASHER: // switch to Smasher
+                this.setRepresentation('⚔');
+                this.becomeSmasher();
+                break;
+            case BECOME_SUMMONER: // switch to Summoner
+                this.setRepresentation('☃');
+                this.becomeSummoner();
+                break;
+            case BECOME_SNEAK: // switch to Sneaker
+                this.setRepresentation('☭');
+                this.becomeSneak();
+                break;
+            case BIND_WOUNDS:
+                this.bindWounds();
+                break;
+            case BARGAIN_AND_BARTER:
+                if (target != null) {
+                    sayStuffToMe(target.getInteractionOptionStrings());
+                    break;
+                } else {
+                    break;
+                }
+            case OBSERVE:
+                this.observe();
+                break;
+            case USE_SKILL_1:
+                this.getOccupation().performOccupationSkill(1);
+                break;
+            case USE_SKILL_2:
+                System.out.println("Performing Skill 2");
+                this.getOccupation().performOccupationSkill(2);
+                System.out.println("Already performed Skill 2");
+                break;
+            case USE_SKILL_3:
+                this.getOccupation().performOccupationSkill(3);
+                break;
+            case USE_SKILL_4:
+                this.getOccupation().performOccupationSkill(4);
+                break;
+            case SPEND_SKILLPOINT_ON_BIND:
+                this.spendSkillpointOn(SkillEnum.BIND_WOUNDS);
+                break;
+            case SPEND_SKILLPOINT_ON_BARGAIN:
+                this.spendSkillpointOn(SkillEnum.BARGAIN);
+                break;
+            case SPEND_SKILLPOINT_ON_OBSERVE:
+                this.spendSkillpointOn(SkillEnum.OBSERVATION);
+                break;
+            case SPEND_SKILLPOINT_ON_SKILL_1:
+                this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_1);
+                break;
+            case SPEND_SKILLPOINT_ON_SKILL_2:
+                this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_2);
+                break;
+            case SPEND_SKILLPOINT_ON_SKILL_3:
+                this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_3);
+                break;
+            case SPEND_SKILLPOINT_ON_SKILL_4:
+                this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_4);
+                break;
+            case GET_INTERACTION_OPTIONS:
+                if (target != null) {
+                    sayStuffToMe(target.getInteractionOptionStrings());
+                    break;
+                }
+                if (target_item_ != null) {
+                    sayStuffToMe(target_item_.getInteractionOptionStrings());
+                    break;
+                }
+                return null;
+
+            case GET_CONVERSATION_STARTERS:
+                if (target != null) {
+                    return target.getConversationStarterStrings();
+                }
+                break;
+            case GET_CONVERSATION_CONTINUATION_OPTIONS:
+                if (target != null) {
+                    sayStuffToMe(target.getConversationContinuationStrings(optional_text, this));
+                    break;
+                } else if (target_item_ != null) {
+                    System.out.println("optional text in Item GET_CONVERSATION_CONTINUATION_OPTIONS: \n" + optional_text);
+                    sayStuffToMe(target_item_.getConversationContinuationStrings(optional_text, this));
+                    break;
+                } else {
+                    break;
+                }
+            case ATTACK:
+                getMapRelation().sendAttackInFacingDirection();
+                break;
+            default:
+                System.out.println("Invalid command sent to avatar");
+                break;
+        }
+        if (said_to_me_.size() != 0) {
+            ArrayList<String> result = said_to_me_;
+            said_to_me_ = new ArrayList<String>();
+            return result;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -140,7 +554,8 @@ abstract public class Entity extends DrawableThing {
     }
 
     public void gameOver() {
-        System.out.println("An entity has run out of lives and is gone forever.");
+        System.out.println("Entity " + this.name_ + " has run out of lives and is gone forever.");
+        this.isInExistance = false;
         getMapRelation().removeMyselfFromTheMapCompletely();
     }
 
@@ -426,12 +841,13 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     *
-     * @param amount
-     * @return number of level ups;
+     * Call this function when an Entity gains experience points. 
+     * @param amount - number of experience points
+     * @return number of level ups - 0 for no level ups, 1 for 1 level up, 2 for 2 levels up, etc.;
      */
     public int gainExperiencePoints(int amount) {
         int num_level_ups = stats_pack_.increaseQuantityOfExperienceBy(amount);
+        num_skillpoints_ += num_level_ups;
         return num_level_ups;
     }
 

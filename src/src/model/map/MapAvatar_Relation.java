@@ -77,7 +77,8 @@ public class MapAvatar_Relation extends MapEntity_Relation {
 
     @Override
     public void removeMyselfFromTheMapCompletely() {
-        current_map_reference_.removeAvatar(avatar_);
+        // current_map_reference_.removeAvatar(avatar_);
+        super.removeMyselfFromTheMapCompletely();
     }
 
     /**
@@ -89,43 +90,8 @@ public class MapAvatar_Relation extends MapEntity_Relation {
      * @param y coordinate of tile relative to avatar.
      * @return String of info on tile (x,y).
      */
+    @Override
     public String getTileInfo(int relative_x, int relative_y) {
-        final int x = relative_x + getMyXCoordinate();
-        final int y = relative_y + getMyYCoordinate();
-        String s = "";
-        if (this.getMap().getTile(x, y).isPassable()) {
-            s += "This tile is passable.";
-        } else {
-            s += "This tile is not passable.";
-        }
-        LinkedList<Item> items = this.getMap().getTile(x, y)
-                .getItemList();
-        if (!items.isEmpty()) {
-            s += " Items on this tile:";
-            for (int j = 0; j < items.size(); j++) {
-                s += " " + items.get(j).name_;
-                if (j + 1 == items.size()) {
-                    s += ".";
-                } else {
-                    s += ",";
-                }
-            }
-        }
-        Entity e = this.getMap().getTile(x, y).getEntity();
-        if (e != null) {
-            if (avatar_.getObservation_() < 3) {
-                s += " Entity: " + e.name_;
-            } else if (avatar_.getObservation_() >= 3 && avatar_.getObservation_() < 6) {
-                s += " Entity: " + e.name_ + " with "
-                        + e.getStatsPack().getOffensive_rating_() + " offense.";
-            } else {
-                s += " Entity: " + e.name_ + " with "
-                        + e.getStatsPack().getOffensive_rating_()
-                        + " offense and "
-                        + e.getStatsPack().getDefensive_rating_() + " defense.";
-            }
-        }
-
-        return s;
+        return super.getTileInfo(relative_x, relative_y);
     }
 }

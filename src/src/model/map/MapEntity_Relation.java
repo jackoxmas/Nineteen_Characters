@@ -6,6 +6,7 @@
 package src.model.map;
 
 import java.awt.Color;
+import java.util.LinkedList;
 
 import src.Effect;
 import src.FacingDirection;
@@ -22,216 +23,259 @@ import src.model.map.constructs.Trap;
  */
 public class MapEntity_Relation extends MapDrawableThing_Relation {
 
-	public class AreaEffect extends MapDrawableThing_Relation.AreaEffect {
+    public class AreaEffect extends MapDrawableThing_Relation.AreaEffect {
 
-		/**
-		 * For damage coming from entities
-		 *
-		 * @param x_pos
-		 *            - x coordinate of effect
-		 * @param y_pos
-		 *            - y coordinate of effect
-		 * @param strength
-		 *            - how much effect
-		 * @param effect
-		 *            - which effect
-		 */
-		@Override
-		public void repeat(int x_pos, int y_pos, int strength, Effect effect) {
-			MapTile infliction = current_map_reference_.getTile(x_pos, y_pos);
-			if (infliction != null) {
-				// If there is no decal, fuck shit up
-				if (infliction.getTerrain() != null
-						&& !infliction.getTerrain().hasDecal()) {
-					if (effect == Effect.HURT) {
-						infliction.getTerrain().addDecal('♨', Color.magenta);
-					} else if (effect == Effect.HEAL) {
-						infliction.getTerrain().addDecal('♥', Color.red);
-					} else if (effect == Effect.LEVEL) {
-						infliction.getTerrain().addDecal('↑', Color.black);
-					} else if (effect == Effect.KILL) {
-						infliction.getTerrain().addDecal('☣', Color.orange);
-					}
-				}
-				Entity to_effect = infliction.getEntity();
-				if (to_effect != null) {
-					if (effect == Effect.HURT) {
-						to_effect.receiveAttack(strength, entity_); // kills
-																	// avatar if
-																	// health is
-																	// negative
-					} else if (effect == Effect.HEAL) {
-						to_effect.receiveHeal(strength);
-					} else if (effect == Effect.LEVEL) {
-						to_effect.commitSuicide();
-					} else if (effect == Effect.KILL) {
-						to_effect.gainEnoughExperienceTolevelUp();
-					}
-				}
-			}
-		}
+        /**
+         * For damage coming from entities
+         *
+         * @param x_pos - x coordinate of effect
+         * @param y_pos - y coordinate of effect
+         * @param strength - how much effect
+         * @param effect - which effect
+         */
+        @Override
+        public void repeat(int x_pos, int y_pos, int strength, Effect effect) {
+            MapTile infliction = current_map_reference_.getTile(x_pos, y_pos);
+            if (infliction != null) {
+                // If there is no decal, fuck shit up
+                if (infliction.getTerrain() != null
+                        && !infliction.getTerrain().hasDecal()) {
+                    if (effect == Effect.HURT) {
+                        infliction.getTerrain().addDecal('♨', Color.magenta);
+                    } else if (effect == Effect.HEAL) {
+                        infliction.getTerrain().addDecal('♥', Color.red);
+                    } else if (effect == Effect.LEVEL) {
+                        infliction.getTerrain().addDecal('↑', Color.black);
+                    } else if (effect == Effect.KILL) {
+                        infliction.getTerrain().addDecal('☣', Color.orange);
+                    }
+                }
+                Entity to_effect = infliction.getEntity();
+                if (to_effect != null) {
+                    if (effect == Effect.HURT) {
+                        to_effect.receiveAttack(strength, entity_); // kills
+                        // avatar if
+                        // health is
+                        // negative
+                    } else if (effect == Effect.HEAL) {
+                        to_effect.receiveHeal(strength);
+                    } else if (effect == Effect.LEVEL) {
+                        to_effect.commitSuicide();
+                    } else if (effect == Effect.KILL) {
+                        to_effect.gainEnoughExperienceTolevelUp();
+                    }
+                }
+            }
+        }
 
-		/**
-		 * Casts a 90 degree wide area effect
-		 *
-		 * @author Reed, John-Michael
-		 */
-		public void effectAreaWithinArc(int length, int strength, Effect effect) {
-			if (length < 0 || strength < 0) {
-				System.exit(-1);
-			}
-			FacingDirection attack_direction = entity_.getFacingDirection();
-			final int x_start = entity_.getMapRelation().getMyXCoordinate();
-			final int y_start = entity_.getMapRelation().getMyYCoordinate();
-			for (int i = 1; i <= length; ++i) {
-				int reduction = 0;
-				if (effect == Effect.HEAL || effect == Effect.HURT) {
-					reduction = i - 1;
-				}
-				for (int width = -i + 1; width <= i - 1; ++width) {
-					switch (attack_direction) {
-					case UP:
-						repeat(x_start + width, y_start + i, strength
-								- reduction, effect);
-						break;
-					case DOWN:
-						repeat(x_start + width, y_start - i, strength
-								- reduction, effect);
-						break;
-					case RIGHT:
-						repeat(x_start + i, y_start + width, strength
-								- reduction, effect);
-						break;
-					case LEFT:
-						repeat(x_start - i, y_start + width, strength
-								- reduction, effect);
-						break;
-					case UP_RIGHT:
-						repeat(x_start + width + i, y_start - width + i,
-								strength - reduction, effect);
-						break;
-					case UP_LEFT:
-						repeat(x_start - width - i, y_start - width + i,
-								strength - reduction, effect);
-						break;
-					case DOWN_RIGHT:
-						repeat(x_start + width + i, y_start + width - i,
-								strength - reduction, effect);
-						break;
-					case DOWN_LEFT:
-						repeat(x_start - width - i, y_start + width - i,
-								strength - reduction, effect);
+        /**
+         * Casts a 90 degree wide area effect
+         *
+         * @author Reed, John-Michael
+         */
+        public void effectAreaWithinArc(int length, int strength, Effect effect) {
+            if (length < 0 || strength < 0) {
+                System.exit(-1);
+            }
+            FacingDirection attack_direction = entity_.getFacingDirection();
+            final int x_start = entity_.getMapRelation().getMyXCoordinate();
+            final int y_start = entity_.getMapRelation().getMyYCoordinate();
+            for (int i = 1; i <= length; ++i) {
+                int reduction = 0;
+                if (effect == Effect.HEAL || effect == Effect.HURT) {
+                    reduction = i - 1;
+                }
+                for (int width = -i + 1; width <= i - 1; ++width) {
+                    switch (attack_direction) {
+                        case UP:
+                            repeat(x_start + width, y_start + i, strength
+                                    - reduction, effect);
+                            break;
+                        case DOWN:
+                            repeat(x_start + width, y_start - i, strength
+                                    - reduction, effect);
+                            break;
+                        case RIGHT:
+                            repeat(x_start + i, y_start + width, strength
+                                    - reduction, effect);
+                            break;
+                        case LEFT:
+                            repeat(x_start - i, y_start + width, strength
+                                    - reduction, effect);
+                            break;
+                        case UP_RIGHT:
+                            repeat(x_start + width + i, y_start - width + i,
+                                    strength - reduction, effect);
+                            break;
+                        case UP_LEFT:
+                            repeat(x_start - width - i, y_start - width + i,
+                                    strength - reduction, effect);
+                            break;
+                        case DOWN_RIGHT:
+                            repeat(x_start + width + i, y_start + width - i,
+                                    strength - reduction, effect);
+                            break;
+                        case DOWN_LEFT:
+                            repeat(x_start - width - i, y_start + width - i,
+                                    strength - reduction, effect);
 
-						break;
-					}
+                            break;
+                    }
 
-				}
-			}
-		}
+                }
+            }
+        }
 
-		/**
-		 * Does area damage in a line
-		 *
-		 * @author Reed, John-Michael
-		 */
-		public void effectAreaWithinLine(int length, int strength, Effect effect) {
-			FacingDirection attack_direction = entity_.getFacingDirection();
-			final int x_start = entity_.getMapRelation().getMyXCoordinate();
-			final int y_start = entity_.getMapRelation().getMyYCoordinate();
-			for (int i = 1; i <= length; ++i) {
-				int reduction = 0;
-				if (effect == Effect.HEAL || effect == Effect.HURT) {
-					reduction = i - 1;
-				}
-				switch (attack_direction) {
-				case UP:
-					repeat(x_start, y_start + i, strength - reduction, effect);
-					break;
-				case DOWN:
-					repeat(x_start, y_start - i, strength - reduction, effect);
-					break;
-				case RIGHT:
-					repeat(x_start + i, y_start, strength - reduction, effect);
-					break;
-				case LEFT:
-					repeat(x_start - i, y_start, strength - reduction, effect);
-					break;
-				case UP_RIGHT:
-					repeat(x_start + i, y_start + i, strength - reduction,
-							effect);
-					break;
-				case UP_LEFT:
-					repeat(x_start - i, y_start + i, strength - reduction,
-							effect);
-					break;
-				case DOWN_RIGHT:
-					repeat(x_start + i, y_start - i, strength - reduction,
-							effect);
-					break;
-				case DOWN_LEFT:
-					repeat(x_start - i, y_start - i, strength - reduction,
-							effect);
-					break;
-				}
-			}
-		}
-	};
+        /**
+         * Does area damage in a line
+         *
+         * @author Reed, John-Michael
+         */
+        public void effectAreaWithinLine(int length, int strength, Effect effect) {
+            FacingDirection attack_direction = entity_.getFacingDirection();
+            final int x_start = entity_.getMapRelation().getMyXCoordinate();
+            final int y_start = entity_.getMapRelation().getMyYCoordinate();
+            for (int i = 1; i <= length; ++i) {
+                int reduction = 0;
+                if (effect == Effect.HEAL || effect == Effect.HURT) {
+                    reduction = i - 1;
+                }
+                switch (attack_direction) {
+                    case UP:
+                        repeat(x_start, y_start + i, strength - reduction, effect);
+                        break;
+                    case DOWN:
+                        repeat(x_start, y_start - i, strength - reduction, effect);
+                        break;
+                    case RIGHT:
+                        repeat(x_start + i, y_start, strength - reduction, effect);
+                        break;
+                    case LEFT:
+                        repeat(x_start - i, y_start, strength - reduction, effect);
+                        break;
+                    case UP_RIGHT:
+                        repeat(x_start + i, y_start + i, strength - reduction,
+                                effect);
+                        break;
+                    case UP_LEFT:
+                        repeat(x_start - i, y_start + i, strength - reduction,
+                                effect);
+                        break;
+                    case DOWN_RIGHT:
+                        repeat(x_start + i, y_start - i, strength - reduction,
+                                effect);
+                        break;
+                    case DOWN_LEFT:
+                        repeat(x_start - i, y_start - i, strength - reduction,
+                                effect);
+                        break;
+                }
+            }
+        }
+    };
 
-	/**
-	 * This object is actually a function used to call area effects
-	 *
-	 * @author John-Michael Reed
-	 */
-	public final AreaEffect areaEffectFunctor = new MapEntity_Relation.AreaEffect();
+    /**
+     * This object is actually a function used to call area effects
+     *
+     * @author John-Michael Reed
+     */
+    public final AreaEffect areaEffectFunctor = new MapEntity_Relation.AreaEffect();
 
-	/**
-	 * @author John-Michael Reed
-	 * @return -1 if no item can be dropped (inventory empty)
-	 */
-	public int dropItem() {
-		Item itemToBeDropped = entity_.pullLastItemOutOfInventory();
-		if (itemToBeDropped != null) {
-			current_map_reference_.addItem(itemToBeDropped,
-					this.getMapTile().x_, this.getMapTile().y_);
-			Display.getDisplay().setMessage(
-					"Dropped item: " + itemToBeDropped.name_);
-			return 0;
-		} else {
-			Display.getDisplay().setMessage("You have no items to drop.");
-			return -1;
-		}
-	}
+    /**
+     * @author John-Michael Reed
+     * @return -1 if no item can be dropped (inventory empty)
+     */
+    public int dropItem() {
+        Item itemToBeDropped = entity_.pullLastItemOutOfInventory();
+        if (itemToBeDropped != null) {
+            current_map_reference_.addItem(itemToBeDropped,
+                    this.getMapTile().x_, this.getMapTile().y_);
+            Display.getDisplay().setMessage(
+                    "Dropped item: " + itemToBeDropped.name_);
+            return 0;
+        } else {
+            Display.getDisplay().setMessage("You have no items to drop.");
+            return -1;
+        }
+    }
 
-	private final Entity entity_;
+    private final Entity entity_;
 
-	public MapEntity_Relation(Map m, Entity entity, int x_respawn_point,
-			int y_respawn_point) {
-		super(m);
-		entity_ = entity;
-		x_respawn_point_ = x_respawn_point;
-		y_respawn_point_ = y_respawn_point;
-	}
+    public MapEntity_Relation(Map m, Entity entity, int x_respawn_point,
+            int y_respawn_point) {
+        super(m);
+        entity_ = entity;
+        x_respawn_point_ = x_respawn_point;
+        y_respawn_point_ = y_respawn_point;
+    }
 
-	protected int getXrespawnPoint() {
-		return x_respawn_point_;
-	}
+    protected int getXrespawnPoint() {
+        return x_respawn_point_;
+    }
 
-	protected int getYrespawnPoint() {
-		return y_respawn_point_;
-	}
+    protected int getYrespawnPoint() {
+        return y_respawn_point_;
+    }
 
-	/**
-	 * Moves the entity that this relation refers to over x and up y
-	 *
-	 * @param x
-	 *            x displacement
-	 * @param y
-	 *            y displacement
-	 * @return error codes: see function pushEntityInDirection() in
-	 *         MapDrawableThing_Relation
-	 * @author John-Michael Reed
-	 */
-	public int moveInDirection(int x, int y) {
+    /**
+     * This function will be called from observe() to get info for a tile at
+     * (x,y).
+     *
+     * @author Reid Olsen
+     * @param x coordinate of tile relative to avatar.
+     * @param y coordinate of tile relative to avatar.
+     * @return String of info on tile (x,y).
+     */
+    public String getTileInfo(int relative_x, int relative_y) {
+        final int x = relative_x + getMyXCoordinate();
+        final int y = relative_y + getMyYCoordinate();
+        String s = "";
+        if (this.getMap().getTile(x, y).isPassable()) {
+            s += "This tile is passable.";
+        } else {
+            s += "This tile is not passable.";
+        }
+        LinkedList<Item> items = this.getMap().getTile(x, y)
+                .getItemList();
+        if (!items.isEmpty()) {
+            s += " Items on this tile:";
+            for (int j = 0; j < items.size(); j++) {
+                s += " " + items.get(j).name_;
+                if (j + 1 == items.size()) {
+                    s += ".";
+                } else {
+                    s += ",";
+                }
+            }
+        }
+        Entity e = this.getMap().getTile(x, y).getEntity();
+        if (e != null) {
+            if (entity_.getObservation_() < 3) {
+                s += " Entity: " + e.name_;
+            } else if (entity_.getObservation_() >= 3 && entity_.getObservation_() < 6) {
+                s += " Entity: " + e.name_ + " with "
+                        + e.getStatsPack().getOffensive_rating_() + " offense.";
+            } else {
+                s += " Entity: " + e.name_ + " with "
+                        + e.getStatsPack().getOffensive_rating_()
+                        + " offense and "
+                        + e.getStatsPack().getDefensive_rating_() + " defense.";
+            }
+        }
+
+        return s;
+    }
+
+/**
+ * Moves the entity that this relation refers to over x and up y
+ *
+ * @param x x displacement
+ * @param y y displacement
+ * @return error codes: see function pushEntityInDirection() in
+ * MapDrawableThing_Relation
+ * @author John-Michael Reed
+ */
+public int moveInDirection(int x, int y) {
 		if (x == 0 && y == 0) {
 			// nothing
 		} else if (x == 0 && y > 0) {

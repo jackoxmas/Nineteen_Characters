@@ -82,10 +82,12 @@ public class RunGame {
 
     private static void populateMap() {
     	 avatar_ = new Avatar("avatar", '☃');
-         map_.addAvatar(avatar_, 0, 0);
+         // map_.addAvatar(avatar_, 0, 0);
+            map_.addEntity(avatar_, 0, 0);
 
          Avatar buddy = new Avatar("buddy", '웃');
-         map_.addAvatar(buddy, 3, 0);
+         // map_.addAvatar(buddy, 3, 0);
+            map_.addEntity(buddy, 3, 0);
          
          Villager villagerA = new Villager("villager1", '웃');
          villagerA.getStatsPack().increaseQuantityOfExperienceBy(200);

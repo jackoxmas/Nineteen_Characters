@@ -24,7 +24,7 @@ public class IO_Bundle {
     public IO_Bundle(char[][] v, Color[][] c, ArrayList<PickupableItem> i,
             EntityStatsPack s, Occupation o, int n, int bi, int ba, int ob,
             PrimaryHandHoldable pri, SecondaryHandHoldable sec,
-            ArrayList<String> sfc, int num_coins
+            ArrayList<String> sfc, int num_coins, boolean is_alive
     ) {
         view_for_display_ = v;
         color_for_display_ = c;
@@ -39,7 +39,9 @@ public class IO_Bundle {
         second_ = sec;
         strings_for_communication_ = sfc;
         num_coins_ = num_coins;
+        is_alive_ = is_alive;
     }
+    
     public final char[][] view_for_display_;
     public final Color[][] color_for_display_;
     public final PrimaryHandHoldable primary_;
@@ -53,6 +55,7 @@ public class IO_Bundle {
     public final int observation_;
     public final ArrayList<String> strings_for_communication_;
     public final int num_coins_;
+    public final boolean is_alive_;
 
     public EntityStatsPack getStatsPack() {
         return stats_for_display_;

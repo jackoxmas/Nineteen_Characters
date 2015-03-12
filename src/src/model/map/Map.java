@@ -269,7 +269,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
     public IO_Bundle getMapAt(int x, int y, int width, int height) {
         char[][] view = makeView(x, y, width, height);
         Color[][] colors = makeColors(x, y, width, height);
-        return new IO_Bundle(view, colors, null, null, null, 0, 0, 0, 0, null, null, null, 0);
+        return new IO_Bundle(view, colors, null, null, null, 0, 0, 0, 0, null, null, null, 0, false);
     }
 
     /**
@@ -425,15 +425,21 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
             System.err.println("The avatar of entity you are trying to reach does not exist.");
             System.exit(-77);
         }
-        ArrayList<String> Strings_for_IO_Bundle = null;
-        if (to_recieve_command != null && to_recieve_command.getIsInExistance()) {
-            if (command != null && to_recieve_command.getMapRelation() != null) {
+        ArrayList<String> strings_for_IO_Bundle = null;
+        if (to_recieve_command != null) {
+            if(to_recieve_command.getMapRelation() == null) {
+                System.err.println(to_recieve_command.name_ + " has a null relation with this map. ");
+                return null;
+            }
+            if (command != null) {
                 if (command == Key_Commands.STANDING_STILL) {
-                    Strings_for_IO_Bundle = null;
+                    strings_for_IO_Bundle = null;
+                } else if ( to_recieve_command.getIsInExistance() == true ) {
+                    strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, text);
                 } else {
-                    Strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, text);
+                    strings_for_IO_Bundle = null;
                 }
-                if (to_recieve_command.getIsInExistance() == true) {
+                if(to_recieve_command.getIsInExistance() == true) {
                     char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);
@@ -450,15 +456,34 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                             to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
                             to_recieve_command.getPrimaryEquipped(),
                             to_recieve_command.getSecondaryEquipped(),
-                            Strings_for_IO_Bundle,
-                            to_recieve_command.getNumGoldCoins()
+                            strings_for_IO_Bundle,
+                            to_recieve_command.getNumGoldCoins(),
+                            to_recieve_command.getIsInExistance()
                     );
                     return return_package;
                 } else {
-                    System.out.println("Your beloved avatar " + username + " has died after performing some action.");
-                    return null;
+                    char[][] view = null;
+                    Color[][] colors = null;
+                    IO_Bundle return_package = new IO_Bundle(
+                            view,
+                            colors,
+                            null,
+                            // Don't for get left and right hand items
+                            null,
+                            null,
+                            -1,
+                            -1,
+                            -1,
+                            -1,
+                            null,
+                            null,
+                            null,
+                            -1,
+                            to_recieve_command.getIsInExistance()
+                    );
+                    return return_package;
                 }
-            } else if (to_recieve_command != null) {
+            } else if (command == null) {
                 IO_Bundle return_package = new IO_Bundle(null, null, to_recieve_command.getInventory(),
                         // Don't for get left and right hand items
                         to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
@@ -466,8 +491,9 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                         to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
                         to_recieve_command.getPrimaryEquipped(),
                         to_recieve_command.getSecondaryEquipped(),
-                        Strings_for_IO_Bundle,
-                        to_recieve_command.getNumGoldCoins()
+                        strings_for_IO_Bundle,
+                        to_recieve_command.getNumGoldCoins(),
+                        to_recieve_command.getIsInExistance()
                 );
                 return return_package;
             } else {
@@ -476,7 +502,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                 return null;
             }
         } else {
-            System.out.println(username + " is no longer alive.");
+            System.out.println(username + " cannot be found on this map.");
             return null;
         }
     }

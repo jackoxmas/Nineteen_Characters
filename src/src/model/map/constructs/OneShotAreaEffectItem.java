@@ -68,6 +68,9 @@ public class OneShotAreaEffectItem extends Item {
     public boolean hasBeenActivated() {
         return hasBeenActivated;
     }
+    public void activate(){
+    	hasBeenActivated = true;
+    }
 
     /**
      * Item performs action (HURT, HEAL, LEVEL, KILL)

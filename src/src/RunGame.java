@@ -22,6 +22,7 @@ import src.model.map.constructs.PermanentObstacleItem;
 import src.model.map.constructs.Sheild;
 import src.model.map.constructs.TemporaryObstacleItem;
 import src.model.map.constructs.Terrain;
+import src.model.map.constructs.Trap;
 import src.model.map.constructs.TwoHandedSword;
 import src.model.map.constructs.Villager;
 /**
@@ -118,6 +119,10 @@ public class RunGame {
         
         Villager villager =new Villager("Tom", 'V');
         map_.addEntity(villager,0,5);
+        
+        //Add some traps
+        Trap trap1 = new Trap("trap1", 'b', Effect.HURT, 2);
+        map_.addItem(trap1, 1,0);
         
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
         map_.addItem(teleport, 2, 4);

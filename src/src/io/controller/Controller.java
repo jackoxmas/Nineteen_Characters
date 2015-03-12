@@ -11,7 +11,10 @@ import src.io.view.display.Display;
 public abstract class Controller implements Function<Void,Character> {
 	private KeyRemapper remap_;
 	private Viewport currentView_;
-	private final String userName_;
+	private String userName_;
+	public void setControlling(String in){
+		userName_ = in;
+	}
 	public Controller(Viewport view,KeyRemapper remap,String uName) {
 		remap_ = remap;
 		currentView_ = view;

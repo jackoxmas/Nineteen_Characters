@@ -7,8 +7,10 @@ import src.enumHandler;
 
 class CommandMiniController {
 	KeyRemapper remap_  = null;
-	public CommandMiniController(KeyRemapper remap) {
+	Controller cont_ = null;
+	public CommandMiniController(KeyRemapper remap, Controller cont) {
 		remap_ = remap;
+		cont_ = cont;
 	}
 	private static final String man = "man";
 	private static final String pwd = "pwd";
@@ -20,8 +22,9 @@ class CommandMiniController {
 	private static final String load = "load";
 	private static final String rebind = "rebind";
 	private static final String bindings = "bindings";
-	
-	
+	private static final String setControl = "set-control";
+
+
 	private static final String commandKey = "/";
 
 	public String processCommand(String foo) {
@@ -38,8 +41,23 @@ class CommandMiniController {
 		if(foo.startsWith(commandKey + "tiger")){return "ROAR!";}
 		if(foo.startsWith(commandKey + man)){return this.processManCommand(foo);}
 		if(foo.startsWith(commandKey+ bindings)){return this.remap_.getBindingList();}
+		if(foo.startsWith(commandKey+setControl)){return this.setControl(foo);}
 
 		return "No valid command given!";
+	}
+
+	private String setControl(String foo) {
+		Scanner sc = new Scanner(foo);
+		String in = "";
+		try{
+			sc.next(); //Get rid of the command /man
+			in = sc.next();
+			cont_.setControlling(in);
+
+		}
+		catch(Exception e){sc.close(); return HardCodedStrings.setControl_error;}
+		sc.close();
+		return HardCodedStrings.setControlSuccess;
 	}
 
 	private String processManCommand(String foo) {
@@ -61,6 +79,7 @@ class CommandMiniController {
 			if(in.equals(pwd)){return HardCodedStrings.pwdHelp;}
 			if(in.equals(man)){return HardCodedStrings.manHelp;}
 			if(in.equals(bindings)){return HardCodedStrings.bindingsHelp;}
+			if(in.equals(setControl)){return HardCodedStrings.setControlHelp;}
 		}
 		finally{
 			sc.close();

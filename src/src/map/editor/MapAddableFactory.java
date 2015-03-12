@@ -102,7 +102,7 @@ public class MapAddableFactory {
 			Item twohandedsword = new TwoHandedSword("Two_hander", '|');
 			return new ItemAdder(twohandedsword);
 		case BOW_ITEM:
-			Item bow = new Bow("Bow",'B');
+			Item bow = new Bow("Bow",'D');
 			return new ItemAdder(bow);
 		case STAFF_ITEM:
 			Item staff = new Staff("Staff",'i');

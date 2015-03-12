@@ -13,5 +13,7 @@ public enum AddableThingEnum{
     //Other
     TELEPORT_ITEM,
     //Decals
-    RED_CROSS_DECAL, GOLD_STAR_DECAL, SKULL_DECAL
+    RED_CROSS_DECAL, GOLD_STAR_DECAL, SKULL_DECAL,
+    //Traps
+    HURT_TRAP,HEAL_TRAP,LEVELUP_TRAP,KILL_TRAP
 }

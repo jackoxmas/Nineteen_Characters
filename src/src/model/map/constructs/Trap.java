@@ -3,7 +3,13 @@ package src.model.map.constructs;
 import src.Effect;
 
 public class Trap extends OneShotAreaEffectItem {
-
+	/**
+	 * 
+	 * @param name
+	 * @param representation
+	 * @param effect
+	 * @param power
+	 */
 	public Trap(String name, char representation, Effect effect, int power) {
 		super(name, representation, effect, power);
 		this.setViewable(false);

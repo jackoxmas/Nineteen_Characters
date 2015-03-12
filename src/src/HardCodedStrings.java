@@ -28,6 +28,8 @@ public class HardCodedStrings {
 	//Command list
 	public final static String gameCommands = src.enumHandler.getAllCommands();
 	//String from the command mini module
+	public final static String fontsizeHelp = "Format /fontsize [number] "+System.lineSeparator()+
+			"Sets the fontsize in the main game screen, chatboxes, and list areas to the given number";
 	public final static String command_error = "Invalid Command";
 	public final static String help = "Type /controls to list all controls" +System.lineSeparator()+
 			"Type /save filename to save" + System.lineSeparator() +
@@ -44,7 +46,8 @@ public class HardCodedStrings {
 			System.lineSeparator() +
 			"If no such entity exists, you will be controlling nothing."+
 			System.lineSeparator()+
-			"Note that attempting to control a non existent entity results in game over";
+			"Note that attempting to control a non existent entity results in game over"+System.lineSeparator()+
+			fontsizeHelp;
 	public final static String rebindHelp = 
 			"Format is : /rebind CONTROL char" + System.lineSeparator() +
 			"Example : /rebind MOVE_UP u" + System.lineSeparator()+
@@ -67,4 +70,5 @@ public class HardCodedStrings {
 			"Note that attempting to control a non existent entity results in game over";
 	public final static String setControlSuccess = "Succesfully set control!";
 	public final static String setControl_error = "Error, didn't give who to control!";
+
 }

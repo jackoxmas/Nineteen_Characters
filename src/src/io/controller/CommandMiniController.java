@@ -80,6 +80,7 @@ class CommandMiniController {
 			if(in.equals(man)){return HardCodedStrings.manHelp;}
 			if(in.equals(bindings)){return HardCodedStrings.bindingsHelp;}
 			if(in.equals(setControl)){return HardCodedStrings.setControlHelp;}
+			if(in.equals("fontsize")){return HardCodedStrings.fontsizeHelp;}
 		}
 		finally{
 			sc.close();

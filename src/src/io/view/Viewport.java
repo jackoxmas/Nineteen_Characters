@@ -49,7 +49,8 @@ public abstract class Viewport {
 	 * Tells the view to update it's array contents. 
 	 */
 	public final void renderToDisplay(IO_Bundle bundle){
-		if(bundle == null){
+		if(bundle == null){return;}
+		if(!bundle.is_alive_){
 			clear();
 			for(int i = 0; i!=game_over_.size();++i){writeStringToContents(0, i, game_over_.get(i));}
 			return;

@@ -269,7 +269,8 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
     public IO_Bundle getMapAt(int x, int y, int width, int height) {
         char[][] view = makeView(x, y, width, height);
         Color[][] colors = makeColors(x, y, width, height);
-        return new IO_Bundle(view, colors, null, null, null, 0, 0, 0, 0, null, null, null, 0, false);
+        return new IO_Bundle(view, colors, null, null, null, 0, 0, 0, 0, null, null, null, 0, true);
+        //Mapeditor has no game over condition, you are always alive. 
     }
 
     /**

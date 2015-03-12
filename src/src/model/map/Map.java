@@ -413,7 +413,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
      * @param width_from_center
      * @param height_from_center
      * @param text - empty string preffered when not in use.
-     * @return
+     * @return Bundle of stuff used by the display.
      */
     public IO_Bundle sendCommandToMapWithOptionalText(String username, Key_Commands command, int width_from_center, int height_from_center, String text) {
         // Avatar to_recieve_command = this.avatar_list_.get(username);

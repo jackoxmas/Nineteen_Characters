@@ -39,20 +39,32 @@ public class HardCodedStrings {
 			"Type /help for this dialog"+System.lineSeparator()+
 			"Type /pwd to print the directory the game will look in" + System.lineSeparator()+
 			"Double click a command in the command box to use it!" + System.lineSeparator()+
-			"Type /bindings to see the key bindings";
-			public final static String rebindHelp = 
-					"Format is : /rebind CONTROL char" + System.lineSeparator() +
-					"Example : /rebind MOVE_UP u" + System.lineSeparator()+
-					"For commands available for rebinding, type /commands , or type /help for help.";
-			public final static String saveHelp = "Type in /save '[filename]'. The file will then be saved to disk.";
-			public final static String loadHelp= "Type in '/load [filename]'. The file will be loaded from disk";
-			public final static String saveControlsHelp = "Type in '/save-controls [filename]'. The controls will be saved to disk";
-			public final static String loadControlsHelp = "Type in '/load-controls [filename]'. The controls will be loaded from disk";
-			public final static String controlsHelp = "Type in '/controls'. Will list all viable controls that can be rebound via /rebind";
-			public final static String helpHelp = "Type in '/help'. Will list all commands and summaries of them.";
-			public final static String pwdHelp= "Type in '/pwd'. Will print the current directory.";
-			public final static String manHelp= "Type in '/man [commands]'. For information about a command.";
-			public final static String bindingsHelp = "Type in /bindings to get a list of controls bound to keys, in the form "+
-					System.lineSeparator()+
-					"/[control]: [key]";
+			"Type /bindings to see the key bindings"+
+			"Type in /set-control [entityname] to switch to controlling entitiy." +
+			System.lineSeparator() +
+			"If no such entity exists, you will be controlling nothing."+
+			System.lineSeparator()+
+			"Note that attempting to control a non existent entity results in game over";
+	public final static String rebindHelp = 
+			"Format is : /rebind CONTROL char" + System.lineSeparator() +
+			"Example : /rebind MOVE_UP u" + System.lineSeparator()+
+			"For commands available for rebinding, type /commands , or type /help for help.";
+	public final static String saveHelp = "Type in /save '[filename]'. The file will then be saved to disk.";
+	public final static String loadHelp= "Type in '/load [filename]'. The file will be loaded from disk";
+	public final static String saveControlsHelp = "Type in '/save-controls [filename]'. The controls will be saved to disk";
+	public final static String loadControlsHelp = "Type in '/load-controls [filename]'. The controls will be loaded from disk";
+	public final static String controlsHelp = "Type in '/controls'. Will list all viable controls that can be rebound via /rebind";
+	public final static String helpHelp = "Type in '/help'. Will list all commands and summaries of them.";
+	public final static String pwdHelp= "Type in '/pwd'. Will print the current directory.";
+	public final static String manHelp= "Type in '/man [commands]'. For information about a command.";
+	public final static String bindingsHelp = "Type in /bindings to get a list of controls bound to keys, in the form "+
+			System.lineSeparator()+
+			"/[control]: [key]";
+	public final static String setControlHelp = "Type in /set-control [entityname] to switch to controlling entitiy." +
+			System.lineSeparator() +
+			"If no such entity exists, you will be controlling nothing."+
+			System.lineSeparator()+
+			"Note that attempting to control a non existent entity results in game over";
+	public final static String setControlSuccess = "Succesfully set control!";
+	public final static String setControl_error = "Error, didn't give who to control!";
 }

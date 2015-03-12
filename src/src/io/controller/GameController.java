@@ -28,7 +28,7 @@ public class GameController extends Controller {
 
 	private final class ChatBoxMiniController implements Function<Void, String> {
 
-		private CommandMiniController commandController_ = new CommandMiniController(getRemapper());
+		private CommandMiniController commandController_ = new CommandMiniController(getRemapper(),GameController.this);
 		private ChatBoxViewPort chatview_ = new ChatBoxViewPort();
 
 		public ChatBoxMiniController() {

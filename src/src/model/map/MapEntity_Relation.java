@@ -266,388 +266,379 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         return s;
     }
 
-/**
- * Moves the entity that this relation refers to over x and up y
- *
- * @param x x displacement
- * @param y y displacement
- * @return error codes: see function pushEntityInDirection() in
- * MapDrawableThing_Relation
- * @author John-Michael Reed
- */
-public int moveInDirection(int x, int y) {
-		if (x == 0 && y == 0) {
-			// nothing
-		} else if (x == 0 && y > 0) {
-			entity_.setFacingDirection(FacingDirection.UP);
-		} else if (x == 0 && y < 0) {
-			entity_.setFacingDirection(FacingDirection.DOWN);
-		} else if (x > 0 && y == 0) {
-			entity_.setFacingDirection(FacingDirection.RIGHT);
-		} else if (x < 0 && y == 0) {
-			entity_.setFacingDirection(FacingDirection.LEFT);
-		} else if (x > 0 && y > 0) {
-			entity_.setFacingDirection(FacingDirection.UP_RIGHT);
-		} else if (x > 0 && y < 0) {
-			entity_.setFacingDirection(FacingDirection.DOWN_RIGHT);
-		} else if (x < 0 && y > 0) {
-			entity_.setFacingDirection(FacingDirection.UP_LEFT);
-		} else if (x < 0 && y < 0) {
-			entity_.setFacingDirection(FacingDirection.DOWN_LEFT);
-		} else {
-			System.err
-					.print("An impossible error occured in MapEntity_Relation.moveInDirection()");
-			System.exit(-1); // Impossible
-		}
-		return super.pushEntityInDirection(entity_, x, y);
-	}
+    /**
+     * Moves the entity that this relation refers to over x and up y
+     *
+     * @param x x displacement
+     * @param y y displacement
+     * @return error codes: see function pushEntityInDirection() in
+     * MapDrawableThing_Relation
+     * @author John-Michael Reed
+     */
+    public int moveInDirection(int x, int y) {
+        if (x == 0 && y == 0) {
+            // nothing
+        } else if (x == 0 && y > 0) {
+            entity_.setFacingDirection(FacingDirection.UP);
+        } else if (x == 0 && y < 0) {
+            entity_.setFacingDirection(FacingDirection.DOWN);
+        } else if (x > 0 && y == 0) {
+            entity_.setFacingDirection(FacingDirection.RIGHT);
+        } else if (x < 0 && y == 0) {
+            entity_.setFacingDirection(FacingDirection.LEFT);
+        } else if (x > 0 && y > 0) {
+            entity_.setFacingDirection(FacingDirection.UP_RIGHT);
+        } else if (x > 0 && y < 0) {
+            entity_.setFacingDirection(FacingDirection.DOWN_RIGHT);
+        } else if (x < 0 && y > 0) {
+            entity_.setFacingDirection(FacingDirection.UP_LEFT);
+        } else if (x < 0 && y < 0) {
+            entity_.setFacingDirection(FacingDirection.DOWN_LEFT);
+        } else {
+            System.err
+                    .print("An impossible error occured in MapEntity_Relation.moveInDirection()");
+            System.exit(-1); // Impossible
+        }
+        return super.pushEntityInDirection(entity_, x, y);
+    }
 
-	/**
-	 * An item underneath you can be picked up using the parameters 0,0. 0 if
-	 * item is picked up successfully, -1 if no item is on the specified tile.
-	 *
-	 * @author John-Michael Reed
-	 * @param x
-	 * @param y
-	 * @return error_code: return -2 if item is not pickupable
-	 */
-	public int pickUpItemInDirection(int x, int y) {
-		int error_code = -1;
+    /**
+     * An item underneath you can be picked up using the parameters 0,0. 0 if
+     * item is picked up successfully, -1 if no item is on the specified tile.
+     *
+     * @author John-Michael Reed
+     * @param x
+     * @param y
+     * @return error_code: return -2 if item is not pickupable
+     */
+    public int pickUpItemInDirection(int x, int y) {
+        int error_code = -1;
+        if (entity_.isAlive()) {
+            Item itemToBePickedUp = current_map_reference_.removeTopItem(x
+                    + getMyXCoordinate(), y + getMyYCoordinate());
+            if (itemToBePickedUp != null) {
+                try {
+                    entity_.addItemToInventory((PickupableItem) itemToBePickedUp);
+                } catch (ClassCastException c) {
+                    return -2;
+                }
+                Display.getDisplay().setMessage(
+                        itemToBePickedUp.name_ + " was picked up off the map!");
+                error_code = 0;
+            } 
+        } else {
+            // Dead men cannot pick up items.
+        }
+        return error_code;
+    }
 
-		Item itemToBePickedUp = current_map_reference_.removeTopItem(x
-				+ getMyXCoordinate(), y + getMyYCoordinate());
-		if (itemToBePickedUp != null) {
-			try {
-				entity_.addItemToInventory((PickupableItem) itemToBePickedUp);
-			} catch (ClassCastException c) {
-				return -2;
-			}
-			Display.getDisplay().setMessage(
-					itemToBePickedUp.name_ + " was picked up off the map!");
-			error_code = 0;
-		} else {
-			// There is no need to display an error for failing to pick
-			// something up when picking up
-			// is done automatically
-			// Display.getDisplay().setMessage("There is nothing here to pick up.");
-		}
+    /**
+     * Causes an entity to tele-port to the place where it was spawned
+     *
+     * @param toSpawn
+     * @return -1 if respawn point is occupied
+     */
+    public int respawn() {
+        System.out.println("Entity [or subclass] is respawning");
+        int error_code = this.teleportTo(x_respawn_point_, y_respawn_point_);
+        if (error_code != 0) {
+            error_code = this
+                    .teleportTo(x_respawn_point_ + 1, y_respawn_point_);
+            if (error_code != 0) {
+                return this.teleportTo(x_respawn_point_, y_respawn_point_ + 1);
+            }
+        }
+        // set health and manna to max on respawn
+        entity_.getStatsPack().increaseCurrentLifeBy(Integer.MAX_VALUE);
+        entity_.getStatsPack().increaseCurrentManaBy(Integer.MAX_VALUE);
+        // reset money on respawn
+        entity_.reinstateNumGoldCoins();
+        return 0;
+    }
 
-		return error_code;
-	}
+    /**
+     * Sends an attack over x and up y.
+     *
+     * @author John-Michael Reed
+     * @param x - x position of attack relative to sender
+     * @param y - y position of attack relative to sender
+     * @return -1 if tile is off the map, -2 if entity does not exist
+     */
+    public int sendAttackToRelativePosition(int x, int y) {
+        MapTile target_tile = this.current_map_reference_.getTile(
+                getMyXCoordinate() + x, getMyYCoordinate() + y);
+        if (target_tile == null) {
+            return -1;
+        } else {
+            Entity target_entity = target_tile.getEntity();
+            if (target_entity == null) {
+                return -2;
+            } else {
+                System.out.println("You attacking an entity");
+                target_entity.receiveAttack(3 + entity_.getStatsPack()
+                        .getOffensive_rating_(), entity_);
+                return 0;
+            }
+        }
+    }
 
-	/**
-	 * Causes an entity to tele-port to the place where it was spawned
-	 *
-	 * @param toSpawn
-	 * @return -1 if respawn point is occupied
-	 */
-	public int respawn() {
-		System.out.println("Entity [or subclass] is respawning");
-		int error_code = this.teleportTo(x_respawn_point_, y_respawn_point_);
-		if (error_code != 0) {
-			error_code = this
-					.teleportTo(x_respawn_point_ + 1, y_respawn_point_);
-			if (error_code != 0) {
-				return this.teleportTo(x_respawn_point_, y_respawn_point_ + 1);
-			}
-		}
-		// set health and manna to max on respawn
-		entity_.getStatsPack().increaseCurrentLifeBy(Integer.MAX_VALUE);
-		entity_.getStatsPack().increaseCurrentManaBy(Integer.MAX_VALUE);
-		// reset money on respawn
-		entity_.reinstateNumGoldCoins();
-		return 0;
-	}
+    public void removeMyselfFromTheMapCompletely() {
+        current_map_reference_.removeEntity(entity_);
+    }
 
-	/**
-	 * Sends an attack over x and up y.
-	 *
-	 * @author John-Michael Reed
-	 * @param x
-	 *            - x position of attack relative to sender
-	 * @param y
-	 *            - y position of attack relative to sender
-	 * @return -1 if tile is off the map, -2 if entity does not exist
-	 */
-	public int sendAttackToRelativePosition(int x, int y) {
-		MapTile target_tile = this.current_map_reference_.getTile(
-				getMyXCoordinate() + x, getMyYCoordinate() + y);
-		if (target_tile == null) {
-			return -1;
-		} else {
-			Entity target_entity = target_tile.getEntity();
-			if (target_entity == null) {
-				return -2;
-			} else {
-				System.out.println("You attacking an entity");
-				target_entity.receiveAttack(3 + entity_.getStatsPack()
-						.getOffensive_rating_(), entity_);
-				return 0;
-			}
-		}
-	}
+    /**
+     * Sends an attack to absolute position (x,y)
+     *
+     * @author John-Michael Reed
+     * @param x - x position of attack
+     * @param y - y position of attack
+     * @return -1 if tile is off the map, -2 if entity does not exist
+     */
+    public int sendAttackToAbsolutePosition(int x, int y) {
+        MapTile target_tile = this.current_map_reference_.getTile(x, y);
+        if (target_tile == null) {
+            return -1;
+        } else {
+            Entity target_entity = target_tile.getEntity();
+            if (target_entity == null) {
+                return -2;
+            } else {
+                target_entity.receiveAttack(3 + entity_.getStatsPack()
+                        .getOffensive_rating_(), entity_);
+                return 0;
+            }
+        }
+    }
 
-	public void removeMyselfFromTheMapCompletely() {
-		current_map_reference_.removeEntity(entity_);
-	}
+    /**
+     * Sends an attack in the direction the entity is facing.
+     *
+     * @author John-Michael Reed
+     * @return -1 if tile is off the map, -2 if entity does not exist
+     */
+    public int sendAttackInFacingDirection() {
+        int error_code = 0;
+        FacingDirection f = entity_.getFacingDirection();
+        switch (f) {
+            case UP:
+                error_code = sendAttackToRelativePosition(0, 1);
+                break;
+            case DOWN:
+                error_code = sendAttackToRelativePosition(0, -1);
+                break;
+            case LEFT:
+                error_code = sendAttackToRelativePosition(-1, 0);
+                break;
+            case RIGHT:
+                error_code = sendAttackToRelativePosition(1, 0);
+                break;
+            case UP_RIGHT:
+                error_code = sendAttackToRelativePosition(1, 1);
+                break;
+            case UP_LEFT:
+                error_code = sendAttackToRelativePosition(-1, 1);
+                break;
+            case DOWN_RIGHT:
+                error_code = sendAttackToRelativePosition(1, -1);
+                break;
+            case DOWN_LEFT:
+                error_code = sendAttackToRelativePosition(-1, -1);
+                break;
+        }
+        return error_code;
+    }
 
-	/**
-	 * Sends an attack to absolute position (x,y)
-	 *
-	 * @author John-Michael Reed
-	 * @param x
-	 *            - x position of attack
-	 * @param y
-	 *            - y position of attack
-	 * @return -1 if tile is off the map, -2 if entity does not exist
-	 */
-	public int sendAttackToAbsolutePosition(int x, int y) {
-		MapTile target_tile = this.current_map_reference_.getTile(x, y);
-		if (target_tile == null) {
-			return -1;
-		} else {
-			Entity target_entity = target_tile.getEntity();
-			if (target_entity == null) {
-				return -2;
-			} else {
-				target_entity.receiveAttack(3 + entity_.getStatsPack()
-						.getOffensive_rating_(), entity_);
-				return 0;
-			}
-		}
-	}
+    /**
+     * Gets the Entity you are facing
+     *
+     * @author John-Michael Reed
+     * @return null if no entity is there.
+     */
+    public Entity getEntityInFacingDirection() {
+        MapTile target_tile = null;
+        final int x = this.getMyXCoordinate();
+        final int y = this.getMyYCoordinate();
+        FacingDirection f = entity_.getFacingDirection();
+        switch (f) {
+            case UP:
+                target_tile = current_map_reference_.getTile(x, y + 1);
+                if (target_tile != null) {
+                    return target_tile.getEntity();
+                }
+                break;
+            case DOWN:
+                target_tile = current_map_reference_.getTile(x, y - 1);
+                if (target_tile != null) {
+                    return target_tile.getEntity();
+                }
+                break;
+            case RIGHT:
+                target_tile = current_map_reference_.getTile(x + 1, y);
+                if (target_tile != null) {
+                    return target_tile.getEntity();
+                }
+                break;
+            case LEFT:
+                target_tile = current_map_reference_.getTile(x - 1, y);
+                if (target_tile != null) {
+                    return target_tile.getEntity();
+                }
+                break;
+            case UP_RIGHT:
+                target_tile = current_map_reference_.getTile(x + 1, y + 1);
+                if (target_tile != null) {
+                    return target_tile.getEntity();
+                }
+                break;
+            case UP_LEFT:
+                target_tile = current_map_reference_.getTile(x - 1, y + 1);
+                if (target_tile != null) {
+                    return target_tile.getEntity();
+                }
+                break;
+            case DOWN_RIGHT:
+                target_tile = current_map_reference_.getTile(x + 1, y - 1);
+                if (target_tile != null) {
+                    return target_tile.getEntity();
+                }
+                break;
+            case DOWN_LEFT:
+                target_tile = current_map_reference_.getTile(x - 1, y - 1);
+                if (target_tile != null) {
+                    return target_tile.getEntity();
+                }
+                break;
+            default:
+                System.err
+                        .println("Impossible error in getEntityInFacingDirection");
+                System.exit(-44);
+                break;
+        }
+        return null;
+    }
 
-	/**
-	 * Sends an attack in the direction the entity is facing.
-	 *
-	 * @author John-Michael Reed
-	 * @return -1 if tile is off the map, -2 if entity does not exist
-	 */
-	public int sendAttackInFacingDirection() {
-		int error_code = 0;
-		FacingDirection f = entity_.getFacingDirection();
-		switch (f) {
-		case UP:
-			error_code = sendAttackToRelativePosition(0, 1);
-			break;
-		case DOWN:
-			error_code = sendAttackToRelativePosition(0, -1);
-			break;
-		case LEFT:
-			error_code = sendAttackToRelativePosition(-1, 0);
-			break;
-		case RIGHT:
-			error_code = sendAttackToRelativePosition(1, 0);
-			break;
-		case UP_RIGHT:
-			error_code = sendAttackToRelativePosition(1, 1);
-			break;
-		case UP_LEFT:
-			error_code = sendAttackToRelativePosition(-1, 1);
-			break;
-		case DOWN_RIGHT:
-			error_code = sendAttackToRelativePosition(1, -1);
-			break;
-		case DOWN_LEFT:
-			error_code = sendAttackToRelativePosition(-1, -1);
-			break;
-		}
-		return error_code;
-	}
+    /**
+     * Gets the Item you are facing
+     *
+     * @author John-Michael Reed
+     * @return null if no item is there.
+     */
+    public Item getTopmostItemInFacingDirection() {
+        MapTile target_tile = null;
+        final int x = this.getMyXCoordinate();
+        final int y = this.getMyYCoordinate();
+        FacingDirection f = entity_.getFacingDirection();
+        switch (f) {
+            case UP:
+                target_tile = current_map_reference_.getTile(x, y + 1);
+                if (target_tile != null) {
+                    return target_tile.viewTopItem();
+                }
+                break;
+            case DOWN:
+                target_tile = current_map_reference_.getTile(x, y - 1);
+                if (target_tile != null) {
+                    return target_tile.viewTopItem();
+                }
+                break;
+            case RIGHT:
+                target_tile = current_map_reference_.getTile(x + 1, y);
+                if (target_tile != null) {
+                    return target_tile.viewTopItem();
+                }
+                break;
+            case LEFT:
+                target_tile = current_map_reference_.getTile(x - 1, y);
+                if (target_tile != null) {
+                    return target_tile.viewTopItem();
+                }
+                break;
+            case UP_RIGHT:
+                target_tile = current_map_reference_.getTile(x + 1, y + 1);
+                if (target_tile != null) {
+                    return target_tile.viewTopItem();
+                }
+                break;
+            case UP_LEFT:
+                target_tile = current_map_reference_.getTile(x - 1, y + 1);
+                if (target_tile != null) {
+                    return target_tile.viewTopItem();
+                }
+                break;
+            case DOWN_RIGHT:
+                target_tile = current_map_reference_.getTile(x + 1, y - 1);
+                if (target_tile != null) {
+                    return target_tile.viewTopItem();
+                }
+                break;
+            case DOWN_LEFT:
+                target_tile = current_map_reference_.getTile(x - 1, y - 1);
+                if (target_tile != null) {
+                    return target_tile.viewTopItem();
+                }
+                break;
+            default:
+                System.err.println("Impossible");
+                System.exit(-44);
+                break;
+        }
+        return null;
+    }
 
-	/**
-	 * Gets the Entity you are facing
-	 *
-	 * @author John-Michael Reed
-	 * @return null if no entity is there.
-	 */
-	public Entity getEntityInFacingDirection() {
-		MapTile target_tile = null;
-		final int x = this.getMyXCoordinate();
-		final int y = this.getMyYCoordinate();
-		FacingDirection f = entity_.getFacingDirection();
-		switch (f) {
-		case UP:
-			target_tile = current_map_reference_.getTile(x, y + 1);
-			if (target_tile != null) {
-				return target_tile.getEntity();
-			}
-			break;
-		case DOWN:
-			target_tile = current_map_reference_.getTile(x, y - 1);
-			if (target_tile != null) {
-				return target_tile.getEntity();
-			}
-			break;
-		case RIGHT:
-			target_tile = current_map_reference_.getTile(x + 1, y);
-			if (target_tile != null) {
-				return target_tile.getEntity();
-			}
-			break;
-		case LEFT:
-			target_tile = current_map_reference_.getTile(x - 1, y);
-			if (target_tile != null) {
-				return target_tile.getEntity();
-			}
-			break;
-		case UP_RIGHT:
-			target_tile = current_map_reference_.getTile(x + 1, y + 1);
-			if (target_tile != null) {
-				return target_tile.getEntity();
-			}
-			break;
-		case UP_LEFT:
-			target_tile = current_map_reference_.getTile(x - 1, y + 1);
-			if (target_tile != null) {
-				return target_tile.getEntity();
-			}
-			break;
-		case DOWN_RIGHT:
-			target_tile = current_map_reference_.getTile(x + 1, y - 1);
-			if (target_tile != null) {
-				return target_tile.getEntity();
-			}
-			break;
-		case DOWN_LEFT:
-			target_tile = current_map_reference_.getTile(x - 1, y - 1);
-			if (target_tile != null) {
-				return target_tile.getEntity();
-			}
-			break;
-		default:
-			System.err
-					.println("Impossible error in getEntityInFacingDirection");
-			System.exit(-44);
-			break;
-		}
-		return null;
-	}
+    /**
+     * Checks for trap on (x,y)
+     *
+     * @author Reid Olsen
+     * @param x
+     * @param y
+     * @return
+     */
+    public Trap checkForTrap(int x, int y) {
+        Trap trap = null;
+        try {
+            if (current_map_reference_.getTile(x, y).viewTopItem() instanceof Trap) {
+                trap = (Trap) current_map_reference_.getTile(x, y)
+                        .viewTopItem();
+            }
+        } catch (NullPointerException e) {
 
-	/**
-	 * Gets the Item you are facing
-	 *
-	 * @author John-Michael Reed
-	 * @return null if no item is there.
-	 */
-	public Item getTopmostItemInFacingDirection() {
-		MapTile target_tile = null;
-		final int x = this.getMyXCoordinate();
-		final int y = this.getMyYCoordinate();
-		FacingDirection f = entity_.getFacingDirection();
-		switch (f) {
-		case UP:
-			target_tile = current_map_reference_.getTile(x, y + 1);
-			if (target_tile != null) {
-				return target_tile.viewTopItem();
-			}
-			break;
-		case DOWN:
-			target_tile = current_map_reference_.getTile(x, y - 1);
-			if (target_tile != null) {
-				return target_tile.viewTopItem();
-			}
-			break;
-		case RIGHT:
-			target_tile = current_map_reference_.getTile(x + 1, y);
-			if (target_tile != null) {
-				return target_tile.viewTopItem();
-			}
-			break;
-		case LEFT:
-			target_tile = current_map_reference_.getTile(x - 1, y);
-			if (target_tile != null) {
-				return target_tile.viewTopItem();
-			}
-			break;
-		case UP_RIGHT:
-			target_tile = current_map_reference_.getTile(x + 1, y + 1);
-			if (target_tile != null) {
-				return target_tile.viewTopItem();
-			}
-			break;
-		case UP_LEFT:
-			target_tile = current_map_reference_.getTile(x - 1, y + 1);
-			if (target_tile != null) {
-				return target_tile.viewTopItem();
-			}
-			break;
-		case DOWN_RIGHT:
-			target_tile = current_map_reference_.getTile(x + 1, y - 1);
-			if (target_tile != null) {
-				return target_tile.viewTopItem();
-			}
-			break;
-		case DOWN_LEFT:
-			target_tile = current_map_reference_.getTile(x - 1, y - 1);
-			if (target_tile != null) {
-				return target_tile.viewTopItem();
-			}
-			break;
-		default:
-			System.err.println("Impossible");
-			System.exit(-44);
-			break;
-		}
-		return null;
-	}
+        }
 
-	/**
-	 * Checks for trap on (x,y)
-	 * 
-	 * @author Reid Olsen
-	 * @param x
-	 * @param y
-	 * @return
-	 */
-	public Trap checkForTrap(int x, int y) {
-		Trap trap = null;
-		try {
-			if (current_map_reference_.getTile(x, y).viewTopItem() instanceof Trap) {
-				trap = (Trap) current_map_reference_.getTile(x, y)
-						.viewTopItem();
-			}
-		} catch (NullPointerException e) {
+        return trap;
+    }
 
-		}
+    /**
+     * @author John-Michael Reed
+     *
+     * @param x - x coordinate of tele-port
+     * @param y - y coordinate of tele-port
+     * @return -1 if an entity is already there, -2 if tele-port location is
+     * invalid, -4 if destination is impassable
+     */
+    public int teleportTo(int new_x, int new_y) {
+        MapTile destination = current_map_reference_.getTile(new_x, new_y);
+        if (destination == null) {
+            return -2;
+        } else {
+            int old_x = this.getMyXCoordinate();
+            int old_y = this.getMyYCoordinate();
+            current_map_reference_.getTile(old_x, old_y).removeEntity();
+            if (destination.isPassable() == false) { // put the entity back in
+                // its place
+                current_map_reference_.getTile(old_x, old_y).addEntity(entity_);
+                return -4;
+            } else { // move the entity
+                int error_code = destination.addEntity(entity_);
+                Item landed_on_item = destination.viewTopItem();
+                if (landed_on_item != null) { // make the item walked on do
+                    // stuff
+                    landed_on_item.onWalkOver();
+                }
+                return error_code;
+            }
+        }
+    }
 
-		return trap;
-	}
-
-	/**
-	 * @author John-Michael Reed
-	 *
-	 * @param x
-	 *            - x coordinate of tele-port
-	 * @param y
-	 *            - y coordinate of tele-port
-	 * @return -1 if an entity is already there, -2 if tele-port location is
-	 *         invalid, -4 if destination is impassable
-	 */
-	public int teleportTo(int new_x, int new_y) {
-		MapTile destination = current_map_reference_.getTile(new_x, new_y);
-		if (destination == null) {
-			return -2;
-		} else {
-			int old_x = this.getMyXCoordinate();
-			int old_y = this.getMyYCoordinate();
-			current_map_reference_.getTile(old_x, old_y).removeEntity();
-			if (destination.isPassable() == false) { // put the entity back in
-														// its place
-				current_map_reference_.getTile(old_x, old_y).addEntity(entity_);
-				return -4;
-			} else { // move the entity
-				int error_code = destination.addEntity(entity_);
-				Item landed_on_item = destination.viewTopItem();
-				if (landed_on_item != null) { // make the item walked on do
-												// stuff
-					landed_on_item.onWalkOver();
-				}
-				return error_code;
-			}
-		}
-	}
-
-	private final int x_respawn_point_;
-	private final int y_respawn_point_;
+    private final int x_respawn_point_;
+    private final int y_respawn_point_;
 }

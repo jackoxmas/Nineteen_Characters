@@ -30,10 +30,14 @@ abstract public class Entity extends DrawableThing {
     private int num_gold_coins_when_spawned_ = 10;
     private int num_gold_coins_possessed_ = num_gold_coins_when_spawned_;
 
-    private boolean isInExistance = true;
+    private boolean has_lives_left_ = true;
 
-    public boolean getIsInExistance() {
-        return isInExistance;
+    /**
+     * 
+     * @return true if you have lives left, false if you don't.
+     */
+    public boolean isAlive() {
+        return has_lives_left_;
     }
 
     /**
@@ -555,7 +559,7 @@ abstract public class Entity extends DrawableThing {
 
     public void gameOver() {
         System.out.println("Entity " + this.name_ + " has run out of lives and is gone forever.");
-        this.isInExistance = false;
+        this.has_lives_left_ = false;
         getMapRelation().removeMyselfFromTheMapCompletely();
     }
 

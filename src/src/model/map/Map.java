@@ -416,14 +416,14 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
      */
     public IO_Bundle sendCommandToMapWithOptionalText(String username, Key_Commands command, int width_from_center, int height_from_center, String text) {
         // Avatar to_recieve_command = this.avatar_list_.get(username);
-        Entity to_recieve_command = null;
+        Entity to_recieve_command;
         if (this.avatar_list_.containsKey(username)) {
             to_recieve_command = this.avatar_list_.get(username);
         } else if (this.entity_list_.containsKey(username)) {
             to_recieve_command = this.entity_list_.get(username);
         } else {
+            to_recieve_command = null;
             System.err.println("The avatar of entity you are trying to reach does not exist.");
-            System.exit(-77);
         }
         ArrayList<String> strings_for_IO_Bundle = null;
         if (to_recieve_command != null) {

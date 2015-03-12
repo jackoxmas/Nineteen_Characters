@@ -77,8 +77,7 @@ public class MapAvatar_Relation extends MapEntity_Relation {
 
     @Override
     public void removeMyselfFromTheMapCompletely() {
-        // current_map_reference_.removeAvatar(avatar_);
-        super.removeMyselfFromTheMapCompletely();
+        current_map_reference_.removeEntity(avatar_);
     }
 
     /**

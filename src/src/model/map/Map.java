@@ -167,6 +167,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
             this.entity_list_.put(e.name_, e);
         } else {
             e.setMapRelation(null);
+            System.err.println("Error in entity list");
         }
         return error_code;
     }
@@ -192,6 +193,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
             }
         } else {
             a.setMapRelation(null);
+            System.err.println("Error in avatar list");
         }
         return error_code;
     }
@@ -324,6 +326,10 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
             if (this.avatar_list_.get(a.name_) != null) {
                 System.out.println("Impossible error in Map.removeAvatar");
                 System.exit(-999);
+            } else if(this.avatar_list_.containsKey(a.name_)) {
+                System.out.println("test 3");
+            } else if(! this.avatar_list_.containsKey(a.name_)) {
+                System.out.println("test 4");
             }
         }
         if (this.map_grid_[a.getMapRelation().getMyYCoordinate()][a.getMapRelation().getMyXCoordinate()].getEntity() == a) {
@@ -421,7 +427,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
         }
         ArrayList<String> Strings_for_IO_Bundle = null;
         if (to_recieve_command != null && to_recieve_command.getIsInExistance()) {
-            if (command != null && to_recieve_command != null && to_recieve_command.getMapRelation() != null) {
+            if (command != null && to_recieve_command.getMapRelation() != null) {
                 if (command == Key_Commands.STANDING_STILL) {
                     Strings_for_IO_Bundle = null;
                 } else {
@@ -449,7 +455,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                     );
                     return return_package;
                 } else {
-                    System.out.println("Your beloved avatar " + username + " has died.");
+                    System.out.println("Your beloved avatar " + username + " has died after performing some action.");
                     return null;
                 }
             } else if (to_recieve_command != null) {

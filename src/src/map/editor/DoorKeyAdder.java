@@ -3,7 +3,7 @@ package src.map.editor;
 import src.model.map.MapMapEditor_Interface;
 import src.model.map.constructs.Item;
 
-public class DoorKeyAdder implements MapAddable {
+class DoorKeyAdder implements MapAddable {
 	private Item key_;
 	private Item door_;
 	public DoorKeyAdder(Item key, Item door) {

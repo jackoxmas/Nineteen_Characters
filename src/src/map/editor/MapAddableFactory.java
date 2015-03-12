@@ -79,7 +79,7 @@ public class MapAddableFactory {
 		case AVATAR_ENTITY:
 			aveString_ = UUID.randomUUID().toString();//We use a unique name for each avatar.
 			Avatar buddy = new Avatar(aveString_, '웃');
-			return new EntityAdder(buddy);
+			return new AvatarAdder(buddy);
 		case HURT_EFFECT_ITEM:
 			OneShotAreaEffectItem heal = new OneShotAreaEffectItem("healer", 'h', Effect.HEAL, 10);
 			return new ItemAdder(heal);

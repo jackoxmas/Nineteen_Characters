@@ -1,6 +1,7 @@
 package src.model.map;
 
 import src.IO_Bundle;
+import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Entity;
 import src.model.map.constructs.Item;
 import src.model.map.constructs.Terrain;
@@ -34,5 +35,15 @@ public interface MapMapEditor_Interface {
 	 * @return -1 on fail, 0 on success
 	 */
 	public int addItem(Item i, int x, int y);
+    /**
+     * Adds an avatar to the map.
+     *
+     * @param a - Avatar to be added
+     * @param x - x position of where you want to add Avatar
+     * @param y - y posiition of where you want to add Avatar
+     * @return -1 on fail, 0 on success
+     */
+	public int addAvatar(Avatar avatar_, int x, int y);
 	public boolean withinMap(int x, int y);
+
 }

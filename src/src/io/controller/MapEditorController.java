@@ -18,8 +18,8 @@ import src.model.map.constructs.Terrain;
 public class MapEditorController extends Controller {
 	private MapMapEditor_Interface map_;
 	private MapEditorView mappy_viewy_ = new MapEditorView();
-	private ArrayList<String> spawnables_ = new ArrayList<String>();
-	private String lastSpawned = "";
+	private ArrayList<String> spawnables_ = new ArrayList<String>(1);
+	private String setToSpawn_ = "";
 	private MapAddableFactory factory_= new MapAddableFactory();
 	private MapAddable addable = null;
 	public MapEditorController(MapMapEditor_Interface map) {
@@ -35,6 +35,17 @@ public class MapEditorController extends Controller {
 		Display.getDisplay().setMessage("TO USE: Hit space to spawn something. Select what to spawn by " +
 				"clicking on it in the item box. Move around as usual. Hitting space with nothing selected spawns\n" +
 				"The last thing spawned.");
+		Display.getDisplay().addDoubleClickCommandEventReceiver(new Function<Void, String>() {
+
+			@Override
+			public Void apply(String foo) {
+				if(foo == null){return null;}
+				setToSpawn_ = foo;
+				setLastSpawned(setToSpawn_);
+				updateDisplay();
+				return null;
+			}
+		});
 	}
 
 
@@ -53,16 +64,6 @@ public class MapEditorController extends Controller {
 		default: break;
 
 		}
-		Display.getDisplay().addDoubleClickCommandEventReceiver(new Function<Void, String>() {
-
-			@Override
-			public Void apply(String foo) {
-				if(foo == null){return null;}
-				mapInsert(foo);
-				updateDisplay();
-				return null;
-			}
-		});
 		updateDisplay();
 		printSpawnablesToDisplay();
 
@@ -78,7 +79,7 @@ public class MapEditorController extends Controller {
 	}
 
 	private void mapInsert(String spawnName) {
-		if(spawnName == null){spawnName = lastSpawned;}
+		if(spawnName == null){spawnName = setToSpawn_;}
 		if(addable == null){
 			addable = factory_.getAddable(spawnName);
 		}
@@ -90,7 +91,7 @@ public class MapEditorController extends Controller {
 	}
 	private  void setLastSpawned(String spawnName){
 		mappy_viewy_.setLastSpawned(spawnName);
-		lastSpawned = spawnName;
+		setToSpawn_ = spawnName;
 	}
 	@Override
 	public String getUserName() {

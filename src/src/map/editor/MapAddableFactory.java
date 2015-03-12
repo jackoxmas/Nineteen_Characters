@@ -19,6 +19,7 @@ import src.model.map.constructs.Sheild;
 import src.model.map.constructs.Staff;
 import src.model.map.constructs.TemporaryObstacleItem;
 import src.model.map.constructs.Terrain;
+import src.model.map.constructs.Trap;
 import src.model.map.constructs.TwoHandedSword;
 import src.model.map.constructs.Villager;
 
@@ -102,7 +103,7 @@ public class MapAddableFactory {
 			Item twohandedsword = new TwoHandedSword("Two_hander", '|');
 			return new ItemAdder(twohandedsword);
 		case BOW_ITEM:
-			Item bow = new Bow("Bow",'B');
+			Item bow = new Bow("Bow",'D');
 			return new ItemAdder(bow);
 		case STAFF_ITEM:
 			Item staff = new Staff("Staff",'i');
@@ -114,6 +115,19 @@ public class MapAddableFactory {
 		case TELEPORT_ITEM:
 			Item teleport = new OneWayTeleportItem("tele", 'T', 0, 0);
 			return new ItemAdder(teleport);
+		case HEAL_TRAP:
+			Trap trapHeal = new Trap("trapheal", 'b', Effect.HEAL, 2);
+			return new ItemAdder(trapHeal);
+		case HURT_TRAP:
+			Trap trapHurt = new Trap("traphurt", 'b', Effect.HURT, 2);
+			return new ItemAdder(trapHurt);
+		case KILL_TRAP:
+			Trap trapKill = new Trap("trapkill", 'b', Effect.KILL, 2);
+			return new ItemAdder(trapKill);
+		case LEVELUP_TRAP:
+			Trap trapLevel = new Trap("trapLevel",'b',Effect.LEVEL,2);
+			return new ItemAdder(trapLevel);
+
 		default: return null;
 		}
 	}

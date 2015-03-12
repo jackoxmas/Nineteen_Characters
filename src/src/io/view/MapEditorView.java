@@ -14,7 +14,7 @@ private ArrayList<String> items_ = new ArrayList<String>();
 	protected void renderToDisplayInternally(IO_Bundle bundle) {
 		super.renderToDisplayInternally(bundle);
 		drawCross();
-		this.writeStringToContents(1, 1, "Last Spawned A: " + lastSpawned);
+		this.writeStringToContents(1, 1, "Set to spawn a: " + lastSpawned);
 	}
 	public void setSpawnableList(ArrayList<String> in){
 		items_ = in;

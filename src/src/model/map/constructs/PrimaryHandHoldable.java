@@ -5,11 +5,13 @@
  */
 package src.model.map.constructs;
 
+import java.io.Serializable;
+
 /**
  *
  * @author JohnReedLOL
  */
-public interface PrimaryHandHoldable {
+public interface PrimaryHandHoldable extends Serializable {
 	 DrawableThingStatsPack getStatsPack();
 
 	String getName();

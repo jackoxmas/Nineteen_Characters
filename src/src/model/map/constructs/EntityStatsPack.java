@@ -1,12 +1,14 @@
 package src.model.map.constructs;
 
+import java.io.Serializable;
+
 
 /**
  * Stats Pack for an Entity. Inherits from DrawableThingStatsPack.
  *
  * @author John-Michael Reed
  */
-public final class EntityStatsPack extends DrawableThingStatsPack {
+public final class EntityStatsPack extends DrawableThingStatsPack implements Serializable {
 
     public static final int NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL = 100;
 

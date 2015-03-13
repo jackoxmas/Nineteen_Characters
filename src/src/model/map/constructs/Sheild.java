@@ -5,11 +5,13 @@
  */
 package src.model.map.constructs;
 
+import java.io.Serializable;
+
 /**
  *
  * @author JohnReedLOL
  */
-public class Sheild extends EquipableItem implements SecondaryHandHoldable {
+public class Sheild extends EquipableItem implements SecondaryHandHoldable, Serializable {
 
     public Sheild(String name, char representation) {
         super(name, representation);

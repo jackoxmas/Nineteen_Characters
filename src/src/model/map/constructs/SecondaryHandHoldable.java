@@ -5,11 +5,13 @@
  */
 package src.model.map.constructs;
 
+import java.io.Serializable;
+
 /**
  *
  * @author JohnReedLOL
  */
-public interface SecondaryHandHoldable {
+public interface SecondaryHandHoldable extends Serializable {
 	 DrawableThingStatsPack getStatsPack();
 
 	String getName();

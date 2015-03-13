@@ -5,11 +5,13 @@
  */
 package src.model.map.constructs;
 
+import java.io.Serializable;
+
 /**
  *
  * @author JohnReedLOL
  */
-public abstract class Weapon extends EquipableItem implements PrimaryHandHoldable {
+public abstract class Weapon extends EquipableItem implements PrimaryHandHoldable, Serializable {
 
     public Weapon(String name, char representation) {
         super(name, representation);

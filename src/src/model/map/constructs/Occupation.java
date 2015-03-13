@@ -5,6 +5,7 @@
  */
 package src.model.map.constructs;
 
+import java.io.Serializable;
 import src.SkillEnum;
 
 /**
@@ -13,7 +14,7 @@ import src.SkillEnum;
  *
  * @author JohnReedLOL
  */
-public abstract class Occupation {
+public abstract class Occupation implements Serializable {
 
     private final Entity occupation_holder_;
 

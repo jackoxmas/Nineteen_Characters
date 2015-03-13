@@ -6,6 +6,7 @@
 package src;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import src.model.map.constructs.EntityStatsPack;
@@ -19,7 +20,7 @@ import src.model.map.constructs.SecondaryHandHoldable;
  *
  * @author JohnReedLOL
  */
-public class IO_Bundle {
+public class IO_Bundle implements Serializable {
 
     public IO_Bundle(char[][] v, Color[][] c, ArrayList<PickupableItem> i,
             EntityStatsPack s, Occupation o, int n, int bi, int ba, int ob,

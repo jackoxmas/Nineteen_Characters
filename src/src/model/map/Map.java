@@ -40,13 +40,14 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
     //TODO:if Map has to be square, why have two different variables that will always be equivalent?
     public int height_;
     public int width_;
-    
+
     // String is the entity's name. The entity name must be unqiue or else bugs will occur.
     private LinkedHashMap<String, Entity> entity_list_;
     private LinkedList<Item> items_list_;
     // 2d array of tiles.
     private transient MapTile map_grid_[][];
     private Thread accept_udp_input_thread;
+
     /**
      *
      * @param name - name of Entity
@@ -164,7 +165,6 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
 
     //</editor-fold>
     //<editor-fold desc="User Input Thread (optional use)" defaultstate="collapsed">
-
     private class GetMapInputFromUsers extends Thread {
 
         private DatagramSocket socket = null;
@@ -216,6 +216,15 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                     } else {
                         System.out.println("Split array just right");
                     }
+                    
+                                        final String old_array[] = splitArray;
+                    if ( true) {//splitArray[splitArray.length - 1] == "") {
+                        splitArray = new String[splitArray.length - 1];
+                        for (int i = 0; i < splitArray.length; ++i) {
+                            splitArray[i] = old_array[i];
+                        }
+                    }
+
                     for (int i = 0; i < splitArray.length; ++i) {
                         System.out.println("Split array at " + i + " " + splitArray[i]);
                     }
@@ -224,6 +233,11 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                     String command_enum_as_a_string = splitArray[1];
                     Key_Commands command = Key_Commands.valueOf(command_enum_as_a_string);
                     int width_from_center = Integer.parseInt(splitArray[2], 10);
+                    if (splitArray[3].equals("20")) {
+                        System.out.println("good");
+                    } else {
+                        System.out.println("bad");
+                    }
                     int height_from_center = Integer.parseInt(splitArray[3], 10);
                     String optional_text;
                     if (splitArray.length == 4) {
@@ -520,7 +534,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
             return -1;
         }
     }
-    
+
     public int removeAvatar(Avatar avatar) {
         return removeEntity(avatar);
     }

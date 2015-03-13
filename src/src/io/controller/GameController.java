@@ -5,6 +5,12 @@
  */
 package src.io.controller;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 import src.Function;
@@ -20,216 +26,250 @@ import src.io.view.display.Display;
 import src.model.map.MapUser_Interface;
 
 /**
- * Uses keyboard input to control the avatar
- * Handles the main game mode
+ * Uses keyboard input to control the avatar Handles the main game mode
+ *
  * @author JohnReedLOL/mbregg
  */
 public class GameController extends Controller {
+    
+    private final class ChatBoxMiniController implements Function<Void, String> {
+        
+        private CommandMiniController commandController_ = new CommandMiniController(getRemapper(), GameController.this);
+        private ChatBoxViewPort chatview_ = new ChatBoxViewPort();
+        
+        public ChatBoxMiniController() {
+            Display.getDisplay().addInputBoxTextEnteredFunction(this);
+            Display.getDisplay().addOutputBoxCharacterFunction(new outputBoxFunction());
+        }
 
-	private final class ChatBoxMiniController implements Function<Void, String> {
+        /**
+         * Processes a command entered into the chatbox. Commands begin with a /
+         * Prints the result of running that command to the chatbox.
+         *
+         * @param foo
+         */
+        private void processCommandAndDisplayOutput(String foo) {
+            Display.getDisplay().setMessage(commandController_.processCommand(foo));
+        }
 
-		private CommandMiniController commandController_ = new CommandMiniController(getRemapper(),GameController.this);
-		private ChatBoxViewPort chatview_ = new ChatBoxViewPort();
+        /**
+         * The function that is called by the chat box when enter is hit.
+         * Receives contents of input box.
+         */
+        @Override
+        public Void apply(String foo) {
+            if (foo.startsWith("/")) {
+                processCommandAndDisplayOutput(foo);
+                return null;
+            }
+            //IF it starts with a /, it's a command, so send it
+            //To the command function, not the map.
+            sendTextCommandAndUpdate(foo);
+            return null;
+        }
+        
+        private Void sendTextCommandAndUpdate(String foo) {
+            Key_Commands command = Key_Commands.GET_CONVERSATION_CONTINUATION_OPTIONS;
+            if (foo.contains(HardCodedStrings.attack)) {
+                command = Key_Commands.ATTACK;
+                updateDisplay(sendCommandToMap(command));
+                return null;
+            }
+            if (foo.contains(HardCodedStrings.getChatOptions)) {
+                command = Key_Commands.GET_CONVERSATION_STARTERS;
+                updateDisplay(sendCommandToMap(command));
+                return null;
+            }
+            updateDisplay(sendCommandToMapWithText(command, foo));
+            return null;
+        }
+        
+        public void chatBoxHandleMapInputAndPrintNewContents(IO_Bundle bundle) {
+            chatview_.renderToDisplay(bundle);
+            ArrayList<String> list = chatview_.getContents();
+            for (String i : list) {
+                Display.getDisplay().setMessage(i);
+            }
+        }
+        
+        private class outputBoxFunction implements Function<Void, Character> {
+            
+            @Override
+            public Void apply(Character foo) {
+                sendTextCommandAndUpdate(chatview_.getChoice(Character.getNumericValue(foo)));
+                return null;
+            }
+        }
+        
+    }
+    
+    public GameController(MapUser_Interface mui, String uName) {
+        super(new AvatarCreationView(), new GameRemapper(), uName);
+        MapUserAble_ = mui;
+        Display.getDisplay().setCommandList(HardCodedStrings.gameCommands);
+        Display.getDisplay().addDoubleClickCommandEventReceiver(new Function<Void, String>() {
+            
+            @Override
+            public Void apply(String foo) {
+                if (foo == null) {
+                    return null;
+                }
+                Key_Commands command = enumHandler.stringCommandToKeyCommand(foo);
+                if (command == null) {
+                    return null;
+                }
+                takeTurnandPrintTurn(command);
+                return null;
+            }
+        });
+        takeTurnandPrintTurn('5');//For some reason need to take a empty turn for fonts to load...
 
-		public ChatBoxMiniController() {
-			Display.getDisplay().addInputBoxTextEnteredFunction(this);
-			Display.getDisplay().addOutputBoxCharacterFunction(new outputBoxFunction());
-		}
+    }
+    
+    private MapUser_Interface MapUserAble_;
+    
+    private ChatBoxMiniController chatbox_ = new ChatBoxMiniController();
 
-		/**
-		 * Processes a command entered into the chatbox. Commands begin with a /
-		 * Prints the result of running that command to the chatbox.
-		 *
-		 * @param foo
-		 */
-		private void processCommandAndDisplayOutput(String foo) {
-			Display.getDisplay().setMessage(commandController_.processCommand(foo));
-		}
+    /**
+     * Takes in a bundle, and updates and then prints the dispaly with it.
+     *
+     * @param bundle
+     */
+    @Override
+    public void updateDisplay(IO_Bundle bundle) {
+        chatbox_.chatBoxHandleMapInputAndPrintNewContents(bundle);
+        super.updateDisplay(bundle);
+    }
+    
+    protected IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
+        return (MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, in));
+    }
 
-		/**
-		 * The function that is called by the chat box when enter is hit.
-		 * Receives contents of input box.
-		 */
-		@Override
-		public Void apply(String foo) {
-			if (foo.startsWith("/")) {
-				processCommandAndDisplayOutput(foo);
-				return null;
-			}
-			//IF it starts with a /, it's a command, so send it
-			//To the command function, not the map.
-			sendTextCommandAndUpdate(foo);
-			return null;
-		}
+    /**
+     * Sends the given command to the map. Focuses on the TextBox for inputting
+     * chat options.
+     *
+     * @param input
+     */
+    private IO_Bundle sendCommandToMap(Key_Commands command) {
+        if (command == Key_Commands.GET_INTERACTION_OPTIONS) { // ** This doesn't work for auto-chat **
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    Display.getDisplay().requestOutBoxFocus();
+                }
+            });
+        }
+        final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
 
-		private Void sendTextCommandAndUpdate(String foo) {
-			Key_Commands command = Key_Commands.GET_CONVERSATION_CONTINUATION_OPTIONS;
-			if (foo.contains(HardCodedStrings.attack)) {
-				command = Key_Commands.ATTACK;
-				updateDisplay(sendCommandToMap(command));
-				return null;
-			}
-			if (foo.contains(HardCodedStrings.getChatOptions)) {
-				command = Key_Commands.GET_CONVERSATION_STARTERS;
-				updateDisplay(sendCommandToMap(command));
-				return null;
-			}
-			updateDisplay(sendCommandToMapWithText(command, foo));
-			return null;
-		}
+        final String username = getUserName();
+        final String command_enum_as_a_string = command.name();
+        final int width_from_center = getView().getWidth() / 2;
+        final int height_from_center = getView().getHeight() / 2;
+        final String optional_text = "";
+        
+        final String output_to_map = (username + " " + command_enum_as_a_string + " " + width_from_center + " " + height_from_center + " " + optional_text);  //.trim();
+        // output_to_map.trim()
+        // final IO_Bundle to_return = null;
+        
+        DatagramSocket socket = null;
+        InetAddress address = null;
+        DatagramPacket packet = null;
+        // byte[] buf = new byte[256];
+        byte[] buf = null;
+        try {
+            buf = output_to_map.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException unsupportedEncodingException) {
+            unsupportedEncodingException.printStackTrace();
+            System.exit(-6);
+        }
+        try {
+            // get a datagram socket
+            socket = new DatagramSocket();
 
-		public void chatBoxHandleMapInputAndPrintNewContents(IO_Bundle bundle) {
-			chatview_.renderToDisplay(bundle);
-			ArrayList<String> list = chatview_.getContents();
-			for (String i : list) {
-				Display.getDisplay().setMessage(i);
-			}
-		}
+            // send request
+            address = InetAddress.getByName("localhost");
+            packet = new DatagramPacket(buf, buf.length, address, 4445);
+            socket.send(packet);
+        } catch (SocketException socket_exception) {
+            System.out.println("socket exception in sendCommandToMap(Key_Commands command)");
+            socket_exception.printStackTrace();
+            System.exit(-76);
+        } catch (IOException io_exception) {
+            System.out.println("IO exception in sendCommandToMap(Key_Commands command)");
+            io_exception.printStackTrace();
+        }
 
-		private class outputBoxFunction implements Function<Void, Character> {
+        // Make the buttons says the right skill names.
+        if (command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
+                || command == Key_Commands.BECOME_SNEAK && to_return != null) {
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    Display.getDisplay().getSkillButton(1).
+                            setText(to_return.occupation_.getSkillNameFromNumber(1));
+                    Display.getDisplay().getSkillButton(2).
+                            setText(to_return.occupation_.getSkillNameFromNumber(2));
+                    Display.getDisplay().getSkillButton(3).
+                            setText(to_return.occupation_.getSkillNameFromNumber(3));
+                    Display.getDisplay().getSkillButton(4).
+                            setText(to_return.occupation_.getSkillNameFromNumber(4));
+                }
+            });
+        }
+        return to_return;
+    }
 
-			@Override
-			public Void apply(Character foo) {
-				sendTextCommandAndUpdate(chatview_.getChoice(Character.getNumericValue(foo)));
-				return null;
-			}
-		}
+    /**
+     * Sends the command and string to the map.
+     *
+     * @param command
+     * @param in
+     * @return
+     */
+    //Handles the view switching, uses the  instance of operator in a slightly evil way, 
+    //ideally we should look into refactoring this to nots
+    protected IO_Bundle updateViewsAndMap(Key_Commands input) {
+        boolean taken = false;
+        if (getView() instanceof AvatarCreationView) {
+            if (Key_Commands.BECOME_SNEAK.equals(input) || Key_Commands.BECOME_SMASHER.equals(input)
+                    || Key_Commands.BECOME_SUMMONER.equals(input)) {
+                setView(new MapView());
+                System.gc();
+            }
+        }
+        if (getView() instanceof MapView) {
+            if (Key_Commands.TOGGLE_VIEW.equals(input)) {
+                setView(new StatsView(getUserName()));
+                System.gc();
+                taken = true;
+            }
+        } else if (getView() instanceof StatsView) {
+            if (Key_Commands.TOGGLE_VIEW.equals(input)) {
+                setView(new MapView());
+                System.gc();
+                taken = true;
+            }
+        }
+        if (!taken) {
+            return sendCommandToMap(input);
+        } else {
+            return sendCommandToMap(Key_Commands.DO_ABSOLUTELY_NOTHING);
+        }
+        
+    }
+    
+    @Override
+    protected void takeTurnandPrintTurn(Key_Commands input) {
+        IO_Bundle bundle = updateViewsAndMap(input);
+        updateDisplay(bundle);
+    }
 
-	}
-
-	public GameController(MapUser_Interface mui, String uName) {
-		super(new AvatarCreationView(), new GameRemapper(),uName);
-		MapUserAble_ = mui;
-		Display.getDisplay().setCommandList(HardCodedStrings.gameCommands);
-		Display.getDisplay().addDoubleClickCommandEventReceiver(new Function<Void, String>() {
-			
-			@Override
-			public Void apply(String foo) {
-				if(foo == null){return null;}
-				Key_Commands command = enumHandler.stringCommandToKeyCommand(foo);
-				if(command == null){return null;}
-				takeTurnandPrintTurn(command);
-				return null;
-			}
-		});
-		takeTurnandPrintTurn('5');//For some reason need to take a empty turn for fonts to load...
-		
-
-	}
-
-	private MapUser_Interface MapUserAble_;
-
-	private ChatBoxMiniController chatbox_ = new ChatBoxMiniController();
-
-	/**
-	 * Takes in a bundle, and updates and then prints the dispaly with it.
-	 *
-	 * @param bundle
-	 */
-	@Override
-	public void updateDisplay(IO_Bundle bundle) {
-		chatbox_.chatBoxHandleMapInputAndPrintNewContents(bundle);
-		super.updateDisplay(bundle);
-	}
-	
-	
-	protected IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
-		return (MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, in));
-	}
-	/**
-	 * Sends the given command to the map. Focuses on the TextBox for inputting
-	 * chat options.
-	 *
-	 * @param input
-	 */
-	private IO_Bundle sendCommandToMap(Key_Commands command) {
-		if (command == Key_Commands.GET_INTERACTION_OPTIONS) {
-			java.awt.EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					Display.getDisplay().requestOutBoxFocus();
-				}
-			});
-		}
-		final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
-		// Make the buttons says the right skill names.
-		if(command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER || 
-				command == Key_Commands.BECOME_SNEAK && to_return != null) {
-			java.awt.EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					Display.getDisplay().getSkillButton(1).
-					setText(to_return.occupation_.getSkillNameFromNumber(1));
-					Display.getDisplay().getSkillButton(2).
-					setText(to_return.occupation_.getSkillNameFromNumber(2));
-					Display.getDisplay().getSkillButton(3).
-					setText(to_return.occupation_.getSkillNameFromNumber(3));
-					Display.getDisplay().getSkillButton(4).
-					setText(to_return.occupation_.getSkillNameFromNumber(4));
-				}
-			});
-		} 
-		return to_return;
-	}
-
-	/**
-	 * Sends the command and string to the map.
-	 *
-	 * @param command
-	 * @param in
-	 * @return
-	 */
-
-	//Handles the view switching, uses the  instance of operator in a slightly evil way, 
-	//ideally we should look into refactoring this to nots
-	protected IO_Bundle updateViewsAndMap(Key_Commands input) {
-		boolean taken = false;
-		if (getView() instanceof AvatarCreationView) {
-			if (Key_Commands.BECOME_SNEAK.equals(input) || Key_Commands.BECOME_SMASHER.equals(input)
-					|| Key_Commands.BECOME_SUMMONER.equals(input)) {
-				setView(new MapView());
-				System.gc();
-			}
-		}
-		if (getView() instanceof MapView) {
-			if (Key_Commands.TOGGLE_VIEW.equals(input)) {
-				setView(new StatsView(getUserName()));
-				System.gc();
-				taken = true;
-			}
-		} else if (getView() instanceof StatsView) {
-			if (Key_Commands.TOGGLE_VIEW.equals(input)) {
-				setView(new MapView());
-				System.gc();
-				taken = true;
-			}
-		}
-		if (!taken) {
-			return sendCommandToMap(input);
-		} else {
-			return sendCommandToMap(Key_Commands.DO_ABSOLUTELY_NOTHING);
-		}
-
-	}
-
-
-	@Override
-	protected void takeTurnandPrintTurn(Key_Commands input) {
-		IO_Bundle bundle = updateViewsAndMap(input);
-		updateDisplay(bundle);
-	}
-
-	// FIELD ACCESSORS
-	/**
-	 * Gets this UserController's user name value
-	 * <p>
-	 * Used for saving. Loading is done through the constructor</p>
-	 *
-	 * @return A String object with this UserController's user name
-	 * @author Alex Stewart
-	 */
-
-
-
-
-
-
+    // FIELD ACCESSORS
+    /**
+     * Gets this UserController's user name value
+     * <p>
+     * Used for saving. Loading is done through the constructor</p>
+     *
+     * @return A String object with this UserController's user name
+     * @author Alex Stewart
+     */
 }

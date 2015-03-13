@@ -199,6 +199,13 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
     }
 
     /**
+     * Same as addEntity (no function overloading)
+     */
+    public int addAvatar(Avatar a, int x, int y) {
+        return addEntity(a, x, y);
+    }
+
+    /**
      * Once a tile has terrain, that terrain is constant.
      *
      * @param t - Terrain
@@ -327,9 +334,9 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
             if (this.avatar_list_.get(a.name_) != null) {
                 System.out.println("Impossible error in Map.removeAvatar");
                 System.exit(-999);
-            } else if(this.avatar_list_.containsKey(a.name_)) {
+            } else if (this.avatar_list_.containsKey(a.name_)) {
                 System.out.println("test 3");
-            } else if(! this.avatar_list_.containsKey(a.name_)) {
+            } else if (!this.avatar_list_.containsKey(a.name_)) {
                 System.out.println("test 4");
             }
         }
@@ -344,6 +351,13 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
             System.exit(-88);
             return -1;
         }
+    }
+
+    /**
+     * Same as removeEntity (no function overloading)
+     */
+    public int removeAvatar(Avatar a) {
+        return removeEntity(a);
     }
 
     /**
@@ -428,19 +442,19 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
         }
         ArrayList<String> strings_for_IO_Bundle = null;
         if (to_recieve_command != null) {
-            if(to_recieve_command.getMapRelation() == null) {
+            if (to_recieve_command.getMapRelation() == null) {
                 System.err.println(to_recieve_command.name_ + " has a null relation with this map. ");
                 return null;
             }
             if (command != null) {
                 if (command == Key_Commands.STANDING_STILL) {
                     strings_for_IO_Bundle = null;
-                } else if ( to_recieve_command.isAlive() == true ) {
+                } else if (to_recieve_command.isAlive() == true) {
                     strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, text);
                 } else {
                     strings_for_IO_Bundle = null;
                 }
-                if(to_recieve_command.isAlive() == true) {
+                if (to_recieve_command.isAlive() == true) {
                     char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);

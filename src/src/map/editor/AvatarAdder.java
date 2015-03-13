@@ -19,7 +19,7 @@ class AvatarAdder implements MapAddable {
 		if(isEmpty()){return 2;}
 		if(!mapp_.withinMap(x, y)){return 1;}
 		// int result = mapp_.addAvatar(Avatar_, x, y);
-		int result = mapp_.addEntity(Avatar_, x, y);
+		int result = mapp_.addAsEntity(Avatar_, x, y);
 
 		Avatar_ = null;
 		return result;

@@ -25,7 +25,7 @@ public interface MapMapEditor_Interface {
 	 * @param y - y posiition of where you want to add entity
 	 * @return -1 on fail, 0 on success
 	 */
-	public int addEntity(Entity e, int x, int y);
+	public int addAsEntity(Entity e, int x, int y);
 	/**
 	 * Adds an item to the map.
 	 *

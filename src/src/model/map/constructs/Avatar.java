@@ -29,9 +29,6 @@ public final class Avatar extends Entity {
         setNumGoldCoinsWhenSpawned(0); // Avatars re-spawn with no cold coins.
     }
 
-    // map_relationship_ is used in place of a map_reference_
-    private MapAvatar_Relation map_relationship_;
-
     /**
      * Same as superclass.
      * @param amount
@@ -72,26 +69,6 @@ public final class Avatar extends Entity {
         return options;
     }
 
-    /**
-     * Use this to call functions contained within the MapAvatar relationship
-     *
-     * @return map_relationship_
-     * @author Reed, John
-     */
-    @Override
-    public MapAvatar_Relation getMapRelation() {
-        return map_relationship_;
-    }
-
-    /**
-     * Sets MapAvatar_Relation
-     *
-     * @param a
-     */
-    public void setMapRelation(MapAvatar_Relation a) {
-        map_relationship_ = a;
-    }
-
     @Override
     public void gameOver() {
         super.gameOver();
@@ -128,14 +105,14 @@ public final class Avatar extends Entity {
         s += "\n";
 
         s += " map_relationship_: ";
-        if (map_relationship_ == null) {
+        if (super.getMapRelation() == null) {
             s += "null";
         } else {
             s += "Not null";
         }
 
         s += "\n associated with map:"
-                + map_relationship_.isAssociatedWithMap();
+                + super.getMapRelation().isAssociatedWithMap();
 
         return s;
     }

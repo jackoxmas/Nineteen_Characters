@@ -35,9 +35,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
     //TODO:if Map has to be square, why have two different variables that will always be equivalent?
     public int height_;
     public int width_;
-
-    // String is the avatar's name. The avatar name must be unqiue or else bugs will occur.
-    private LinkedHashMap<String, Avatar> avatar_list_;
+    
     // String is the entity's name. The entity name must be unqiue or else bugs will occur.
     private LinkedHashMap<String, Entity> entity_list_;
     private LinkedList<Item> items_list_;
@@ -143,7 +141,6 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                     map_grid_[i][j] = new MapTile(j, i); //switch rows and columns
                 }
             }
-            avatar_list_ = new LinkedHashMap<String, Avatar>();
             entity_list_ = new LinkedHashMap<String, Entity>();
             items_list_ = new LinkedList<Item>();
             time_measured_in_turns = 0;
@@ -153,16 +150,18 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
 
     //<editor-fold desc="Map Methods" defaultstate="collapsed">
     /**
-     * Adds an entity to the map.
+     * Adds an entity to the map and provides it with a MapEntity_Relation.
      *
      * @param e - Entity to be added
      * @param x - x position of where you want to add entity
      * @param y - y posiition of where you want to add entity
      * @return -1 on fail, 0 on success
      */
-    public int addEntity(Entity e, int x, int y) {
+    public int addAsEntity(Entity e, int x, int y) {
         e.setMapRelation(new MapEntity_Relation(this, e, x, y));
+        System.out.println(e.name_);
         int error_code = this.map_grid_[y][x].addEntity(e);
+        System.out.println(e.name_ + "2");
         if (error_code == 0) {
             this.entity_list_.put(e.name_, e);
         } else {
@@ -173,20 +172,20 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
     }
 
     /**
-     * Uses function overloading to add an avatar to the map.
+     * Adds an avatar to the map and provides it with a MapAvatar_Relation.
      *
      * @param a - Avatar to be added
      * @param x - x position of where you want to add Avatar
      * @param y - y posiition of where you want to add Avatar
      * @return -1 on fail, 0 on success
      */
-    public int addEntity(Avatar a, int x, int y) {
+    public int addAsAvatar(Avatar a, int x, int y) {
         System.out.println("Adding avatar: " + a.name_ + " to the map");
         a.setMapRelation(new MapAvatar_Relation(this, a, x, y));
         int error_code = this.map_grid_[y][x].addEntity(a);
         if (error_code == 0) {
-            this.avatar_list_.put(a.name_, a);
-            Avatar aa = this.avatar_list_.get(a.name_);
+            this.entity_list_.put(a.name_, a);
+            Entity aa = this.entity_list_.get(a.name_);
             if (aa == null) {
                 System.err.println("Something is seriously wrong with the avatar list");
                 System.exit(-5);
@@ -196,13 +195,6 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
             System.err.println("Error in avatar list");
         }
         return error_code;
-    }
-
-    /**
-     * Same as addEntity (no function overloading)
-     */
-    public int addAvatar(Avatar a, int x, int y) {
-        return addEntity(a, x, y);
     }
 
     /**
@@ -243,8 +235,8 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
      * @param y - y posiition of where you want to add Avatar
      * @return -1 on fail, 0 on success
      */
-    // public int addAvatar(Avatar a, int x, int y) {
-    //    return addEntity(a, x, y);
+    // public int addAsAvatar(Avatar a, int x, int y) {
+    //    return addAsEntity(a, x, y);
     //}
     /**
      * Adds an avatar to the map.
@@ -255,10 +247,10 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
      * @return -1 on fail, 0 on success
      */
     /*
-     public int addAvatar(Avatar a, int x, int y) {
+     public int addAsAvatar(Avatar a, int x, int y) {
      System.out.println("Adding avatar: " + a.name_ + " to the map");
      a.setMapRelation(new MapAvatar_Relation(this, a, x, y));
-     int error_code = this.map_grid_[y][x].addEntity(a);
+     int error_code = this.map_grid_[y][x].addAsEntity(a);
      if (error_code == 0) {
      this.avatar_list_.put(a.name_, a);
      Avatar aa = this.avatar_list_.get(a.name_);
@@ -320,47 +312,6 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
     }
 
     /**
-     * Removes and Avatar from map.
-     *
-     * @param a - Avatar to be removed.
-     * @return -1 if the entity to be removed does not exist.
-     */
-    public int removeEntity(Avatar a) {
-        Avatar removed = this.avatar_list_.remove(a.name_);
-        if (removed == null) {
-            System.err.println("The avatar to be removed does not exist in the list of avatars");
-        } else {
-            System.out.println("Avatar " + a.name_ + " has been removed from the map");
-            if (this.avatar_list_.get(a.name_) != null) {
-                System.out.println("Impossible error in Map.removeAvatar");
-                System.exit(-999);
-            } else if (this.avatar_list_.containsKey(a.name_)) {
-                System.out.println("test 3");
-            } else if (!this.avatar_list_.containsKey(a.name_)) {
-                System.out.println("test 4");
-            }
-        }
-        if (this.map_grid_[a.getMapRelation().getMyYCoordinate()][a.getMapRelation().getMyXCoordinate()].getEntity() == a) {
-            this.map_grid_[a.getMapRelation().getMyYCoordinate()][a.getMapRelation().getMyXCoordinate()].removeEntity();
-            a.setMapRelation(null);
-            a = null;
-            System.gc();
-            return 0;
-        } else {
-            System.err.println("The avatar to be removed cannot be found on the map.");
-            System.exit(-88);
-            return -1;
-        }
-    }
-
-    /**
-     * Same as removeEntity (no function overloading)
-     */
-    public int removeAvatar(Avatar a) {
-        return removeEntity(a);
-    }
-
-    /**
      * Removes entity from map.
      *
      * @param e - entity to be removed
@@ -371,12 +322,11 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
         if (removed == null) {
             System.err.println("The entity to be removed does not exist in the list of entities");
         } else {
-            System.out.println("Entity " + removed.name_ + " has been removed from the map");
+            System.out.println(removed.name_ + " has been removed from the map");
         }
         if (this.map_grid_[e.getMapRelation().getMyYCoordinate()][e.getMapRelation().getMyXCoordinate()].getEntity() == e) {
             this.map_grid_[e.getMapRelation().getMyYCoordinate()][e.getMapRelation().getMyXCoordinate()].removeEntity();
             e.setMapRelation(null);
-            e = null;
             System.gc();
             return 0;
         } else {
@@ -384,6 +334,10 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
             System.exit(-88);
             return -1;
         }
+    }
+    
+    public int removeAvatar(Avatar avatar) {
+        return removeEntity(avatar);
     }
 
     /**
@@ -432,9 +386,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
     public IO_Bundle sendCommandToMapWithOptionalText(String username, Key_Commands command, int width_from_center, int height_from_center, String text) {
         // Avatar to_recieve_command = this.avatar_list_.get(username);
         Entity to_recieve_command;
-        if (this.avatar_list_.containsKey(username)) {
-            to_recieve_command = this.avatar_list_.get(username);
-        } else if (this.entity_list_.containsKey(username)) {
+        if (this.entity_list_.containsKey(username)) {
             to_recieve_command = this.entity_list_.get(username);
         } else {
             to_recieve_command = null;
@@ -597,7 +549,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
         // Name
         e_entity.setAttribute("name", entity.getName());
 
-        if (this.avatar_list_.containsValue(entity)) {
+        if (this.entity_list_.containsValue(entity)) {
             e_entity.appendChild(doc.createElement("b_avatar"));
         }
 

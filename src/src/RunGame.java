@@ -82,24 +82,24 @@ public class RunGame {
 
     private static void populateMap() {
     	 avatar_ = new Avatar("avatar", '☃');
-         // map_.addAvatar(avatar_, 0, 0);
-            map_.addEntity(avatar_, 0, 0);
+         // map_.addAsAvatar(avatar_, 0, 0);
+            map_.addAsAvatar(avatar_, 0, 0);
 
          Avatar buddy = new Avatar("buddy", '웃');
-         // map_.addAvatar(buddy, 3, 0);
-            map_.addEntity(buddy, 3, 0);
+         // map_.addAsAvatar(buddy, 3, 0);
+            map_.addAsEntity(buddy, 3, 0); // buddy doesn't have the auto-talk ability.
          
          Villager villager1 = new Villager("villager1", '웃');
          villager1.getStatsPack().increaseQuantityOfExperienceBy(200);
-         map_.addEntity(villager1, 3, 13);
+         map_.addAsEntity(villager1, 3, 13);
          
          Monster monster = new Monster("monster1", '웃');
          monster.getStatsPack().increaseQuantityOfExperienceBy(300);
-         map_.addEntity(monster, 13, 3);
+         map_.addAsEntity(monster, 13, 3);
          
          Merchant merchant = new Merchant("merchant1", '웃');
          merchant.getStatsPack().increaseQuantityOfExperienceBy(1000);
-         map_.addEntity(merchant, 1, 1);
+         map_.addAsEntity(merchant, 1, 1);
         Item teleport = new OneWayTeleportItem("tele", 'T', 0, 0);
         Item onehandedsword = new OneHandedSword("Excalibur", '|');
         Item twohandedsword = new TwoHandedSword("Two_hander", '|');
@@ -120,7 +120,7 @@ public class RunGame {
         map_.addItem(level, 12, 2);
         
         Villager villager =new Villager("Tom", 'V');
-        map_.addEntity(villager,0,5);
+        map_.addAsEntity(villager,0,5);
         
         //Add some traps
         Trap trap1 = new Trap("trap1", 'b', Effect.HURT, 2);

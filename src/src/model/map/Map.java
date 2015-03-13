@@ -1,9 +1,14 @@
 package src.model.map;
 
 import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.regex.PatternSyntaxException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -41,7 +46,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
     private LinkedList<Item> items_list_;
     // 2d array of tiles.
     private transient MapTile map_grid_[][];
-
+    private Thread accept_udp_input_thread;
     /**
      *
      * @param name - name of Entity
@@ -144,9 +149,189 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
             entity_list_ = new LinkedHashMap<String, Entity>();
             items_list_ = new LinkedList<Item>();
             time_measured_in_turns = 0;
+
+            try {
+                accept_udp_input_thread = new GetMapInputFromUsers();
+            } catch (IOException e) {
+                // No clue what causes this
+                e.printStackTrace();
+                System.exit(-6);
+                return;
+            }
+            accept_udp_input_thread.start();
         }
     }
+
     //</editor-fold>
+    //<editor-fold desc="User Input Thread (optional use)" defaultstate="collapsed">
+
+    private class GetMapInputFromUsers extends Thread {
+
+        private DatagramSocket socket = null;
+        private BufferedReader in = null;
+
+        public GetMapInputFromUsers() throws IOException {
+            this("GetMapInput");
+        }
+
+        public GetMapInputFromUsers(String name) throws IOException {
+            super(name);
+            socket = new DatagramSocket(4445);
+        }
+
+        public void run() {
+
+            while (true) {
+                try {
+                    byte[] buf = new byte[256];
+
+                    // receive request
+                    DatagramPacket packet = new DatagramPacket(buf, buf.length);
+                    socket.receive(packet);
+
+                    if (buf[0] == 0 && buf[1] == 0) {
+                        System.out.println("Buffer starts with zeros");
+                        System.exit(-2);
+                    }
+
+                    String decoded_string = new String(buf, "UTF-8");
+
+                    System.out.println("Decoded string: " + decoded_string);
+
+                    String[] splitArray;
+                    try {
+                        // split whenever at least one whitespace is encountered
+                        splitArray = decoded_string.split("\\s+");
+                    } catch (PatternSyntaxException ex) {
+                        ex.printStackTrace();
+                        System.exit(-16);
+                        return;
+                    }
+                    if (splitArray.length > 5) {
+                        System.out.println("Split array too long");
+                        System.exit(-88);
+                    } else if (splitArray.length < 4) {
+                        System.out.println("Split array too short");
+                        System.exit(-87);
+                    } else {
+                        System.out.println("Split array just right");
+                    }
+                    for (int i = 0; i < splitArray.length; ++i) {
+                        System.out.println("Split array at " + i + " " + splitArray[i]);
+                    }
+
+                    String username = splitArray[0];
+                    String command_enum_as_a_string = splitArray[1];
+                    Key_Commands command = Key_Commands.valueOf(command_enum_as_a_string);
+                    int width_from_center = Integer.parseInt(splitArray[2], 10);
+                    int height_from_center = Integer.parseInt(splitArray[3], 10);
+                    String optional_text;
+                    if (splitArray.length == 4) {
+                        optional_text = null;
+                    } else if (splitArray.length == 5) {
+                        optional_text = splitArray[5];
+                    } else {
+                        System.out.println("splitArray.length == " + splitArray.length);
+                        return;
+                    }
+
+                    Entity to_recieve_command;
+                    if (entity_list_.containsKey(username)) {
+                        to_recieve_command = entity_list_.get(username);
+                    } else {
+                        to_recieve_command = null;
+                        System.err.println("The avatar of entity you are trying to reach does not exist.");
+                    }
+                    ArrayList<String> strings_for_IO_Bundle = null;
+                    if (to_recieve_command != null) {
+                        if (to_recieve_command.getMapRelation() == null) {
+                            System.err.println(to_recieve_command.name_ + " has a null relation with this map. ");
+                            // return null;
+                        }
+                        if (command != null) {
+                            if (command == Key_Commands.STANDING_STILL) {
+                                strings_for_IO_Bundle = null;
+                            } else if (to_recieve_command.isAlive() == true) {
+                                strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, optional_text);
+                            } else {
+                                strings_for_IO_Bundle = null;
+                            }
+                            if (to_recieve_command.isAlive() == true) {
+                                char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                                        to_recieve_command.getMapRelation().getMyYCoordinate(),
+                                        width_from_center, height_from_center);
+                                Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                                        to_recieve_command.getMapRelation().getMyYCoordinate(),
+                                        width_from_center, height_from_center);
+                                IO_Bundle return_package = new IO_Bundle(
+                                        view,
+                                        colors,
+                                        to_recieve_command.getInventory(),
+                                        // Don't for get left and right hand items
+                                        to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
+                                        to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
+                                        to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
+                                        to_recieve_command.getPrimaryEquipped(),
+                                        to_recieve_command.getSecondaryEquipped(),
+                                        strings_for_IO_Bundle,
+                                        to_recieve_command.getNumGoldCoins(),
+                                        to_recieve_command.isAlive()
+                                );
+                                // return return_package;
+                            } else {
+                                char[][] view = null;
+                                Color[][] colors = null;
+                                IO_Bundle return_package = new IO_Bundle(
+                                        view,
+                                        colors,
+                                        null,
+                                        // Don't for get left and right hand items
+                                        null,
+                                        null,
+                                        -1,
+                                        -1,
+                                        -1,
+                                        -1,
+                                        null,
+                                        null,
+                                        null,
+                                        -1,
+                                        to_recieve_command.isAlive()
+                                );
+                                // return return_package;
+                            }
+                        } else if (command == null) {
+                            IO_Bundle return_package = new IO_Bundle(null, null, to_recieve_command.getInventory(),
+                                    // Don't for get left and right hand items
+                                    to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
+                                    to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
+                                    to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
+                                    to_recieve_command.getPrimaryEquipped(),
+                                    to_recieve_command.getSecondaryEquipped(),
+                                    strings_for_IO_Bundle,
+                                    to_recieve_command.getNumGoldCoins(),
+                                    to_recieve_command.isAlive()
+                            );
+                            // return return_package;
+                        } else {
+                            System.err.println("avatar + " + username + " is invalid. \n"
+                                    + "Please check username and make sure he is on the map.");
+                            // return null;
+                        }
+                    } else {
+                        System.out.println(username + " cannot be found on this map.");
+                        // return null;
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println("Connection is closed");
+                }
+            }
+            // socket.close(); // Socket never closes on server side.
+        }
+    }
+        //</editor-fold>
 
     //<editor-fold desc="Map Methods" defaultstate="collapsed">
     /**

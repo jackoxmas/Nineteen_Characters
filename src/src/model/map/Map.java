@@ -245,6 +245,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                 }
                 socket.setTcpNoDelay(true);
                 object_output_stream.writeObject(bundle_to_send_);
+                object_output_stream.flush();
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -257,16 +258,13 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
 //<editor-fold desc="User Input Thread (optional use)" defaultstate="collapsed">
     private class GetMapInputFromUsers extends Thread {
 
-        private DatagramSocket socket = null;
-        private BufferedReader in = null;
-
         public GetMapInputFromUsers() throws IOException {
             this("GetMapInput");
         }
 
         public GetMapInputFromUsers(String name) throws IOException {
             super(name);
-            socket = new DatagramSocket(Map.UDP_PORT_NUMBER);
+            
         }
 
         public void run() {
@@ -281,7 +279,12 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                     // receive request
                     DatagramPacket packet = new DatagramPacket(buf, buf.length);
                     System.out.println("udp packet will be recieved in GetMapInputFromUsers");
+                    
+                    DatagramSocket socket = new DatagramSocket(Map.UDP_PORT_NUMBER);
                     socket.receive(packet);
+                    socket.close();
+                    socket = null;
+                    
                     System.out.println("udp packet recieved in GetMapInputFromUsers");
 
                     if (buf[0] == 0 && buf[1] == 0) {

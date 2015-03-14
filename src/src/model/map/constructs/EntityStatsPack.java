@@ -90,14 +90,11 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
     	return defensive_rating_;
     }
 
-    private final Entity owner_;
-
     /**
      * Constructor: sets values to 1.
      */
-    public EntityStatsPack(Entity master) {
+    public EntityStatsPack() {
         super(1, 1);
-        this.owner_ = master;
     }
     /**
      * Resets the stat pack back to it's natural, pristine state.
@@ -121,7 +118,6 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
      */
     public EntityStatsPack(EntityStatsPack in){
     	super(in);
-    	owner_ = in.owner_;
     	lives_left_ = in.lives_left_; // this can change without leveling up
     	strength_level_ = in.strength_level_;
     	agility_level_ = in.agility_level_;

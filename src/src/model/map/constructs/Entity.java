@@ -26,7 +26,7 @@ abstract public class Entity extends DrawableThing {
     private SecondaryHandHoldable secondary_hand_ = null;
     private FacingDirection direction_ = FacingDirection.UP;
     private ArrayList<PickupableItem> inventory_;
-    private EntityStatsPack stats_pack_ = new EntityStatsPack(this);
+    private EntityStatsPack stats_pack_ = new EntityStatsPack();
     private int num_gold_coins_when_spawned_ = 10;
     private int num_gold_coins_possessed_ = num_gold_coins_when_spawned_;
 

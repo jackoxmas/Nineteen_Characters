@@ -15,6 +15,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -179,14 +180,11 @@ public class GameController extends Controller {
         // output_to_map.trim()
         // final IO_Bundle to_return = null;
 
-        DatagramSocket socket = null;
-        InetAddress address = null;
-        DatagramPacket packet = null;
         byte[] buf = new byte[256];
         // byte[] buf = null;
         try {
             byte[] buf_temp = output_to_map.getBytes("UTF-8");
-            for(int i = 0; i < buf_temp.length; ++i) {
+            for (int i = 0; i < buf_temp.length; ++i) {
                 buf[i] = buf_temp[i];
             }
         } catch (UnsupportedEncodingException unsupportedEncodingException) {
@@ -195,12 +193,14 @@ public class GameController extends Controller {
         }
         try {
             // get a datagram socket
-            socket = new DatagramSocket();
+            DatagramSocket socket = new DatagramSocket();
 
             // send request
-            address = InetAddress.getByName("localhost");
-            packet = new DatagramPacket(buf, buf.length, address, Map.UDP_PORT_NUMBER);
+            InetAddress address = InetAddress.getByName("localhost");
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, address, Map.UDP_PORT_NUMBER);
             socket.send(packet); // send UDP to server
+            socket.close();
+            socket = null;
             System.out.println("udp packet was sent to map");
         } catch (SocketException socket_exception) {
             System.out.println("socket exception in sendCommandToMap(Key_Commands command)");
@@ -213,45 +213,52 @@ public class GameController extends Controller {
 
         final String hostName = "localhost";
         final int portNumber = Map.TCP_PORT_NUMBER;
-        try (
-                Socket tcp_socket = new Socket(hostName, portNumber);
-                ObjectInputStream object_input_stream = new ObjectInputStream(tcp_socket.getInputStream());) {
+        try {
+            Socket tcp_socket = new Socket(hostName, portNumber);
+            // Socket tcp_socket = new Socket();
             tcp_socket.setTcpNoDelay(true);
-
-            IO_Bundle input_from_map = null;
-            input_from_map = null;
+            // InetAddress i = InetAddress.getByName(hostName);
+            // tcp_socket.bind(new InetSocketAddress(hostName, portNumber));
+            // tcp_socket.connect(new InetSocketAddress(hostName, portNumber));
+            ObjectInputStream object_input_stream = new ObjectInputStream(tcp_socket.getInputStream());
 
             try {
                 Object object = (IO_Bundle) object_input_stream.readObject();
                 final IO_Bundle to_return_tcp = (IO_Bundle) object;
+                object_input_stream.close();
+                object_input_stream = null;
+                tcp_socket.close();
+                tcp_socket = null;
+                System.gc(); // socket is gone.
 
                 if (to_return_tcp != null) {
-                    System.out.println("to return is not null. skill number 1: ");
-                    System.out.println(to_return_tcp.occupation_.getSkillNameFromNumber(1));
+                    System.out.println("to return is not null. ");
+                    if (to_return_tcp.occupation_ != null) {
+                        System.out.println("to_return.occupation_ is not null.");
+                    } else {
+                        System.out.println("to_return.occupation_ is null");
+                    }
                 } else {
                     System.out.println("to_return is null");
                 }
 
-                final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
-
                 // Make the buttons says the right skill names.
                 if ((command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
-                        || command == Key_Commands.BECOME_SNEAK) && to_return != null) {
+                        || command == Key_Commands.BECOME_SNEAK) && to_return_tcp != null && to_return_tcp.occupation_ != null) {
                     java.awt.EventQueue.invokeLater(new Runnable() {
                         public void run() {
                             Display.getDisplay().getSkillButton(1).
-                                    setText(to_return.occupation_.getSkillNameFromNumber(1));
+                                    setText(to_return_tcp.occupation_.getSkillNameFromNumber(1));
                             Display.getDisplay().getSkillButton(2).
-                                    setText(to_return.occupation_.getSkillNameFromNumber(2));
+                                    setText(to_return_tcp.occupation_.getSkillNameFromNumber(2));
                             Display.getDisplay().getSkillButton(3).
-                                    setText(to_return.occupation_.getSkillNameFromNumber(3));
+                                    setText(to_return_tcp.occupation_.getSkillNameFromNumber(3));
                             Display.getDisplay().getSkillButton(4).
-                                    setText(to_return.occupation_.getSkillNameFromNumber(4));
+                                    setText(to_return_tcp.occupation_.getSkillNameFromNumber(4));
                         }
                     });
                 }
-                return to_return;
-
+                return to_return_tcp;
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 System.out.println("The thing that came out of TCP socket is not an IO_Bundle");

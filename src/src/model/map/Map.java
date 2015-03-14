@@ -185,20 +185,6 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
 
         public IO_Bundle bundle_to_send_ = null;
 
-        /*public char[][] view_for_display_;
-         public Color[][] color_for_display_;
-         public PrimaryHandHoldable primary_;
-         public SecondaryHandHoldable second_;
-         public ArrayList<PickupableItem> inventory_;
-         public EntityStatsPack stats_for_display_;
-         public Occupation occupation_;
-         public int num_skillpoints_;
-         public int bind_wounds_;
-         public int bargain_;
-         public int observation_;
-         public ArrayList<String> strings_for_communication_;
-         public int num_coins_;
-         public boolean is_alive_;*/
         final int portNumber = Map.TCP_PORT_NUMBER;
         boolean listening = true;
 
@@ -206,14 +192,18 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
             try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
                 serverSocket.setPerformancePreferences(0, 1, 0);
                 while (listening) {
-                    Socket to_accept = serverSocket.accept();
-                    to_accept.setTcpNoDelay(true);
-                    if (bundle_to_send_ == null) {
-                        System.out.println("bundle_to_send_ in TCP_Connection_Maker is null");
-                    } else {
-                        System.out.println("bundle_to_send_ in TCP_Connection_Maker not null");
+                    try {
+                        Thread.sleep(Integer.MAX_VALUE);
+                    } catch (InterruptedException e) {
+                        Socket to_accept = serverSocket.accept();
+                        to_accept.setTcpNoDelay(true);
+                        if (bundle_to_send_ == null) {
+                            System.out.println("bundle_to_send_ in TCP_Connection_Maker is null");
+                        } else {
+                            System.out.println("bundle_to_send_ in TCP_Connection_Maker not null");
+                        }
+                        new Map.KKMultiServerThread(to_accept, bundle_to_send_).start();
                     }
-                    new Map.KKMultiServerThread(to_accept, bundle_to_send_).start();
                 }
             } catch (IOException e) {
                 System.err.println("Could not listen on port " + portNumber);
@@ -264,11 +254,11 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
 
         public GetMapInputFromUsers(String name) throws IOException {
             super(name);
-            
+
         }
 
         public void run() {
-            
+
             System.out.println("UDP thread is running");
 
             while (true) {
@@ -279,12 +269,12 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                     // receive request
                     DatagramPacket packet = new DatagramPacket(buf, buf.length);
                     System.out.println("udp packet will be recieved in GetMapInputFromUsers");
-                    
+
                     DatagramSocket socket = new DatagramSocket(Map.UDP_PORT_NUMBER);
                     socket.receive(packet);
                     socket.close();
                     socket = null;
-                    
+
                     System.out.println("udp packet recieved in GetMapInputFromUsers");
 
                     if (buf[0] == 0 && buf[1] == 0) {
@@ -348,7 +338,6 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                     }
 
                     // start the actual function
-                    
                     Entity to_recieve_command;
                     if (entity_list_.containsKey(username)) {
                         to_recieve_command = entity_list_.get(username);
@@ -362,6 +351,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                             System.err.println(to_recieve_command.name_ + " has a null relation with this map. ");
                             // return null
                             tcp_thread.bundle_to_send_ = null;
+                            tcp_thread.interrupt();
                             continue;
                         }
                         if (command != null) {
@@ -395,6 +385,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                                 );
                                 // return return_package;
                                 tcp_thread.bundle_to_send_ = return_package;
+                                tcp_thread.interrupt();
                                 continue;
                             } else {
                                 char[][] view = null;
@@ -418,6 +409,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                                 );
                                 // return return_package;
                                 tcp_thread.bundle_to_send_ = return_package;
+                                tcp_thread.interrupt();
                                 continue;
                             }
                         } else if (command == null) {
@@ -434,17 +426,20 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                             );
                             // return return_package;
                             tcp_thread.bundle_to_send_ = return_package;
+                            tcp_thread.interrupt();
                             continue;
                         } else {
                             System.err.println("avatar + " + username + " is invalid. \n"
                                     + "Please check username and make sure he is on the map.");
                             tcp_thread.bundle_to_send_ = null;
-                        continue;
+                            tcp_thread.interrupt();
+                            continue;
                         }
                     } else {
                         System.out.println(username + " cannot be found on this map.");
                         // return null;
                         tcp_thread.bundle_to_send_ = null;
+                        tcp_thread.interrupt();
                         continue;
                     }
 
@@ -452,10 +447,10 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                     e.printStackTrace();
                     System.out.println("Connection is closed");
                     tcp_thread.bundle_to_send_ = null;
-                        continue;
+                    tcp_thread.interrupt();
+                    continue;
                 }
             }
-            // socket.close(); // Socket never closes on server side.
         }
     }
     //</editor-fold>

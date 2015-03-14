@@ -5,12 +5,17 @@
  */
 package src.io.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import src.Function;
@@ -23,6 +28,7 @@ import src.io.view.ChatBoxViewPort;
 import src.io.view.MapView;
 import src.io.view.StatsView;
 import src.io.view.display.Display;
+import src.model.map.Map;
 import src.model.map.MapUser_Interface;
 
 /**
@@ -31,12 +37,12 @@ import src.model.map.MapUser_Interface;
  * @author JohnReedLOL/mbregg
  */
 public class GameController extends Controller {
-    
+
     private final class ChatBoxMiniController implements Function<Void, String> {
-        
+
         private CommandMiniController commandController_ = new CommandMiniController(getRemapper(), GameController.this);
         private ChatBoxViewPort chatview_ = new ChatBoxViewPort();
-        
+
         public ChatBoxMiniController() {
             Display.getDisplay().addInputBoxTextEnteredFunction(this);
             Display.getDisplay().addOutputBoxCharacterFunction(new outputBoxFunction());
@@ -67,7 +73,7 @@ public class GameController extends Controller {
             sendTextCommandAndUpdate(foo);
             return null;
         }
-        
+
         private Void sendTextCommandAndUpdate(String foo) {
             Key_Commands command = Key_Commands.GET_CONVERSATION_CONTINUATION_OPTIONS;
             if (foo.contains(HardCodedStrings.attack)) {
@@ -83,7 +89,7 @@ public class GameController extends Controller {
             updateDisplay(sendCommandToMapWithText(command, foo));
             return null;
         }
-        
+
         public void chatBoxHandleMapInputAndPrintNewContents(IO_Bundle bundle) {
             chatview_.renderToDisplay(bundle);
             ArrayList<String> list = chatview_.getContents();
@@ -91,24 +97,24 @@ public class GameController extends Controller {
                 Display.getDisplay().setMessage(i);
             }
         }
-        
+
         private class outputBoxFunction implements Function<Void, Character> {
-            
+
             @Override
             public Void apply(Character foo) {
                 sendTextCommandAndUpdate(chatview_.getChoice(Character.getNumericValue(foo)));
                 return null;
             }
         }
-        
+
     }
-    
+
     public GameController(MapUser_Interface mui, String uName) {
         super(new AvatarCreationView(), new GameRemapper(), uName);
         MapUserAble_ = mui;
         Display.getDisplay().setCommandList(HardCodedStrings.gameCommands);
         Display.getDisplay().addDoubleClickCommandEventReceiver(new Function<Void, String>() {
-            
+
             @Override
             public Void apply(String foo) {
                 if (foo == null) {
@@ -125,9 +131,9 @@ public class GameController extends Controller {
         takeTurnandPrintTurn('5');//For some reason need to take a empty turn for fonts to load...
 
     }
-    
+
     private MapUser_Interface MapUserAble_;
-    
+
     private ChatBoxMiniController chatbox_ = new ChatBoxMiniController();
 
     /**
@@ -140,7 +146,7 @@ public class GameController extends Controller {
         chatbox_.chatBoxHandleMapInputAndPrintNewContents(bundle);
         super.updateDisplay(bundle);
     }
-    
+
     protected IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
         return (MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, in));
     }
@@ -166,11 +172,11 @@ public class GameController extends Controller {
         final int width_from_center = getView().getWidth() / 2;
         final int height_from_center = getView().getHeight() / 2;
         final String optional_text = "";
-        
+
         final String output_to_map = (username + " " + command_enum_as_a_string + " " + width_from_center + " " + height_from_center + " " + optional_text);  //.trim();
         // output_to_map.trim()
         // final IO_Bundle to_return = null;
-        
+
         DatagramSocket socket = null;
         InetAddress address = null;
         DatagramPacket packet = null;
@@ -199,34 +205,65 @@ public class GameController extends Controller {
             io_exception.printStackTrace();
         }
 
-        // Make the buttons says the right skill names.
-        if (command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
-                || command == Key_Commands.BECOME_SNEAK && to_return != null) {
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    Display.getDisplay().getSkillButton(1).
-                            setText(to_return.occupation_.getSkillNameFromNumber(1));
-                    Display.getDisplay().getSkillButton(2).
-                            setText(to_return.occupation_.getSkillNameFromNumber(2));
-                    Display.getDisplay().getSkillButton(3).
-                            setText(to_return.occupation_.getSkillNameFromNumber(3));
-                    Display.getDisplay().getSkillButton(4).
-                            setText(to_return.occupation_.getSkillNameFromNumber(4));
-                }
-            });
-        }
-        return to_return;
-    }
+        final String hostName = "localhost";
+        final int portNumber = Map.TCP_PORT_NUMBER;
+        try (
+            Socket echoSocket = new Socket(hostName, portNumber);
+            PrintWriter out =
+                new PrintWriter(echoSocket.getOutputStream(), true);
+            BufferedReader in =
+                new BufferedReader(
+                    new InputStreamReader(echoSocket.getInputStream()));
+            BufferedReader stdIn =
+                new BufferedReader(
+                    new InputStreamReader(System.in))
+        ) {
+            echoSocket.setTcpNoDelay(true);
+            
+            IO_Bundle input_from_map = null;
+            input_from_map = 
+            
+            String userInput;
+            while ((userInput = stdIn.readLine()) != null) {
+                out.println(userInput);
+                System.out.println("echo: " + in.readLine());
+            }
+        } catch (UnknownHostException e) {
+            System.err.println("Don't know about host " + hostName);
+            System.exit(1);
+        } catch (IOException e) {
+            System.err.println("Couldn't get I/O for the connection to " +
+                hostName);
+            System.exit(1);
+        } 
 
-    /**
-     * Sends the command and string to the map.
-     *
-     * @param command
-     * @param in
-     * @return
-     */
-    //Handles the view switching, uses the  instance of operator in a slightly evil way, 
-    //ideally we should look into refactoring this to nots
+            // Make the buttons says the right skill names.
+            if (command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
+                    || command == Key_Commands.BECOME_SNEAK && to_return != null) {
+                java.awt.EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        Display.getDisplay().getSkillButton(1).
+                                setText(to_return.occupation_.getSkillNameFromNumber(1));
+                        Display.getDisplay().getSkillButton(2).
+                                setText(to_return.occupation_.getSkillNameFromNumber(2));
+                        Display.getDisplay().getSkillButton(3).
+                                setText(to_return.occupation_.getSkillNameFromNumber(3));
+                        Display.getDisplay().getSkillButton(4).
+                                setText(to_return.occupation_.getSkillNameFromNumber(4));
+                    }
+                });
+            }
+            return to_return;
+        }
+        /**
+         * Sends the command and string to the map.
+         *
+         * @param command
+         * @param in
+         * @return
+         */
+        //Handles the view switching, uses the  instance of operator in a slightly evil way, 
+        //ideally we should look into refactoring this to nots
     protected IO_Bundle updateViewsAndMap(Key_Commands input) {
         boolean taken = false;
         if (getView() instanceof AvatarCreationView) {
@@ -254,9 +291,9 @@ public class GameController extends Controller {
         } else {
             return sendCommandToMap(Key_Commands.DO_ABSOLUTELY_NOTHING);
         }
-        
+
     }
-    
+
     @Override
     protected void takeTurnandPrintTurn(Key_Commands input) {
         IO_Bundle bundle = updateViewsAndMap(input);

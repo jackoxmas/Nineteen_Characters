@@ -8,6 +8,8 @@ package src.io.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
@@ -165,7 +167,7 @@ public class GameController extends Controller {
                 }
             });
         }
-        final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
+        // final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
 
         final String username = getUserName();
         final String command_enum_as_a_string = command.name();
@@ -208,62 +210,67 @@ public class GameController extends Controller {
         final String hostName = "localhost";
         final int portNumber = Map.TCP_PORT_NUMBER;
         try (
-            Socket echoSocket = new Socket(hostName, portNumber);
-            PrintWriter out =
-                new PrintWriter(echoSocket.getOutputStream(), true);
-            BufferedReader in =
-                new BufferedReader(
-                    new InputStreamReader(echoSocket.getInputStream()));
-            BufferedReader stdIn =
-                new BufferedReader(
-                    new InputStreamReader(System.in))
-        ) {
-            echoSocket.setTcpNoDelay(true);
-            
+                Socket tcp_socket = new Socket(hostName, portNumber);
+                ObjectInputStream object_input_stream = new ObjectInputStream(tcp_socket.getInputStream());) {
+            tcp_socket.setTcpNoDelay(true);
+
             IO_Bundle input_from_map = null;
-            input_from_map = 
-            
-            String userInput;
-            while ((userInput = stdIn.readLine()) != null) {
-                out.println(userInput);
-                System.out.println("echo: " + in.readLine());
+            input_from_map = null;
+
+            try {
+                Object object = (IO_Bundle) object_input_stream.readObject();
+                final IO_Bundle to_return = (IO_Bundle) object;
+
+                if (to_return != null) {
+                    System.out.println(to_return.occupation_.toString());
+                }
+
+                // Make the buttons says the right skill names.
+                if ( (command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
+                        || command == Key_Commands.BECOME_SNEAK) && to_return != null) {
+                    java.awt.EventQueue.invokeLater(new Runnable() {
+                        public void run() {
+                            Display.getDisplay().getSkillButton(1).
+                                    setText(to_return.occupation_.getSkillNameFromNumber(1));
+                            Display.getDisplay().getSkillButton(2).
+                                    setText(to_return.occupation_.getSkillNameFromNumber(2));
+                            Display.getDisplay().getSkillButton(3).
+                                    setText(to_return.occupation_.getSkillNameFromNumber(3));
+                            Display.getDisplay().getSkillButton(4).
+                                    setText(to_return.occupation_.getSkillNameFromNumber(4));
+                        }
+                    });
+                }
+                return to_return;
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                System.out.println("The thing that came out of TCP socket is not an IO_Bundle");
+                System.exit(-82);
+                return null;
             }
+
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);
             System.exit(1);
+            return null;
         } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to " +
-                hostName);
+            System.err.println("Couldn't get I/O for the connection to "
+                    + hostName);
             System.exit(1);
-        } 
-
-            // Make the buttons says the right skill names.
-            if (command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
-                    || command == Key_Commands.BECOME_SNEAK && to_return != null) {
-                java.awt.EventQueue.invokeLater(new Runnable() {
-                    public void run() {
-                        Display.getDisplay().getSkillButton(1).
-                                setText(to_return.occupation_.getSkillNameFromNumber(1));
-                        Display.getDisplay().getSkillButton(2).
-                                setText(to_return.occupation_.getSkillNameFromNumber(2));
-                        Display.getDisplay().getSkillButton(3).
-                                setText(to_return.occupation_.getSkillNameFromNumber(3));
-                        Display.getDisplay().getSkillButton(4).
-                                setText(to_return.occupation_.getSkillNameFromNumber(4));
-                    }
-                });
-            }
-            return to_return;
+            return null;
         }
-        /**
-         * Sends the command and string to the map.
-         *
-         * @param command
-         * @param in
-         * @return
-         */
-        //Handles the view switching, uses the  instance of operator in a slightly evil way, 
-        //ideally we should look into refactoring this to nots
+    }
+
+    /**
+     * Sends the command and string to the map.
+     *
+     * @param command
+     * @param in
+     * @return
+     */
+    //Handles the view switching, uses the  instance of operator in a slightly evil way, 
+    //ideally we should look into refactoring this to nots
     protected IO_Bundle updateViewsAndMap(Key_Commands input) {
         boolean taken = false;
         if (getView() instanceof AvatarCreationView) {

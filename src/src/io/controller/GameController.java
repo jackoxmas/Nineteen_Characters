@@ -182,10 +182,13 @@ public class GameController extends Controller {
         DatagramSocket socket = null;
         InetAddress address = null;
         DatagramPacket packet = null;
-        // byte[] buf = new byte[256];
-        byte[] buf = null;
+        byte[] buf = new byte[256];
+        // byte[] buf = null;
         try {
-            buf = output_to_map.getBytes("UTF-8");
+            byte[] buf_temp = output_to_map.getBytes("UTF-8");
+            for(int i = 0; i < buf_temp.length; ++i) {
+                buf[i] = buf_temp[i];
+            }
         } catch (UnsupportedEncodingException unsupportedEncodingException) {
             unsupportedEncodingException.printStackTrace();
             System.exit(-6);
@@ -196,8 +199,9 @@ public class GameController extends Controller {
 
             // send request
             address = InetAddress.getByName("localhost");
-            packet = new DatagramPacket(buf, buf.length, address, 4445);
-            socket.send(packet);
+            packet = new DatagramPacket(buf, buf.length, address, Map.UDP_PORT_NUMBER);
+            socket.send(packet); // send UDP to server
+            System.out.println("udp packet was sent to map");
         } catch (SocketException socket_exception) {
             System.out.println("socket exception in sendCommandToMap(Key_Commands command)");
             socket_exception.printStackTrace();
@@ -219,14 +223,19 @@ public class GameController extends Controller {
 
             try {
                 Object object = (IO_Bundle) object_input_stream.readObject();
-                final IO_Bundle to_return = (IO_Bundle) object;
+                final IO_Bundle to_return_tcp = (IO_Bundle) object;
 
-                if (to_return != null) {
-                    System.out.println(to_return.occupation_.toString());
+                if (to_return_tcp != null) {
+                    System.out.println("to return is not null. skill number 1: ");
+                    System.out.println(to_return_tcp.occupation_.getSkillNameFromNumber(1));
+                } else {
+                    System.out.println("to_return is null");
                 }
 
+                final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
+
                 // Make the buttons says the right skill names.
-                if ( (command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
+                if ((command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
                         || command == Key_Commands.BECOME_SNEAK) && to_return != null) {
                     java.awt.EventQueue.invokeLater(new Runnable() {
                         public void run() {

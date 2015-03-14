@@ -268,6 +268,7 @@ public class GameController extends Controller {
             }
 
         } catch (UnknownHostException e) {
+            e.printStackTrace();
             System.err.println("Don't know about host " + hostName);
             System.exit(1);
             return null;

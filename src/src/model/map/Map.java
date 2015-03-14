@@ -207,6 +207,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                     }
                 }
             } catch (IOException e) {
+                e.printStackTrace();
                 System.err.println("Could not listen on port " + portNumber);
                 System.exit(-1);
             }

@@ -16,7 +16,7 @@ import src.SkillEnum;
  */
 public abstract class Occupation implements Serializable {
 
-    private final Entity occupation_holder_;
+    private final transient Entity occupation_holder_;
 
     protected Entity getEntity() {
         return occupation_holder_;

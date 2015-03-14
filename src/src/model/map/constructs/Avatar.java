@@ -44,7 +44,6 @@ public final class Avatar extends Entity {
         ArrayList<String> options = new ArrayList<String>();
         options.add("Attack me. " + HardCodedStrings.attack);
         options.add("Start a conversation with me. " + HardCodedStrings.getChatOptions);
-        options.add("Select a skill to use on me. " + HardCodedStrings.getAllSkills);
         return options;
     }
 

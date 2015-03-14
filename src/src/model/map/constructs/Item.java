@@ -5,6 +5,7 @@
  */
 package src.model.map.constructs;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import src.HardCodedStrings;
 import src.model.map.MapItem_Relation;
@@ -14,7 +15,7 @@ import src.model.map.MapItem_Relation;
  *
  * @author JohnReedLOL
  */
-public abstract class Item extends DrawableThing {
+public abstract class Item extends DrawableThing implements Serializable{
 
     public Item(String name, char representation,
             boolean goes_in_inventory, boolean is_passable, boolean is_one_shot) {

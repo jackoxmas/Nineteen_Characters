@@ -13,15 +13,4 @@ import src.Key_Commands;
  * @author JohnReedLOL
  */
 public interface MapUser_Interface {
-    /**
-     * Note that the IO_Bundle contains a 2D array of characters in which the 
-     * y coordinates are stored in the first [] and the x_cordinates are in the second.
-     * @param username
-     * @param command
-     * @param width_from_center
-     * @param height_from_center
-     * @return 
-     */
-    public IO_Bundle sendCommandToMapWithOptionalText(String username, Key_Commands command, int width_from_center, int height_from_center, String text);
-    
 }

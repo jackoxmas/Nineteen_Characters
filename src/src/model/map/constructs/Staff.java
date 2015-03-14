@@ -5,11 +5,13 @@
  */
 package src.model.map.constructs;
 
+import java.io.Serializable;
+
 /**
  *
  * @author JohnReedLOL
  */
-public class Staff extends OneHandedWeapon {
+public class Staff extends OneHandedWeapon implements Serializable {
 
     public Staff(String name, char representation) {
         super(name, representation);

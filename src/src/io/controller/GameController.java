@@ -81,15 +81,15 @@ public class GameController extends Controller {
             Key_Commands command = Key_Commands.GET_CONVERSATION_CONTINUATION_OPTIONS;
             if (foo.contains(HardCodedStrings.attack)) {
                 command = Key_Commands.ATTACK;
-                updateDisplay(sendCommandToMap(command));
+                updateDisplay(sendCommandToMapWithOptionalText(command, ""));
                 return null;
             }
             if (foo.contains(HardCodedStrings.getChatOptions)) {
                 command = Key_Commands.GET_CONVERSATION_STARTERS;
-                updateDisplay(sendCommandToMap(command));
+                updateDisplay(sendCommandToMapWithOptionalText(command, ""));
                 return null;
             }
-            updateDisplay(sendCommandToMapWithText(command, foo));
+            updateDisplay(sendCommandToMapWithOptionalText(command, foo));
             return null;
         }
 
@@ -150,17 +150,13 @@ public class GameController extends Controller {
         super.updateDisplay(bundle);
     }
 
-    protected IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
-        return (MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, in));
-    }
-
     /**
      * Sends the given command to the map. Focuses on the TextBox for inputting
      * chat options.
      *
      * @param input
      */
-    private IO_Bundle sendCommandToMap(Key_Commands command) {
+    private IO_Bundle sendCommandToMapWithOptionalText(Key_Commands command, String text_or_empty_string) {
         if (command == Key_Commands.GET_INTERACTION_OPTIONS) { // ** This doesn't work for auto-chat **
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
@@ -174,11 +170,13 @@ public class GameController extends Controller {
         final String command_enum_as_a_string = command.name();
         final int width_from_center = getView().getWidth() / 2;
         final int height_from_center = getView().getHeight() / 2;
-        final String optional_text = "";
+        final String optional_text = text_or_empty_string;
 
-        final String output_to_map = (username + " " + command_enum_as_a_string + " " + width_from_center + " " + height_from_center + " " + optional_text);  //.trim();
+        final String output_to_map_before_trim = (username + " " + command_enum_as_a_string + " " + width_from_center + " " + height_from_center + " " + optional_text);  //.trim();
         // output_to_map.trim()
         // final IO_Bundle to_return = null;
+        
+        final String output_to_map = output_to_map_before_trim.trim();
 
         byte[] buf = new byte[256];
         // byte[] buf = null;
@@ -223,14 +221,17 @@ public class GameController extends Controller {
             ObjectInputStream object_input_stream = new ObjectInputStream(tcp_socket.getInputStream());
 
             try {
+                System.out.println("Will crash in GameController?");
                 Object object = (IO_Bundle) object_input_stream.readObject();
+                System.out.println("Did not crash in GameController.");
                 final IO_Bundle to_return_tcp = (IO_Bundle) object;
                 object_input_stream.close();
                 object_input_stream = null;
                 tcp_socket.close();
                 tcp_socket = null;
                 System.gc(); // socket is gone.
-
+                System.out.println("Definetely did not crash in GameController.");
+                
                 if (to_return_tcp != null) {
                     System.out.println("to return is not null. ");
                     if (to_return_tcp.occupation_ != null) {
@@ -271,9 +272,10 @@ public class GameController extends Controller {
             System.exit(1);
             return null;
         } catch (IOException e) {
+            e.printStackTrace();
             System.err.println("Couldn't get I/O for the connection to "
                     + hostName);
-            System.exit(1);
+            System.exit(-20);
             return null;
         }
     }
@@ -310,9 +312,9 @@ public class GameController extends Controller {
             }
         }
         if (!taken) {
-            return sendCommandToMap(input);
+            return sendCommandToMapWithOptionalText(input, "");
         } else {
-            return sendCommandToMap(Key_Commands.DO_ABSOLUTELY_NOTHING);
+            return sendCommandToMapWithOptionalText(Key_Commands.DO_ABSOLUTELY_NOTHING, "");
         }
 
     }

@@ -5,11 +5,13 @@
  */
 package src.model.map.constructs;
 
+import java.io.Serializable;
+
 /**
  *
  * @author JohnReedLOL
  */
-public abstract class EquipableItem extends PickupableItem{
+public abstract class EquipableItem extends PickupableItem implements Serializable {
     public EquipableItem(String name, char representation) {
         super(name, representation);
     }

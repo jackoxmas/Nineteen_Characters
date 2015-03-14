@@ -13,6 +13,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.regex.PatternSyntaxException;
 
 import org.w3c.dom.Document;
@@ -41,8 +42,8 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
     public static final int MAX_NUMBER_OF_WORLDS = 1;
     private static int number_of_worlds_generated_ = 0;
 
-    public final static int TCP_PORT_NUMBER = 4456;
-    public final static int UDP_PORT_NUMBER = 4455;
+    public final static int TCP_PORT_NUMBER = 14456;
+    public final static int UDP_PORT_NUMBER = 14455;
 
     //<editor-fold desc="Fields and Accessors" defaultstate="collapsed">
     // The map has a clock
@@ -234,9 +235,12 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                     System.out.println("bundle_to_send_ in ServerThread not null");
                 }
                 socket.setTcpNoDelay(true);
+                System.out.println("About to crash?");
                 object_output_stream.writeObject(bundle_to_send_);
+                System.out.println("Did not crash.");
                 object_output_stream.flush();
                 socket.close();
+                System.out.println("Definetely did not crash in KKMultiServerThread.");
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("connection disconnected in ServerThread.run");
@@ -282,9 +286,12 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                         System.exit(-2);
                     }
 
-                    String decoded_string = new String(buf, "UTF-8");
+                    String decoded_string_with_trailing_zeros = new String(buf, "UTF-8");
+                    
+                    String decoded_string = decoded_string_with_trailing_zeros.trim();
 
                     System.out.println("Decoded string: " + decoded_string);
+                    System.out.println("Decoded string length: " + decoded_string.length());
 
                     String[] splitArray;
                     try {
@@ -295,27 +302,48 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                         System.exit(-16);
                         return;
                     }
-                    if (splitArray.length > 5) {
-                        System.out.println("Split array too long");
-                        System.exit(-88);
-                    } else if (splitArray.length < 4) {
+                    /*if (splitArray.length > 5) {
+                     System.out.println("Split array too long");
+                     System.exit(-88);
+                     } else */
+                    if (splitArray.length < 4) {
                         System.out.println("Split array too short");
                         System.exit(-87);
                     } else {
                         System.out.println("Split array just right");
                     }
 
-                    final String old_array[] = splitArray;
-                    if (true) {//splitArray[splitArray.length - 1] == "") {
-                        splitArray = new String[splitArray.length - 1];
-                        for (int i = 0; i < old_array.length - 1; ++i) {
-                            splitArray[i] = old_array[i]; // do not copy the last element
-                        }
-                    }
+                    String last = splitArray[splitArray.length - 1];
+                    final int last_length = last.length();
 
+                    System.out.println("split array length early: " + splitArray.length);
+                    System.out.println("last character in last array: " + Character.getName(last.charAt(last_length - 1)));
+                    //System.out.println("last length " + last.length());
+                    System.out.println("prev length " + splitArray[splitArray.length - 2].length());
+
+                    if (Character.getName(last.charAt(last_length - 1)).equals("NULL")) {
+                        System.out.println("Null character detected)");
+                        String replacement = splitArray[splitArray.length - 1].replaceAll("\u0000", "");
+                        splitArray[splitArray.length - 1] = replacement;
+                    } else {
+                        System.out.println("No Null character detected)");
+                    }
+                    
+                    
+                    // splitArray[splitArray.length - 1] = last;
+
+                    /*final String old_array[] = splitArray;
+                     if (true) {//splitArray[splitArray.length - 1] == "") {
+                     splitArray = new String[splitArray.length - 1];
+                     for (int i = 0; i < old_array.length - 1; ++i) {
+                     splitArray[i] = old_array[i]; // do not copy the last element
+                     }
+                     }*/
                     for (int i = 0; i < splitArray.length; ++i) {
                         System.out.println("Split array at " + i + " " + splitArray[i]);
                     }
+
+                    System.out.println("split array length late: " + splitArray.length);
 
                     String username = splitArray[0];
                     String command_enum_as_a_string = splitArray[1];
@@ -330,8 +358,13 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                     String optional_text;
                     if (splitArray.length == 4) {
                         optional_text = null;
-                    } else if (splitArray.length == 5) {
-                        optional_text = splitArray[5];
+                    } else if (splitArray.length >= 5) {
+                        optional_text = "";
+                        for(int i = 4; i < splitArray.length; ++i) {
+                            optional_text = optional_text + " " + splitArray[i];
+                            System.out.println("Optional text: " + optional_text);
+                        }
+                        optional_text = optional_text.trim();
                     } else {
                         System.out.println("splitArray.length == " + splitArray.length);
                         return;
@@ -677,108 +710,6 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
         Item item = this.map_grid_[y][x].removeTopItem();
         items_list_.remove(item);
         return item;
-    }
-
-    /**
-     * Use this when the command the map is receiving requires a string
-     * parameter
-     *
-     * @param username
-     * @param command
-     * @param width_from_center
-     * @param height_from_center
-     * @param text - empty string preffered when not in use.
-     * @return Bundle of stuff used by the display.
-     */
-    public IO_Bundle sendCommandToMapWithOptionalText(String username, Key_Commands command, int width_from_center, int height_from_center, String text) {
-        // Avatar to_recieve_command = this.avatar_list_.get(username);
-        Entity to_recieve_command;
-        if (this.entity_list_.containsKey(username)) {
-            to_recieve_command = this.entity_list_.get(username);
-        } else {
-            to_recieve_command = null;
-            System.err.println("The avatar of entity you are trying to reach does not exist.");
-        }
-        ArrayList<String> strings_for_IO_Bundle = null;
-        if (to_recieve_command != null) {
-            if (to_recieve_command.getMapRelation() == null) {
-                System.err.println(to_recieve_command.name_ + " has a null relation with this map. ");
-                return null;
-            }
-            if (command != null) {
-                if (command == Key_Commands.STANDING_STILL) {
-                    strings_for_IO_Bundle = null;
-                } else if (to_recieve_command.isAlive() == true) {
-                    strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, text);
-                } else {
-                    strings_for_IO_Bundle = null;
-                }
-                if (to_recieve_command.isAlive() == true) {
-                    char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
-                            to_recieve_command.getMapRelation().getMyYCoordinate(),
-                            width_from_center, height_from_center);
-                    Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
-                            to_recieve_command.getMapRelation().getMyYCoordinate(),
-                            width_from_center, height_from_center);
-                    IO_Bundle return_package = new IO_Bundle(
-                            view,
-                            colors,
-                            to_recieve_command.getInventory(),
-                            // Don't for get left and right hand items
-                            to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
-                            to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
-                            to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
-                            to_recieve_command.getPrimaryEquipped(),
-                            to_recieve_command.getSecondaryEquipped(),
-                            strings_for_IO_Bundle,
-                            to_recieve_command.getNumGoldCoins(),
-                            to_recieve_command.isAlive()
-                    );
-                    return return_package;
-                } else {
-                    char[][] view = null;
-                    Color[][] colors = null;
-                    IO_Bundle return_package = new IO_Bundle(
-                            view,
-                            colors,
-                            null,
-                            // Don't for get left and right hand items
-                            null,
-                            null,
-                            -1,
-                            -1,
-                            -1,
-                            -1,
-                            null,
-                            null,
-                            null,
-                            -1,
-                            to_recieve_command.isAlive()
-                    );
-                    return return_package;
-                }
-            } else if (command == null) {
-                IO_Bundle return_package = new IO_Bundle(null, null, to_recieve_command.getInventory(),
-                        // Don't for get left and right hand items
-                        to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
-                        to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
-                        to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
-                        to_recieve_command.getPrimaryEquipped(),
-                        to_recieve_command.getSecondaryEquipped(),
-                        strings_for_IO_Bundle,
-                        to_recieve_command.getNumGoldCoins(),
-                        to_recieve_command.isAlive()
-                );
-                return return_package;
-            } else {
-                System.err.println("avatar + " + username + " is invalid. \n"
-                        + "Please check username and make sure he is on the map.");
-                return null;
-            }
-        } else {
-            System.out.println(username + " cannot be found on this map.");
-            return null;
-        }
     }
 
     //</editor-fold>

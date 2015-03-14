@@ -1,11 +1,13 @@
 package src.model.map.constructs;
 
+import java.io.Serializable;
+
 /**
  * Stats Pack for Drawable Things.
  *
  * @author John-Michael Reed
  */
-public class DrawableThingStatsPack {
+public class DrawableThingStatsPack implements Serializable{
 
     /* SHOULD ALL BE PRIVATE!!! */
     private int offensive_rating_;

@@ -5,11 +5,13 @@
  */
 package src.model.map.constructs;
 
+import java.io.Serializable;
+
 /**
  *
  * @author JohnReedLOL
  */
-public class Bow extends TwoHandedWeapon {
+public class Bow extends TwoHandedWeapon implements Serializable {
     public Bow(String name, char representation) {
         super(name, representation);
     }

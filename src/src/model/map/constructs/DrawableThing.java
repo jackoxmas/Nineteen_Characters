@@ -1,6 +1,7 @@
 package src.model.map.constructs;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 import src.HardCodedStrings;
 
@@ -17,7 +18,7 @@ import src.model.map.MapDrawableThing_Relation;
  *
  * @author JohnReedLOL
  */
-abstract public class DrawableThing {
+abstract public class DrawableThing implements Serializable{
 
     // names of items and terrain should be non-unique.
     // names of entities should be unique to fit in a hashmap.

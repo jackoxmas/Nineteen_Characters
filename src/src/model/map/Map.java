@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.DatagramPacket;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.PatternSyntaxException;
 
@@ -61,7 +63,8 @@ public class Map implements MapMapEditor_Interface {
     private transient MapTile map_grid_[][];
     private GetMapInputFromUsers udp_thread;
     private TCP_Connection_Maker tcp_thread;
-    private ConcurrentLinkedQueue<Single_User_TCP_Thread> users = new ConcurrentLinkedQueue<>();
+    private ConcurrentHashMap<String, Single_User_TCP_Thread> users = new ConcurrentHashMap<>();
+
     /**
      *
      * @param name - name of Entity
@@ -183,32 +186,49 @@ public class Map implements MapMapEditor_Interface {
 
     //</editor-fold>
     //<editor-fold desc="TCP TO User Thread (optional use)" defaultstate="collapsed">
+    private class Initiate extends Thread {
+
+        private final Socket socket_;
+        private ObjectInputStream object_input_stream_ = null;
+
+        Initiate(Socket s) {
+            super("Initiate");
+            socket_ = s;
+        }
+
+        @Override
+        public void run() {
+            try {
+                object_input_stream_ = new ObjectInputStream(socket_.getInputStream());
+                ObjectOutputStream object_output_stream = new ObjectOutputStream(socket_.getOutputStream());
+                object_output_stream.flush();
+                String unique_id = (String) object_input_stream_.readObject();
+                System.out.println("String was accepted. Unique id is: " + unique_id);
+                Map.Single_User_TCP_Thread new_thread = new Map.Single_User_TCP_Thread(socket_, unique_id, object_output_stream);
+                new_thread.start();
+                object_output_stream = null;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private class TCP_Connection_Maker extends Thread {
 
         public IO_Bundle bundle_to_send_ = null;
 
         final int portNumber = Map.TCP_PORT_NUMBER;
-        boolean listening = true;
 
         public void run() {
             try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
                 serverSocket.setPerformancePreferences(0, 1, 0);
-                while (listening) {
-                    try {
-                        Thread.sleep(Integer.MAX_VALUE);
-                    } catch (InterruptedException e) {
-                        Socket to_accept = serverSocket.accept();
-                        to_accept.setTcpNoDelay(true);
-                        if (bundle_to_send_ == null) {
-                            System.out.println("bundle_to_send_ in TCP_Connection_Maker is null");
-                        } else {
-                            System.out.println("bundle_to_send_ in TCP_Connection_Maker not null");
-                        }
-                        Map.Single_User_TCP_Thread new_thread = new Map.Single_User_TCP_Thread(to_accept, bundle_to_send_);
-                        new_thread.start();
-                    }
+                while (true) {
+                    Socket to_accept = serverSocket.accept();
+                    to_accept.setTcpNoDelay(true);
+                    (new Initiate(to_accept)).start();
+                    System.out.println("Socket was accepted");
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 System.err.println("Could not listen on port " + portNumber);
                 System.exit(-1);
@@ -218,39 +238,52 @@ public class Map implements MapMapEditor_Interface {
 
     private class Single_User_TCP_Thread extends Thread {
 
-        private final Socket socket;
-        private final IO_Bundle bundle_to_send_;
+        public final String unique_id_;
+        private final Socket socket_;
+        private final ObjectOutputStream object_output_stream_;
+        private IO_Bundle bundle_to_send_ = null;
 
-        public Single_User_TCP_Thread(Socket socket, IO_Bundle bundle_to_send) {
+        public void setBundle(IO_Bundle to_set) {
+            bundle_to_send_ = to_set;
+        }
+
+        public Single_User_TCP_Thread(Socket socket, String unique_id, ObjectOutputStream object_output_stream) {
             super("KKMultiServerThread");
-            this.socket = socket;
-            bundle_to_send_ = bundle_to_send;
+            this.socket_ = socket;
+            this.unique_id_ = unique_id;
+            object_output_stream_ = object_output_stream;
         }
 
         public void run() {
-            users.add(this);
-            try (
-                    ObjectOutputStream object_output_stream = new ObjectOutputStream(socket.getOutputStream());) {
-                // end of resource statement beginning of execution
-                if (bundle_to_send_ == null) {
-                    System.out.println("bundle_to_send_ in ServerThread is null");
-                } else {
-                    System.out.println("bundle_to_send_ in ServerThread not null");
-                }
-                socket.setTcpNoDelay(true);
-                System.out.println("About to crash?");
-                object_output_stream.writeObject(bundle_to_send_);
-                System.out.println("Did not crash.");
-                object_output_stream.flush();
-                socket.close();
-                System.out.println("Definetely did not crash in KKMultiServerThread.");
-                users.remove(this);
-                return;
-            } catch (IOException e) {
+            try {
+                object_output_stream_.flush();
+            } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("connection disconnected in ServerThread.run");
-                users.remove(this);
-                return;
+            }
+            users.putIfAbsent(unique_id_, this);
+            while (true) {
+                try {
+                    // end of resource statement beginning of execution
+                    if (bundle_to_send_ == null) {
+                        System.out.println("bundle_to_send_ in ServerThread is null");
+                    } else {
+                        System.out.println("bundle_to_send_ in ServerThread not null");
+                    }
+                    System.out.println("About to crash?");
+                    try {
+                        Thread.sleep(Integer.MAX_VALUE);
+                    } catch (InterruptedException e) {
+                        object_output_stream_.writeObject(bundle_to_send_);
+                        System.out.println("Did not crash.");
+                        object_output_stream_.flush();
+                        System.out.println("Definetely did not crash in KKMultiServerThread.");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println("connection disconnected in ServerThread.run");
+                    users.remove(this);
+                    break;
+                }
             }
         }
     }
@@ -288,13 +321,8 @@ public class Map implements MapMapEditor_Interface {
 
                     System.out.println("udp packet recieved in GetMapInputFromUsers");
 
-                    if (buf[0] == 0 && buf[1] == 0) {
-                        System.out.println("Buffer starts with zeros");
-                        System.exit(-2);
-                    }
-
                     String decoded_string_with_trailing_zeros = new String(buf, "UTF-8");
-                    
+
                     String decoded_string = decoded_string_with_trailing_zeros.trim();
 
                     System.out.println("Decoded string: " + decoded_string);
@@ -313,30 +341,24 @@ public class Map implements MapMapEditor_Interface {
                      System.out.println("Split array too long");
                      System.exit(-88);
                      } else */
-                    if (splitArray.length < 4) {
+                    if (splitArray.length < 5) {
                         System.out.println("Split array too short");
-                        System.exit(-87);
-                    } else {
-                        System.out.println("Split array just right");
+                        System.exit(-88);
                     }
 
                     String last = splitArray[splitArray.length - 1];
                     final int last_length = last.length();
 
-                    System.out.println("split array length early: " + splitArray.length);
                     System.out.println("last character in last array: " + Character.getName(last.charAt(last_length - 1)));
                     //System.out.println("last length " + last.length());
                     System.out.println("prev length " + splitArray[splitArray.length - 2].length());
 
                     if (Character.getName(last.charAt(last_length - 1)).equals("NULL")) {
                         System.out.println("Null character detected)");
-                        String replacement = splitArray[splitArray.length - 1].replaceAll("\u0000", "");
-                        splitArray[splitArray.length - 1] = replacement;
                     } else {
                         System.out.println("No Null character detected)");
                     }
-                    
-                    
+
                     // splitArray[splitArray.length - 1] = last;
 
                     /*final String old_array[] = splitArray;
@@ -352,22 +374,23 @@ public class Map implements MapMapEditor_Interface {
 
                     System.out.println("split array length late: " + splitArray.length);
 
-                    String username = splitArray[0];
-                    String command_enum_as_a_string = splitArray[1];
+                    String unique_id = splitArray[0];
+                    String username = splitArray[0 + 1];
+                    String command_enum_as_a_string = splitArray[1 + 1];
                     Key_Commands command = Key_Commands.valueOf(command_enum_as_a_string);
-                    int width_from_center = Integer.parseInt(splitArray[2], 10);
+                    int width_from_center = Integer.parseInt(splitArray[2 + 1], 10);
                     if (splitArray[3].equals("20")) {
                         System.out.println("good");
                     } else {
                         System.out.println("bad");
                     }
-                    int height_from_center = Integer.parseInt(splitArray[3], 10);
+                    int height_from_center = Integer.parseInt(splitArray[3 + 1], 10);
                     String optional_text;
-                    if (splitArray.length == 4) {
+                    if (splitArray.length == 4 + 1) {
                         optional_text = null;
-                    } else if (splitArray.length >= 5) {
+                    } else if (splitArray.length >= 5 + 1) {
                         optional_text = "";
-                        for(int i = 4; i < splitArray.length; ++i) {
+                        for (int i = 4 + 1; i < splitArray.length; ++i) {
                             optional_text = optional_text + " " + splitArray[i];
                             System.out.println("Optional text: " + optional_text);
                         }
@@ -376,6 +399,19 @@ public class Map implements MapMapEditor_Interface {
                         System.out.println("splitArray.length == " + splitArray.length);
                         return;
                     }
+
+                    Single_User_TCP_Thread sender = users.get(unique_id);
+
+                    if (sender == null) {
+                        System.out.println("Impossible!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        //System.exit(74);
+                    } else {
+                        System.out.println("Possible!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    }
+                    while (sender == null) {
+                        sender = users.get(unique_id);
+                    }
+                    System.out.println("Very possible!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
                     // start the actual function
                     Entity to_recieve_command;
@@ -424,8 +460,9 @@ public class Map implements MapMapEditor_Interface {
                                         to_recieve_command.isAlive()
                                 );
                                 // return return_package;
-                                tcp_thread.bundle_to_send_ = return_package;
-                                tcp_thread.interrupt();
+                                sender.setBundle(return_package);
+                                //tcp_thread.bundle_to_send_ = return_package;
+                                sender.interrupt();
                                 continue;
                             } else {
                                 char[][] view = null;
@@ -448,8 +485,10 @@ public class Map implements MapMapEditor_Interface {
                                         to_recieve_command.isAlive()
                                 );
                                 // return return_package;
-                                tcp_thread.bundle_to_send_ = return_package;
-                                tcp_thread.interrupt();
+                                //tcp_thread.bundle_to_send_ = return_package;
+                                //tcp_thread.interrupt();
+                                sender.setBundle(return_package);
+                                sender.interrupt();
                                 continue;
                             }
                         } else if (command == null) {
@@ -465,29 +504,35 @@ public class Map implements MapMapEditor_Interface {
                                     to_recieve_command.isAlive()
                             );
                             // return return_package;
-                            tcp_thread.bundle_to_send_ = return_package;
-                            tcp_thread.interrupt();
+                            // tcp_thread.bundle_to_send_ = return_package;
+                            // tcp_thread.interrupt();
+                            sender.setBundle(return_package);
+                            sender.interrupt();
                             continue;
                         } else {
                             System.err.println("avatar + " + username + " is invalid. \n"
                                     + "Please check username and make sure he is on the map.");
-                            tcp_thread.bundle_to_send_ = null;
-                            tcp_thread.interrupt();
+                            //tcp_thread.bundle_to_send_ = null;
+                            //tcp_thread.interrupt();
+                            sender.setBundle(null);
+                            sender.interrupt();
                             continue;
                         }
                     } else {
                         System.out.println(username + " cannot be found on this map.");
                         // return null;
-                        tcp_thread.bundle_to_send_ = null;
-                        tcp_thread.interrupt();
+                        //tcp_thread.bundle_to_send_ = null;
+                        //tcp_thread.interrupt();
+                        sender.setBundle(null);
+                        sender.interrupt();
                         continue;
                     }
 
                 } catch (IOException e) {
                     e.printStackTrace();
                     System.out.println("Connection is closed");
-                    tcp_thread.bundle_to_send_ = null;
-                    tcp_thread.interrupt();
+                    //tcp_thread.bundle_to_send_ = null;
+                    //tcp_thread.interrupt();
                     continue;
                 }
             }

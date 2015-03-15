@@ -2,9 +2,14 @@ package src;
 
 import java.awt.Color;
 import java.io.FileNotFoundException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 import src.io.controller.Controller;
 import src.io.controller.GameController;
@@ -37,11 +42,54 @@ public class RunController {
     private static SavedGame saveGame_;
     private static Controller uc_;
     private static boolean map_editor_mode_ = false;
+    
 
+    public static final String hostName = "localhost";
+    public static final int portNumber = Map.TCP_PORT_NUMBER;
+    public static Socket tcp_socket = new Socket();
+    public static final Random generator = new Random();
+    public static final String unique_id = Integer.toString(generator.nextInt(), 10);
+    public static ObjectInputStream object_input_stream = null;
+    public static ObjectOutputStream object_output_stream = null;
+    
+    public static Initiate i = null;
     public static void main(String[] args) {
+        System.out.println("1");
+        try {
+            tcp_socket.setTcpNoDelay(true);
+            tcp_socket.connect(new InetSocketAddress(hostName, portNumber));
+            System.out.println("TCP socket connected.");
+            object_output_stream = new ObjectOutputStream(tcp_socket.getOutputStream());
+            object_output_stream.flush();
+            System.out.println("2 [flushed output stream]");
+            object_input_stream = new ObjectInputStream(tcp_socket.getInputStream());
+            System.out.println("3");
+            tcp_socket.setTcpNoDelay(true);
+            if(tcp_socket.isConnected() == true ) {
+                System.out.println("4");
+                i = new src.Initiate(tcp_socket, object_output_stream);
+                object_output_stream = null;
+                System.out.println("5");
+                i.start();
+                System.out.println("Initiator is started.");
+            } else {
+                System.out.println("Fail in main.");
+                System.exit(-2);
+            }
+                
+            //= new RunController.Initiate(singleton.tcp_socket);
+            //RunController.Initiate i = (new RunController.Initiate(null)); //.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Exception in RunController.main");
+            return;
+        }
         parseArgs(args); // Parse command line arguments
+        System.out.println("parsed args");
         handleArgs(args);
+        System.out.println("handled args");
         startGame();
+        System.out.println("started game");
     }
 
     private static void startGame() {

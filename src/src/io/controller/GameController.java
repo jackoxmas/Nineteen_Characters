@@ -16,15 +16,19 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Random;
 
 import src.Function;
 import src.HardCodedStrings;
 import src.IO_Bundle;
 import src.Key_Commands;
+import src.RunController;
 import src.enumHandler;
 import src.io.view.AvatarCreationView;
 import src.io.view.ChatBoxViewPort;
@@ -136,7 +140,7 @@ public class GameController extends Controller {
     private ChatBoxMiniController chatbox_ = new ChatBoxMiniController();
 
     /**
-     * Takes in a bundle, and updates and then prints the dispaly with it.
+     * Takes in a bundle, and updates and then prints the display with it.
      *
      * @param bundle
      */
@@ -146,6 +150,7 @@ public class GameController extends Controller {
         super.updateDisplay(bundle);
     }
 
+    
     /**
      * Sends the given command to the map. Focuses on the TextBox for inputting
      * chat options.
@@ -168,10 +173,10 @@ public class GameController extends Controller {
         final int height_from_center = getView().getHeight() / 2;
         final String optional_text = text_or_empty_string;
 
-        final String output_to_map_before_trim = (username + " " + command_enum_as_a_string + " " + width_from_center + " " + height_from_center + " " + optional_text);  //.trim();
+        final String output_to_map_before_trim = (RunController.unique_id + " " + username + " " + command_enum_as_a_string + " " + width_from_center + " " + height_from_center + " " + optional_text);  //.trim();
         // output_to_map.trim()
         // final IO_Bundle to_return = null;
-        
+
         final String output_to_map = output_to_map_before_trim.trim();
 
         byte[] buf = null; //= new byte[256];
@@ -201,28 +206,18 @@ public class GameController extends Controller {
             System.out.println("IO exception in sendCommandToMap(Key_Commands command)");
             io_exception.printStackTrace();
         }
-
-        final String hostName = "localhost";
-        final int portNumber = Map.TCP_PORT_NUMBER;
+        while(! RunController.tcp_socket.isConnected()) { /***  Bad code to be removed!!!!!!  *****/
+            // do nothing
+        }
+        System.out.println("Shit is connected!!!!!!!!!!!!!");
         try {
-            Socket tcp_socket = new Socket();
-            tcp_socket.setTcpNoDelay(true);
-            tcp_socket.connect(new InetSocketAddress(hostName, portNumber));
-            tcp_socket.setTcpNoDelay(true);
-            ObjectInputStream object_input_stream = new ObjectInputStream(tcp_socket.getInputStream());
-
             try {
                 System.out.println("Will crash in GameController?");
-                Object object = (IO_Bundle) object_input_stream.readObject();
+                Object object = (IO_Bundle) RunController.object_input_stream.readObject();
                 System.out.println("Did not crash in GameController.");
                 final IO_Bundle to_return_tcp = (IO_Bundle) object;
-                object_input_stream.close();
-                object_input_stream = null;
-                tcp_socket.close();
-                tcp_socket = null;
-                System.gc(); // socket is gone.
                 System.out.println("Definetely did not crash in GameController.");
-                
+
                 if (to_return_tcp != null) {
                     System.out.println("to return is not null. ");
                     if (to_return_tcp.occupation_ != null) {
@@ -260,13 +255,13 @@ public class GameController extends Controller {
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
-            System.err.println("Don't know about host " + hostName);
+            System.err.println("Don't know about host " + RunController.hostName);
             System.exit(1);
             return null;
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Couldn't get I/O for the connection to "
-                    + hostName);
+                    + RunController.hostName);
             System.exit(-20);
             return null;
         }

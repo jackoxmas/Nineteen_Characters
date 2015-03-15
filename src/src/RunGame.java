@@ -61,7 +61,13 @@ public class RunGame {
     }
     private static int startMapEditor(){
     	 initialize(); // Initialize any data we need to before loading
-          uc_ = new MapEditorController(map_); // Begin the avatarcontroller loop
+    	 new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+		          uc_ = new MapEditorController(map_); // Begin the avatarcontroller loop		
+			}
+		}).start();
          return 0;
     }
     public static void loadGame(String file_path) {
@@ -173,7 +179,14 @@ public class RunGame {
     }
 
     private static void startGame() {
-        uc_ = new GameController(map_,avatar_.name_);
+    	new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+		        uc_ = new GameController(map_,avatar_.name_);
+			}
+		}).start();
+
         
     }
 

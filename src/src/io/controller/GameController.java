@@ -150,7 +150,6 @@ public class GameController extends Controller {
         super.updateDisplay(bundle);
     }
 
-    
     /**
      * Sends the given command to the map. Focuses on the TextBox for inputting
      * chat options.
@@ -206,7 +205,10 @@ public class GameController extends Controller {
             System.out.println("IO exception in sendCommandToMap(Key_Commands command)");
             io_exception.printStackTrace();
         }
-        while(! RunController.tcp_socket.isConnected()) { /***  Bad code to be removed!!!!!!  *****/
+        while (!RunController.tcp_socket.isConnected()) {
+            /**
+             * * Bad code to be removed!!!!!! ****
+             */
             // do nothing
         }
         System.out.println("Shit is connected!!!!!!!!!!!!!");
@@ -216,12 +218,25 @@ public class GameController extends Controller {
                 Object object = (IO_Bundle) RunController.object_input_stream.readObject();
                 System.out.println("Did not crash in GameController.");
                 final IO_Bundle to_return_tcp = (IO_Bundle) object;
-                System.out.println("Definetely did not crash in GameController.");
+                if (to_return_tcp.compressed_characters_ != null && to_return_tcp.view_for_display_ == null) {
+                    to_return_tcp.view_for_display_ = to_return_tcp.runLengthDecodeView(
+                            width_from_center, height_from_center, to_return_tcp.compressed_characters_, to_return_tcp.frequencies_);
+                    to_return_tcp.color_for_display_ = to_return_tcp.runLengthDecodeColor(
+                            width_from_center, height_from_center, to_return_tcp.compressed_colors_, to_return_tcp.color_frequencies_);
+                    System.out.println("View is encoded!");
+                    if (to_return_tcp.view_for_display_ == null) {
+                        System.out.println("Something is very, very wrong here");
+                        System.exit(-8);
+                    }
+                }
 
                 if (to_return_tcp != null) {
                     System.out.println("to return is not null. ");
                     if (to_return_tcp.occupation_ != null) {
                         System.out.println("to_return.occupation_ is not null.");
+                        if (to_return_tcp.view_for_display_ == null) {
+                            System.out.println("View for display is null");
+                        }
                     } else {
                         System.out.println("to_return.occupation_ is null");
                     }

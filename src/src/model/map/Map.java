@@ -439,13 +439,36 @@ public class Map implements MapMapEditor_Interface {
                                 strings_for_IO_Bundle = null;
                             }
                             if (to_recieve_command.isAlive() == true) {
-                                char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
+
+                                ArrayList<Character> compressed_characters = new ArrayList<Character>();
+                                ArrayList<Integer> frequencies = new ArrayList<Integer>();
+                                char[][] view = null;
+                                
+                                ArrayList<Color> compressed_colors = new ArrayList<Color>();
+                                ArrayList<Integer> color_frequencies = new ArrayList<Integer>();
+                                /*Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
                                         to_recieve_command.getMapRelation().getMyYCoordinate(),
-                                        width_from_center, height_from_center);
-                                Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                                        width_from_center, height_from_center);*/
+                                Color[][] colors = null;
+                                runLengthEncodeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
                                         to_recieve_command.getMapRelation().getMyYCoordinate(),
-                                        width_from_center, height_from_center);
+                                        width_from_center, height_from_center, compressed_colors, color_frequencies);
+
+                                // compressed_characters and frequencies are pass by referance outputs
+                                runLengthEncodeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                                        to_recieve_command.getMapRelation().getMyYCoordinate(),
+                                        width_from_center, height_from_center, compressed_characters, frequencies);
+
+                                if (compressed_characters == null || frequencies == null || compressed_characters.isEmpty()) {
+                                    System.out.println("Bad - compression produced no encodings");
+                                    System.exit(-4);
+                                }
+
                                 IO_Bundle return_package = new IO_Bundle(
+                                        compressed_characters,
+                                        frequencies,
+                                        compressed_colors,
+                                        color_frequencies,
                                         view,
                                         colors,
                                         to_recieve_command.getInventory(),
@@ -465,9 +488,17 @@ public class Map implements MapMapEditor_Interface {
                                 sender.interrupt();
                                 continue;
                             } else {
+                                ArrayList<Character> compressed_characters = null;
+                                ArrayList<Integer> frequencies = null;
                                 char[][] view = null;
                                 Color[][] colors = null;
+                                ArrayList<Color> compressed_colors = null;
+                                ArrayList<Integer> color_frequencies = null;
                                 IO_Bundle return_package = new IO_Bundle(
+                                        compressed_characters,
+                                        frequencies,
+                                        compressed_colors,
+                                        color_frequencies,
                                         view,
                                         colors,
                                         null,
@@ -492,7 +523,7 @@ public class Map implements MapMapEditor_Interface {
                                 continue;
                             }
                         } else if (command == null) {
-                            IO_Bundle return_package = new IO_Bundle(null, null, to_recieve_command.getInventory(),
+                            IO_Bundle return_package = new IO_Bundle(null, null, null, null, null, null, to_recieve_command.getInventory(),
                                     // Don't for get left and right hand items
                                     to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
                                     to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
@@ -660,7 +691,7 @@ public class Map implements MapMapEditor_Interface {
     public IO_Bundle getMapAt(int x, int y, int width, int height) {
         char[][] view = makeView(x, y, width, height);
         Color[][] colors = makeColors(x, y, width, height);
-        return new IO_Bundle(view, colors, null, null, null, 0, 0, 0, 0, null, null, null, 0, true);
+        return new IO_Bundle(null, null, null, null, view, colors, null, null, null, 0, 0, 0, 0, null, null, null, 0, true);
         //Mapeditor has no game over condition, you are always alive. 
     }
 
@@ -689,6 +720,80 @@ public class Map implements MapMapEditor_Interface {
         return view;
     }
 
+    /**
+     * Uses run length encoding with characters "char[] unchanged_characters"
+     * and frequencies "int[] unchanged_indexes."
+     *
+     * @param x_center
+     * @param y_center
+     * @param width_from_center
+     * @param height_from_center
+     * @param unchanged_characters - empty arraylist of characters - outputs as
+     * a list of repeated encoded characters
+     * @param frequencies - empty arraylist of encoded character frequencies -
+     * outputs as a corresponding list of frequencies
+     */
+    public void runLengthEncodeView(final int x_center, final int y_center, final int width_from_center,
+            final int height_from_center, ArrayList<Character> unchanged_characters, ArrayList<Integer> frequencies) {
+        if (unchanged_characters.isEmpty() && frequencies.isEmpty()) {
+            int length = 1;
+            int array_index = 0;
+            final int x_start = x_center - width_from_center;
+            final int y_start = y_center - height_from_center;
+            char first = this.getTileRepresentation(x_start, y_start);
+            System.out.println("Tile representation at x_start y_start " + first);
+            for (int y = y_start; y <= y_center + height_from_center; ++y) {
+                for (int x = x_start; x <= x_center + width_from_center; ++x) {
+                    if (this.getTileRepresentation(x, y) != first) {
+                        unchanged_characters.add(first); // java.lang.ArrayIndexOutOfBoundsException
+                        System.out.print(first + "_");
+                        frequencies.add(length);
+                        length = 1;
+                        first = this.getTileRepresentation(x, y);
+                        System.out.println(first);
+                    } else {
+                        // flag stays true
+                        ++length;
+                    }
+                }
+            }
+        } else {
+            System.out.println("Precondition for Map.runLengthEncodeView not met - output parameters are not empty");
+            System.exit(-16);
+        }
+    }
+
+    public void runLengthEncodeColors(final int x_center, final int y_center, final int width_from_center,
+            final int height_from_center, ArrayList<Color> unchanged_colors, ArrayList<Integer> frequencies) {
+        if (unchanged_colors.isEmpty() && frequencies.isEmpty()) {
+            int length = 1;
+            int array_index = 0;
+            final int x_start = x_center - width_from_center;
+            final int y_start = y_center - height_from_center;
+            Color first = this.getColorRepresentation(x_start, y_start);
+            System.out.println("Tile representation at x_start y_start " + first);
+            for (int y = y_start; y <= y_center + height_from_center; ++y) {
+                for (int x = x_start; x <= x_center + width_from_center; ++x) {
+                    if (this.getColorRepresentation(x, y) != first) {
+                        unchanged_colors.add(first); // java.lang.ArrayIndexOutOfBoundsException
+                        System.out.print(first + "_");
+                        frequencies.add(length);
+                        length = 1;
+                        first = this.getColorRepresentation(x, y);
+                        System.out.println(first);
+                    } else {
+                        // flag stays true
+                        ++length;
+                    }
+                }
+            }
+        } else {
+            System.out.println("Precondition for Map.runLengthEncodeView not met - output parameters are not empty");
+            System.exit(-16);
+        }
+    }
+
+    
     public Color[][] makeColors(int x_center, int y_center, int width_from_center, int height_from_center) {
         Color[][] colors = new Color[1 + 2 * height_from_center][1 + 2 * width_from_center];
         int y_index = 0;

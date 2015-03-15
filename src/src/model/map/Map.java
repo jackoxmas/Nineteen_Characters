@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.PatternSyntaxException;
 
 import org.w3c.dom.Document;
@@ -58,9 +59,9 @@ public class Map implements MapMapEditor_Interface {
     private LinkedList<Item> items_list_;
     // 2d array of tiles.
     private transient MapTile map_grid_[][];
-    protected GetMapInputFromUsers udp_thread;
-    protected TCP_Connection_Maker tcp_thread;
-
+    private GetMapInputFromUsers udp_thread;
+    private TCP_Connection_Maker tcp_thread;
+    private ConcurrentLinkedQueue<Single_User_TCP_Thread> users = new ConcurrentLinkedQueue<>();
     /**
      *
      * @param name - name of Entity
@@ -203,7 +204,8 @@ public class Map implements MapMapEditor_Interface {
                         } else {
                             System.out.println("bundle_to_send_ in TCP_Connection_Maker not null");
                         }
-                        new Map.KKMultiServerThread(to_accept, bundle_to_send_).start();
+                        Map.Single_User_TCP_Thread new_thread = new Map.Single_User_TCP_Thread(to_accept, bundle_to_send_);
+                        new_thread.start();
                     }
                 }
             } catch (IOException e) {
@@ -214,19 +216,19 @@ public class Map implements MapMapEditor_Interface {
         }
     }
 
-    private class KKMultiServerThread extends Thread {
+    private class Single_User_TCP_Thread extends Thread {
 
         private final Socket socket;
         private final IO_Bundle bundle_to_send_;
 
-        public KKMultiServerThread(Socket socket, IO_Bundle bundle_to_send) {
+        public Single_User_TCP_Thread(Socket socket, IO_Bundle bundle_to_send) {
             super("KKMultiServerThread");
             this.socket = socket;
             bundle_to_send_ = bundle_to_send;
         }
 
         public void run() {
-
+            users.add(this);
             try (
                     ObjectOutputStream object_output_stream = new ObjectOutputStream(socket.getOutputStream());) {
                 // end of resource statement beginning of execution
@@ -242,9 +244,13 @@ public class Map implements MapMapEditor_Interface {
                 object_output_stream.flush();
                 socket.close();
                 System.out.println("Definetely did not crash in KKMultiServerThread.");
+                users.remove(this);
+                return;
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("connection disconnected in ServerThread.run");
+                users.remove(this);
+                return;
             }
         }
     }

@@ -219,15 +219,15 @@ public class GameController extends Controller {
 
 
 	@Override
-	public void SaveGame(String foo) {
-		// TODO Auto-generated method stub
+	public void saveGame(String foo) {
+		MapUserAble_.saveGame(foo);
 		
 	}
 
 
 	@Override
-	public void LoadGame(String foo) {
-		// TODO Auto-generated method stub
+	public void loadGame(String foo) {
+		MapUserAble_.loadGame(foo);
 		
 	}
 

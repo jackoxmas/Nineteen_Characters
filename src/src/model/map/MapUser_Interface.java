@@ -23,5 +23,15 @@ public interface MapUser_Interface {
      * @return 
      */
     public IO_Bundle sendCommandToMapWithOptionalText(String username, Key_Commands command, int width_from_center, int height_from_center, String text);
+    /**
+     * Takes in name so save to, defaults to date
+     * @param foo
+     */
+    public int saveGame(String foo);
+    /**
+     * Takes in name to load. 
+     * @param foo
+     */
+    public int loadGame(String foo);
     
 }

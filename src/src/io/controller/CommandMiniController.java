@@ -93,8 +93,15 @@ class CommandMiniController {
 	}
 
 	private String processLoad(String foo) {
-		// TODO Auto-generated method stub
-		return "Not implemented yet";
+		Scanner sc = new Scanner(foo);
+		try{
+			sc.next();
+			if(sc.hasNext()){
+				foo = sc.next();
+			}else{return HardCodedStrings.loadHelp;}
+		}finally{sc.close();}
+		cont_.saveGame(foo);
+		return "Loaded " + foo;
 	}
 
 	private String processLoadControls(String foo) {
@@ -135,8 +142,18 @@ class CommandMiniController {
 	}
 
 	private String processSave(String foo) {
-		//cont.processSave(foo) is how it will be done.
-		return "Not implemented yet";
+		Scanner sc = new Scanner(foo);
+		try{
+			sc.next();
+			if(sc.hasNext()){
+				foo = sc.next();
+			}else{foo = "";}
+		}finally{sc.close();}
+		cont_.saveGame(foo);
+		if(foo!=""){
+			return "Saved to " + foo;
+		}
+		return "Saved to  default";
 	}
 
 }

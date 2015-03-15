@@ -61,10 +61,10 @@ public class RunGame {
     }
     private static int startMapEditor(){
     	 initialize(); // Initialize any data we need to before loading
-         MapEditorController me_ = new MapEditorController(map_); // Begin the avatarcontroller loop
+          uc_ = new MapEditorController(map_); // Begin the avatarcontroller loop
          return 0;
     }
-    private static void loadGame(String file_path) {
+    public static void loadGame(String file_path) {
 
     }
 
@@ -177,11 +177,11 @@ public class RunGame {
         
     }
 
-    public static void saveGameToDisk() {
+    public static void saveGameToDisk(String foo) {
         if (saveGame_ == null) {
             saveGame_ = SavedGame.newSavedGame();
         }
-        saveGame_.saveGame(map_, uc_);
+        saveGame_.saveGame(map_, uc_,foo);
     }
 
 

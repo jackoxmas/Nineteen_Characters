@@ -952,5 +952,23 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
         return e_Terrain;
     }
     //</editor-fold>
+    /**
+     * Takes in name so save to, defaults to date
+     * @param foo
+     */
+	@Override
+	public int saveGame(String foo) {
+        RunGame.saveGameToDisk(foo); 
+		return 0;
+	}
+	   /**
+     * Takes in name to load. 
+     * @param foo
+     */
+	@Override
+	public int loadGame(String foo) {
+		RunGame.loadGame(foo);
+		return 0;
+	}
 
 }

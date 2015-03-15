@@ -75,7 +75,7 @@ public class MapEditorController extends Controller {
 		case MOVE_RIGHT: ++x; break;
 		case MAP_INSERT: mapInsert(Display.getDisplay().getHighlightedItem()); break;
 		case MAP_CENTER: x = 0; y = 0; break;
-		case SAVE_GAME: this.takeTurnandPrintTurn(Key_Commands.SAVE_GAME); break;
+		case SAVE_GAME: 
 		default: break;
 
 		}
@@ -110,20 +110,25 @@ public class MapEditorController extends Controller {
 	}
 	@Override
 	public String getUserName() {
-		return factory_.mostRecentAvatar();
-	}
-
-	@Override
-	public void SaveGame(String foo) {
-		// TODO Auto-generated method stub
+		String foo = factory_.mostRecentAvatar();
+		System.out.println("foo");
+		if(foo == null){return "null";}
+		else{return foo;}
+		
 		
 	}
 
 	@Override
-	public void LoadGame(String foo) {
-		// TODO Auto-generated method stub
+	public void saveGame(String foo) {
+		map_.saveGame(foo);
 		
 	}
 
+
+	@Override
+	public void loadGame(String foo) {
+		map_.loadGame(foo);
+		
+	}
 
 }

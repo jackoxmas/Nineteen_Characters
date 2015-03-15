@@ -24,6 +24,7 @@ public class MapEditorView extends MapView {
 		items_ = in;
 	}
 	public void setLastSpawned(String in){
+		if(in == "" || in == null || in.equals(System.lineSeparator())){return;}//Avoid setting lastSpawned to invalid. 
 		lastSpawned = in;
 	}
 	@Override

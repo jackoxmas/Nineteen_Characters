@@ -93,12 +93,12 @@ public abstract class Controller implements Function<Void,Character> {
 	 * Should be overridden to save the file with the name given, if no name given, save with date.
 	 * @param foo
 	 */
-	public abstract void SaveGame(String foo);
-/**
- * Should be overrridden to load given save file. 
- * @param foo
- */
-	public abstract void LoadGame(String foo);
+	public abstract void saveGame(String foo);
+	/**
+	 * Should be overrridden to load given save file. 
+	 * @param foo
+	 */
+	public abstract void loadGame(String foo);
 
 
 

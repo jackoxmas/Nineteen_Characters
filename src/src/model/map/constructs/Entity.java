@@ -386,10 +386,6 @@ abstract public class Entity extends DrawableThing {
             case MOVE_UPRIGHT: // Move NE
                 mar.moveInDirection(1, 1);
                 break;
-            case SAVE_GAME: // Save Game
-                RunGame.saveGameToDisk(); // TODO: this is for testing, remove for
-                // deployment
-                break;
             case USE_LAST_ITEM: // Use item in inventory
                 this.useItemInFacingDirectionOnMyself();
                 System.out.println("using item!");

@@ -12,7 +12,7 @@ import src.Effect;
 import src.FacingDirection;
 import src.HardCodedStrings;
 import src.Key_Commands;
-import src.RunGame;
+import src.RunController;
 import src.SkillEnum;
 import src.io.view.display.Display;
 import src.model.map.MapAvatar_Relation;

@@ -11,7 +11,7 @@ import src.Effect;
 
 import src.FacingDirection;
 import src.Key_Commands;
-import src.RunGame;
+import src.RunController;
 import src.SkillEnum;
 import src.io.view.display.Display;
 import src.model.map.MapEntity_Relation;
@@ -387,7 +387,7 @@ abstract public class Entity extends DrawableThing {
                 mar.moveInDirection(1, 1);
                 break;
             case SAVE_GAME: // Save Game
-                // RunGame.saveGameToDisk(); // TODO: this is for testing, remove for
+                // RunController.saveGameToDisk(); // TODO: this is for testing, remove for
                 // deployment
                 break;
             case USE_LAST_ITEM: // Use item in inventory

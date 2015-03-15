@@ -31,7 +31,7 @@ import src.model.map.constructs.Villager;
  *
  * @author JohnReedLOL, Alex Stewart
  */
-public class RunGame {
+public class RunController {
 
     private static ProgramOpts pOpts_ = null;
     private static SavedGame saveGame_;

@@ -21,7 +21,7 @@ import org.w3c.dom.Element;
 
 import src.IO_Bundle;
 import src.Key_Commands;
-import src.RunGame;
+import src.RunController;
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.DrawableThingStatsPack;
 import src.model.map.constructs.Entity;
@@ -743,7 +743,7 @@ public class Map implements MapMapEditor_Interface {
                 // Terrain
                 Terrain terr = this.map_grid_[i][j].getTerrain();
                 if (terr == null) {
-                    RunGame.errOut("xml_writeMap: null terrain @ [" + i + ", " + j + "]");
+                    RunController.errOut("xml_writeMap: null terrain @ [" + i + ", " + j + "]");
                     return 1;
                 }
                 xml_writeTerrain(doc, e_l, terr);
@@ -856,7 +856,7 @@ public class Map implements MapMapEditor_Interface {
 
     private Element xml_writeStatsDrawable(Document doc, Element parent, DrawableThingStatsPack stats) {
         if (stats == null) {
-            RunGame.errOut("xml_writeStatsDrawable: null statspack");
+            RunController.errOut("xml_writeStatsDrawable: null statspack");
             return null;
         }
 
@@ -887,7 +887,7 @@ public class Map implements MapMapEditor_Interface {
 
     private Element xml_writeStatsEntity(Document doc, Element parent, EntityStatsPack stats) {
         if (stats == null) {
-            RunGame.errOut("xml_writeStatsEntity: null statspack");
+            RunController.errOut("xml_writeStatsEntity: null statspack");
             return null;
         }
 
@@ -968,7 +968,7 @@ public class Map implements MapMapEditor_Interface {
         Element e_Terrain = doc.createElement("terrain");
 
         if (terr.getName() == null) {
-            RunGame.errOut("xml_writeTerrain: null Terrain name");
+            RunController.errOut("xml_writeTerrain: null Terrain name");
             return null;
         }
         e_Terrain.setAttribute("name", terr.getName());

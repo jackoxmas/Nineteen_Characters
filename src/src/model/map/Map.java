@@ -37,7 +37,7 @@ import src.model.map.constructs.Terrain;
  *
  * @author John-Michael Reed
  */
-public class Map implements MapUser_Interface, MapMapEditor_Interface {
+public class Map implements MapMapEditor_Interface {
 
     public static final int MAX_NUMBER_OF_WORLDS = 1;
     private static int number_of_worlds_generated_ = 0;

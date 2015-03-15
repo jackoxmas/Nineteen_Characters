@@ -174,13 +174,10 @@ public class GameController extends Controller {
         
         final String output_to_map = output_to_map_before_trim.trim();
 
-        byte[] buf = new byte[256];
+        byte[] buf = null; //= new byte[256];
         // byte[] buf = null;
         try {
-            byte[] buf_temp = output_to_map.getBytes("UTF-8");
-            for (int i = 0; i < buf_temp.length; ++i) {
-                buf[i] = buf_temp[i];
-            }
+            buf = output_to_map.getBytes("UTF-8");
         } catch (UnsupportedEncodingException unsupportedEncodingException) {
             unsupportedEncodingException.printStackTrace();
             System.exit(-6);
@@ -208,12 +205,10 @@ public class GameController extends Controller {
         final String hostName = "localhost";
         final int portNumber = Map.TCP_PORT_NUMBER;
         try {
-            Socket tcp_socket = new Socket(hostName, portNumber);
-            // Socket tcp_socket = new Socket();
+            Socket tcp_socket = new Socket();
             tcp_socket.setTcpNoDelay(true);
-            // InetAddress i = InetAddress.getByName(hostName);
-            // tcp_socket.bind(new InetSocketAddress(hostName, portNumber));
-            // tcp_socket.connect(new InetSocketAddress(hostName, portNumber));
+            tcp_socket.connect(new InetSocketAddress(hostName, portNumber));
+            tcp_socket.setTcpNoDelay(true);
             ObjectInputStream object_input_stream = new ObjectInputStream(tcp_socket.getInputStream());
 
             try {

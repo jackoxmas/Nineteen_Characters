@@ -1,5 +1,6 @@
 package src.io.view.display;
 
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.io.InputStream;
@@ -13,7 +14,7 @@ import src.Key_Commands;
 
 /**
  * Computer generated code made with Netbeans GUI builder using instruction
- * from: https://netbeans.org/kb/docs/java/gui-functionality.html 
+ * from: https://netbeans.org/kb/docs/java/gui-functionality.html
  *
  * @author Matthew B [human-written code]
  */
@@ -23,32 +24,38 @@ class Key_Listener_GUI extends javax.swing.JFrame {
     public javax.swing.JTextArea getIncomingText() {
         return incoming_text_jTextArea;
     }
-/**
- * Returns the skill button of index i. 
- * Should i not be a valid skill button, returns null.
- * @param i
- * @return
- */
-    public javax.swing.JButton getSkillButton(int i) {
-    	switch(i){
-    	case 1:
-    		return occupation_skill_1_jButton;
-    	case 2:
-    		return occupation_skill_2_jButton;
-    	case 3:
-    		return occupation_skill_3_jButton;
-    	case 4:
-    		return occupation_skill_4_jButton;
-    	default: 
-    		return null;
-    	}
-    }
+
     /**
-     * The number of skill buttons.
+     * Returns the skill button of index i. Should i not be a valid skill
+     * button, returns null.
+     *
+     * @param i
      * @return
      */
-    public int getSkillButtonCount(){return 4;}
-    
+    public javax.swing.JButton getSkillButton(int i) {
+        switch (i) {
+            case 1:
+                return occupation_skill_1_jButton;
+            case 2:
+                return occupation_skill_2_jButton;
+            case 3:
+                return occupation_skill_3_jButton;
+            case 4:
+                return occupation_skill_4_jButton;
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * The number of skill buttons.
+     *
+     * @return
+     */
+    public int getSkillButtonCount() {
+        return 4;
+    }
+
     /**
      *
      */
@@ -96,9 +103,11 @@ class Key_Listener_GUI extends javax.swing.JFrame {
         inputchatbox_Handlers_.add(handler_);
 
     }
-    public void addCommandBoxReceiver(Function<Void,String> handler_){
-    	command_area_double_clicked_.add(handler_);
+
+    public void addCommandBoxReceiver(Function<Void, String> handler_) {
+        command_area_double_clicked_.add(handler_);
     }
+
     /**
      *
      * @param in What to write to the inventory box.
@@ -116,8 +125,9 @@ class Key_Listener_GUI extends javax.swing.JFrame {
         incoming_text_jTextArea.append(System.lineSeparator() + message);
         updateScroll();
     }
-    public void setCommands(String commands){
-    	commands_jTextArea.setText(commands);
+
+    public void setCommands(String commands) {
+        commands_jTextArea.setText(commands);
     }
 
     /**
@@ -147,6 +157,13 @@ class Key_Listener_GUI extends javax.swing.JFrame {
         occupation_skill_1_jButton.setText("Reassign Me");
         occupation_skill_1_jButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
+
+                if (EventQueue.isDispatchThread()) {
+                    System.out.println("IN KEY_LISTENER: YOU ARE EXECUTING SHIT ON THE EVENT DISPATCH THREADDD!!!!!!!!!!!!!");
+                } else {
+                    System.out.println("IN KEY_LISTENER: YOU ARE NOT EXECUTING SHIT ON THE EVENT DISPATCH THREADDD!!!!!!!!!!!!!");
+                }
+
                 occupation_skill_1_jButtonMouseClicked(evt);
             }
         });
@@ -181,14 +198,20 @@ class Key_Listener_GUI extends javax.swing.JFrame {
         setFont(equip_text_area_jScrollPane);
         setFont(inventory_jTextArea);
     }
-    public String getHighlightedItem(){
-    	String highlighted = inventory_jTextArea.getSelectedText();
-    	if(highlighted!=null){return highlighted;}
-    	highlighted = equipment_jTextArea.getSelectedText();
-    	if(highlighted!=null){return highlighted;}
-    	highlighted = commands_jTextArea.getSelectedText();
-    	return highlighted;
+
+    public String getHighlightedItem() {
+        String highlighted = inventory_jTextArea.getSelectedText();
+        if (highlighted != null) {
+            return highlighted;
+        }
+        highlighted = equipment_jTextArea.getSelectedText();
+        if (highlighted != null) {
+            return highlighted;
+        }
+        highlighted = commands_jTextArea.getSelectedText();
+        return highlighted;
     }
+
     /**
      * Returns the singleton instance.
      *
@@ -290,7 +313,7 @@ class Key_Listener_GUI extends javax.swing.JFrame {
         equipment_jTextArea.setColumns(20);
         equipment_jTextArea.setRows(5);
         equip_text_area_jScrollPane.setViewportView(equipment_jTextArea);
-        
+
         commands_jTextArea.setEditable(false);
         commands_jTextArea.setColumns(20);
         commands_jTextArea.setRows(5);
@@ -301,10 +324,8 @@ class Key_Listener_GUI extends javax.swing.JFrame {
             }
         });
 
-
         equipment_and_inventory_jTabbedPane.addTab("Equip", equip_text_area_jScrollPane);
-         equipment_and_inventory_jTabbedPane.addTab("Commands",command_text_area_jScrollPane);
-         
+        equipment_and_inventory_jTabbedPane.addTab("Commands", command_text_area_jScrollPane);
 
         inventory_jTextArea.setEditable(false);
         inventory_jTextArea.setColumns(20);
@@ -471,7 +492,6 @@ class Key_Listener_GUI extends javax.swing.JFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String S = outgoing_text_jTextField.getText();
 
-
             incoming_text_jTextArea.append(System.lineSeparator() + outgoing_text_jTextField.getText());
             if (outgoing_text_jTextField.getText().startsWith("/fontsize")) {
                 try {
@@ -484,8 +504,7 @@ class Key_Listener_GUI extends javax.swing.JFrame {
                 } catch (Exception e) {
                     this.addMessage("Invalid Font size! Current size is " + Float.toString(fontSize_));
                 }
-            }
-            else{
+            } else {
                 for (Function<Void, String> functor : inputchatbox_Handlers_) {
                     functor.apply(S);//Loop through and apply, but ONLY if we haven't already eaten /fontsize.
                 }
@@ -530,12 +549,14 @@ class Key_Listener_GUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_game_jTextPaneKeyTyped
 
-	private void command_jButtonMouseClicked(java.awt.event.MouseEvent evt){
-		if(evt.getClickCount() >= 2){
-			String selected = commands_jTextArea.getSelectedText();
-			for(Function<Void,String> foo : command_area_double_clicked_){foo.apply(selected);}
-		}
-	}
+    private void command_jButtonMouseClicked(java.awt.event.MouseEvent evt) {
+        if (evt.getClickCount() >= 2) {
+            String selected = commands_jTextArea.getSelectedText();
+            for (Function<Void, String> foo : command_area_double_clicked_) {
+                foo.apply(selected);
+            }
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bargain_barter_jButton;
     private javax.swing.JButton bind_wounds_jButton;

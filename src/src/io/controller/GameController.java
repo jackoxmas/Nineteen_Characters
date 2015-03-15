@@ -5,6 +5,7 @@
  */
 package src.io.controller;
 
+import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -165,6 +166,12 @@ public class GameController extends Controller {
             });
         }
         // final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
+
+        if (EventQueue.isDispatchThread()) {
+            System.out.println("YOU ARE EXECUTING SHIT ON THE EVENT DISPATCH THREADDD!!!!!!!!!!!!!");
+        } else {
+            System.out.println("YOU ARE NOT EXECUTING SHIT ON THE EVENT DISPATCH THREADDD!!!!!!!!!!!!!");
+        }
 
         final String username = getUserName();
         final String command_enum_as_a_string = command.name();

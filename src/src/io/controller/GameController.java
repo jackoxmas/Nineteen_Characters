@@ -217,6 +217,20 @@ public class GameController extends Controller {
 		updateDisplay(bundle);
 	}
 
+
+	@Override
+	public void SaveGame(String foo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void LoadGame(String foo) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	// FIELD ACCESSORS
 	/**
 	 * Gets this UserController's user name value

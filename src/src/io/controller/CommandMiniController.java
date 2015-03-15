@@ -10,8 +10,8 @@ import src.enumHandler;
  *
  */
 class CommandMiniController {
-	KeyRemapper remap_  = null;
-	Controller cont_ = null;
+	private KeyRemapper remap_  = null;
+	private Controller cont_ = null;
 	public CommandMiniController(KeyRemapper remap, Controller cont) {
 		remap_ = remap;
 		cont_ = cont;
@@ -135,7 +135,7 @@ class CommandMiniController {
 	}
 
 	private String processSave(String foo) {
-		// TODO Auto-generated method stub
+		//cont.processSave(foo) is how it will be done.
 		return "Not implemented yet";
 	}
 

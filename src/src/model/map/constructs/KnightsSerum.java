@@ -1,4 +1,4 @@
-import src.model.map.constructs.Entity;
+package src.model.map.constructs;
 
 public class KnightsSerum extends PickupableItem {
 
@@ -9,7 +9,7 @@ public class KnightsSerum extends PickupableItem {
 
     @Override
     public void use(Entity target) {
-        target.becomeKnightRelation();
+        target.getMapRelation().becomeKnightRelation();
     }
 
 }

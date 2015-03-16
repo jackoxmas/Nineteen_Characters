@@ -207,8 +207,11 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         entity_ = entity;
         x_respawn_point_ = x_respawn_point;
         y_respawn_point_ = y_respawn_point;
+        if (entity.getMapRelation() != null && entity.getMapRelation() != this) {
+            this.setMapTile(entity.getMapRelation().getMapTile());
+        }
     }
-    
+
     /**
      * Turns an entity's MapEntityRelation into a MapKnight_Relation
      */
@@ -223,7 +226,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     public int getYrespawnPoint() {
         return y_respawn_point_;
     }
-    
+
     protected Entity getEntity() {
         return entity_;
     }
@@ -336,7 +339,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 Display.getDisplay().setMessage(
                         itemToBePickedUp.name_ + " was picked up off the map!");
                 error_code = 0;
-            } 
+            }
         } else {
             // Dead men cannot pick up items.
         }

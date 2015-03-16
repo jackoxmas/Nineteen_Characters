@@ -12,6 +12,7 @@ import src.io.controller.MapEditorController;
 import src.model.map.Map;
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Item;
+import src.model.map.constructs.KnightsSerum;
 import src.model.map.constructs.Merchant;
 import src.model.map.constructs.Monster;
 import src.model.map.constructs.ObstacleRemovingItem;
@@ -114,6 +115,9 @@ public class RunGame {
         OneShotAreaEffectItem hurt = new OneShotAreaEffectItem("hurter", 'u', Effect.HURT, 10);
         OneShotAreaEffectItem kill = new OneShotAreaEffectItem("killer", 'k', Effect.KILL, 10);
         OneShotAreaEffectItem level = new OneShotAreaEffectItem("leveler", 'l', Effect.LEVEL, 10);
+        
+        KnightsSerum knight_serum = new KnightsSerum("Knight serum", 'N');
+        map_.addItem(knight_serum, 18, 12);
         
         ObstacleRemovingItem key = new ObstacleRemovingItem("Key", 'K');
         TemporaryObstacleItem door = new TemporaryObstacleItem("Door", 'D', key);

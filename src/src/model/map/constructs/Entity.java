@@ -33,7 +33,7 @@ abstract public class Entity extends DrawableThing {
     private boolean has_lives_left_ = true;
 
     /**
-     * 
+     *
      * @return true if you have lives left, false if you don't.
      */
     public boolean isAlive() {
@@ -387,8 +387,18 @@ abstract public class Entity extends DrawableThing {
                 mar.moveInDirection(1, 1);
                 break;
             case USE_LAST_ITEM: // Use item in inventory
-                this.useItemInFacingDirectionOnMyself();
-                System.out.println("using item!");
+                int error_code = this.useItemInFacingDirectionOnMyself();
+                //if(error_code != 0) {
+                PickupableItem last = this.getLastItemInInventory();
+                if (last == null) {
+                    System.out.println("last inventory item is null");
+                } else {
+                    System.out.println("last inventory item is not null");
+                    if (error_code != 0) {
+                        last.use(this);
+                        System.out.println("using item!");
+                    }
+                }
                 break;
             case EQUIP_LAST_ITEM: // equipMyselfTo
                 try {
@@ -841,9 +851,11 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     * Call this function when an Entity gains experience points. 
+     * Call this function when an Entity gains experience points.
+     *
      * @param amount - number of experience points
-     * @return number of level ups - 0 for no level ups, 1 for 1 level up, 2 for 2 levels up, etc.;
+     * @return number of level ups - 0 for no level ups, 1 for 1 level up, 2 for
+     * 2 levels up, etc.;
      */
     public int gainExperiencePoints(int amount) {
         int num_level_ups = stats_pack_.increaseQuantityOfExperienceBy(amount);

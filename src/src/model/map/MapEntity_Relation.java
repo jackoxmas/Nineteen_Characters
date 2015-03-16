@@ -208,6 +208,15 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         x_respawn_point_ = x_respawn_point;
         y_respawn_point_ = y_respawn_point;
     }
+    
+    /**
+     * Turns an entity's MapEntityRelation into a MapKnight_Relation
+     */
+    public void becomeKnightRelation() {
+        entity_.setMapRelation(new MapKnight_Relation(super.getMap(), // incorrect function names.
+        entity_, x_respawn_point_, y_respawn_point_ );
+        entity_ = null;
+    }
 
     public int getXrespawnPoint() {
         return x_respawn_point_;

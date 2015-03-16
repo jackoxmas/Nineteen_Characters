@@ -218,19 +218,19 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
      * @return -1 if moves left is less than or equal to zero
      */
     public int decreaseMovesLeftByOne() {
-        if (moves_left_in_turn_ <= 0) {
-            return -1;
-        } else {
+        if (moves_left_in_turn_ > 0) {
             --moves_left_in_turn_;
             return 0;
+        } else {
+            return -1;
         }
     }
 
     public boolean hasMovesLeft() {
-        if (moves_left_in_turn_ <= 0) {
-            return false;
-        } else {
+        if (moves_left_in_turn_ > 0) {
             return true;
+        } else {
+            return false;
         }
     }
 
@@ -245,12 +245,12 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
             System.err.println("You are not allowed to do negative damage.");
             System.exit(-1);
         }
-        if (current_life_ - amount <= 0) {
-            current_life_ = 0;
-            return -1;
-        } else {
+        if (current_life_ - amount > 0) {
             current_life_ -= amount;
             return 0;
+        } else {
+            current_life_ = 0;
+            return -1;
         }
     }
 
@@ -264,12 +264,12 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
             System.err.println("Warning! Current life increasing function cannot increase life by negative amount: " + amount);
             amount = 0;
         }
-        if (current_life_ + amount > max_life_) {
-            current_life_ = max_life_;
-            return -1;
-        } else {
+        if (current_life_ + amount <= max_life_) {
             current_life_ += amount;
             return 0;
+        } else {
+            current_life_ = max_life_;
+            return -1;
         }
     }
 
@@ -283,12 +283,12 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
             System.err.println("Warning! Current mana reducing function cannot reduce mana by negative amount: " + amount);
             amount = 0;
         }
-        if (current_mana_ - amount < 0) {
-            current_mana_ = 0;
-            return -1;
-        } else {
+        if (current_mana_ - amount >= 0) {
             current_mana_ -= amount;
             return 0;
+        } else {
+            current_mana_ = 0;
+            return -1;
         }
     }
 
@@ -302,12 +302,12 @@ public final class EntityStatsPack extends DrawableThingStatsPack {
             System.err.println("Warning! Current mana increasing function cannot increase mana by negative amount: " + amount);
             amount = 0;
         }
-        if (current_mana_ + amount > max_mana_) {
-            current_mana_ = max_mana_;
-            return -1;
-        } else {
+        if (current_mana_ + amount <= max_mana_) {
             current_mana_ += amount;
             return 0;
+        } else {
+            current_mana_ = max_mana_;
+            return -1;
         }
     }
 

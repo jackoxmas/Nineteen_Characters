@@ -125,16 +125,7 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
      * @param y - Height of Map
      */
     public Map(int x, int y) {
-        if (number_of_worlds_generated_ >= MAX_NUMBER_OF_WORLDS) {
-            System.err.println("Number of world allowed: "
-                    + MAX_NUMBER_OF_WORLDS);
-            System.err.println("Number of worlds already in existence: "
-                    + number_of_worlds_generated_);
-            System.err.println("Please don't make more than "
-                    + MAX_NUMBER_OF_WORLDS + " worlds.");
-            System.exit(-4);
-
-        } else {
+        if (number_of_worlds_generated_ < MAX_NUMBER_OF_WORLDS) {
             ++number_of_worlds_generated_;
 
             height_ = y;
@@ -159,6 +150,14 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
                 return;
             }
             accept_udp_input_thread.start();
+        } else {
+            System.err.println("Number of world allowed: "
+                    + MAX_NUMBER_OF_WORLDS);
+            System.err.println("Number of worlds already in existence: "
+                    + number_of_worlds_generated_);
+            System.err.println("Please don't make more than "
+                    + MAX_NUMBER_OF_WORLDS + " worlds.");
+            System.exit(-4);
         }
     }
 
@@ -504,10 +503,10 @@ public class Map implements MapUser_Interface, MapMapEditor_Interface {
      */
     public int removeEntity(Entity e) {
         Entity removed = this.entity_list_.remove(e.name_);
-        if (removed == null) {
-            System.err.println("The entity to be removed does not exist in the list of entities");
-        } else {
+        if (removed != null) {
             System.out.println(removed.name_ + " has been removed from the map");
+        } else {
+            System.err.println("The entity to be removed does not exist in the list of entities");
         }
         if (this.map_grid_[e.getMapRelation().getMyYCoordinate()][e.getMapRelation().getMyXCoordinate()].getEntity() == e) {
             this.map_grid_[e.getMapRelation().getMyYCoordinate()][e.getMapRelation().getMyXCoordinate()].removeEntity();

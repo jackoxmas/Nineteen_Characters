@@ -38,16 +38,16 @@ public class MapItem_Relation extends MapDrawableThing_Relation {
             int old_x = this.getMyXCoordinate();
             int old_y = this.getMyYCoordinate();
             current_map_reference_.getTile(old_x, old_y).removeSpecificItem(item_);
-            if (destination.isPassable() == false) { // put the entity back in its place
-                current_map_reference_.getTile(old_x, old_y).addItem(item_);
-                return -4;
-            } else { // move the entity
+            if (destination.isPassable() != false) { // move the entity
                 int error_code = destination.addItem(item_);
                 Item landed_on_item = destination.viewTopItem();
                 if (landed_on_item != null) { // make the item walked on do stuff
                     landed_on_item.onWalkOver();
                 }
                 return error_code;
+            } else { // put the entity back in its place
+                current_map_reference_.getTile(old_x, old_y).addItem(item_);
+                return -4;
             }
         } else {
             return -2;

@@ -241,10 +241,10 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             s += " Items on this tile:";
             for (int j = 0; j < items.size(); j++) {
                 s += " " + items.get(j).name_;
-                if (j + 1 == items.size()) {
-                    s += ".";
-                } else {
+                if (j + 1 != items.size()) {
                     s += ",";
+                } else {
+                    s += ".";
                 }
             }
         }
@@ -367,9 +367,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     public int sendAttackToRelativePosition(int x, int y) {
         MapTile target_tile = this.current_map_reference_.getTile(
                 getMyXCoordinate() + x, getMyYCoordinate() + y);
-        if (target_tile == null) {
-            return -1;
-        } else {
+        if (target_tile != null) {
             Entity target_entity = target_tile.getEntity();
             if (target_entity == null) {
                 return -2;
@@ -379,6 +377,8 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                         .getOffensive_rating_(), entity_);
                 return 0;
             }
+        } else {
+            return -1;
         }
     }
 
@@ -397,8 +397,6 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     public int sendAttackToAbsolutePosition(int x, int y) {
         MapTile target_tile = this.current_map_reference_.getTile(x, y);
         if (target_tile == null) {
-            return -1;
-        } else {
             Entity target_entity = target_tile.getEntity();
             if (target_entity == null) {
                 return -2;
@@ -407,6 +405,8 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                         .getOffensive_rating_(), entity_);
                 return 0;
             }
+        } else {
+            return -1;
         }
     }
 
@@ -617,9 +617,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      */
     public int teleportTo(int new_x, int new_y) {
         MapTile destination = current_map_reference_.getTile(new_x, new_y);
-        if (destination == null) {
-            return -2;
-        } else {
+        if (destination != null) {
             int old_x = this.getMyXCoordinate();
             int old_y = this.getMyYCoordinate();
             current_map_reference_.getTile(old_x, old_y).removeEntity();
@@ -636,6 +634,8 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 }
                 return error_code;
             }
+        } else {
+            return -2;
         }
     }
 

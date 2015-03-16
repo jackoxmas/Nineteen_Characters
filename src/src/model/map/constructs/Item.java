@@ -31,14 +31,6 @@ public abstract class Item extends DrawableThing {
     public int setPassable(boolean is_passable) {
         is_passable_ = is_passable;
         return 0;
-    } // Why is this written as an if/else? Why is the behavior swapped?
-
-    public boolean determineIfCanPass(Entity entity) {
-        if (this.isPassable()) {
-            return false;
-        } else {
-            return true;
-        }
     }
 
     private boolean goes_in_inventory_;

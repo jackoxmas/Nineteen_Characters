@@ -82,12 +82,12 @@ public final class MapTile {
      * @return 0 on success, non-zero on error
      */
     public int removeEntity() {
-        if (this.entity_ == null) {
-            return -1;
-        } else {
+        if (this.entity_ != null) {
             this.entity_.getMapRelation().setMapTile(null);
             this.entity_ = null;
             return 0;
+        } else {
+            return -1;
         }
     }
 
@@ -99,9 +99,13 @@ public final class MapTile {
      * @author Reed, John
      */
     public char getTopCharacter() {
-        if (entity_ != null && entity_.isVisible()) {
-            return entity_.getRepresentation();
-        } else if (hasItemRepresentation() == true) {
+        if (entity_ == null || !entity_.isVisible()) {
+        	if (hasItemRepresentation() == false) {
+            	if (terrain_ == null || !terrain_.isVisible()) {
+                    return '▩';
+            	}
+                return terrain_.getRepresentation();
+            }
             char ret = 0;
             for (int i = 0; i < items_.size(); ++i) {
                 if (items_.get(i).isVisible()) {
@@ -115,17 +119,18 @@ public final class MapTile {
                 System.exit(-97);
                 return ret;
             }
-        } else if (terrain_ != null && terrain_.isVisible()) {
-            return terrain_.getRepresentation();
-        } else {
-            return '▩';
         }
+        return entity_.getRepresentation();
     }
-
+    
     public Color getTopColor() {
-        if (entity_ != null && entity_.isVisible()) {
-            return entity_.getColor();
-        } else if (hasItemRepresentation() == true) {
+        if (entity_ == null || !entity_.isVisible()) {
+        	if (hasItemRepresentation() == false) {
+        		if (terrain_ == null || !terrain_.isVisible()) {
+                    return Color.BLACK;
+        		}
+                return terrain_.getColor();
+        	}
             Color ret = null;
             for (int i = 0; i < items_.size(); ++i) {
                 if (items_.get(i).isVisible()) {
@@ -139,11 +144,8 @@ public final class MapTile {
                 System.exit(-98);
                 return ret;
             }
-        } else if (terrain_ != null && terrain_.isVisible()) {
-            return terrain_.getColor();
-        } else {
-            return Color.BLACK;
         }
+        return entity_.getColor();
     }
 
     private boolean hasItemRepresentation() {
@@ -211,10 +213,10 @@ public final class MapTile {
     public int removeSpecificItem(Item i) {
         if (!this.items_.isEmpty()) {
             boolean found = this.items_.remove(i);
-            if (!found) {
-                return -2;
-            } else {
+            if (found) {
                 return 0;
+            } else {
+                return -2;
             }
         } else {
             return -1;

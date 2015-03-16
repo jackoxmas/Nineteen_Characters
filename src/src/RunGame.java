@@ -19,7 +19,7 @@ import src.model.map.constructs.OneHandedSword;
 import src.model.map.constructs.OneShotAreaEffectItem;
 import src.model.map.constructs.OneWayTeleportItem;
 import src.model.map.constructs.PermanentObstacleItem;
-import src.model.map.constructs.Sheild;
+import src.model.map.constructs.Shield;
 import src.model.map.constructs.TemporaryObstacleItem;
 import src.model.map.constructs.Terrain;
 import src.model.map.constructs.Trap;
@@ -47,10 +47,10 @@ public class RunGame {
         handleArgs(args);
 
        
-       if(map_editor_mode_){
-    	   startMapEditor();
-       }else{
+       if(!map_editor_mode_){
     	   startNewGame();
+       }else{
+    	   startMapEditor();
        }
     }
     private static int startNewGame(){
@@ -109,7 +109,7 @@ public class RunGame {
         Item teleport = new OneWayTeleportItem("tele", 'T', 0, 0);
         Item onehandedsword = new OneHandedSword("Excalibur", '|');
         Item twohandedsword = new TwoHandedSword("Two_hander", '|');
-        Item sheild = new Sheild("Sheildy",'O');
+        Item shield = new Shield("Shieldy",'O');
         OneShotAreaEffectItem heal = new OneShotAreaEffectItem("healer", 'h', Effect.HEAL, 10);
         OneShotAreaEffectItem hurt = new OneShotAreaEffectItem("hurter", 'u', Effect.HURT, 10);
         OneShotAreaEffectItem kill = new OneShotAreaEffectItem("killer", 'k', Effect.KILL, 10);
@@ -135,7 +135,7 @@ public class RunGame {
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
         map_.addItem(teleport, 2, 4);
         map_.addItem(twohandedsword, 1, 1);
-        map_.addItem(sheild,10,10);
+        map_.addItem(shield,10,10);
         map_.addItem(onehandedsword, 5,5);
         for (int y = 0; y < mapHeight_; ++y) {
             for (int x = 0; x < mapWidth_; ++x) {

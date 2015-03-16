@@ -31,7 +31,7 @@ public abstract class Item extends DrawableThing {
     public int setPassable(boolean is_passable) {
         is_passable_ = is_passable;
         return 0;
-    }
+    } // Why is this written as an if/else? Why is the behavior swapped?
 
     public boolean determineIfCanPass(Entity entity) {
         if (this.isPassable()) {
@@ -102,10 +102,10 @@ public abstract class Item extends DrawableThing {
         String s = "Item name: " + name_;
 
         s += "\n map_relationship_: ";
-        if (map_relationship_ == null) {
-            s += "null";
-        } else {
+        if (map_relationship_ != null) {
             s += "Not null";
+        } else {
+            s += "null";
         }
 
         return s;

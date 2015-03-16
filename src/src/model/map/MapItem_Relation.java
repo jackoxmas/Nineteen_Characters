@@ -34,9 +34,7 @@ public class MapItem_Relation extends MapDrawableThing_Relation {
      */
     public int teleportTo(int new_x, int new_y) {
         MapTile destination = current_map_reference_.getTile(new_x, new_y);
-        if (destination == null) {
-            return -2;
-        } else {
+        if (destination != null) {
             int old_x = this.getMyXCoordinate();
             int old_y = this.getMyYCoordinate();
             current_map_reference_.getTile(old_x, old_y).removeSpecificItem(item_);
@@ -51,6 +49,8 @@ public class MapItem_Relation extends MapDrawableThing_Relation {
                 }
                 return error_code;
             }
+        } else {
+            return -2;
         }
     }
 }

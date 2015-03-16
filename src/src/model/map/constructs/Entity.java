@@ -532,11 +532,11 @@ abstract public class Entity extends DrawableThing {
      * @return true if alive false is dead
      */
     public boolean checkHealthAndCommitSuicideIfDead() {
-        if (stats_pack_.getCurrent_life_() <= 0) {
+        if (stats_pack_.getCurrent_life_() > 0) {
+            return true;
+        } else {
             commitSuicide();
             return false;
-        } else {
-            return true;
         }
     }
 
@@ -587,27 +587,27 @@ abstract public class Entity extends DrawableThing {
 
     /**
      * @author John-Michael Reed
-     * @param sheild
+     * @param shield
      * @return
      */
-    public int equipSheild(Sheild sheild) {
-        if (sheild != null) {
+    public int equipShield(Shield shield) {
+        if (shield != null) {
             // In the case of a 2H sword
             if ((primary_hand_ == secondary_hand_) && (secondary_hand_ != null)) {
                 inventory_.add((PickupableItem) primary_hand_);
                 stats_pack_.reduceBy(secondary_hand_.getStatsPack());
                 primary_hand_ = null;
                 secondary_hand_ = null;
-            } // In the case of a sheild
+            } // In the case of a shield
             else if ((primary_hand_ != secondary_hand_) && (secondary_hand_ != null)) {
                 inventory_.add((PickupableItem) primary_hand_);
                 stats_pack_.reduceBy(secondary_hand_.getStatsPack());
                 secondary_hand_ = null;
             }
 
-            secondary_hand_ = sheild;
+            secondary_hand_ = shield;
             stats_pack_.addOn(secondary_hand_.getStatsPack());
-            boolean successful_removal = inventory_.remove((PickupableItem) sheild);
+            boolean successful_removal = inventory_.remove((PickupableItem) shield);
             if (successful_removal != true) {
                 System.exit(-66);
             }
@@ -725,10 +725,10 @@ abstract public class Entity extends DrawableThing {
         primary_hand_ = null;
         secondary_hand_ = null;
 
-        if (occupation_ == null) {
-            return 0;
-        } else {
+        if (occupation_ != null) {
             return occupation_.unEquipEverything();
+        } else {
+            return 0;
         }
     }
 
@@ -817,11 +817,11 @@ abstract public class Entity extends DrawableThing {
      * @return -1 if target is null, 0 if success
      */
     public int sendAttack(Entity target_entity) {
-        if (target_entity == null) {
-            return -1;
-        } else {
+        if (target_entity != null) {
             target_entity.receiveAttack(3 + this.getStatsPack().getOffensive_rating_(), this);
             return 0;
+        } else {
+            return -1;
         }
     }
 

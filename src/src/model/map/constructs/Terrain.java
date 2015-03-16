@@ -70,10 +70,10 @@ public class Terrain extends DrawableThing {
 
     //potential duplicate of isPassable
     boolean determineIfCanPass(Entity entity) {
-        if (contains_water_ || contains_mountain_) {
-            return false;
-        } else {
+        if (!contains_water_ && !contains_mountain_) {
             return true;
+        } else {
+            return false;
         }
     }
     
@@ -82,10 +82,10 @@ public class Terrain extends DrawableThing {
      */
     @Override
     public char getRepresentation() {
-        if(this.hasDecal()) {
-            return decal_;
-        } else {
+        if(!this.hasDecal()) {
             return super.getRepresentation();
+        } else {
+            return decal_;
         }
     }
 

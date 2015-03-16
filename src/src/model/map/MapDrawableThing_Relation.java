@@ -128,10 +128,10 @@ public class MapDrawableThing_Relation {
     }
 
     public boolean isAssociatedWithMap() {
-        if (current_map_reference_ == null) {
-            return false;
-        } else {
+        if (current_map_reference_ != null) {
             return true;
+        } else {
+            return false;
         }
     }
 

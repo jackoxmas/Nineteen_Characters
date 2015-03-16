@@ -53,6 +53,11 @@ public final class Avatar extends Entity {
         return options;
     }
 
+    /**
+     * If/else loop not optimized.
+     * 
+     * - Jack
+     */
     public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Entity who_is_talking_to_me) {
         ArrayList<String> options = new ArrayList<String>();
         if (what_you_just_said_to_me.equals("Hello")) {
@@ -104,10 +109,10 @@ public final class Avatar extends Entity {
         s += "\n";
 
         s += " map_relationship_: ";
-        if (super.getMapRelation() == null) {
-            s += "null";
-        } else {
+        if (super.getMapRelation() != null) {
             s += "Not null";
+        } else {
+            s += "null";
         }
 
         s += "\n associated with map:"

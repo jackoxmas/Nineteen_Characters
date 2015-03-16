@@ -209,11 +209,11 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         y_respawn_point_ = y_respawn_point;
     }
 
-    protected int getXrespawnPoint() {
+    public int getXrespawnPoint() {
         return x_respawn_point_;
     }
 
-    protected int getYrespawnPoint() {
+    public int getYrespawnPoint() {
         return y_respawn_point_;
     }
 

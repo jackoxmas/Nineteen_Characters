@@ -136,8 +136,7 @@ public class GameController extends Controller {
         super.updateDisplay(bundle);
     }
 
-    // Why is this protected?
-    protected IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
+    private IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
         if (SwingUtilities.isEventDispatchThread()) {
             System.err.println("GameController is running on the Swing Dispatch Thread");
         } else {

@@ -93,7 +93,7 @@ public class RunGame {
 
          Avatar buddy = new Avatar("buddy", '웃');
          // map_.addAsAvatar(buddy, 3, 0);
-            map_.addAsEntity(buddy, 3, 0); // buddy doesn't have the auto-talk ability.
+            map_.addAsKnight(buddy, 3, 0); // buddy can jump over entities!
          
          Villager villager1 = new Villager("villager1", '웃');
          villager1.getStatsPack().increaseQuantityOfExperienceBy(200);

@@ -22,17 +22,34 @@ import src.model.map.constructs.SecondaryHandHoldable;
  */
 public class IO_Bundle implements Serializable {
 
-    public IO_Bundle(ArrayList<Character> unchanged_characters, ArrayList<Integer> frequencies,
-            ArrayList<Color> compressed_colors, ArrayList<Integer> color_frequencies,
+    public IO_Bundle(ArrayList<Character> unchanged_characters, ArrayList<Short> character_frequencies,
+            ArrayList<Color> compressed_colors, ArrayList<Short> color_frequencies,
             char[][] v, Color[][] c, ArrayList<PickupableItem> i,
             EntityStatsPack s, Occupation o, int n, int bi, int ba, int ob,
             PrimaryHandHoldable pri, SecondaryHandHoldable sec,
             ArrayList<String> sfc, int num_coins, boolean is_alive
     ) {
-        compressed_characters_ = unchanged_characters;
-        frequencies_ = frequencies;
-        compressed_colors_ = compressed_colors;
-        color_frequencies_ = color_frequencies;
+        if (unchanged_characters != null) {
+            compressed_characters_ = convertArrayListOfCharToArray(unchanged_characters);
+        } else {
+            compressed_characters_ = null;
+        }
+        if (unchanged_characters != null) {
+            character_frequencies_ = convertArrayListOfShortToArray(character_frequencies);
+        } else {
+            character_frequencies_ = null;
+        }
+        if (unchanged_characters != null) {
+            compressed_colors_ = new Color[compressed_colors.size()];
+            compressed_colors_ = compressed_colors.toArray(compressed_colors_);
+        } else {
+            compressed_colors_ = null;
+        }
+        if (unchanged_characters != null) {
+            color_frequencies_ = convertArrayListOfShortToArray(color_frequencies);
+        } else {
+            color_frequencies_ = null;
+        }
         view_for_display_ = v;
         color_for_display_ = c;
         inventory_ = i;
@@ -49,6 +66,22 @@ public class IO_Bundle implements Serializable {
         is_alive_ = is_alive;
     }
 
+    public static char[] convertArrayListOfCharToArray(ArrayList<Character> c) {
+        char[] arr = new char[c.size()];
+        for (int i = 0; i < c.size(); ++i) {
+            arr[i] = c.get(i);
+        }
+        return arr;
+    }
+
+    public static short[] convertArrayListOfShortToArray(ArrayList<Short> c) {
+        short[] arr = new short[c.size()];
+        for (int i = 0; i < c.size(); ++i) {
+            arr[i] = c.get(i);
+        }
+        return arr;
+    }
+
     /**
      * Uses run length decoding with repeatable characters "char[]
      * unchanged_characters" and frequencies "int[] unchanged_indexes."
@@ -61,33 +94,27 @@ public class IO_Bundle implements Serializable {
      * @param frequencies - array of frequencies
      * @return
      */
-    public char[][] runLengthDecodeView(final int width_from_center,
-            final int height_from_center, ArrayList<Character> unchanged_characters, ArrayList<Integer> frequencies) {
+    public static char[][] runLengthDecodeView(final int width_from_center,
+            final int height_from_center, char[] unchanged_characters, short[] frequencies) {
 
-        if (unchanged_characters.size() != frequencies.size()) {
-            System.err.println("Precondition violated in runLengthDecodeView");
-            System.exit(-18);
-        }
-
-        if (unchanged_characters != null && frequencies != null) {
+        if (unchanged_characters != null && frequencies != null && (unchanged_characters.length == frequencies.length)) {
             char[][] view = new char[1 + 2 * height_from_center][1 + 2 * width_from_center];
             int unchanged_indexes_index = 0;
-            int character_length_counter = frequencies.get(unchanged_indexes_index).intValue();
+            int character_length_counter = frequencies[unchanged_indexes_index];
             int y_index = 0;
-            for (int y = 0 - height_from_center; y <= 0 + height_from_center; ++y) {
+            for (int y = -height_from_center; y <= +height_from_center; ++y) {
                 int x_index = 0;
                 for (int x = 0 - width_from_center; x <= 0 + width_from_center; ++x) {
-                    view[y_index][x_index] = unchanged_characters.get(unchanged_indexes_index).charValue();
+                    view[y_index][x_index] = unchanged_characters[unchanged_indexes_index];
                     --character_length_counter;
                     if (character_length_counter == 0) {
                         ++unchanged_indexes_index;
-                        if (unchanged_indexes_index == frequencies.size()) {
+                        if (unchanged_indexes_index == frequencies.length) {
                             return view;
                         }
-                        character_length_counter = frequencies.get(unchanged_indexes_index).intValue();
-                    } else if (character_length_counter > 0) {
-                        // keep going
-                    } else {
+                        character_length_counter = frequencies[unchanged_indexes_index];
+                    }
+                    if (character_length_counter < 0) {
                         System.err.println("Impossible error in runLengthDecodeView");
                         System.exit(14);
                     }
@@ -95,38 +122,35 @@ public class IO_Bundle implements Serializable {
                 }
                 ++y_index;
             }
-            System.err.println("You shouldn't get this far in runLengthDecodeView");
-            System.exit(-4);
-            return view;
         } else {
-            return null;
-        }
-    }
-    
-        public Color[][] runLengthDecodeColor(final int width_from_center,
-            final int height_from_center, ArrayList<Color> unchanged_characters, ArrayList<Integer> frequencies) {
-
-        if (unchanged_characters.size() != frequencies.size()) {
             System.err.println("Precondition violated in runLengthDecodeView");
             System.exit(-18);
+            return null;
         }
+        System.err.println("You shouldn't get this far in runLengthDecodeView");
+        System.exit(-4);
+        return null;
+    }
 
-        if (unchanged_characters != null && frequencies != null) {
+    public static Color[][] runLengthDecodeColor(final int width_from_center,
+            final int height_from_center, Color[] unchanged_characters, short[] frequencies) {
+
+        if (unchanged_characters != null && frequencies != null && unchanged_characters.length == frequencies.length) {
             Color[][] view = new Color[1 + 2 * height_from_center][1 + 2 * width_from_center];
             int unchanged_indexes_index = 0;
-            int character_length_counter = frequencies.get(unchanged_indexes_index).intValue();
+            int character_length_counter = frequencies[unchanged_indexes_index];
             int y_index = 0;
             for (int y = 0 - height_from_center; y <= 0 + height_from_center; ++y) {
                 int x_index = 0;
                 for (int x = 0 - width_from_center; x <= 0 + width_from_center; ++x) {
-                    view[y_index][x_index] = unchanged_characters.get(unchanged_indexes_index);
+                    view[y_index][x_index] = unchanged_characters[unchanged_indexes_index];
                     --character_length_counter;
                     if (character_length_counter == 0) {
                         ++unchanged_indexes_index;
-                        if (unchanged_indexes_index == frequencies.size()) {
+                        if (unchanged_indexes_index == frequencies.length) {
                             return view;
                         }
-                        character_length_counter = frequencies.get(unchanged_indexes_index).intValue();
+                        character_length_counter = frequencies[unchanged_indexes_index];
                     } else if (character_length_counter > 0) {
                         // keep going
                     } else {
@@ -137,18 +161,20 @@ public class IO_Bundle implements Serializable {
                 }
                 ++y_index;
             }
-            System.err.println("You shouldn't get this far in runLengthDecodeView");
-            System.exit(-4);
-            return view;
         } else {
+            System.err.println("Precondition violated in runLengthDecodeView");
+            System.exit(-18);
             return null;
         }
+        System.err.println("You shouldn't get this far in runLengthDecodeView");
+        System.exit(-4);
+        return null;
     }
-    
-    public final ArrayList<Character> compressed_characters_;
-    public final ArrayList<Integer> frequencies_;
-    public final ArrayList<Color> compressed_colors_;
-    public final ArrayList<Integer> color_frequencies_;
+
+    public final char[] compressed_characters_;
+    public final short[] character_frequencies_;
+    public Color[] compressed_colors_;
+    public final short[] color_frequencies_;
     public char[][] view_for_display_;
     public Color[][] color_for_display_;
     public final PrimaryHandHoldable primary_;

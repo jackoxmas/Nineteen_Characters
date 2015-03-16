@@ -2,6 +2,7 @@ package src;
 
 import java.awt.Color;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
@@ -52,44 +53,34 @@ public class RunController {
     public static ObjectInputStream object_input_stream = null;
     public static ObjectOutputStream object_output_stream = null;
     
-    public static Initiate i = null;
     public static void main(String[] args) {
-        System.out.println("1");
         try {
             tcp_socket.setTcpNoDelay(true);
             tcp_socket.connect(new InetSocketAddress(hostName, portNumber));
-            System.out.println("TCP socket connected.");
             object_output_stream = new ObjectOutputStream(tcp_socket.getOutputStream());
             object_output_stream.flush();
-            System.out.println("2 [flushed output stream]");
+                        object_output_stream.writeObject(RunController.unique_id);
+            object_output_stream.flush();
             object_input_stream = new ObjectInputStream(tcp_socket.getInputStream());
-            System.out.println("3");
             tcp_socket.setTcpNoDelay(true);
             if(tcp_socket.isConnected() == true ) {
-                System.out.println("4");
-                i = new src.Initiate(tcp_socket, object_output_stream);
                 object_output_stream = null;
-                System.out.println("5");
-                i.start();
-                System.out.println("Initiator is started.");
+                // TCP connection is initiated
             } else {
                 System.out.println("Fail in main.");
                 System.exit(-2);
             }
-                
-            //= new RunController.Initiate(singleton.tcp_socket);
-            //RunController.Initiate i = (new RunController.Initiate(null)); //.start();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("Exception in RunController.main");
+            System.err.println("IOException in RunController.main - Connection either refused or closed");
             return;
         }
         parseArgs(args); // Parse command line arguments
-        System.out.println("parsed args");
+        // System.out.println("parsed args");
         handleArgs(args);
-        System.out.println("handled args");
+        // System.out.println("handled args");
         startGame();
-        System.out.println("started game");
+        // System.out.println("started game");
     }
 
     private static void startGame() {

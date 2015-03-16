@@ -165,28 +165,16 @@ public class GameController extends Controller {
                 }
             });
         }
-        // final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
-
-        if (EventQueue.isDispatchThread()) {
-            System.out.println("YOU ARE EXECUTING SHIT ON THE EVENT DISPATCH THREADDD!!!!!!!!!!!!!");
-        } else {
-            System.out.println("YOU ARE NOT EXECUTING SHIT ON THE EVENT DISPATCH THREADDD!!!!!!!!!!!!!");
-        }
-
         final String username = getUserName();
         final String command_enum_as_a_string = command.name();
         final int width_from_center = getView().getWidth() / 2;
         final int height_from_center = getView().getHeight() / 2;
         final String optional_text = text_or_empty_string;
-
-        final String output_to_map_before_trim = (RunController.unique_id + " " + username + " " + command_enum_as_a_string + " " + width_from_center + " " + height_from_center + " " + optional_text);  //.trim();
-        // output_to_map.trim()
-        // final IO_Bundle to_return = null;
-
+        final String output_to_map_before_trim = (RunController.unique_id + " "
+                + username + " " + command_enum_as_a_string + " " + width_from_center
+                + " " + height_from_center + " " + optional_text);
         final String output_to_map = output_to_map_before_trim.trim();
-
-        byte[] buf = null; //= new byte[256];
-        // byte[] buf = null;
+        byte[] buf = null;
         try {
             buf = output_to_map.getBytes("UTF-8");
         } catch (UnsupportedEncodingException unsupportedEncodingException) {
@@ -196,77 +184,69 @@ public class GameController extends Controller {
         try {
             // get a datagram socket
             DatagramSocket socket = new DatagramSocket();
-
             // send request
             InetAddress address = InetAddress.getByName("localhost");
             DatagramPacket packet = new DatagramPacket(buf, buf.length, address, Map.UDP_PORT_NUMBER);
             socket.send(packet); // send UDP to server
             socket.close();
             socket = null;
-            System.out.println("udp packet was sent to map");
+            // A udp packet was sent to the map
         } catch (SocketException socket_exception) {
-            System.out.println("socket exception in sendCommandToMap(Key_Commands command)");
+            System.out.println("Connection in use.");
             socket_exception.printStackTrace();
             System.exit(-76);
         } catch (IOException io_exception) {
-            System.out.println("IO exception in sendCommandToMap(Key_Commands command)");
+            System.out.println("Connection closed.");
             io_exception.printStackTrace();
         }
-        while (!RunController.tcp_socket.isConnected()) {
-            /**
-             * * Bad code to be removed!!!!!! ****
-             */
-            // do nothing
-        }
-        System.out.println("Shit is connected!!!!!!!!!!!!!");
         try {
             try {
-                System.out.println("Will crash in GameController?");
-                Object object = (IO_Bundle) RunController.object_input_stream.readObject();
-                System.out.println("Did not crash in GameController.");
-                final IO_Bundle to_return_tcp = (IO_Bundle) object;
-                if (to_return_tcp.compressed_characters_ != null && to_return_tcp.view_for_display_ == null) {
-                    to_return_tcp.view_for_display_ = to_return_tcp.runLengthDecodeView(
-                            width_from_center, height_from_center, to_return_tcp.compressed_characters_, to_return_tcp.frequencies_);
-                    to_return_tcp.color_for_display_ = to_return_tcp.runLengthDecodeColor(
-                            width_from_center, height_from_center, to_return_tcp.compressed_colors_, to_return_tcp.color_frequencies_);
-                    System.out.println("View is encoded!");
-                    if (to_return_tcp.view_for_display_ == null) {
-                        System.out.println("Something is very, very wrong here");
-                        System.exit(-8);
-                    }
-                }
-
+                final IO_Bundle to_return_tcp = (IO_Bundle) RunController.object_input_stream.readObject();
                 if (to_return_tcp != null) {
-                    System.out.println("to return is not null. ");
-                    if (to_return_tcp.occupation_ != null) {
-                        System.out.println("to_return.occupation_ is not null.");
-                        if (to_return_tcp.view_for_display_ == null) {
-                            System.out.println("View for display is null");
+
+                    if (to_return_tcp.view_for_display_ == null && to_return_tcp.compressed_characters_ != null) {
+                        to_return_tcp.view_for_display_ = IO_Bundle.runLengthDecodeView(width_from_center, height_from_center, to_return_tcp.compressed_characters_, to_return_tcp.character_frequencies_);
+                        to_return_tcp.color_for_display_ = IO_Bundle.runLengthDecodeColor(
+                                width_from_center, height_from_center, to_return_tcp.compressed_colors_, to_return_tcp.color_frequencies_);
+                        // "View is encoded!
+                        if (to_return_tcp.view_for_display_ == null && to_return_tcp.compressed_characters_ == null) {
+                            System.out.println("Something is very, very wrong here");
+                            System.exit(-8);
                         }
-                    } else {
-                        System.out.println("to_return.occupation_ is null");
                     }
-                } else {
-                    System.out.println("to_return is null");
+
+                    // Make the buttons says the right skill names.
+                    if ((command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
+                            || command == Key_Commands.BECOME_SNEAK) && to_return_tcp.occupation_ != null) {
+                        java.awt.EventQueue.invokeLater(new Runnable() {
+                            public void run() {
+                                Display.getDisplay().getSkillButton(1).
+                                        setText(to_return_tcp.occupation_.getSkillNameFromNumber(1));
+                                Display.getDisplay().getSkillButton(2).
+                                        setText(to_return_tcp.occupation_.getSkillNameFromNumber(2));
+                                Display.getDisplay().getSkillButton(3).
+                                        setText(to_return_tcp.occupation_.getSkillNameFromNumber(3));
+                                Display.getDisplay().getSkillButton(4).
+                                        setText(to_return_tcp.occupation_.getSkillNameFromNumber(4));
+                            }
+                        });
+                    }
+
+                    // Sets focus if you walk into somebody
+                    if ((command == Key_Commands.MOVE_LEFT || command == Key_Commands.MOVE_DOWNLEFT
+                            || command == Key_Commands.MOVE_DOWN || command == Key_Commands.MOVE_DOWNRIGHT
+                            || command == Key_Commands.MOVE_RIGHT || command == Key_Commands.MOVE_UPRIGHT
+                            || command == Key_Commands.MOVE_UP || command == Key_Commands.MOVE_UPLEFT) &&
+                            to_return_tcp.strings_for_communication_ != null && !to_return_tcp.strings_for_communication_.isEmpty()) 
+                    { // ** This works for auto-chat **
+                        java.awt.EventQueue.invokeLater(new Runnable() {
+                            public void run() {
+                                Display.getDisplay().requestOutBoxFocus();
+                            }
+                        });
+                    }
                 }
 
-                // Make the buttons says the right skill names.
-                if ((command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
-                        || command == Key_Commands.BECOME_SNEAK) && to_return_tcp != null && to_return_tcp.occupation_ != null) {
-                    java.awt.EventQueue.invokeLater(new Runnable() {
-                        public void run() {
-                            Display.getDisplay().getSkillButton(1).
-                                    setText(to_return_tcp.occupation_.getSkillNameFromNumber(1));
-                            Display.getDisplay().getSkillButton(2).
-                                    setText(to_return_tcp.occupation_.getSkillNameFromNumber(2));
-                            Display.getDisplay().getSkillButton(3).
-                                    setText(to_return_tcp.occupation_.getSkillNameFromNumber(3));
-                            Display.getDisplay().getSkillButton(4).
-                                    setText(to_return_tcp.occupation_.getSkillNameFromNumber(4));
-                        }
-                    });
-                }
                 return to_return_tcp;
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -283,7 +263,7 @@ public class GameController extends Controller {
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Couldn't get I/O for the connection to "
-                    + RunController.hostName);
+                    + RunController.hostName + " [ Connection closed ] ");
             System.exit(-20);
             return null;
         }

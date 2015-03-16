@@ -269,14 +269,11 @@ public class Map implements MapMapEditor_Interface {
                     } else {
                         System.out.println("bundle_to_send_ in ServerThread not null");
                     }
-                    System.out.println("About to crash?");
                     try {
                         Thread.sleep(Integer.MAX_VALUE);
                     } catch (InterruptedException e) {
                         object_output_stream_.writeObject(bundle_to_send_);
-                        System.out.println("Did not crash.");
                         object_output_stream_.flush();
-                        System.out.println("Definetely did not crash in KKMultiServerThread.");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -306,27 +303,22 @@ public class Map implements MapMapEditor_Interface {
             System.out.println("UDP thread is running");
 
             while (true) {
-                System.out.println("start udp loop");
                 try {
                     byte[] buf = new byte[256];
 
                     // receive request
                     DatagramPacket packet = new DatagramPacket(buf, buf.length);
-                    System.out.println("udp packet will be recieved in GetMapInputFromUsers");
 
                     DatagramSocket socket = new DatagramSocket(Map.UDP_PORT_NUMBER);
                     socket.receive(packet);
                     socket.close();
                     socket = null;
 
-                    System.out.println("udp packet recieved in GetMapInputFromUsers");
+                    // "udp packet recieved in GetMapInputFromUsers
 
                     String decoded_string_with_trailing_zeros = new String(buf, "UTF-8");
 
                     String decoded_string = decoded_string_with_trailing_zeros.trim();
-
-                    System.out.println("Decoded string: " + decoded_string);
-                    System.out.println("Decoded string length: " + decoded_string.length());
 
                     String[] splitArray;
                     try {
@@ -337,53 +329,24 @@ public class Map implements MapMapEditor_Interface {
                         System.exit(-16);
                         return;
                     }
-                    /*if (splitArray.length > 5) {
-                     System.out.println("Split array too long");
-                     System.exit(-88);
-                     } else */
-                    if (splitArray.length < 5) {
-                        System.out.println("Split array too short");
-                        System.exit(-88);
-                    }
+ 
 
                     String last = splitArray[splitArray.length - 1];
                     final int last_length = last.length();
 
-                    System.out.println("last character in last array: " + Character.getName(last.charAt(last_length - 1)));
-                    //System.out.println("last length " + last.length());
-                    System.out.println("prev length " + splitArray[splitArray.length - 2].length());
 
-                    if (Character.getName(last.charAt(last_length - 1)).equals("NULL")) {
-                        System.out.println("Null character detected)");
-                    } else {
-                        System.out.println("No Null character detected)");
-                    }
-
-                    // splitArray[splitArray.length - 1] = last;
-
-                    /*final String old_array[] = splitArray;
-                     if (true) {//splitArray[splitArray.length - 1] == "") {
-                     splitArray = new String[splitArray.length - 1];
-                     for (int i = 0; i < old_array.length - 1; ++i) {
-                     splitArray[i] = old_array[i]; // do not copy the last element
-                     }
-                     }*/
                     for (int i = 0; i < splitArray.length; ++i) {
-                        System.out.println("Split array at " + i + " " + splitArray[i]);
+                        System.out.print("Recieved array: ");
+                        System.out.print(splitArray[i] + " ");
                     }
-
-                    System.out.println("split array length late: " + splitArray.length);
-
+                    System.out.println();
+                    
                     String unique_id = splitArray[0];
                     String username = splitArray[0 + 1];
                     String command_enum_as_a_string = splitArray[1 + 1];
                     Key_Commands command = Key_Commands.valueOf(command_enum_as_a_string);
                     int width_from_center = Integer.parseInt(splitArray[2 + 1], 10);
-                    if (splitArray[3].equals("20")) {
-                        System.out.println("good");
-                    } else {
-                        System.out.println("bad");
-                    }
+ 
                     int height_from_center = Integer.parseInt(splitArray[3 + 1], 10);
                     String optional_text;
                     if (splitArray.length == 4 + 1) {
@@ -392,26 +355,19 @@ public class Map implements MapMapEditor_Interface {
                         optional_text = "";
                         for (int i = 4 + 1; i < splitArray.length; ++i) {
                             optional_text = optional_text + " " + splitArray[i];
-                            System.out.println("Optional text: " + optional_text);
                         }
+                        System.out.println("Optional text: " + optional_text);
                         optional_text = optional_text.trim();
                     } else {
-                        System.out.println("splitArray.length == " + splitArray.length);
+                        System.out.println("Error. splitArray.length == " + splitArray.length);
                         return;
                     }
 
                     Single_User_TCP_Thread sender = users.get(unique_id);
 
-                    if (sender == null) {
-                        System.out.println("Impossible!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                        //System.exit(74);
-                    } else {
-                        System.out.println("Possible!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    }
                     while (sender == null) {
                         sender = users.get(unique_id);
                     }
-                    System.out.println("Very possible!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
                     // start the actual function
                     Entity to_recieve_command;
@@ -419,7 +375,6 @@ public class Map implements MapMapEditor_Interface {
                         to_recieve_command = entity_list_.get(username);
                     } else {
                         to_recieve_command = null;
-                        System.err.println("The avatar of entity you are trying to reach does not exist.");
                     }
                     ArrayList<String> strings_for_IO_Bundle = null;
                     if (to_recieve_command != null) {
@@ -441,11 +396,11 @@ public class Map implements MapMapEditor_Interface {
                             if (to_recieve_command.isAlive() == true) {
 
                                 ArrayList<Character> compressed_characters = new ArrayList<Character>();
-                                ArrayList<Integer> frequencies = new ArrayList<Integer>();
+                                ArrayList<Short> frequencies = new ArrayList<Short>();
                                 char[][] view = null;
                                 
                                 ArrayList<Color> compressed_colors = new ArrayList<Color>();
-                                ArrayList<Integer> color_frequencies = new ArrayList<Integer>();
+                                ArrayList<Short> color_frequencies = new ArrayList<Short>();
                                 /*Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
                                         to_recieve_command.getMapRelation().getMyYCoordinate(),
                                         width_from_center, height_from_center);*/
@@ -489,11 +444,11 @@ public class Map implements MapMapEditor_Interface {
                                 continue;
                             } else {
                                 ArrayList<Character> compressed_characters = null;
-                                ArrayList<Integer> frequencies = null;
+                                ArrayList<Short> frequencies = null;
                                 char[][] view = null;
                                 Color[][] colors = null;
                                 ArrayList<Color> compressed_colors = null;
-                                ArrayList<Integer> color_frequencies = null;
+                                ArrayList<Short> color_frequencies = null;
                                 IO_Bundle return_package = new IO_Bundle(
                                         compressed_characters,
                                         frequencies,
@@ -734,23 +689,20 @@ public class Map implements MapMapEditor_Interface {
      * outputs as a corresponding list of frequencies
      */
     public void runLengthEncodeView(final int x_center, final int y_center, final int width_from_center,
-            final int height_from_center, ArrayList<Character> unchanged_characters, ArrayList<Integer> frequencies) {
+            final int height_from_center, ArrayList<Character> unchanged_characters, ArrayList<Short> frequencies) {
         if (unchanged_characters.isEmpty() && frequencies.isEmpty()) {
-            int length = 1;
+            short length = 1;
             int array_index = 0;
             final int x_start = x_center - width_from_center;
             final int y_start = y_center - height_from_center;
             char first = this.getTileRepresentation(x_start, y_start);
-            System.out.println("Tile representation at x_start y_start " + first);
             for (int y = y_start; y <= y_center + height_from_center; ++y) {
                 for (int x = x_start; x <= x_center + width_from_center; ++x) {
                     if (this.getTileRepresentation(x, y) != first) {
                         unchanged_characters.add(first); // java.lang.ArrayIndexOutOfBoundsException
-                        System.out.print(first + "_");
                         frequencies.add(length);
                         length = 1;
                         first = this.getTileRepresentation(x, y);
-                        System.out.println(first);
                     } else {
                         // flag stays true
                         ++length;
@@ -764,23 +716,20 @@ public class Map implements MapMapEditor_Interface {
     }
 
     public void runLengthEncodeColors(final int x_center, final int y_center, final int width_from_center,
-            final int height_from_center, ArrayList<Color> unchanged_colors, ArrayList<Integer> frequencies) {
+            final int height_from_center, ArrayList<Color> unchanged_colors, ArrayList<Short> frequencies) {
         if (unchanged_colors.isEmpty() && frequencies.isEmpty()) {
-            int length = 1;
+            short length = 1;
             int array_index = 0;
             final int x_start = x_center - width_from_center;
             final int y_start = y_center - height_from_center;
             Color first = this.getColorRepresentation(x_start, y_start);
-            System.out.println("Tile representation at x_start y_start " + first);
             for (int y = y_start; y <= y_center + height_from_center; ++y) {
                 for (int x = x_start; x <= x_center + width_from_center; ++x) {
                     if (this.getColorRepresentation(x, y) != first) {
                         unchanged_colors.add(first); // java.lang.ArrayIndexOutOfBoundsException
-                        System.out.print(first + "_");
                         frequencies.add(length);
                         length = 1;
                         first = this.getColorRepresentation(x, y);
-                        System.out.println(first);
                     } else {
                         // flag stays true
                         ++length;

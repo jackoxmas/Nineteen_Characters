@@ -1,6 +1,8 @@
 import src.Effect;
 import src.FacingDirection;
 import src.io.view.display.Display;
+import src.model.map.Map;
+import src.model.map.MapEntity_Relation;
 import src.model.map.constructs.Entity;
 import src.model.map.constructs.Item;
 import src.model.map.constructs.PickupableItem;
@@ -18,27 +20,27 @@ public class MapKnight_Relation extends MapEntity_Relation {
     if (x == 0 && y == 0) {
             // nothing
         } else if (x == 0 && y > 0) {
-            entity_.setFacingDirection(FacingDirection.UP);
+            getEntity().setFacingDirection(FacingDirection.UP);
         } else if (x == 0 && y < 0) {
-            entity_.setFacingDirection(FacingDirection.DOWN);
+            getEntity().setFacingDirection(FacingDirection.DOWN);
         } else if (x > 0 && y == 0) {
-            entity_.setFacingDirection(FacingDirection.RIGHT);
+            getEntity().setFacingDirection(FacingDirection.RIGHT);
         } else if (x < 0 && y == 0) {
-            entity_.setFacingDirection(FacingDirection.LEFT);
+            getEntity().setFacingDirection(FacingDirection.LEFT);
         } else if (x > 0 && y > 0) {
-            entity_.setFacingDirection(FacingDirection.UP_RIGHT);
+            getEntity().setFacingDirection(FacingDirection.UP_RIGHT);
         } else if (x > 0 && y < 0) {
-            entity_.setFacingDirection(FacingDirection.DOWN_RIGHT);
+            getEntity().setFacingDirection(FacingDirection.DOWN_RIGHT);
         } else if (x < 0 && y > 0) {
-            entity_.setFacingDirection(FacingDirection.UP_LEFT);
+            getEntity().setFacingDirection(FacingDirection.UP_LEFT);
         } else if (x < 0 && y < 0) {
-            entity_.setFacingDirection(FacingDirection.DOWN_LEFT);
+            getEntity().setFacingDirection(FacingDirection.DOWN_LEFT);
         } else {
             System.err
                     .print("An impossible error occured in MapEntity_Relation.moveInDirection()");
             System.exit(-1); // Impossible
         }
-        return super.pushEntityInDirection(entity_, 2*x, 2*y);
+        return super.pushEntityInDirection(getEntity(), 2*x, 2*y);
   }
 
 }

@@ -31,7 +31,7 @@ public abstract class Item extends DrawableThing {
     public int setPassable(boolean is_passable) {
         is_passable_ = is_passable;
         return 0;
-    }
+    }	
 
     private boolean goes_in_inventory_;
 

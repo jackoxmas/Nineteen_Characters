@@ -42,19 +42,35 @@ public class MapEditorController extends Controller {
 		Display.getDisplay().addDoubleClickCommandEventReceiver(new Function<Void, String>() {
 
 			@Override
-			public Void apply(String foo) {
-				if(foo == null){return null;}
-				setToSpawn_ = foo;
-				setLastSpawned(setToSpawn_);
-				updateDisplay();
+			public Void apply(final String foo) {
+				Thread t_ = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						if(foo == null){return;}
+						setToSpawn_ = foo;
+						setLastSpawned(setToSpawn_);
+						updateDisplay();
+						
+					}
+				});
+				t_.start();
 				return null;
 			}
 		});
 		Display.getDisplay().addInputBoxTextEnteredFunction(new Function<Void,String>(){
 			CommandMiniController cont = new CommandMiniController(MapEditorController.this.getRemapper(), MapEditorController.this);
 			@Override
-			public Void apply(String foo) {
-				if(foo.startsWith("/")){Display.getDisplay().setMessage(cont.processCommand(foo));}
+			public Void apply(final String foo) {
+				Thread t_ = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						if(foo.startsWith("/")){Display.getDisplay().setMessage(cont.processCommand(foo));}
+						
+					}
+				});
+				t_.start();
 				return null;
 			}
 			

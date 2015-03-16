@@ -52,14 +52,22 @@ public class GameController extends Controller {
          * Receives contents of input box.
          */
         @Override
-        public Void apply(String foo) {
-            if (foo.startsWith("/")) {
-                processCommandAndDisplayOutput(foo);
-                return null;
-            }
-            //IF it starts with a /, it's a command, so send it
-            //To the command function, not the map.
-            sendTextCommandAndUpdate(foo);
+        public Void apply(final String foo) {
+        	Thread t_ = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+		            if (foo.startsWith("/")) {
+		                processCommandAndDisplayOutput(foo);
+		                return;
+		            }
+		            //IF it starts with a /, it's a command, so send it
+		            //To the command function, not the map.
+		            sendTextCommandAndUpdate(foo);
+					
+				}
+			});
+        	t_.start();
             return null;
         }
 
@@ -90,8 +98,16 @@ public class GameController extends Controller {
         private class outputBoxFunction implements Function<Void, Character> {
 
             @Override
-            public Void apply(Character foo) {
-                sendTextCommandAndUpdate(chatview_.getChoice(Character.getNumericValue(foo)));
+            public Void apply(final Character foo) {
+            	Thread t_ = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						sendTextCommandAndUpdate(chatview_.getChoice(Character.getNumericValue(foo)));
+						
+					}
+				});
+            	t_.start();
                 return null;
             }
         }
@@ -105,15 +121,23 @@ public class GameController extends Controller {
         Display.getDisplay().addDoubleClickCommandEventReceiver(new Function<Void, String>() {
 
             @Override
-            public Void apply(String foo) {
-                if (foo == null) {
-                    return null;
-                }
-                Key_Commands command = enumHandler.stringCommandToKeyCommand(foo);
-                if (command == null) {
-                    return null;
-                }
-                takeTurnandPrintTurn(command);
+            public Void apply(final String foo) {
+            	Thread t_ = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+		                if (foo == null) {
+		                    return;
+		                }
+		                Key_Commands command = enumHandler.stringCommandToKeyCommand(foo);
+		                if (command == null) {
+		                    return;
+		                }
+		                takeTurnandPrintTurn(command);
+						
+					}
+				});
+            	t_.start();
                 return null;
             }
         });

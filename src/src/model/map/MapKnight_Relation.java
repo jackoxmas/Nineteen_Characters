@@ -1,3 +1,11 @@
+import src.Effect;
+import src.FacingDirection;
+import src.io.view.display.Display;
+import src.model.map.constructs.Entity;
+import src.model.map.constructs.Item;
+import src.model.map.constructs.PickupableItem;
+import src.model.map.constructs.Trap;
+
 public class MapKnight_Relation extends MapEntity_Relation {
   
       public MapKnight_Relation(Map m, Entity entity, int x_respawn_point,

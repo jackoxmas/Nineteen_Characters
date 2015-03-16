@@ -1,4 +1,9 @@
 public class MapKnight_Relation extends MapEntity_Relation {
+  
+      public MapKnight_Relation(Map m, Entity entity, int x_respawn_point,
+            int y_respawn_point) {
+        super(m, entity, x_respawn_point, y_respawn_point);
+    }
 
   @Override
   public int moveInDirection(int x, int y) {

@@ -167,7 +167,6 @@ public class GameController extends Controller {
     }
 
     private static DatagramPacket packet = null;
-    private static Random rand = new Random();
     
     private IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
         if (SwingUtilities.isEventDispatchThread()) {
@@ -182,16 +181,11 @@ public class GameController extends Controller {
                 }
             });
         }
-        try {
-        String to_send = Integer.toString(rand.nextInt(), 10) + " " + RunGame.getAvatarName() + " " + command.name() + " " + getView().getWidth()/2 + " " + getView().getHeight() / 2 + " " + in;
-        final byte[] buf = to_send.getBytes();
-        final DatagramPacket packet = new DatagramPacket(buf, buf.length, RunGame.address, Map.UDP_PORT_NUMBER);
-        RunGame.udp_socket_for_outgoing_signals.send(packet); }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
+        final IO_Bundle to_return = RunGame.sendStuffToMapOverTheInternet(getUserName(), 
+                command, getView().getWidth()/2, getView().getHeight()/2, in);
+
         
-        final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
+        //final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
         // Make the buttons says the right skill names.
         if (command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
                 || command == Key_Commands.BECOME_SNEAK && to_return != null) {

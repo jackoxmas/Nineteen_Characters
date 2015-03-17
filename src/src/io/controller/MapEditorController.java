@@ -50,7 +50,9 @@ public class MapEditorController extends Controller {
 
 			@Override
 			public void enqueue(final String command) {
-				setToSpawnQueue_.add(command);
+				if(command!=null){
+					setToSpawnQueue_.add(command);
+				}
 			}
 
 			@Override
@@ -75,6 +77,7 @@ public class MapEditorController extends Controller {
 			}
 			
 		});
+		this.sleepLoop();
 	}
 
 	@Override
@@ -90,6 +93,7 @@ public class MapEditorController extends Controller {
 			String foo = commandQueue_.remove();
 			if(foo.startsWith("/")){Display.getDisplay().setMessage(cont_.processCommand(foo));}
 		}
+		super.process();
 	}
 	int x = 0;
 	int y = 0;

@@ -64,6 +64,7 @@ public abstract class Controller implements QueueCommandInterface<Character> {
 	}
 	
 	protected void process(){
+		System.out.println("Processing!");
 		while(!keyCommandQueue_.isEmpty()){
 			takeTurnandPrintTurn(keyCommandQueue_.remove());
 		}

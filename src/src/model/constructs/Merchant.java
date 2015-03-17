@@ -72,11 +72,6 @@ public class Merchant extends Villager {
         return options;
     }
 
-    public ArrayList<String> endConversation() {
-        ArrayList<String> silence = new ArrayList<>();
-        return silence;
-    }
-
     /**
      * @author John-Michael Reed
      * @param recieved_text - what was said to me
@@ -87,6 +82,7 @@ public class Merchant extends Villager {
         ArrayList<String> reply = new ArrayList<>();
         if (buyer.getNumGoldCoins() < 10) {
             reply.add("Sorry. You are too poor to afford my wares.");
+            reply.add(endConversation().get(0));
             return reply;
         } else {
             //reply.add("You will be amazed at what my weapons can do.");
@@ -95,6 +91,7 @@ public class Merchant extends Villager {
             } else {
                 reply.add("With your bargaining skills, I give you " + buyer.getBargain_() + " coins off.");
             }
+            reply.add(endConversation().get(0));
             buyer.decrementNumGoldCoinsBy(10 - buyer.getBargain_());
         }
         if (weapon_name.equals("Super_Sword")) {

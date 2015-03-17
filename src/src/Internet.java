@@ -15,6 +15,7 @@ import src.model.Map;
 
 /**
  * This class is used to connect to and send stuff over the Internet.
+ *
  * @author JohnReedLOL
  */
 public final class Internet {
@@ -26,6 +27,25 @@ public final class Internet {
     private static final int unique_id = rand.nextInt();
     private static final String unique_id_string = Integer.toString(unique_id, 10);
     private static ObjectInputStream object_input_stream = null;
+
+    public static void closeAndNullifyConnection() {
+        if (tcp_socket_for_incoming_signals != null) {
+            if (tcp_socket_for_incoming_signals.isConnected()) {
+                try {
+                    tcp_socket_for_incoming_signals.close();
+                    tcp_socket_for_incoming_signals = null;
+                } catch (Exception e) {// socket already closed}
+                }
+            }
+        }
+        if (udp_socket_for_outgoing_signals != null) {
+            try {
+                udp_socket_for_outgoing_signals.close();
+                udp_socket_for_outgoing_signals = null;
+            } catch (Exception e) {// socket already closed}
+            }
+        }
+    }
 
     /**
      * Use this function to send commands to the Map over TCP/UDP sockets
@@ -47,16 +67,24 @@ public final class Internet {
             final byte[] buf = to_send.getBytes();
             final DatagramPacket packet = new DatagramPacket(buf, buf.length, Internet.address, Map.UDP_PORT_NUMBER);
             // send command to map over UDP connection
-            Internet.udp_socket_for_outgoing_signals.send(packet);
-            // recieve IO_Bundle from map over UTCP connection
-            IO_Bundle to_recieve = (IO_Bundle) object_input_stream.readObject();
-            // Decompression the IO_Bundle if characters are compressed.
-            if (to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
-                to_recieve.view_for_display_ = IO_Bundle.runLengthDecodeView(width, height,
-                        to_recieve.compressed_characters_, to_recieve.character_frequencies_);
-                to_recieve.color_for_display_ = IO_Bundle.runLengthDecodeColor(width, height,
-                        to_recieve.compressed_colors_, to_recieve.color_frequencies_);
+            if (packet != null) {
+                Internet.udp_socket_for_outgoing_signals.send(packet);
+            } else {
+                System.err.println("packet is null");
             }
+            // recieve IO_Bundle from map over UTCP connection
+            Object temp = object_input_stream.readObject();
+            IO_Bundle to_recieve = null;
+            if (temp != null) {
+                to_recieve = (IO_Bundle) temp;
+                    // Decompression the IO_Bundle if characters are compressed.
+                    if (to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
+                        to_recieve.view_for_display_ = IO_Bundle.runLengthDecodeView(width, height,
+                                to_recieve.compressed_characters_, to_recieve.character_frequencies_);
+                        to_recieve.color_for_display_ = IO_Bundle.runLengthDecodeColor(width, height,
+                                to_recieve.compressed_colors_, to_recieve.color_frequencies_);
+                    }
+            } 
             return to_recieve;
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,12 +101,21 @@ public final class Internet {
      * @return 0 if connection successful, -1 if connection not successful
      */
     public static int makeConnectionUsingIP_Address(String ip_address) {
+        ip_address = ip_address.trim().toLowerCase();
+        System.err.println(ip_address);
+        if (ip_address.equals("localhost")) {
+            System.err.println("Yes localhost");
+        } else {
+            System.err.println("Not localhost");
+        }
         try {
             if (udp_socket_for_outgoing_signals != null) {
                 udp_socket_for_outgoing_signals.close();
+                udp_socket_for_outgoing_signals = null;
                 Internet.address = null;
             }
             udp_socket_for_outgoing_signals = new DatagramSocket();
+            udp_socket_for_outgoing_signals.setReuseAddress(true);
             Internet.address = InetAddress.getByName(ip_address);
             if (tcp_socket_for_incoming_signals != null) {
                 if (tcp_socket_for_incoming_signals.isConnected()) {

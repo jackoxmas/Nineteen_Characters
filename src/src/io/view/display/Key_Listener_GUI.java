@@ -3,6 +3,9 @@ package src.io.view.display;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -11,6 +14,7 @@ import javax.swing.text.StyledDocument;
 
 import src.Key_Commands;
 import src.QueueCommandInterface;
+import src.RunGame;
 
 /**
  * Computer generated code made with Netbeans GUI builder using instruction
@@ -18,7 +22,7 @@ import src.QueueCommandInterface;
  *
  * @author Matthew B [human-written code]
  */
-class Key_Listener_GUI extends javax.swing.JFrame {
+class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
     //These two arraylists hold the things to apply when input is received by either the map, or by the chatbox
 
     public javax.swing.JTextArea getIncomingText() {
@@ -185,6 +189,38 @@ class Key_Listener_GUI extends javax.swing.JFrame {
                 occupation_skill_4_jButtonMouseClicked(evt);
             }
         });
+        addWindowListener(this);
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        // close all threads before closing.
+        RunGame.grusomelyKillTheMapAndTheController();
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+        //This will only be seen on standard output.
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
     }
 
     /**
@@ -500,8 +536,7 @@ class Key_Listener_GUI extends javax.swing.JFrame {
                     functor.enqueue(S);//Loop through and apply, but ONLY if we haven't already eaten /fontsize.
                     functor.sendInterrupt();
                 }
-            }
-            else{
+            } else {
                 try {
                     String temp = outgoing_text_jTextField.getText();
                     temp = temp.replaceAll("[^0-9 | .]", "");//Regex, to select anything not 0-9 or .

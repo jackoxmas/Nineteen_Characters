@@ -182,8 +182,8 @@ public class GameController extends Controller {
 
         //final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
         // Make the buttons says the right skill names.
-        if (command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
-                || command == Key_Commands.BECOME_SNEAK && to_return != null) {
+        if (to_return != null && to_return.occupation_ != null && command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
+                || command == Key_Commands.BECOME_SNEAK ) {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     Display.getDisplay().getSkillButton(1).

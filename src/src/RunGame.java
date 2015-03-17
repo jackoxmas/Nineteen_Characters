@@ -43,6 +43,22 @@ public class RunGame {
     private static int mapWidth_ = 40;
     private static boolean map_editor_mode_ = false;
 
+    public static void grusomelyKillTheMapAndTheController() {
+        if (RunGame.map_ != null) {
+            map_.grusomelyKillTheMapThread();
+            System.out.println("Killed the map thread");
+        } else {
+            System.out.println("The map thread is null");
+        }
+        if (RunGame.uc_ != null) {
+            uc_.grusomelyKillTheControllerThread();
+            System.out.println("Killed the controller thread");
+        } else {
+            System.out.println("The controller thread is null");
+        }
+        Internet.closeAndNullifyConnection();
+    }
+
     public static String getAvatarName() {
         return avatar_.name_;
     }
@@ -58,7 +74,7 @@ public class RunGame {
         }
         final String ip_address = "localhost";
         int error_code = Internet.makeConnectionUsingIP_Address(ip_address);
-        if(error_code == 0) {
+        if (error_code == 0) {
             System.out.println("Successfully connected to ip-address: " + ip_address);
         }
     }
@@ -119,7 +135,7 @@ public class RunGame {
         Merchant merchant = new Merchant("merchant1", '☺');
         merchant.getStatsPack().increaseQuantityOfExperienceBy(1000);
         map_.addAsEntity(merchant, 1, 1);
-        Item teleport = new OneWayTeleportItem("tele", '☺', 0, 0);
+        Item teleport = new OneWayTeleportItem("tele", 'T', 0, 0);
         Item onehandedsword = new OneHandedSword("Excalibur", '|');
         Item twohandedsword = new TwoHandedSword("Two_hander", '|');
         Item shield = new Shield("Shieldy", 'O');

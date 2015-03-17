@@ -9,6 +9,7 @@ import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -56,7 +57,24 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     private GetMapInputFromUsers udp_thread;
     private TCP_Connection_Maker tcp_thread;
     private ConcurrentHashMap<String, Single_User_TCP_Thread> users = new ConcurrentHashMap<>();
-    
+
+    public void grusomelyKillTheMapThread() {
+        if (tcp_thread != null && tcp_thread.isAlive()) {
+            tcp_thread.stop();
+            tcp_thread = null;
+        }
+        if (udp_thread != null && udp_thread.isAlive()) {
+            udp_thread.stop();
+            udp_thread = null;
+        }
+        for (ConcurrentHashMap.Entry<String, Single_User_TCP_Thread> entry : this.users.entrySet()) {
+            if(entry.getValue() != null) {
+            entry.getValue().closeAndNullifyConnection();
+            entry.getValue().stop();
+            }
+        }
+    }
+
     /**
      *
      * @param name - name of Entity
@@ -205,7 +223,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
 
     private class TCP_Connection_Maker extends Thread {
 
-        public IO_Bundle bundle_to_send_ = null;
+        public IO_Bundle bundle_to_send_ = null; // ** bullshit **
 
         final int portNumber = Map.TCP_PORT_NUMBER;
 
@@ -234,12 +252,23 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         private final ObjectOutputStream object_output_stream_;
         private IO_Bundle bundle_to_send_ = null;
 
+        public void closeAndNullifyConnection() {
+            if (socket_ != null) {
+                if (socket_.isConnected()) {
+                    try {
+                        socket_.close();
+                    } catch (Exception e) {// socket already closed}
+                    }
+                }
+            }
+        }
+
         public void setBundle(IO_Bundle to_set) {
             bundle_to_send_ = to_set;
         }
 
         public Single_User_TCP_Thread(Socket socket, String unique_id, ObjectOutputStream object_output_stream) {
-            super("KKMultiServerThread");
+            super("Single_User_TCP_Thread");
             this.socket_ = socket;
             this.unique_id_ = unique_id;
             object_output_stream_ = object_output_stream;
@@ -251,27 +280,38 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            // remove and replace on re-connection
+            if (users.containsKey(unique_id_)) {
+                Single_User_TCP_Thread to_kill = users.get(unique_id_);
+                to_kill.closeAndNullifyConnection();
+                users.remove(unique_id_);
+                System.out.println("replacing connection");
+            }
             users.putIfAbsent(unique_id_, this);
             while (true) {
-                try {
-                    // end of resource statement beginning of execution
-                    if (bundle_to_send_ == null) {
-                        System.out.println("bundle_to_send_ in ServerThread is null");
-                    } else {
-                        System.out.println("bundle_to_send_ in ServerThread not null");
-                    }
-                    try {
-                        Thread.sleep(Integer.MAX_VALUE);
-                    } catch (InterruptedException e) {
-                        object_output_stream_.writeObject(bundle_to_send_);
-                        object_output_stream_.flush();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    System.out.println("connection disconnected in ServerThread.run");
-                    users.remove(this);
-                    break;
+
+                // end of resource statement beginning of execution
+                if (bundle_to_send_ == null) {
+                    System.out.println("bundle_to_send_ in ServerThread is null");
+                } else {
+                    System.out.println("bundle_to_send_ in ServerThread not null");
                 }
+                try {
+                    Thread.sleep(Integer.MAX_VALUE);
+                } catch (InterruptedException e) {
+                    try {
+                        do {
+                            object_output_stream_.writeObject(bundle_to_send_);
+                            object_output_stream_.flush();
+                        } while ( Thread.currentThread().isInterrupted() );
+                    } catch (IOException e2) {
+                        e2.printStackTrace();
+                        System.out.println("connection disconnected in ServerThread.run");
+                        users.remove(this.unique_id_);
+                        break;
+                    }
+                }
+
             }
         }
     }
@@ -307,7 +347,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     socket = null;
 
                     // "udp packet recieved in GetMapInputFromUsers
-
                     String decoded_string_with_trailing_zeros = new String(buf, "UTF-8");
 
                     String decoded_string = decoded_string_with_trailing_zeros.trim();
@@ -321,24 +360,18 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                         System.exit(-16);
                         return;
                     }
- 
-
-                    String last = splitArray[splitArray.length - 1];
-                    final int last_length = last.length();
 
                     System.out.print("Recieved array: ");
                     for (int i = 0; i < splitArray.length; ++i) {
                         System.out.print(splitArray[i] + " ");
                     }
                     System.out.println();
-                    System.out.println();
-                    
+
                     String unique_id = splitArray[0];
                     String username = splitArray[0 + 1];
                     String command_enum_as_a_string = splitArray[1 + 1];
                     Key_Commands command = Key_Commands.valueOf(command_enum_as_a_string);
                     int width_from_center = Integer.parseInt(splitArray[2 + 1], 10);
- 
                     int height_from_center = Integer.parseInt(splitArray[3 + 1], 10);
                     String optional_text;
                     if (splitArray.length == 4 + 1) {
@@ -372,9 +405,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     if (to_recieve_command != null) {
                         if (to_recieve_command.getMapRelation() == null) {
                             System.err.println(to_recieve_command.name_ + " has a null relation with this map. ");
-                            // return null
-                            tcp_thread.bundle_to_send_ = null;
-                            tcp_thread.interrupt();
                             continue;
                         }
                         if (command != null) {
@@ -390,12 +420,12 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                                 ArrayList<Character> compressed_characters = new ArrayList<Character>();
                                 ArrayList<Short> frequencies = new ArrayList<Short>();
                                 char[][] view = null;
-                                
+
                                 ArrayList<Color> compressed_colors = new ArrayList<Color>();
                                 ArrayList<Short> color_frequencies = new ArrayList<Short>();
                                 /*Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
-                                        to_recieve_command.getMapRelation().getMyYCoordinate(),
-                                        width_from_center, height_from_center);*/
+                                 to_recieve_command.getMapRelation().getMyYCoordinate(),
+                                 width_from_center, height_from_center);*/
                                 Color[][] colors = null;
                                 runLengthEncodeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
                                         to_recieve_command.getMapRelation().getMyYCoordinate(),
@@ -540,8 +570,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         }
         return error_code;
     }
-    
-    
+
     /**
      * Adds an entity to the map and provides it with a MapKnight_Relation.
      *
@@ -729,7 +758,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             System.exit(-16);
         }
     }
-    
+
     /**
      * Use this when the command the map is receiving requires a string
      * parameter
@@ -772,7 +801,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);
                     IO_Bundle return_package = new IO_Bundle(
-                            null, null, null, null, 
+                            null, null, null, null,
                             view,
                             colors,
                             to_recieve_command.getInventory(),
@@ -791,7 +820,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     char[][] view = null;
                     Color[][] colors = null;
                     IO_Bundle return_package = new IO_Bundle(
-                            null, null, null, null, 
+                            null, null, null, null,
                             view,
                             colors,
                             null,
@@ -861,7 +890,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         }
     }
 
-    
     public Color[][] makeColors(int x_center, int y_center, int width_from_center, int height_from_center) {
         Color[][] colors = new Color[1 + 2 * height_from_center][1 + 2 * width_from_center];
         int y_index = 0;
@@ -1229,24 +1257,28 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         parent.appendChild(e_Terrain);
         return e_Terrain;
     }
+
     //</editor-fold>
     /**
      * Takes in name so save to, defaults to date
+     *
      * @param foo
      */
-	@Override
-	public int saveGame(String foo) {
-        RunGame.saveGameToDisk(foo); 
-		return 0;
-	}
-	   /**
-     * Takes in name to load. 
+    @Override
+    public int saveGame(String foo) {
+        RunGame.saveGameToDisk(foo);
+        return 0;
+    }
+
+    /**
+     * Takes in name to load.
+     *
      * @param foo
      */
-	@Override
-	public int loadGame(String foo) {
-		RunGame.loadGame(foo);
-		return 0;
-	}
+    @Override
+    public int loadGame(String foo) {
+        RunGame.loadGame(foo);
+        return 0;
+    }
 
 }

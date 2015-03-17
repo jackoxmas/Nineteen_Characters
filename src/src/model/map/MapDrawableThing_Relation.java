@@ -40,7 +40,7 @@ public class MapDrawableThing_Relation {
                     int reduction = 0;
                     if (effect == Effect.HEAL || effect == Effect.HURT) {
                         int damage_reduction_x = Math.abs(getMyXCoordinate() - j);
-                        int damage_reduction_y = Math.abs(getMyXCoordinate() - i);
+                        int damage_reduction_y = Math.abs(getMyYCoordinate() - i);
                         reduction = damage_reduction_x + damage_reduction_y;
                     }
 

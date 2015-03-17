@@ -50,7 +50,9 @@ public class MapEditorController extends Controller {
 
 			@Override
 			public void enqueue(final String command) {
-				setToSpawnQueue_.add(command);
+				if(command!=null){
+					setToSpawnQueue_.add(command);
+				}
 			}
 
 			@Override

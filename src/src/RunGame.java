@@ -187,22 +187,22 @@ public class RunGame {
         // map_.addAsAvatar(avatar_, 0, 0);
         map_.addAsAvatar(avatar_, 0, 0);
 
-        Avatar buddy = new Avatar("buddy", '웃');
+        Avatar buddy = new Avatar("buddy", '☺');
         // map_.addAsAvatar(buddy, 3, 0);
         map_.addAsKnight(buddy, 3, 0); // buddy can jump over entities!
 
-        Villager villager1 = new Villager("villager1", '웃');
+        Villager villager1 = new Villager("villager1", '☺');
         villager1.getStatsPack().increaseQuantityOfExperienceBy(200);
         map_.addAsEntity(villager1, 3, 13);
 
-        Monster monster = new Monster("monster1", '웃');
+        Monster monster = new Monster("monster1", '☺');
         monster.getStatsPack().increaseQuantityOfExperienceBy(300);
         map_.addAsEntity(monster, 13, 3);
 
-        Merchant merchant = new Merchant("merchant1", '웃');
+        Merchant merchant = new Merchant("merchant1", '☺');
         merchant.getStatsPack().increaseQuantityOfExperienceBy(1000);
         map_.addAsEntity(merchant, 1, 1);
-        Item teleport = new OneWayTeleportItem("tele", 'T', 0, 0);
+        Item teleport = new OneWayTeleportItem("tele", '☺', 0, 0);
         Item onehandedsword = new OneHandedSword("Excalibur", '|');
         Item twohandedsword = new TwoHandedSword("Two_hander", '|');
         Item shield = new Shield("Shieldy", 'O');

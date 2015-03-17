@@ -17,6 +17,7 @@ import javax.swing.SwingUtilities;
 import src.Function;
 import src.HardCodedStrings;
 import src.IO_Bundle;
+import src.Internet;
 import src.Key_Commands;
 import src.QueueCommandInterface;
 import src.RunGame;
@@ -171,9 +172,9 @@ public class GameController extends Controller {
 
     private IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
         if (SwingUtilities.isEventDispatchThread()) {
-            System.err.println("GameController is running on the Swing Dispatch Thread");
+            System.err.println("GameController is running on the Swing Dispatch Thread [Bad]");
         } else {
-            System.err.println("GameController is not running on the Swing Dispatch Thread");
+            System.out.println("GameController is not running on the Swing Dispatch Thread [Good]");
         }
         if (command == Key_Commands.GET_INTERACTION_OPTIONS) {
             java.awt.EventQueue.invokeLater(new Runnable() {
@@ -182,7 +183,7 @@ public class GameController extends Controller {
                 }
             });
         }
-        final IO_Bundle to_return = RunGame.sendStuffToMapOverTheInternet(getUserName(),
+        final IO_Bundle to_return = Internet.sendStuffToTheMap(getUserName(),
                 command, getView().getWidth() / 2, getView().getHeight() / 2, in);
 
         //final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");

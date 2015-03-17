@@ -50,36 +50,6 @@ public class RunGame {
     private static int mapHeight_ = 40;
     private static int mapWidth_ = 40;
     private static boolean map_editor_mode_ = false;
-    private static DatagramSocket udp_socket_for_outgoing_signals = null;
-    private static InetAddress address = null;
-    private final static String ip_address = "localhost";
-    private static Socket tcp_socket_for_incoming_signals = null;
-    private static Random rand = new Random();
-    private static final int unique_id = rand.nextInt();
-    private static final String unique_id_string = Integer.toString(unique_id, 10);
-    private static ObjectInputStream object_input_stream = null;
-
-    public static IO_Bundle sendStuffToMapOverTheInternet(String avatar_name, Enum key_command, int width, int height, String optional_text) {
-        try {
-            final String to_send = unique_id_string + " " + avatar_name + " "
-                    + key_command.name() + " " + width + " " + height + " " + optional_text;
-            final byte[] buf = to_send.getBytes();
-            final DatagramPacket packet = new DatagramPacket(buf, buf.length, RunGame.address, Map.UDP_PORT_NUMBER);
-            RunGame.udp_socket_for_outgoing_signals.send(packet);
-            IO_Bundle to_recieve = (IO_Bundle) object_input_stream.readObject();
-            // decompression
-            if (to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
-                to_recieve.view_for_display_ = IO_Bundle.runLengthDecodeView(width, height,
-                        to_recieve.compressed_characters_, to_recieve.character_frequencies_);
-                to_recieve.color_for_display_ = IO_Bundle.runLengthDecodeColor(width, height,
-                        to_recieve.compressed_colors_, to_recieve.color_frequencies_);
-            }
-            return to_recieve;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     public static String getAvatarName() {
         return avatar_.name_;
@@ -94,57 +64,12 @@ public class RunGame {
         } else {
             startMapEditor();
         }
-        try { //InetAddress addr = InetAddress.getLocalHost();
-            udp_socket_for_outgoing_signals = new DatagramSocket();
-            address = InetAddress.getByName(ip_address);
-            tcp_socket_for_incoming_signals = new Socket();
-            tcp_socket_for_incoming_signals.setTcpNoDelay(true);
-            tcp_socket_for_incoming_signals.connect(new InetSocketAddress(ip_address, Map.TCP_PORT_NUMBER));
-            ObjectOutputStream oos = new ObjectOutputStream(tcp_socket_for_incoming_signals.getOutputStream());
-            oos.flush();
-            oos.writeObject(Integer.toString(RunGame.unique_id, 10));
-            oos.flush();
-            oos = null;
-            object_input_stream = new ObjectInputStream(tcp_socket_for_incoming_signals.getInputStream());
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        final String ip_address = "localhost";
+        int error_code = Internet.makeConnectionUsingIP_Address(ip_address);
+        if(error_code == 0) {
+            System.out.println("Successfully connected to ip-address: " + ip_address);
         }
     }
-    /*
-     private static String getMacAddess() throws Exception
-     {
-        
-     //Get MAC address
-     String MAC_Username = "";
-     InetAddress ip = InetAddress.getLocalHost();
-
-     Enumeration e = NetworkInterface.getNetworkInterfaces();
-
-     while (e.hasMoreElements()) {
-
-     NetworkInterface n = (NetworkInterface) e.nextElement();
-     Enumeration<InetAddress> ee = n.getInetAddresses();
-     while (ee.hasMoreElements()) {
-     InetAddress i = (InetAddress) ee.nextElement();
-     if (!i.isLoopbackAddress() && !i.isLinkLocalAddress() && i.isSiteLocalAddress()) {
-     ip = i;
-     }
-     }
-     }
-
-     NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-     byte[] mac_byte = network.getHardwareAddress();
-
-     StringBuilder sb = new StringBuilder();
-     for (int i = 0; i < mac_byte.length; i++) {
-     sb.append(String.format("%02X%s", mac_byte[i], (i < mac_byte.length - 1) ? "-" : ""));
-     }
-     return sb.toString();
-     }
-
-     }
-     */
 
     private static int startNewGame() {
         initialize(); // Initialize any data we need to before loading

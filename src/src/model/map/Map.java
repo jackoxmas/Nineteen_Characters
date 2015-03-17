@@ -223,6 +223,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                 while (true) {
                     Socket to_accept = serverSocket.accept();
                     to_accept.setTcpNoDelay(true);
+                    to_accept.setReuseAddress(true); // allow for re-connections
                     (new Initiate(to_accept)).start();
                     System.out.println("Socket was accepted");
                 }

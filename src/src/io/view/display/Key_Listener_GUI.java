@@ -201,6 +201,8 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
     @Override
     public void windowClosed(WindowEvent e) {
         //This will only be seen on standard output.
+        // close all threads before closing.
+        RunGame.grusomelyKillTheMapAndTheController();
     }
 
     @Override

@@ -309,6 +309,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
 
                     DatagramSocket socket = new DatagramSocket(Map.UDP_PORT_NUMBER);
                     socket.receive(packet);
+                    System.out.println("The map recieved a packet.");
                     socket.close();
                     socket = null;
 
@@ -332,11 +333,11 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     String last = splitArray[splitArray.length - 1];
                     final int last_length = last.length();
 
-
+                    System.out.print("Recieved array: ");
                     for (int i = 0; i < splitArray.length; ++i) {
-                        System.out.print("Recieved array: ");
                         System.out.print(splitArray[i] + " ");
                     }
+                    System.out.println();
                     System.out.println();
                     
                     String unique_id = splitArray[0];

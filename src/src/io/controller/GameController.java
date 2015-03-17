@@ -5,19 +5,25 @@
  */
 package src.io.controller;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.SwingUtilities;
 
 import src.Function;
 import src.HardCodedStrings;
 import src.IO_Bundle;
 import src.Key_Commands;
+import src.RunGame;
 import src.enumHandler;
 import src.io.view.AvatarCreationView;
 import src.io.view.ChatBoxViewPort;
 import src.io.view.MapView;
 import src.io.view.StatsView;
 import src.io.view.display.Display;
+import src.model.map.Map;
 import src.model.map.MapUser_Interface;
 
 /**
@@ -160,6 +166,9 @@ public class GameController extends Controller {
         super.updateDisplay(bundle);
     }
 
+    private static DatagramPacket packet = null;
+    private static Random rand = new Random();
+    
     private IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
         if (SwingUtilities.isEventDispatchThread()) {
             System.err.println("GameController is running on the Swing Dispatch Thread");
@@ -173,6 +182,15 @@ public class GameController extends Controller {
                 }
             });
         }
+        try {
+        String to_send = Integer.toString(rand.nextInt(), 10) + " " + RunGame.getAvatarName() + " " + command.name() + " " + getView().getWidth()/2 + " " + getView().getHeight() / 2 + " " + in;
+        final byte[] buf = to_send.getBytes();
+        final DatagramPacket packet = new DatagramPacket(buf, buf.length, RunGame.address, Map.UDP_PORT_NUMBER);
+        RunGame.udp_socket_for_outgoing_signals.send(packet); }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        
         final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
         // Make the buttons says the right skill names.
         if (command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER

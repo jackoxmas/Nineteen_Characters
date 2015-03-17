@@ -5,38 +5,20 @@
  */
 package src.io.controller;
 
-import java.awt.EventQueue;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.NetworkInterface;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Random;
+import javax.swing.SwingUtilities;
 
 import src.Function;
 import src.HardCodedStrings;
 import src.IO_Bundle;
 import src.Key_Commands;
-import src.RunController;
 import src.enumHandler;
 import src.io.view.AvatarCreationView;
 import src.io.view.ChatBoxViewPort;
 import src.io.view.MapView;
 import src.io.view.StatsView;
 import src.io.view.display.Display;
-import src.model.map.Map;
+import src.model.map.MapUser_Interface;
 
 /**
  * Uses keyboard input to control the avatar Handles the main game mode
@@ -70,14 +52,22 @@ public class GameController extends Controller {
          * Receives contents of input box.
          */
         @Override
-        public Void apply(String foo) {
-            if (foo.startsWith("/")) {
-                processCommandAndDisplayOutput(foo);
-                return null;
-            }
-            //IF it starts with a /, it's a command, so send it
-            //To the command function, not the map.
-            sendTextCommandAndUpdate(foo);
+        public Void apply(final String foo) {
+        	Thread t_ = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+		            if (foo.startsWith("/")) {
+		                processCommandAndDisplayOutput(foo);
+		                return;
+		            }
+		            //IF it starts with a /, it's a command, so send it
+		            //To the command function, not the map.
+		            sendTextCommandAndUpdate(foo);
+					
+				}
+			});
+        	t_.start();
             return null;
         }
 
@@ -85,15 +75,15 @@ public class GameController extends Controller {
             Key_Commands command = Key_Commands.GET_CONVERSATION_CONTINUATION_OPTIONS;
             if (foo.contains(HardCodedStrings.attack)) {
                 command = Key_Commands.ATTACK;
-                updateDisplay(sendCommandToMapWithOptionalText(command, ""));
+                updateDisplay(sendCommandToMapWithText(command, ""));
                 return null;
             }
             if (foo.contains(HardCodedStrings.getChatOptions)) {
                 command = Key_Commands.GET_CONVERSATION_STARTERS;
-                updateDisplay(sendCommandToMapWithOptionalText(command, ""));
+                updateDisplay(sendCommandToMapWithText(command, ""));
                 return null;
             }
-            updateDisplay(sendCommandToMapWithOptionalText(command, foo));
+            updateDisplay(sendCommandToMapWithText(command, foo));
             return null;
         }
 
@@ -108,29 +98,46 @@ public class GameController extends Controller {
         private class outputBoxFunction implements Function<Void, Character> {
 
             @Override
-            public Void apply(Character foo) {
-                sendTextCommandAndUpdate(chatview_.getChoice(Character.getNumericValue(foo)));
+            public Void apply(final Character foo) {
+            	Thread t_ = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						sendTextCommandAndUpdate(chatview_.getChoice(Character.getNumericValue(foo)));
+						
+					}
+				});
+            	t_.start();
                 return null;
             }
         }
 
     }
 
-    public GameController(String uName) {
+    public GameController(MapUser_Interface mui, String uName) {
         super(new AvatarCreationView(), new GameRemapper(), uName);
+        MapUserAble_ = mui;
         Display.getDisplay().setCommandList(HardCodedStrings.gameCommands);
         Display.getDisplay().addDoubleClickCommandEventReceiver(new Function<Void, String>() {
 
             @Override
-            public Void apply(String foo) {
-                if (foo == null) {
-                    return null;
-                }
-                Key_Commands command = enumHandler.stringCommandToKeyCommand(foo);
-                if (command == null) {
-                    return null;
-                }
-                takeTurnandPrintTurn(command);
+            public Void apply(final String foo) {
+            	Thread t_ = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+		                if (foo == null) {
+		                    return;
+		                }
+		                Key_Commands command = enumHandler.stringCommandToKeyCommand(foo);
+		                if (command == null) {
+		                    return;
+		                }
+		                takeTurnandPrintTurn(command);
+						
+					}
+				});
+            	t_.start();
                 return null;
             }
         });
@@ -138,10 +145,12 @@ public class GameController extends Controller {
 
     }
 
+    private MapUser_Interface MapUserAble_;
+
     private ChatBoxMiniController chatbox_ = new ChatBoxMiniController();
 
     /**
-     * Takes in a bundle, and updates and then prints the display with it.
+     * Takes in a bundle, and updates and then prints the dispaly with it.
      *
      * @param bundle
      */
@@ -151,122 +160,37 @@ public class GameController extends Controller {
         super.updateDisplay(bundle);
     }
 
-    /**
-     * Sends the given command to the map. Focuses on the TextBox for inputting
-     * chat options.
-     *
-     * @param input
-     */
-    private IO_Bundle sendCommandToMapWithOptionalText(Key_Commands command, String text_or_empty_string) {
-        if (command == Key_Commands.GET_INTERACTION_OPTIONS) { // ** This doesn't work for auto-chat **
+    private IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
+        if (SwingUtilities.isEventDispatchThread()) {
+            System.err.println("GameController is running on the Swing Dispatch Thread");
+        } else {
+            System.err.println("GameController is not running on the Swing Dispatch Thread");
+        }
+        if (command == Key_Commands.GET_INTERACTION_OPTIONS) {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     Display.getDisplay().requestOutBoxFocus();
                 }
             });
         }
-        final String username = getUserName();
-        final String command_enum_as_a_string = command.name();
-        final int width_from_center = getView().getWidth() / 2;
-        final int height_from_center = getView().getHeight() / 2;
-        final String optional_text = text_or_empty_string;
-        final String output_to_map_before_trim = (RunController.unique_id + " "
-                + username + " " + command_enum_as_a_string + " " + width_from_center
-                + " " + height_from_center + " " + optional_text);
-        final String output_to_map = output_to_map_before_trim.trim();
-        byte[] buf = null;
-        try {
-            buf = output_to_map.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException unsupportedEncodingException) {
-            unsupportedEncodingException.printStackTrace();
-            System.exit(-6);
-        }
-        try {
-            // get a datagram socket
-            DatagramSocket socket = new DatagramSocket();
-            // send request
-            InetAddress address = InetAddress.getByName("localhost");
-            DatagramPacket packet = new DatagramPacket(buf, buf.length, address, Map.UDP_PORT_NUMBER);
-            socket.send(packet); // send UDP to server
-            socket.close();
-            socket = null;
-            // A udp packet was sent to the map
-        } catch (SocketException socket_exception) {
-            System.out.println("Connection in use.");
-            socket_exception.printStackTrace();
-            System.exit(-76);
-        } catch (IOException io_exception) {
-            System.out.println("Connection closed.");
-            io_exception.printStackTrace();
-        }
-        try {
-            try {
-                final IO_Bundle to_return_tcp = (IO_Bundle) RunController.object_input_stream.readObject();
-                if (to_return_tcp != null) {
-
-                    if (to_return_tcp.view_for_display_ == null && to_return_tcp.compressed_characters_ != null) {
-                        to_return_tcp.view_for_display_ = IO_Bundle.runLengthDecodeView(width_from_center, height_from_center, to_return_tcp.compressed_characters_, to_return_tcp.character_frequencies_);
-                        to_return_tcp.color_for_display_ = IO_Bundle.runLengthDecodeColor(
-                                width_from_center, height_from_center, to_return_tcp.compressed_colors_, to_return_tcp.color_frequencies_);
-                        // "View is encoded!
-                        if (to_return_tcp.view_for_display_ == null && to_return_tcp.compressed_characters_ == null) {
-                            System.out.println("Something is very, very wrong here");
-                            System.exit(-8);
-                        }
-                    }
-
-                    // Make the buttons says the right skill names.
-                    if ((command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
-                            || command == Key_Commands.BECOME_SNEAK) && to_return_tcp.occupation_ != null) {
-                        java.awt.EventQueue.invokeLater(new Runnable() {
-                            public void run() {
-                                Display.getDisplay().getSkillButton(1).
-                                        setText(to_return_tcp.occupation_.getSkillNameFromNumber(1));
-                                Display.getDisplay().getSkillButton(2).
-                                        setText(to_return_tcp.occupation_.getSkillNameFromNumber(2));
-                                Display.getDisplay().getSkillButton(3).
-                                        setText(to_return_tcp.occupation_.getSkillNameFromNumber(3));
-                                Display.getDisplay().getSkillButton(4).
-                                        setText(to_return_tcp.occupation_.getSkillNameFromNumber(4));
-                            }
-                        });
-                    }
-
-                    // Sets focus if you walk into somebody
-                    if ((command == Key_Commands.MOVE_LEFT || command == Key_Commands.MOVE_DOWNLEFT
-                            || command == Key_Commands.MOVE_DOWN || command == Key_Commands.MOVE_DOWNRIGHT
-                            || command == Key_Commands.MOVE_RIGHT || command == Key_Commands.MOVE_UPRIGHT
-                            || command == Key_Commands.MOVE_UP || command == Key_Commands.MOVE_UPLEFT) &&
-                            to_return_tcp.strings_for_communication_ != null && !to_return_tcp.strings_for_communication_.isEmpty()) 
-                    { // ** This works for auto-chat **
-                        java.awt.EventQueue.invokeLater(new Runnable() {
-                            public void run() {
-                                Display.getDisplay().requestOutBoxFocus();
-                            }
-                        });
-                    }
+        final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
+        // Make the buttons says the right skill names.
+        if (command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
+                || command == Key_Commands.BECOME_SNEAK && to_return != null) {
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    Display.getDisplay().getSkillButton(1).
+                            setText(to_return.occupation_.getSkillNameFromNumber(1));
+                    Display.getDisplay().getSkillButton(2).
+                            setText(to_return.occupation_.getSkillNameFromNumber(2));
+                    Display.getDisplay().getSkillButton(3).
+                            setText(to_return.occupation_.getSkillNameFromNumber(3));
+                    Display.getDisplay().getSkillButton(4).
+                            setText(to_return.occupation_.getSkillNameFromNumber(4));
                 }
-
-                return to_return_tcp;
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                System.out.println("The thing that came out of TCP socket is not an IO_Bundle");
-                System.exit(-82);
-                return null;
-            }
-
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            System.err.println("Don't know about host " + RunController.hostName);
-            System.exit(1);
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Couldn't get I/O for the connection to "
-                    + RunController.hostName + " [ Connection closed ] ");
-            System.exit(-20);
-            return null;
+            });
         }
+        return to_return;
     }
 
     /**
@@ -301,9 +225,9 @@ public class GameController extends Controller {
             }
         }
         if (!taken) {
-            return sendCommandToMapWithOptionalText(input, "");
+            return sendCommandToMapWithText(input, "");
         } else {
-            return sendCommandToMapWithOptionalText(Key_Commands.DO_ABSOLUTELY_NOTHING, "");
+            return sendCommandToMapWithText(Key_Commands.DO_ABSOLUTELY_NOTHING, "");
         }
 
     }
@@ -312,6 +236,18 @@ public class GameController extends Controller {
     protected void takeTurnandPrintTurn(Key_Commands input) {
         IO_Bundle bundle = updateViewsAndMap(input);
         updateDisplay(bundle);
+    }
+
+    @Override
+    public void saveGame(String foo) {
+        MapUserAble_.saveGame(foo);
+
+    }
+
+    @Override
+    public void loadGame(String foo) {
+        MapUserAble_.loadGame(foo);
+
     }
 
     // FIELD ACCESSORS

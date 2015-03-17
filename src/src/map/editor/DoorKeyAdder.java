@@ -21,10 +21,10 @@ class DoorKeyAdder implements MapAddable {
 		if(isEmpty()){return 2;}
 		if(!mapp_.withinMap(x, y)){return 1;}
 		int result;
-		if(key_ == null){
+		if(key_ == null) {
 			result = mapp_.addItem(door_, x, y);
 			door_ = null;
-		}else{
+		} else {
 			System.out.println(key_);
 			result = mapp_.addItem(key_,x,y);
 			key_ = null;

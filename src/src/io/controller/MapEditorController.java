@@ -42,13 +42,39 @@ public class MapEditorController extends Controller {
 		Display.getDisplay().addDoubleClickCommandEventReceiver(new Function<Void, String>() {
 
 			@Override
-			public Void apply(String foo) {
-				if(foo == null){return null;}
-				setToSpawn_ = foo;
-				setLastSpawned(setToSpawn_);
-				updateDisplay();
+			public Void apply(final String foo) {
+				Thread t_ = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						if(foo == null){return;}
+						setToSpawn_ = foo;
+						setLastSpawned(setToSpawn_);
+						updateDisplay();
+						
+					}
+				});
+				t_.start();
 				return null;
 			}
+		});
+		Display.getDisplay().addInputBoxTextEnteredFunction(new Function<Void,String>(){
+			CommandMiniController cont = new CommandMiniController(MapEditorController.this.getRemapper(), MapEditorController.this);
+			@Override
+			public Void apply(final String foo) {
+				Thread t_ = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						if(foo.startsWith("/")){Display.getDisplay().setMessage(cont.processCommand(foo));}
+						
+					}
+				});
+				t_.start();
+				return null;
+			}
+			
+
 		});
 	}
 
@@ -65,6 +91,7 @@ public class MapEditorController extends Controller {
 		case MOVE_RIGHT: ++x; break;
 		case MAP_INSERT: mapInsert(Display.getDisplay().getHighlightedItem()); break;
 		case MAP_CENTER: x = 0; y = 0; break;
+		case SAVE_GAME: 
 		default: break;
 
 		}
@@ -99,8 +126,25 @@ public class MapEditorController extends Controller {
 	}
 	@Override
 	public String getUserName() {
-		return factory_.mostRecentAvatar();
+		String foo = factory_.mostRecentAvatar();
+		System.out.println("foo");
+		if(foo == null){return "null";}
+		else{return foo;}
+		
+		
 	}
 
+	@Override
+	public void saveGame(String foo) {
+		map_.saveGame(foo);
+		
+	}
+
+
+	@Override
+	public void loadGame(String foo) {
+		map_.loadGame(foo);
+		
+	}
 
 }

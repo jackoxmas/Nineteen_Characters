@@ -11,7 +11,6 @@ import java.util.LinkedList;
 import src.io.view.display.Display;
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.Entity;
-import src.model.map.constructs.Item;
 
 /**
  * Handles interactions between map + avatar that neither should otherwise be

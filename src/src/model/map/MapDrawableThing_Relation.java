@@ -128,10 +128,10 @@ public class MapDrawableThing_Relation {
     }
 
     public boolean isAssociatedWithMap() {
-        if (current_map_reference_ == null) {
-            return false;
-        } else {
+        if (current_map_reference_ != null) {
             return true;
+        } else {
+            return false;
         }
     }
 
@@ -194,16 +194,16 @@ public class MapDrawableThing_Relation {
         if (toMove == e) {
             current_map_reference_.getTile(old_x, old_y).removeEntity();
             MapTile move_tile = current_map_reference_.getTile(old_x + delta_x, old_y + delta_y);
-            if (move_tile == null || move_tile.isPassable() == false) { // put the entity back in its place
-                current_map_reference_.getTile(old_x, old_y).addEntity(e);
-                return -4;
-            } else { // move the entity
+            if (!(move_tile == null || move_tile.isPassable() == false)) { // move the entity
                 int error_code = move_tile.addEntity(e);
                 Item walked_on_item = move_tile.viewTopItem();
                 if (walked_on_item != null) { // make the item walked on do stuff
                     walked_on_item.onWalkOver();
                 }
                 return error_code;
+            } else { // put the entity back in its place
+                current_map_reference_.getTile(old_x, old_y).addEntity(e);
+                return -4;
             }
         } else {
             return -3;

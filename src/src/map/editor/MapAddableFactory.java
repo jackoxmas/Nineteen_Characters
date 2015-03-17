@@ -15,7 +15,7 @@ import src.model.map.constructs.OneHandedSword;
 import src.model.map.constructs.OneShotAreaEffectItem;
 import src.model.map.constructs.OneWayTeleportItem;
 import src.model.map.constructs.PermanentObstacleItem;
-import src.model.map.constructs.Sheild;
+import src.model.map.constructs.Shield;
 import src.model.map.constructs.Staff;
 import src.model.map.constructs.TemporaryObstacleItem;
 import src.model.map.constructs.Terrain;
@@ -31,8 +31,8 @@ import src.model.map.constructs.Villager;
 public class MapAddableFactory {
 	private String aveString_;
 	public String mostRecentAvatar(){
-		if(aveString_==null){return "NO AVATAR ON MAP";}
-		else{return aveString_;}
+		if(aveString_!=null){return aveString_;}
+		else{return "NO AVATAR ON MAP";}
 	}
 	public MapAddableFactory() {
 		// TODO Auto-generated constructor stub
@@ -98,9 +98,9 @@ public class MapAddableFactory {
 		case KILL_EFFECT_ENUM:
 			OneShotAreaEffectItem kill = new OneShotAreaEffectItem("killer", 'k', Effect.KILL, 10);
 			return new ItemAdder(kill);
-		case SHEILD_ITEM:
-			Item sheild = new Sheild("Sheildy",'O');
-			return new ItemAdder(sheild);
+		case SHIELD_ITEM:
+			Item shield = new Shield("Shieldy",'O');
+			return new ItemAdder(shield);
 		case SWORD_ITEM:
 			Item onehandedsword = new OneHandedSword("Excalibur", '|');
 			return new ItemAdder(onehandedsword);

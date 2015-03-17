@@ -11,13 +11,13 @@ import java.io.Serializable;
  *
  * @author JohnReedLOL
  */
-public class Sheild extends EquipableItem implements SecondaryHandHoldable, Serializable {
+public class Shield extends EquipableItem implements SecondaryHandHoldable, Serializable {
 
-    public Sheild(String name, char representation) {
+    public Shield(String name, char representation) {
         super(name, representation);
         this.getStatsPack().addOn(new DrawableThingStatsPack(0,10));
     }
     public int equipMyselfTo(Entity to_equip) {
-        return to_equip.equipSheild(this);
+        return to_equip.equipShield(this);
     }
 }

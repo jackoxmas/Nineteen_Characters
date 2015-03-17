@@ -493,7 +493,12 @@ class Key_Listener_GUI extends javax.swing.JFrame {
             String S = outgoing_text_jTextField.getText();
 
             incoming_text_jTextArea.append(System.lineSeparator() + outgoing_text_jTextField.getText());
-            if (outgoing_text_jTextField.getText().startsWith("/fontsize")) {
+            if (!outgoing_text_jTextField.getText().startsWith("/fontsize")) {
+                for (Function<Void, String> functor : inputchatbox_Handlers_) {
+                    functor.apply(S);//Loop through and apply, but ONLY if we haven't already eaten /fontsize.
+                }
+            }
+            else{
                 try {
                     String temp = outgoing_text_jTextField.getText();
                     temp = temp.replaceAll("[^0-9 | .]", "");//Regex, to select anything not 0-9 or .
@@ -503,10 +508,6 @@ class Key_Listener_GUI extends javax.swing.JFrame {
                     this.addMessage("Set font to " + fontSize_);
                 } catch (Exception e) {
                     this.addMessage("Invalid Font size! Current size is " + Float.toString(fontSize_));
-                }
-            } else {
-                for (Function<Void, String> functor : inputchatbox_Handlers_) {
-                    functor.apply(S);//Loop through and apply, but ONLY if we haven't already eaten /fontsize.
                 }
             }
             outgoing_text_jTextField.setText("");//Upon enter, clear the input box, and move it's text to output

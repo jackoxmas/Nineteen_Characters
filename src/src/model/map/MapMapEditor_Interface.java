@@ -45,5 +45,16 @@ public interface MapMapEditor_Interface {
      */
 	// public int addAvatar(Avatar avatar_, int x, int y);
 	public boolean withinMap(int x, int y);
+	
+    /**
+     * Takes in name so save to, defaults to date
+     * @param foo
+     */
+    public int saveGame(String foo);
+    /**
+     * Takes in name to load. 
+     * @param foo
+     */
+    public int loadGame(String foo);
 
 }

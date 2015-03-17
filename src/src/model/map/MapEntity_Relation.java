@@ -207,14 +207,28 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         entity_ = entity;
         x_respawn_point_ = x_respawn_point;
         y_respawn_point_ = y_respawn_point;
+        if (entity.getMapRelation() != null && entity.getMapRelation() != this) {
+            this.setMapTile(entity.getMapRelation().getMapTile());
+        }
     }
 
-    protected int getXrespawnPoint() {
+    /**
+     * Turns an entity's MapEntityRelation into a MapKnight_Relation
+     */
+    public void becomeKnightRelation() {
+        entity_.setMapRelation(new MapKnight_Relation(super.getMap(), this.entity_, this.x_respawn_point_, this.y_respawn_point_));
+    }
+
+    public int getXrespawnPoint() {
         return x_respawn_point_;
     }
 
-    protected int getYrespawnPoint() {
+    public int getYrespawnPoint() {
         return y_respawn_point_;
+    }
+
+    protected Entity getEntity() {
+        return entity_;
     }
 
     /**
@@ -241,10 +255,10 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             s += " Items on this tile:";
             for (int j = 0; j < items.size(); j++) {
                 s += " " + items.get(j).name_;
-                if (j + 1 == items.size()) {
-                    s += ".";
-                } else {
+                if (j + 1 != items.size()) {
                     s += ",";
+                } else {
+                    s += ".";
                 }
             }
         }
@@ -325,7 +339,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 Display.getDisplay().setMessage(
                         itemToBePickedUp.name_ + " was picked up off the map!");
                 error_code = 0;
-            } 
+            }
         } else {
             // Dead men cannot pick up items.
         }
@@ -367,9 +381,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     public int sendAttackToRelativePosition(int x, int y) {
         MapTile target_tile = this.current_map_reference_.getTile(
                 getMyXCoordinate() + x, getMyYCoordinate() + y);
-        if (target_tile == null) {
-            return -1;
-        } else {
+        if (target_tile != null) {
             Entity target_entity = target_tile.getEntity();
             if (target_entity == null) {
                 return -2;
@@ -379,6 +391,8 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                         .getOffensive_rating_(), entity_);
                 return 0;
             }
+        } else {
+            return -1;
         }
     }
 
@@ -397,8 +411,6 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     public int sendAttackToAbsolutePosition(int x, int y) {
         MapTile target_tile = this.current_map_reference_.getTile(x, y);
         if (target_tile == null) {
-            return -1;
-        } else {
             Entity target_entity = target_tile.getEntity();
             if (target_entity == null) {
                 return -2;
@@ -407,6 +419,8 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                         .getOffensive_rating_(), entity_);
                 return 0;
             }
+        } else {
+            return -1;
         }
     }
 
@@ -617,9 +631,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      */
     public int teleportTo(int new_x, int new_y) {
         MapTile destination = current_map_reference_.getTile(new_x, new_y);
-        if (destination == null) {
-            return -2;
-        } else {
+        if (destination != null) {
             int old_x = this.getMyXCoordinate();
             int old_y = this.getMyYCoordinate();
             current_map_reference_.getTile(old_x, old_y).removeEntity();
@@ -636,6 +648,8 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 }
                 return error_code;
             }
+        } else {
+            return -2;
         }
     }
 

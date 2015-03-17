@@ -24,10 +24,18 @@ public abstract class Controller implements Function<Void,Character> {
 		currentView_ = view;
 		userName_ = uName;
 		Display.getDisplay().addDirectCommandReceiver(new Function<Void, Key_Commands>() {
-
+			Thread t_ = Thread.currentThread();
 			@Override
-			public Void apply(Key_Commands foo) {
-				takeTurnandPrintTurn(foo);
+			public Void apply(final Key_Commands foo) {
+				t_ = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						takeTurnandPrintTurn(foo);
+						
+					}
+				});
+				t_.start();
 				return null;
 			}
 
@@ -85,10 +93,29 @@ public abstract class Controller implements Function<Void,Character> {
 	}
 
 	@Override
-	public Void apply(Character foo) {
-		takeTurnandPrintTurn(foo);
+	public Void apply(final Character foo) {
+		Thread t_ = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				takeTurnandPrintTurn(foo);
+				
+			}
+		});
+		t_.start();
 		return null;
 	}
+	/**
+	 * Should be overridden to save the file with the name given, if no name given, save with date.
+	 * @param foo
+	 */
+	public abstract void saveGame(String foo);
+	/**
+	 * Should be overrridden to load given save file. 
+	 * @param foo
+	 */
+	public abstract void loadGame(String foo);
+
 
 
 }

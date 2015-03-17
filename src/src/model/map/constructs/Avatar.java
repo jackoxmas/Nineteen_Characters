@@ -12,7 +12,7 @@ import src.Effect;
 import src.FacingDirection;
 import src.HardCodedStrings;
 import src.Key_Commands;
-import src.RunController;
+import src.RunGame;
 import src.SkillEnum;
 import src.io.view.display.Display;
 import src.model.map.MapAvatar_Relation;
@@ -44,7 +44,6 @@ public final class Avatar extends Entity {
         ArrayList<String> options = new ArrayList<String>();
         options.add("Attack me. " + HardCodedStrings.attack);
         options.add("Start a conversation with me. " + HardCodedStrings.getChatOptions);
-        options.add("Select a skill to use on me. " + HardCodedStrings.getAllSkills);
         return options;
     }
 
@@ -54,6 +53,11 @@ public final class Avatar extends Entity {
         return options;
     }
 
+    /**
+     * If/else loop not optimized.
+     * 
+     * - Jack
+     */
     public ArrayList<String> getConversationContinuationStrings(String what_you_just_said_to_me, Entity who_is_talking_to_me) {
         ArrayList<String> options = new ArrayList<String>();
         if (what_you_just_said_to_me.equals("Hello")) {
@@ -105,10 +109,10 @@ public final class Avatar extends Entity {
         s += "\n";
 
         s += " map_relationship_: ";
-        if (super.getMapRelation() == null) {
-            s += "null";
-        } else {
+        if (super.getMapRelation() != null) {
             s += "Not null";
+        } else {
+            s += "null";
         }
 
         s += "\n associated with map:"

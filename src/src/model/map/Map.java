@@ -24,7 +24,7 @@ import org.w3c.dom.Element;
 
 import src.IO_Bundle;
 import src.Key_Commands;
-import src.RunController;
+import src.RunGame;
 import src.model.map.constructs.Avatar;
 import src.model.map.constructs.DrawableThingStatsPack;
 import src.model.map.constructs.Entity;
@@ -40,7 +40,7 @@ import src.model.map.constructs.Terrain;
  *
  * @author John-Michael Reed
  */
-public class Map implements MapMapEditor_Interface {
+public class Map implements MapMapEditor_Interface, MapUser_Interface {
 
     public static final int MAX_NUMBER_OF_WORLDS = 1;
     private static int number_of_worlds_generated_ = 0;
@@ -64,7 +64,7 @@ public class Map implements MapMapEditor_Interface {
     private GetMapInputFromUsers udp_thread;
     private TCP_Connection_Maker tcp_thread;
     private ConcurrentHashMap<String, Single_User_TCP_Thread> users = new ConcurrentHashMap<>();
-
+    
     /**
      *
      * @param name - name of Entity
@@ -143,16 +143,7 @@ public class Map implements MapMapEditor_Interface {
      * @param y - Height of Map
      */
     public Map(int x, int y) {
-        if (number_of_worlds_generated_ >= MAX_NUMBER_OF_WORLDS) {
-            System.err.println("Number of world allowed: "
-                    + MAX_NUMBER_OF_WORLDS);
-            System.err.println("Number of worlds already in existence: "
-                    + number_of_worlds_generated_);
-            System.err.println("Please don't make more than "
-                    + MAX_NUMBER_OF_WORLDS + " worlds.");
-            System.exit(-4);
-
-        } else {
+        if (number_of_worlds_generated_ < MAX_NUMBER_OF_WORLDS) {
             ++number_of_worlds_generated_;
 
             height_ = y;
@@ -179,8 +170,15 @@ public class Map implements MapMapEditor_Interface {
             tcp_thread = new TCP_Connection_Maker();
 
             udp_thread.start();
-            System.out.println("udp thread is started");
             tcp_thread.start();
+        } else {
+            System.err.println("Number of world allowed: "
+                    + MAX_NUMBER_OF_WORLDS);
+            System.err.println("Number of worlds already in existence: "
+                    + number_of_worlds_generated_);
+            System.err.println("Please don't make more than "
+                    + MAX_NUMBER_OF_WORLDS + " worlds.");
+            System.exit(-4);
         }
     }
 
@@ -548,6 +546,29 @@ public class Map implements MapMapEditor_Interface {
         }
         return error_code;
     }
+    
+    
+    /**
+     * Adds an entity to the map and provides it with a MapKnight_Relation.
+     *
+     * @param e - Entity to be added
+     * @param x - x position of where you want to add entity
+     * @param y - y posiition of where you want to add entity
+     * @return -1 on fail, 0 on success
+     */
+    public int addAsKnight(Entity e, int x, int y) {
+        e.setMapRelation(new MapKnight_Relation(this, e, x, y));
+        System.out.println(e.name_);
+        int error_code = this.map_grid_[y][x].addEntity(e);
+        System.out.println(e.name_ + "2");
+        if (error_code == 0) {
+            this.entity_list_.put(e.name_, e);
+        } else {
+            e.setMapRelation(null);
+            System.err.println("Error in entity list");
+        }
+        return error_code;
+    }
 
     /**
      * Adds an avatar to the map and provides it with a MapAvatar_Relation.
@@ -714,6 +735,110 @@ public class Map implements MapMapEditor_Interface {
             System.exit(-16);
         }
     }
+    
+    /**
+     * Use this when the command the map is receiving requires a string
+     * parameter
+     *
+     * @param username
+     * @param command
+     * @param width_from_center
+     * @param height_from_center
+     * @param text - empty string preffered when not in use.
+     * @return Bundle of stuff used by the display.
+     */
+    public IO_Bundle sendCommandToMapWithOptionalText(String username, Key_Commands command, int width_from_center, int height_from_center, String text) {
+        // Avatar to_recieve_command = this.avatar_list_.get(username);
+        Entity to_recieve_command;
+        if (this.entity_list_.containsKey(username)) {
+            to_recieve_command = this.entity_list_.get(username);
+        } else {
+            to_recieve_command = null;
+            System.err.println("The avatar of entity you are trying to reach does not exist.");
+        }
+        ArrayList<String> strings_for_IO_Bundle = null;
+        if (to_recieve_command != null) {
+            if (to_recieve_command.getMapRelation() == null) {
+                System.err.println(to_recieve_command.name_ + " has a null relation with this map. ");
+                return null;
+            }
+            if (command != null) {
+                if (command == Key_Commands.STANDING_STILL) {
+                    strings_for_IO_Bundle = null;
+                } else if (to_recieve_command.isAlive() == true) {
+                    strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, text);
+                } else {
+                    strings_for_IO_Bundle = null;
+                }
+                if (to_recieve_command.isAlive() == true) {
+                    char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                            to_recieve_command.getMapRelation().getMyYCoordinate(),
+                            width_from_center, height_from_center);
+                    Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                            to_recieve_command.getMapRelation().getMyYCoordinate(),
+                            width_from_center, height_from_center);
+                    IO_Bundle return_package = new IO_Bundle(
+                            null, null, null, null, 
+                            view,
+                            colors,
+                            to_recieve_command.getInventory(),
+                            // Don't for get left and right hand items
+                            to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
+                            to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
+                            to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
+                            to_recieve_command.getPrimaryEquipped(),
+                            to_recieve_command.getSecondaryEquipped(),
+                            strings_for_IO_Bundle,
+                            to_recieve_command.getNumGoldCoins(),
+                            to_recieve_command.isAlive()
+                    );
+                    return return_package;
+                } else {
+                    char[][] view = null;
+                    Color[][] colors = null;
+                    IO_Bundle return_package = new IO_Bundle(
+                            null, null, null, null, 
+                            view,
+                            colors,
+                            null,
+                            // Don't for get left and right hand items
+                            null,
+                            null,
+                            -1,
+                            -1,
+                            -1,
+                            -1,
+                            null,
+                            null,
+                            null,
+                            -1,
+                            to_recieve_command.isAlive()
+                    );
+                    return return_package;
+                }
+            } else if (command == null) {
+                IO_Bundle return_package = new IO_Bundle(null, null, null, null, null, null, to_recieve_command.getInventory(),
+                        // Don't for get left and right hand items
+                        to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
+                        to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
+                        to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
+                        to_recieve_command.getPrimaryEquipped(),
+                        to_recieve_command.getSecondaryEquipped(),
+                        strings_for_IO_Bundle,
+                        to_recieve_command.getNumGoldCoins(),
+                        to_recieve_command.isAlive()
+                );
+                return return_package;
+            } else {
+                System.err.println("avatar + " + username + " is invalid. \n"
+                        + "Please check username and make sure he is on the map.");
+                return null;
+            }
+        } else {
+            System.out.println(username + " cannot be found on this map.");
+            return null;
+        }
+    }
 
     public void runLengthEncodeColors(final int x_center, final int y_center, final int width_from_center,
             final int height_from_center, ArrayList<Color> unchanged_colors, ArrayList<Short> frequencies) {
@@ -765,10 +890,10 @@ public class Map implements MapMapEditor_Interface {
      */
     public int removeEntity(Entity e) {
         Entity removed = this.entity_list_.remove(e.name_);
-        if (removed == null) {
-            System.err.println("The entity to be removed does not exist in the list of entities");
-        } else {
+        if (removed != null) {
             System.out.println(removed.name_ + " has been removed from the map");
+        } else {
+            System.err.println("The entity to be removed does not exist in the list of entities");
         }
         if (this.map_grid_[e.getMapRelation().getMyYCoordinate()][e.getMapRelation().getMyXCoordinate()].getEntity() == e) {
             this.map_grid_[e.getMapRelation().getMyYCoordinate()][e.getMapRelation().getMyXCoordinate()].removeEntity();
@@ -848,7 +973,7 @@ public class Map implements MapMapEditor_Interface {
                 // Terrain
                 Terrain terr = this.map_grid_[i][j].getTerrain();
                 if (terr == null) {
-                    RunController.errOut("xml_writeMap: null terrain @ [" + i + ", " + j + "]");
+                    RunGame.errOut("xml_writeMap: null terrain @ [" + i + ", " + j + "]");
                     return 1;
                 }
                 xml_writeTerrain(doc, e_l, terr);
@@ -961,7 +1086,7 @@ public class Map implements MapMapEditor_Interface {
 
     private Element xml_writeStatsDrawable(Document doc, Element parent, DrawableThingStatsPack stats) {
         if (stats == null) {
-            RunController.errOut("xml_writeStatsDrawable: null statspack");
+            RunGame.errOut("xml_writeStatsDrawable: null statspack");
             return null;
         }
 
@@ -992,7 +1117,7 @@ public class Map implements MapMapEditor_Interface {
 
     private Element xml_writeStatsEntity(Document doc, Element parent, EntityStatsPack stats) {
         if (stats == null) {
-            RunController.errOut("xml_writeStatsEntity: null statspack");
+            RunGame.errOut("xml_writeStatsEntity: null statspack");
             return null;
         }
 
@@ -1073,7 +1198,7 @@ public class Map implements MapMapEditor_Interface {
         Element e_Terrain = doc.createElement("terrain");
 
         if (terr.getName() == null) {
-            RunController.errOut("xml_writeTerrain: null Terrain name");
+            RunGame.errOut("xml_writeTerrain: null Terrain name");
             return null;
         }
         e_Terrain.setAttribute("name", terr.getName());
@@ -1111,5 +1236,23 @@ public class Map implements MapMapEditor_Interface {
         return e_Terrain;
     }
     //</editor-fold>
+    /**
+     * Takes in name so save to, defaults to date
+     * @param foo
+     */
+	@Override
+	public int saveGame(String foo) {
+        RunGame.saveGameToDisk(foo); 
+		return 0;
+	}
+	   /**
+     * Takes in name to load. 
+     * @param foo
+     */
+	@Override
+	public int loadGame(String foo) {
+		RunGame.loadGame(foo);
+		return 0;
+	}
 
 }

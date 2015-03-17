@@ -32,15 +32,7 @@ public abstract class Item extends DrawableThing implements Serializable{
     public int setPassable(boolean is_passable) {
         is_passable_ = is_passable;
         return 0;
-    }
-
-    public boolean determineIfCanPass(Entity entity) {
-        if (this.isPassable()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+    }	
 
     private boolean goes_in_inventory_;
 
@@ -103,10 +95,10 @@ public abstract class Item extends DrawableThing implements Serializable{
         String s = "Item name: " + name_;
 
         s += "\n map_relationship_: ";
-        if (map_relationship_ == null) {
-            s += "null";
-        } else {
+        if (map_relationship_ != null) {
             s += "Not null";
+        } else {
+            s += "null";
         }
 
         return s;

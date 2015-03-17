@@ -11,7 +11,7 @@ import src.Effect;
 
 import src.FacingDirection;
 import src.Key_Commands;
-import src.RunController;
+import src.RunGame;
 import src.SkillEnum;
 import src.io.view.display.Display;
 import src.model.map.MapEntity_Relation;
@@ -33,7 +33,7 @@ abstract public class Entity extends DrawableThing {
     private boolean has_lives_left_ = true;
 
     /**
-     * 
+     *
      * @return true if you have lives left, false if you don't.
      */
     public boolean isAlive() {
@@ -387,12 +387,22 @@ abstract public class Entity extends DrawableThing {
                 mar.moveInDirection(1, 1);
                 break;
             case SAVE_GAME: // Save Game
-                // RunController.saveGameToDisk(); // TODO: this is for testing, remove for
+                // RunGame.saveGameToDisk(); // TODO: this is for testing, remove for
                 // deployment
                 break;
             case USE_LAST_ITEM: // Use item in inventory
-                this.useItemInFacingDirectionOnMyself();
-                System.out.println("using item!");
+                int error_code = this.useItemInFacingDirectionOnMyself();
+                //if(error_code != 0) {
+                PickupableItem last = this.getLastItemInInventory();
+                if (last == null) {
+                    System.out.println("last inventory item is null");
+                } else {
+                    System.out.println("last inventory item is not null");
+                    if (error_code != 0) {
+                        last.use(this);
+                        System.out.println("using item!");
+                    }
+                }
                 break;
             case EQUIP_LAST_ITEM: // equipMyselfTo
                 try {
@@ -536,11 +546,11 @@ abstract public class Entity extends DrawableThing {
      * @return true if alive false is dead
      */
     public boolean checkHealthAndCommitSuicideIfDead() {
-        if (stats_pack_.getCurrent_life_() <= 0) {
+        if (stats_pack_.getCurrent_life_() > 0) {
+            return true;
+        } else {
             commitSuicide();
             return false;
-        } else {
-            return true;
         }
     }
 
@@ -591,27 +601,27 @@ abstract public class Entity extends DrawableThing {
 
     /**
      * @author John-Michael Reed
-     * @param sheild
+     * @param shield
      * @return
      */
-    public int equipSheild(Sheild sheild) {
-        if (sheild != null) {
+    public int equipShield(Shield shield) {
+        if (shield != null) {
             // In the case of a 2H sword
             if ((primary_hand_ == secondary_hand_) && (secondary_hand_ != null)) {
                 inventory_.add((PickupableItem) primary_hand_);
                 stats_pack_.reduceBy(secondary_hand_.getStatsPack());
                 primary_hand_ = null;
                 secondary_hand_ = null;
-            } // In the case of a sheild
+            } // In the case of a shield
             else if ((primary_hand_ != secondary_hand_) && (secondary_hand_ != null)) {
                 inventory_.add((PickupableItem) primary_hand_);
                 stats_pack_.reduceBy(secondary_hand_.getStatsPack());
                 secondary_hand_ = null;
             }
 
-            secondary_hand_ = sheild;
+            secondary_hand_ = shield;
             stats_pack_.addOn(secondary_hand_.getStatsPack());
-            boolean successful_removal = inventory_.remove((PickupableItem) sheild);
+            boolean successful_removal = inventory_.remove((PickupableItem) shield);
             if (successful_removal != true) {
                 System.exit(-66);
             }
@@ -729,10 +739,10 @@ abstract public class Entity extends DrawableThing {
         primary_hand_ = null;
         secondary_hand_ = null;
 
-        if (occupation_ == null) {
-            return 0;
-        } else {
+        if (occupation_ != null) {
             return occupation_.unEquipEverything();
+        } else {
+            return 0;
         }
     }
 
@@ -821,11 +831,11 @@ abstract public class Entity extends DrawableThing {
      * @return -1 if target is null, 0 if success
      */
     public int sendAttack(Entity target_entity) {
-        if (target_entity == null) {
-            return -1;
-        } else {
+        if (target_entity != null) {
             target_entity.receiveAttack(3 + this.getStatsPack().getOffensive_rating_(), this);
             return 0;
+        } else {
+            return -1;
         }
     }
 
@@ -845,9 +855,11 @@ abstract public class Entity extends DrawableThing {
     }
 
     /**
-     * Call this function when an Entity gains experience points. 
+     * Call this function when an Entity gains experience points.
+     *
      * @param amount - number of experience points
-     * @return number of level ups - 0 for no level ups, 1 for 1 level up, 2 for 2 levels up, etc.;
+     * @return number of level ups - 0 for no level ups, 1 for 1 level up, 2 for
+     * 2 levels up, etc.;
      */
     public int gainExperiencePoints(int amount) {
         int num_level_ups = stats_pack_.increaseQuantityOfExperienceBy(amount);

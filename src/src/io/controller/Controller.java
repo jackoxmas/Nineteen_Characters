@@ -1,10 +1,12 @@
 package src.io.controller;
 
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import src.Function;
 import src.IO_Bundle;
 import src.Key_Commands;
+import src.QueueCommandInterface;
 import src.io.view.Viewport;
 import src.io.view.display.Display;
 /**
@@ -12,10 +14,14 @@ import src.io.view.display.Display;
  * @author mbregg
  *
  */
-public abstract class Controller implements Function<Void,Character> {
+public abstract class Controller implements QueueCommandInterface<Character> {
 	private KeyRemapper remap_;
 	private Viewport currentView_;
 	private String userName_;
+	private ConcurrentLinkedQueue<Key_Commands> keyCommandQueue_ = new ConcurrentLinkedQueue<Key_Commands>();
+	private ConcurrentLinkedQueue<Character> characterQueue_ = new ConcurrentLinkedQueue<Character>();
+	private Thread controllerThread_ = Thread.currentThread();
+
 	public void setControlling(String in){
 		userName_ = in;
 	}
@@ -23,26 +29,48 @@ public abstract class Controller implements Function<Void,Character> {
 		remap_ = remap;
 		currentView_ = view;
 		userName_ = uName;
-		Display.getDisplay().addDirectCommandReceiver(new Function<Void, Key_Commands>() {
-			Thread t_ = Thread.currentThread();
+		Display.getDisplay().addDirectCommandReceiver(new QueueCommandInterface<Key_Commands>() {
+
 			@Override
-			public Void apply(final Key_Commands foo) {
-				t_ = new Thread(new Runnable() {
-					
-					@Override
-					public void run() {
-						takeTurnandPrintTurn(foo);
-						
-					}
-				});
-				t_.start();
-				return null;
+			public void enqueue(Key_Commands command) {
+				keyCommandQueue_.add(command);
+				
 			}
+
+			@Override
+			public void sendInterrupt() {
+				Controller.this.sendInterrupt();
+				
+			}
+
+						//takeTurnandPrintTurn(foo);
+
 
 		});
 		Display.getDisplay().addGameInputerHandler(this);
 		Display.getDisplay().setView(currentView_);
 		Display.getDisplay().printView();
+	}
+	
+	protected void sleepLoop(){
+		while(true){
+		 try {
+			 	System.out.println("Sleeping");
+		        Thread.sleep(Long.MAX_VALUE);
+		    } catch (InterruptedException e) {
+		       process();
+		    }
+		}
+	}
+	
+	protected void process(){
+		while(!keyCommandQueue_.isEmpty()){
+			takeTurnandPrintTurn(keyCommandQueue_.remove());
+		}
+		while(!characterQueue_.isEmpty()){
+			takeTurnandPrintTurn(characterQueue_.remove());
+		}
+		
 	}
 	protected Viewport getView(){return currentView_;}
 	protected void setView(Viewport view){currentView_=view;}
@@ -85,26 +113,33 @@ public abstract class Controller implements Function<Void,Character> {
 	}
 
 
-
+	/**
+	 * Takes the given iobundle and updates display with it's content
+	 * @param bundle
+	 */
 	public void updateDisplay(IO_Bundle bundle){
 		getView().renderToDisplay(bundle);
 		Display.getDisplay().setView(getView());
 		Display.getDisplay().printView();
 	}
-
 	@Override
-	public Void apply(final Character foo) {
-		Thread t_ = new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				takeTurnandPrintTurn(foo);
-				
-			}
-		});
-		t_.start();
-		return null;
+	public void enqueue(Character c){
+		characterQueue_.add(c);
 	}
+	@Override
+	public void sendInterrupt(){
+		try{
+			System.out.println("Interuppting!");
+		controllerThread_.interrupt();
+		}catch(Exception e){
+			System.err.println("Failed to interupt thread for input...Controller");
+			e.printStackTrace();
+		}
+	}
+		
+
+
+
 	/**
 	 * Should be overridden to save the file with the name given, if no name given, save with date.
 	 * @param foo

@@ -71,7 +71,7 @@ public class MapAddableFactory {
 			RedCross.addDecal('✚',Color.red);
 			return new TerrainAdder(RedCross);
 		case VILLAGER_ENTITY:
-			Villager villagerA = new Villager("villager1", '웃');
+			Villager villagerA = new Villager("villager1", '욋');
 			villagerA.getStatsPack().increaseQuantityOfExperienceBy(200);
 			return new EntityAdder(villagerA);
 		case TRADER_ENTITY:

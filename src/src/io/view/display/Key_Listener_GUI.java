@@ -11,6 +11,7 @@ import javax.swing.text.StyledDocument;
 
 import src.Function;
 import src.Key_Commands;
+import src.QueueCommandInterface;
 
 /**
  * Computer generated code made with Netbeans GUI builder using instruction
@@ -60,11 +61,11 @@ class Key_Listener_GUI extends javax.swing.JFrame {
      *
      */
     private static final long serialVersionUID = 1L;
-    private ArrayList<Function<Void, Character>> game_inputHandlers_ = new ArrayList<Function<Void, Character>>();
-    private ArrayList<Function<Void, Character>> outputbox_inputHandlers_ = new ArrayList<Function<Void, Character>>();
-    private ArrayList<Function<Void, String>> inputchatbox_Handlers_ = new ArrayList<Function<Void, String>>();
-    private ArrayList<Function<Void, Key_Commands>> direct_command_receivers_ = new ArrayList<Function<Void, Key_Commands>>();
-    private ArrayList<Function<Void, String>> command_area_double_clicked_ = new ArrayList<Function<Void, String>>();
+    private ArrayList<QueueCommandInterface<Character>> game_inputHandlers_ = new ArrayList<QueueCommandInterface<Character>>();
+    private ArrayList<QueueCommandInterface<Character>> outputbox_inputHandlers_ = new ArrayList<QueueCommandInterface<Character>>();
+    private ArrayList<QueueCommandInterface<String>> inputchatbox_Handlers_ = new ArrayList<QueueCommandInterface<String>>();
+    private ArrayList<QueueCommandInterface<Key_Commands>> direct_command_receivers_ = new ArrayList<QueueCommandInterface<Key_Commands>>();
+    private ArrayList<QueueCommandInterface<String>> command_area_double_clicked_ = new ArrayList<QueueCommandInterface<String>>();
 
     /**
      *
@@ -80,7 +81,7 @@ class Key_Listener_GUI extends javax.swing.JFrame {
      *
      * @param receiver
      */
-    public void addDirectCommandReceiver(Function<Void, Key_Commands> receiver) {
+    public void addDirectCommandReceiver(QueueCommandInterface<Key_Commands> receiver) {
         direct_command_receivers_.add(receiver);
     }
 
@@ -89,7 +90,7 @@ class Key_Listener_GUI extends javax.swing.JFrame {
      *
      * @param handler_
      */
-    public void addoutputBoxReceiver(Function<Void, Character> handler_) {
+    public void addoutputBoxReceiver(QueueCommandInterface<Character> handler_) {
         outputbox_inputHandlers_.add(handler_);
 
     }
@@ -99,12 +100,12 @@ class Key_Listener_GUI extends javax.swing.JFrame {
      *
      * @param handler_
      */
-    public void addInputBoxReceiver(Function<Void, String> handler_) {
+    public void addInputBoxReceiver(QueueCommandInterface<String> handler_) {
         inputchatbox_Handlers_.add(handler_);
 
     }
 
-    public void addCommandBoxReceiver(Function<Void, String> handler_) {
+    public void addCommandBoxReceiver(QueueCommandInterface<String> handler_) {
         command_area_double_clicked_.add(handler_);
     }
 
@@ -231,7 +232,7 @@ class Key_Listener_GUI extends javax.swing.JFrame {
      *
      * @param foo : The class to call
      */
-    public void addGameInputerHandler(Function<Void, Character> foo) {
+    public void addGameInputerHandler(QueueCommandInterface<Character> foo) {
         game_inputHandlers_.add((foo));
     }
 
@@ -241,7 +242,7 @@ class Key_Listener_GUI extends javax.swing.JFrame {
      *
      * @param foo : the class to call
      */
-    public void addChatboxInputerHandler(Function<Void, String> foo) {
+    public void addChatboxInputerHandler(QueueCommandInterface<String> foo) {
         inputchatbox_Handlers_.add((foo));
     }
     private float fontSize_ = 14f;//The font size
@@ -477,14 +478,16 @@ class Key_Listener_GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void sendKeyCommand(Key_Commands command) {
-        for (Function<Void, Key_Commands> foo : direct_command_receivers_) {
-            foo.apply(command);
+        for (QueueCommandInterface<Key_Commands> foo : direct_command_receivers_) {
+            foo.enqueue(command);
+            foo.sendInterrupt();
         }
     }
 
     private void incoming_text_jTextAreaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_incoming_text_jTextAreaKeyTyped
-        for (Function<Void, Character> foo : outputbox_inputHandlers_) {
-            foo.apply(evt.getKeyChar());
+        for (QueueCommandInterface<Character> foo : outputbox_inputHandlers_) {
+            foo.enqueue(evt.getKeyChar());
+            foo.sendInterrupt();
         }
     }//GEN-LAST:event_incoming_text_jTextAreaKeyTyped
 
@@ -494,8 +497,9 @@ class Key_Listener_GUI extends javax.swing.JFrame {
 
             incoming_text_jTextArea.append(System.lineSeparator() + outgoing_text_jTextField.getText());
             if (!outgoing_text_jTextField.getText().startsWith("/fontsize")) {
-                for (Function<Void, String> functor : inputchatbox_Handlers_) {
-                    functor.apply(S);//Loop through and apply, but ONLY if we haven't already eaten /fontsize.
+                for (QueueCommandInterface<String> functor : inputchatbox_Handlers_) {
+                    functor.enqueue(S);//Loop through and apply, but ONLY if we haven't already eaten /fontsize.
+                    functor.sendInterrupt();
                 }
             }
             else{
@@ -545,16 +549,18 @@ class Key_Listener_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_observe_jButtonMouseClicked
 
     private void game_jTextPaneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_game_jTextPaneKeyTyped
-        for (Function<Void, Character> foo : game_inputHandlers_) {
-            foo.apply(evt.getKeyChar());
+        for (QueueCommandInterface<Character> foo : game_inputHandlers_) {
+            foo.enqueue(evt.getKeyChar());
+            foo.sendInterrupt();
         }
     }//GEN-LAST:event_game_jTextPaneKeyTyped
 
     private void command_jButtonMouseClicked(java.awt.event.MouseEvent evt) {
         if (evt.getClickCount() >= 2) {
             String selected = commands_jTextArea.getSelectedText();
-            for (Function<Void, String> foo : command_area_double_clicked_) {
-                foo.apply(selected);
+            for (QueueCommandInterface<String> foo : command_area_double_clicked_) {
+                foo.enqueue(selected);
+                foo.sendInterrupt();
             }
         }
     }

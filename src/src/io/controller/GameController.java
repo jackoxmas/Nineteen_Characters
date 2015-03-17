@@ -10,12 +10,15 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import javax.swing.SwingUtilities;
 
 import src.Function;
 import src.HardCodedStrings;
 import src.IO_Bundle;
 import src.Key_Commands;
+import src.QueueCommandInterface;
 import src.RunGame;
 import src.enumHandler;
 import src.io.view.AvatarCreationView;
@@ -32,11 +35,12 @@ import src.model.map.MapUser_Interface;
  * @author JohnReedLOL/mbregg
  */
 public class GameController extends Controller {
-
-    private final class ChatBoxMiniController implements Function<Void, String> {
+	private ConcurrentLinkedQueue<String> stringQueue_ = new ConcurrentLinkedQueue<String>();
+    private final class ChatBoxMiniController implements QueueCommandInterface<String> {
 
         private CommandMiniController commandController_ = new CommandMiniController(getRemapper(), GameController.this);
         private ChatBoxViewPort chatview_ = new ChatBoxViewPort();
+
 
         public ChatBoxMiniController() {
             Display.getDisplay().addInputBoxTextEnteredFunction(this);
@@ -53,29 +57,7 @@ public class GameController extends Controller {
             Display.getDisplay().setMessage(commandController_.processCommand(foo));
         }
 
-        /**
-         * The function that is called by the chat box when enter is hit.
-         * Receives contents of input box.
-         */
-        @Override
-        public Void apply(final String foo) {
-            Thread t_ = new Thread(new Runnable() {
 
-                @Override
-                public void run() {
-                    if (foo.startsWith("/")) {
-                        processCommandAndDisplayOutput(foo);
-                        return;
-                    }
-                    //IF it starts with a /, it's a command, so send it
-                    //To the command function, not the map.
-                    sendTextCommandAndUpdate(foo);
-
-                }
-            });
-            t_.start();
-            return null;
-        }
 
         private Void sendTextCommandAndUpdate(String foo) {
             Key_Commands command = Key_Commands.GET_CONVERSATION_CONTINUATION_OPTIONS;
@@ -100,23 +82,51 @@ public class GameController extends Controller {
                 Display.getDisplay().setMessage(i);
             }
         }
+        private ConcurrentLinkedQueue<Character> commandChoiceQueue_ = new ConcurrentLinkedQueue<Character>(); 
+        private class outputBoxFunction implements QueueCommandInterface<Character> {
 
-        private class outputBoxFunction implements Function<Void, Character> {
+			@Override
+			public void enqueue(Character command) {
+				commandChoiceQueue_.add(command);
+				
+			}
 
-            @Override
-            public Void apply(final Character foo) {
-                Thread t_ = new Thread(new Runnable() {
+			@Override
+			public void sendInterrupt() {
+				GameController.this.sendInterrupt();
+				
+			}
 
-                    @Override
-                    public void run() {
-                        sendTextCommandAndUpdate(chatview_.getChoice(Character.getNumericValue(foo)));
-
-                    }
-                });
-                t_.start();
-                return null;
-            }
         }
+        private ConcurrentLinkedQueue<String> commandQueue_ = new ConcurrentLinkedQueue<String>(); 
+		@Override
+		public void enqueue(String command) {
+			commandQueue_.add(command);
+		}
+
+		@Override
+		public void sendInterrupt() {
+			GameController.this.sendInterrupt();
+			
+		}
+		/**
+		 * Process the input that has built up in the two queues. 
+		 */
+		public void processQueue(){
+			while(!commandQueue_.isEmpty()){
+				String foo = commandQueue_.remove();
+				if (foo.startsWith("/")) {
+					processCommandAndDisplayOutput(foo);
+					return;
+				}
+				//IF it starts with a /, it's a command, so send it
+				//To the command function, not the map.
+				sendTextCommandAndUpdate(foo);
+			}
+			while(!commandChoiceQueue_.isEmpty()){
+				sendTextCommandAndUpdate(chatview_.getChoice(Character.getNumericValue(commandChoiceQueue_.remove())));
+			}
+		}
 
     }
 
@@ -124,31 +134,22 @@ public class GameController extends Controller {
         super(new AvatarCreationView(), new GameRemapper(), uName);
         MapUserAble_ = mui;
         Display.getDisplay().setCommandList(HardCodedStrings.gameCommands);
-        Display.getDisplay().addDoubleClickCommandEventReceiver(new Function<Void, String>() {
+        Display.getDisplay().addDoubleClickCommandEventReceiver(new QueueCommandInterface<String>() {
 
-            @Override
-            public Void apply(final String foo) {
-                Thread t_ = new Thread(new Runnable() {
+			@Override
+			public void enqueue(String command) {
+				stringQueue_.add(command);
+				
+			}
 
-                    @Override
-                    public void run() {
-                        if (foo == null) {
-                            return;
-                        }
-                        Key_Commands command = enumHandler.stringCommandToKeyCommand(foo);
-                        if (command == null) {
-                            return;
-                        }
-                        takeTurnandPrintTurn(command);
+			@Override
+			public void sendInterrupt() {
+				GameController.this.sendInterrupt();
+			}
 
-                    }
-                });
-                t_.start();
-                return null;
-            }
         });
         takeTurnandPrintTurn('5');//For some reason need to take a empty turn for fonts to load...
-
+        sleepLoop();
     }
 
     private MapUser_Interface MapUserAble_;
@@ -274,6 +275,24 @@ public class GameController extends Controller {
 
     }
 
+    @Override
+    public void process(){
+    	System.out.println("Processing");
+    	super.process();
+    	chatbox_.processQueue();
+    	while(!stringQueue_.isEmpty()){
+    		String foo = stringQueue_.remove();
+    		 if (foo == null) {
+                 return;
+             }
+             Key_Commands command = enumHandler.stringCommandToKeyCommand(foo);
+             if (command == null) {
+                 return;
+             }
+             takeTurnandPrintTurn(command);
+
+    	}
+    }
     // FIELD ACCESSORS
     /**
      * Gets this UserController's user name value

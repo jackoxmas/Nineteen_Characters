@@ -1,9 +1,12 @@
 package src.io.controller;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import src.Function;
 import src.Key_Commands;
+import src.QueueCommandInterface;
 import src.enumHandler;
 import src.io.view.MapEditorView;
 import src.io.view.display.Display;
@@ -26,6 +29,9 @@ public class MapEditorController extends Controller {
 	private String setToSpawn_ = "";
 	private MapAddableFactory factory_= new MapAddableFactory();
 	private MapAddable addable = null;
+	private ConcurrentLinkedQueue<String> setToSpawnQueue_ = new ConcurrentLinkedQueue<String>();
+	private ConcurrentLinkedQueue<String> commandQueue_ = new ConcurrentLinkedQueue<String>();
+	CommandMiniController cont_ = new CommandMiniController(MapEditorController.this.getRemapper(), MapEditorController.this);
 	public MapEditorController(MapMapEditor_Interface map) {
 		super(new MapEditorView(),new MapEditRemapper(), "Temporary Name Map User");
 		super.setView(mappy_viewy_);
@@ -39,46 +45,52 @@ public class MapEditorController extends Controller {
 		Display.getDisplay().setMessage("TO USE: Hit space to spawn something. Select what to spawn by " +
 				"clicking on it in the item box. Move around as usual. Hitting space with nothing selected spawns\n" +
 				"The last thing spawned.");
-		Display.getDisplay().addDoubleClickCommandEventReceiver(new Function<Void, String>() {
+		Display.getDisplay().addDoubleClickCommandEventReceiver(new QueueCommandInterface<String>() {
+
 
 			@Override
-			public Void apply(final String foo) {
-				Thread t_ = new Thread(new Runnable() {
-					
-					@Override
-					public void run() {
-						if(foo == null){return;}
-						setToSpawn_ = foo;
-						setLastSpawned(setToSpawn_);
-						updateDisplay();
-						
-					}
-				});
-				t_.start();
-				return null;
+			public void enqueue(final String command) {
+				setToSpawnQueue_.add(command);
+			}
+
+			@Override
+			public void sendInterrupt() {
+				MapEditorController.this.sendInterrupt();
+				
 			}
 		});
-		Display.getDisplay().addInputBoxTextEnteredFunction(new Function<Void,String>(){
-			CommandMiniController cont = new CommandMiniController(MapEditorController.this.getRemapper(), MapEditorController.this);
+		
+		Display.getDisplay().addInputBoxTextEnteredFunction(new QueueCommandInterface<String>() {
+
 			@Override
-			public Void apply(final String foo) {
-				Thread t_ = new Thread(new Runnable() {
-					
-					@Override
-					public void run() {
-						if(foo.startsWith("/")){Display.getDisplay().setMessage(cont.processCommand(foo));}
-						
-					}
-				});
-				t_.start();
-				return null;
+			public void enqueue(String command) {
+				commandQueue_.add(command);
+				
+			}
+
+			@Override
+			public void sendInterrupt() {
+				MapEditorController.this.sendInterrupt();
+				
 			}
 			
-
 		});
 	}
 
-
+	@Override
+	protected void process(){
+		while(!setToSpawnQueue_.isEmpty()){
+			String foo = setToSpawnQueue_.remove();
+			if(foo == null){return;}
+			setToSpawn_ = foo;
+			setLastSpawned(setToSpawn_);
+			updateDisplay();
+		}
+		while(!commandQueue_.isEmpty()){
+			String foo = commandQueue_.remove();
+			if(foo.startsWith("/")){Display.getDisplay().setMessage(cont_.processCommand(foo));}
+		}
+	}
 	int x = 0;
 	int y = 0;
 

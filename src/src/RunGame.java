@@ -43,13 +43,15 @@ public class RunGame {
     private static int mapWidth_ = 40;
     private static boolean map_editor_mode_ = false;
     private static boolean use_internet = true;
+
     public static boolean getUseInternet() {
         return RunGame.use_internet;
-    } 
+    }
+
     public static void setUseInternet(boolean b) {
         use_internet = b;
     }
-    
+
     public static void grusomelyKillTheMapAndTheController() {
         if (RunGame.map_ != null) {
             map_.grusomelyKillTheMapThread();
@@ -73,22 +75,23 @@ public class RunGame {
     public static void main(String[] args) {
         parseArgs(args); // Parse command line arguments
         handleArgs(args);
-
         if (!map_editor_mode_) {
             startNewGame();
         } else {
             startMapEditor();
-        }
-        final String ip_address = "localhost";
-        int error_code = Internet.makeConnectionUsingIP_Address(ip_address);
-        if (error_code == 0) {
-            System.out.println("Successfully connected to ip-address: " + ip_address);
         }
     }
 
     private static int startNewGame() {
         initialize(); // Initialize any data we need to before loading
         populateMap();//Add stuff into the map
+        final String ip_address = "localhost";
+        int error_code = Internet.makeConnectionUsingIP_Address(ip_address);
+        if (error_code == 0) {
+            System.out.println("Successfully connected to ip-address: " + ip_address);
+        } else {
+            System.err.println("Did not successfully connected to ip-address: " + ip_address);
+        }
         startGame(); // Begin the avatarcontroller loop
         return 0;
     }

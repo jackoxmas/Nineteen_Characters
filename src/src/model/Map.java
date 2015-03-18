@@ -68,9 +68,9 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             udp_thread = null;
         }
         for (ConcurrentHashMap.Entry<String, Single_User_TCP_Thread> entry : this.users.entrySet()) {
-            if(entry.getValue() != null) {
-            entry.getValue().closeAndNullifyConnection();
-            entry.getValue().stop();
+            if (entry.getValue() != null) {
+                entry.getValue().closeAndNullifyConnection();
+                entry.getValue().stop();
             }
         }
     }
@@ -194,33 +194,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
 
     //</editor-fold>
     //<editor-fold desc="TCP TO User Thread (optional use)" defaultstate="collapsed">
-    private class Initiate extends Thread {
-
-        private final Socket socket_;
-        private ObjectInputStream object_input_stream_ = null;
-
-        Initiate(Socket s) {
-            super("Initiate");
-            socket_ = s;
-        }
-
-        @Override
-        public void run() {
-            try {
-                object_input_stream_ = new ObjectInputStream(socket_.getInputStream());
-                ObjectOutputStream object_output_stream = new ObjectOutputStream(socket_.getOutputStream());
-                object_output_stream.flush();
-                String unique_id = (String) object_input_stream_.readObject();
-                System.out.println("String was accepted. Unique id is: " + unique_id);
-                Map.Single_User_TCP_Thread new_thread = new Map.Single_User_TCP_Thread(socket_, unique_id, object_output_stream);
-                new_thread.start();
-                object_output_stream = null;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     private class TCP_Connection_Maker extends Thread {
 
         public IO_Bundle bundle_to_send_ = null; // ** bullshit **
@@ -234,8 +207,14 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     Socket to_accept = serverSocket.accept();
                     to_accept.setTcpNoDelay(true);
                     to_accept.setReuseAddress(true); // allow for re-connections
-                    (new Initiate(to_accept)).start();
-                    System.out.println("Socket was accepted");
+                    ObjectInputStream object_input_stream_ = new ObjectInputStream(to_accept.getInputStream());
+                    ObjectOutputStream object_output_stream = new ObjectOutputStream(to_accept.getOutputStream());
+                    object_output_stream.flush();
+                    String unique_id = (String) object_input_stream_.readObject();
+                    System.out.println("String was accepted. Unique id is: " + unique_id);
+                    Map.Single_User_TCP_Thread new_thread = new Map.Single_User_TCP_Thread(to_accept, unique_id, object_output_stream);
+                    new_thread.start();
+                    object_output_stream = null;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -303,7 +282,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                         do {
                             object_output_stream_.writeObject(bundle_to_send_);
                             object_output_stream_.flush();
-                        } while ( Thread.currentThread().isInterrupted() );
+                        } while (Thread.currentThread().isInterrupted());
                     } catch (IOException e2) {
                         e2.printStackTrace();
                         System.out.println("connection disconnected in ServerThread.run");

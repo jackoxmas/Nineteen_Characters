@@ -182,7 +182,7 @@ public class GameController extends Controller {
         }
         final IO_Bundle to_return;
         if (RunGame.getUseInternet()) {
-            to_return = Internet.sendStuffToTheMap(getUserName(),
+            to_return = Internet.sendStuffToMap(getUserName(),
                     command, getView().getWidth() / 2, getView().getHeight() / 2, in);
             System.out.println("Using internet");
         } else {

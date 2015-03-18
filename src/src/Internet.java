@@ -24,9 +24,11 @@ public final class Internet {
     private static InetAddress address = null;
     private static Socket tcp_socket_for_incoming_signals = null;
     private static final Random rand = new Random();
-    private static final int unique_id = rand.nextInt();
-    private static final String unique_id_string = Integer.toString(unique_id, 10);
+    //private static final int unique_id = rand.nextInt();
+    //private static final String unique_id_string = Integer.toString(unique_id, 10);
+    private static final String unique_id_string = Internet.getMacAddress();
     private static ObjectInputStream object_input_stream = null;
+    private static String last_ip_connected = null;
 
     public static void closeAndNullifyConnection() {
         if (tcp_socket_for_incoming_signals != null) {
@@ -43,6 +45,7 @@ public final class Internet {
                 udp_socket_for_outgoing_signals.close();
                 udp_socket_for_outgoing_signals = null;
             } catch (Exception e) {// socket already closed}
+                e.printStackTrace();
             }
         }
     }
@@ -60,17 +63,28 @@ public final class Internet {
      * @return IO_Bundle object containing all the data needed by the controller
      * to render the view.
      */
-    public static IO_Bundle sendStuffToTheMap(String avatar_name, Enum key_command, int width, int height, String optional_text) {
+    public static IO_Bundle sendStuffToMap(String avatar_name, Enum key_command, int width, int height, String optional_text) {
         try {
             final String to_send = unique_id_string + " " + avatar_name + " "
                     + key_command.name() + " " + width + " " + height + " " + optional_text;
             final byte[] buf = to_send.getBytes();
             final DatagramPacket packet = new DatagramPacket(buf, buf.length, Internet.address, Map.UDP_PORT_NUMBER);
             // send command to map over UDP connection
-            if (packet != null) {
+            if (Internet.udp_socket_for_outgoing_signals != null && tcp_socket_for_incoming_signals != null
+                    && object_input_stream != null) {
                 Internet.udp_socket_for_outgoing_signals.send(packet);
             } else {
-                System.err.println("packet is null");
+                // reconnect
+                if (Internet.udp_socket_for_outgoing_signals == null) {
+                    System.err.println("UDP or TCP or input stream is null");
+                    if (Internet.last_ip_connected != null) {
+                        Internet.makeConnectionUsingIP_Address(last_ip_connected);
+                    } else {
+                        System.err.println("Impossible error in Internet.sendStuffToMap");
+                        RunGame.grusomelyKillTheMapAndTheController();
+                        System.exit(-16);
+                    }
+                }
             }
             // recieve IO_Bundle from map over UTCP connection
             Object temp = object_input_stream.readObject();
@@ -94,7 +108,7 @@ public final class Internet {
 
     /**
      * Allows the controller to connects itself to an internet connection and
-     * use Internet.sendStuffToTheMap(String, Enum, int, int, "")
+     * use Internet.sendStuffToMap(String, Enum, int, int, "")
      *
      * @param ip_address - use "localhost" to connect to local machine, ex.
      * "192.***.***.***".
@@ -117,9 +131,13 @@ public final class Internet {
                 }
                 tcp_socket_for_incoming_signals = null;
             }
-            if (! ip_address.equals("localhost") && ! ip_address.matches(".*[0-9].*")) {
+            if (!ip_address.equals("localhost") && !ip_address.matches(".*[0-9].*")) {
                 RunGame.setUseInternet(false);
+                System.out.println("Not using internet");
                 return 0;
+            } else {
+                RunGame.setUseInternet(true);
+                System.out.println("Using internet");
             }
             Internet.address = InetAddress.getByName(ip_address);
             tcp_socket_for_incoming_signals = new Socket();
@@ -129,45 +147,58 @@ public final class Internet {
             tcp_socket_for_incoming_signals.setTcpNoDelay(true);
             ObjectOutputStream oos = new ObjectOutputStream(tcp_socket_for_incoming_signals.getOutputStream());
             oos.flush();
-            oos.writeObject(Integer.toString(Internet.unique_id, 10));
+            oos.writeObject(unique_id_string);
+            System.err.println("You MAC address / identifier is: " + unique_id_string);
             oos.flush();
             oos = null;
             object_input_stream = new ObjectInputStream(tcp_socket_for_incoming_signals.getInputStream());
+            last_ip_connected = ip_address;
             return 0;
         } catch (Exception e) {
+            RunGame.setUseInternet(false);
             e.printStackTrace();
+            System.err.println("Not using internet");
             return -1;
         }
     }
 
-    private static String getMacAddress() throws Exception {
+    /**
+     * Gets your MAC address to be used as a unique_id on success. Produces a
+     * random string if a valid MAC address could not be obtained.
+     *
+     * @return either MAC address or a random, unique identifier
+     */
+    private static String getMacAddress() {
+        try {
+            //Get MAC address
+            String MAC_Address = "";
+            InetAddress ip = InetAddress.getLocalHost();
 
-        //Get MAC address
-        String MAC_Address = "";
-        InetAddress ip = InetAddress.getLocalHost();
+            Enumeration e = NetworkInterface.getNetworkInterfaces();
 
-        Enumeration e = NetworkInterface.getNetworkInterfaces();
+            while (e.hasMoreElements()) {
 
-        while (e.hasMoreElements()) {
-
-            NetworkInterface n = (NetworkInterface) e.nextElement();
-            Enumeration<InetAddress> ee = n.getInetAddresses();
-            while (ee.hasMoreElements()) {
-                InetAddress i = (InetAddress) ee.nextElement();
-                if (!i.isLoopbackAddress() && !i.isLinkLocalAddress() && i.isSiteLocalAddress()) {
-                    ip = i;
+                NetworkInterface n = (NetworkInterface) e.nextElement();
+                Enumeration<InetAddress> ee = n.getInetAddresses();
+                while (ee.hasMoreElements()) {
+                    InetAddress i = (InetAddress) ee.nextElement();
+                    if (!i.isLoopbackAddress() && !i.isLinkLocalAddress() && i.isSiteLocalAddress()) {
+                        ip = i;
+                    }
                 }
             }
-        }
 
-        NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-        byte[] mac_byte = network.getHardwareAddress();
+            NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+            byte[] mac_byte = network.getHardwareAddress();
 
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < mac_byte.length; i++) {
-            sb.append(String.format("%02X%s", mac_byte[i], (i < mac_byte.length - 1) ? "-" : ""));
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < mac_byte.length; i++) {
+                sb.append(String.format("%02X%s", mac_byte[i], (i < mac_byte.length - 1) ? "-" : ""));
+            }
+            return sb.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Integer.toString(rand.nextInt(), 10);
         }
-        return sb.toString();
     }
-
 }

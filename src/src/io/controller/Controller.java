@@ -62,11 +62,9 @@ public abstract class Controller implements QueueCommandInterface<Character> {
     protected void sleepLoop() {
         while (true) {
             try {
-                Thread.sleep(Long.MAX_VALUE);
+                Thread.sleep(500L);
             } catch (InterruptedException e) {
-                do  {
-                    process();
-                } while ( this.controllerThread_.isInterrupted() );
+                process();
             }
         }
     }

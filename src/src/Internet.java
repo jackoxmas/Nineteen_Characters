@@ -77,14 +77,14 @@ public final class Internet {
             IO_Bundle to_recieve = null;
             if (temp != null) {
                 to_recieve = (IO_Bundle) temp;
-                    // Decompression the IO_Bundle if characters are compressed.
-                    if (to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
-                        to_recieve.view_for_display_ = IO_Bundle.runLengthDecodeView(width, height,
-                                to_recieve.compressed_characters_, to_recieve.character_frequencies_);
-                        to_recieve.color_for_display_ = IO_Bundle.runLengthDecodeColor(width, height,
-                                to_recieve.compressed_colors_, to_recieve.color_frequencies_);
-                    }
-            } 
+                // Decompression the IO_Bundle if characters are compressed.
+                if (to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
+                    to_recieve.view_for_display_ = IO_Bundle.runLengthDecodeView(width, height,
+                            to_recieve.compressed_characters_, to_recieve.character_frequencies_);
+                    to_recieve.color_for_display_ = IO_Bundle.runLengthDecodeColor(width, height,
+                            to_recieve.compressed_colors_, to_recieve.color_frequencies_);
+                }
+            }
             return to_recieve;
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,12 +102,7 @@ public final class Internet {
      */
     public static int makeConnectionUsingIP_Address(String ip_address) {
         ip_address = ip_address.trim().toLowerCase();
-        System.err.println(ip_address);
-        if (ip_address.equals("localhost")) {
-            System.err.println("Yes localhost");
-        } else {
-            System.err.println("Not localhost");
-        }
+        System.err.println("Going to connect to: " + ip_address);
         try {
             if (udp_socket_for_outgoing_signals != null) {
                 udp_socket_for_outgoing_signals.close();
@@ -116,13 +111,17 @@ public final class Internet {
             }
             udp_socket_for_outgoing_signals = new DatagramSocket();
             udp_socket_for_outgoing_signals.setReuseAddress(true);
-            Internet.address = InetAddress.getByName(ip_address);
             if (tcp_socket_for_incoming_signals != null) {
                 if (tcp_socket_for_incoming_signals.isConnected()) {
                     tcp_socket_for_incoming_signals.close();
                 }
                 tcp_socket_for_incoming_signals = null;
             }
+            if (! ip_address.equals("localhost") && ! ip_address.matches(".*[0-9].*")) {
+                RunGame.setUseInternet(false);
+                return 0;
+            }
+            Internet.address = InetAddress.getByName(ip_address);
             tcp_socket_for_incoming_signals = new Socket();
             tcp_socket_for_incoming_signals.setTcpNoDelay(true); // no latency
             tcp_socket_for_incoming_signals.setReuseAddress(true); // allow client to reconnect

@@ -42,7 +42,14 @@ public class RunGame {
     private static int mapHeight_ = 40;
     private static int mapWidth_ = 40;
     private static boolean map_editor_mode_ = false;
-
+    private static boolean use_internet = true;
+    public static boolean getUseInternet() {
+        return RunGame.use_internet;
+    } 
+    public static void setUseInternet(boolean b) {
+        use_internet = b;
+    }
+    
     public static void grusomelyKillTheMapAndTheController() {
         if (RunGame.map_ != null) {
             map_.grusomelyKillTheMapThread();

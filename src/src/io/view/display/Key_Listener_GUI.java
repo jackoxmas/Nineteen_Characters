@@ -8,6 +8,7 @@ import java.awt.event.WindowListener;
 import java.awt.event.WindowStateListener;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.JComponent;
 import javax.swing.text.StyledDocument;
@@ -23,7 +24,7 @@ import src.RunGame;
  * @author Matthew B [human-written code]
  */
 class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
-    //These two arraylists hold the things to apply when input is received by either the map, or by the chatbox
+
 
     public javax.swing.JTextArea getIncomingText() {
         return incoming_text_jTextArea;
@@ -64,11 +65,12 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
      *
      */
     private static final long serialVersionUID = 1L;
-    private ArrayList<QueueCommandInterface<Character>> game_inputHandlers_ = new ArrayList<QueueCommandInterface<Character>>();
-    private ArrayList<QueueCommandInterface<Character>> outputbox_inputHandlers_ = new ArrayList<QueueCommandInterface<Character>>();
-    private ArrayList<QueueCommandInterface<String>> inputchatbox_Handlers_ = new ArrayList<QueueCommandInterface<String>>();
-    private ArrayList<QueueCommandInterface<Key_Commands>> direct_command_receivers_ = new ArrayList<QueueCommandInterface<Key_Commands>>();
-    private ArrayList<QueueCommandInterface<String>> command_area_double_clicked_ = new ArrayList<QueueCommandInterface<String>>();
+    //These concurrent linked queues holds the things that called when an event happens.
+    private ConcurrentLinkedQueue<QueueCommandInterface<Character>> game_inputHandlers_ = new ConcurrentLinkedQueue<QueueCommandInterface<Character>>();
+    private ConcurrentLinkedQueue<QueueCommandInterface<Character>> outputbox_inputHandlers_ = new ConcurrentLinkedQueue<QueueCommandInterface<Character>>();
+    private ConcurrentLinkedQueue<QueueCommandInterface<String>> inputchatbox_Handlers_ = new ConcurrentLinkedQueue<QueueCommandInterface<String>>();
+    private ConcurrentLinkedQueue<QueueCommandInterface<Key_Commands>> direct_command_receivers_ = new ConcurrentLinkedQueue<QueueCommandInterface<Key_Commands>>();
+    private ConcurrentLinkedQueue<QueueCommandInterface<String>> command_area_double_clicked_ = new ConcurrentLinkedQueue<QueueCommandInterface<String>>();
 
     /**
      *
@@ -514,8 +516,8 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     private class TriggerEvents<T> implements Runnable{
-    	ArrayList<QueueCommandInterface<T>> triggers_;
-    	public TriggerEvents(ArrayList<QueueCommandInterface<T>> in){triggers_ = in;}
+    	ConcurrentLinkedQueue<QueueCommandInterface<T>> triggers_;
+    	public TriggerEvents(ConcurrentLinkedQueue<QueueCommandInterface<T>> in){triggers_ = in;}
 		@Override
 		public void run() {
 			for(QueueCommandInterface<T> foo : triggers_){

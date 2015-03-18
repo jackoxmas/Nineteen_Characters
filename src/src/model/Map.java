@@ -57,6 +57,38 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     private GetMapInputFromUsers udp_thread;
     private TCP_Connection_Maker tcp_thread;
     private ConcurrentHashMap<String, Single_User_TCP_Thread> users = new ConcurrentHashMap<>();
+    
+    /**
+     * Turns the map into a list of Terrains/Entities/Items with names, positions, and representations.
+     * @author Sanjay
+     */
+    private void turnMapGridIntoTextFile() {
+        for(int y = 0; y <  map_grid_.length; ++y) {
+            for(int x = 0; x < map_grid_[0].length; ++x) {
+                MapTile to_extract = map_grid_[y][x];
+                
+                Terrain terrain = to_extract.getTerrain();
+                Entity entity = to_extract.getEntity();
+                LinkedList<Item> item_list = to_extract.getItemList();
+                
+                if(terrain != null) {
+                    String name = terrain.name_;
+                    char representation = terrain.getRepresentation();
+                } 
+                if(entity != null) {
+                    String name = entity.name_;
+                }
+                if(! item_list.isEmpty()) {
+                    for(int i = 0; i < item_list.size(); ++i) {
+                        Item item = item_list.get(i);
+                        String name = item.name_;
+                        // in a text file
+                        // write x, y, Item, name
+                    }
+                }
+            }
+        }
+    }
 
     public void grusomelyKillTheMapThread() {
         if (tcp_thread != null && tcp_thread.isAlive()) {
@@ -211,7 +243,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     ObjectOutputStream object_output_stream = new ObjectOutputStream(to_accept.getOutputStream());
                     object_output_stream.flush();
                     String unique_id = (String) object_input_stream_.readObject();
-                    System.out.println("String was accepted. Unique id is: " + unique_id);
+                    //System.out.println("String was accepted. Unique id is: " + unique_id);
                     Map.Single_User_TCP_Thread new_thread = new Map.Single_User_TCP_Thread(to_accept, unique_id, object_output_stream);
                     new_thread.start();
                     object_output_stream = null;
@@ -264,16 +296,16 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                 Single_User_TCP_Thread to_kill = users.get(unique_id_);
                 to_kill.closeAndNullifyConnection();
                 users.remove(unique_id_);
-                System.out.println("replacing connection");
+                //System.out.println("replacing connection");
             }
             users.putIfAbsent(unique_id_, this);
             while (true) {
 
                 // end of resource statement beginning of execution
                 if (bundle_to_send_ == null) {
-                    System.out.println("bundle_to_send_ in ServerThread is null");
+                    System.out.println("bundle_to_send_ in Map.ServerThread is null");
                 } else {
-                    System.out.println("bundle_to_send_ in ServerThread not null");
+                    System.out.println("bundle_to_send_ in Map.ServerThread not null");
                 }
                 try {
                     Thread.sleep(Integer.MAX_VALUE);
@@ -321,7 +353,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
 
                     DatagramSocket socket = new DatagramSocket(Map.UDP_PORT_NUMBER);
                     socket.receive(packet);
-                    System.out.println("The map recieved a packet.");
+                    // System.out.println("The map recieved a packet.");
                     socket.close();
                     socket = null;
 
@@ -340,7 +372,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                         return;
                     }
 
-                    System.out.print("Recieved array: ");
+                    System.out.print("Map recieved array: ");
                     for (int i = 0; i < splitArray.length; ++i) {
                         System.out.print(splitArray[i] + " ");
                     }
@@ -360,7 +392,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                         for (int i = 4 + 1; i < splitArray.length; ++i) {
                             optional_text = optional_text + " " + splitArray[i];
                         }
-                        System.out.println("Optional text: " + optional_text);
+                        //System.out.println("Optional text: " + optional_text);
                         optional_text = optional_text.trim();
                     } else {
                         System.out.println("Error. splitArray.length == " + splitArray.length);

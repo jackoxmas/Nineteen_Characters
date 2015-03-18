@@ -518,6 +518,7 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         for (QueueCommandInterface<Key_Commands> foo : direct_command_receivers_) {
             foo.enqueue(command);
             foo.sendInterrupt();
+            System.out.println("An interrupt was sent in Key_Listener_GUI.sendKeyCommand(Key_Commands command) to a QueueCommandInterface<Character> foo in outputbox_inputHandlers_");
         }
     }
 
@@ -525,6 +526,7 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         for (QueueCommandInterface<Character> foo : outputbox_inputHandlers_) {
             foo.enqueue(evt.getKeyChar());
             foo.sendInterrupt();
+            System.out.println("An interrupt was sent in Key_Listener_GUI.incoming_text_jTextAreaKeyTyped to a QueueCommandInterface<Character> foo in outputbox_inputHandlers_");
         }
     }//GEN-LAST:event_incoming_text_jTextAreaKeyTyped
 

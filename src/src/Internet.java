@@ -29,6 +29,7 @@ public final class Internet {
     private static final String unique_id_string = Internet.getMacAddress();
     private static ObjectInputStream object_input_stream = null;
     private static String last_ip_connected = null;
+    private static boolean isConnected = false;
 
     public static void closeAndNullifyConnection() {
         if (tcp_socket_for_incoming_signals != null) {
@@ -64,6 +65,15 @@ public final class Internet {
      * to render the view.
      */
     public static IO_Bundle sendStuffToMap(String avatar_name, Enum key_command, int width, int height, String optional_text) {
+        if(!isConnected) {
+            int error_code = makeConnectionUsingIP_Address("localhost");
+            if(error_code == 0) {
+                isConnected = true;
+            } else {
+                RunGame.setUseInternet(false);
+                return null;
+            }
+        }
         try {
             final String to_send = unique_id_string + " " + avatar_name + " "
                     + key_command.name() + " " + width + " " + height + " " + optional_text;

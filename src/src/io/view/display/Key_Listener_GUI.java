@@ -513,21 +513,33 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private class TriggerEvents<T> implements Runnable{
+    	ArrayList<QueueCommandInterface<T>> triggers_;
+    	public TriggerEvents(ArrayList<QueueCommandInterface<T>> in){triggers_ = in;}
+		@Override
+		public void run() {
+			for(QueueCommandInterface<T> foo : triggers_){
+				foo.sendInterrupt();
+			}
+			
+		}
+    	
+    }
+    private Thread sendKeyCommandThread_ = new Thread(new TriggerEvents<Key_Commands>(direct_command_receivers_));
     private void sendKeyCommand(Key_Commands command) {
         for (QueueCommandInterface<Key_Commands> foo : direct_command_receivers_) {
             foo.enqueue(command);
-            foo.sendInterrupt();
         }
+        sendKeyCommandThread_.run();
     }
-
+    private Thread incoming_text_jTextAreaKeyTypedThread_ = new Thread(new TriggerEvents<Character>(outputbox_inputHandlers_));
     private void incoming_text_jTextAreaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_incoming_text_jTextAreaKeyTyped
         for (QueueCommandInterface<Character> foo : outputbox_inputHandlers_) {
             foo.enqueue(evt.getKeyChar());
-            foo.sendInterrupt();
         }
+        incoming_text_jTextAreaKeyTypedThread_.run();
     }//GEN-LAST:event_incoming_text_jTextAreaKeyTyped
-
+    private Thread outoging_text_jTextFieldKeyPressedThread_ = new Thread(new TriggerEvents<String>(inputchatbox_Handlers_));
     private void outgoing_text_jTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_outgoing_text_jTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String S = outgoing_text_jTextField.getText();
@@ -536,8 +548,8 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
             if (!outgoing_text_jTextField.getText().startsWith("/fontsize")) {
                 for (QueueCommandInterface<String> functor : inputchatbox_Handlers_) {
                     functor.enqueue(S);//Loop through and apply, but ONLY if we haven't already eaten /fontsize.
-                    functor.sendInterrupt();
                 }
+                outoging_text_jTextFieldKeyPressedThread_.run();
             } else {
                 try {
                     String temp = outgoing_text_jTextField.getText();
@@ -583,21 +595,21 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
     private void observe_jButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_observe_jButtonMouseClicked
         sendKeyCommand(Key_Commands.OBSERVE);
     }//GEN-LAST:event_observe_jButtonMouseClicked
-
+    private Thread game_jTextPaneKeyTypedThread_ = new Thread(new TriggerEvents<Character>(game_inputHandlers_));
     private void game_jTextPaneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_game_jTextPaneKeyTyped
         for (QueueCommandInterface<Character> foo : game_inputHandlers_) {
             foo.enqueue(evt.getKeyChar());
-            foo.sendInterrupt();
         }
+        game_jTextPaneKeyTypedThread_.run();
     }//GEN-LAST:event_game_jTextPaneKeyTyped
-
+    private Thread command_jButtonMouseClickedThread_ = new Thread(new TriggerEvents<String>(command_area_double_clicked_));
     private void command_jButtonMouseClicked(java.awt.event.MouseEvent evt) {
         if (evt.getClickCount() >= 2) {
             String selected = commands_jTextArea.getSelectedText();
             for (QueueCommandInterface<String> foo : command_area_double_clicked_) {
                 foo.enqueue(selected);
-                foo.sendInterrupt();
             }
+            command_jButtonMouseClickedThread_.run();
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

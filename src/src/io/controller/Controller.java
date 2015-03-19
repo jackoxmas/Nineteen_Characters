@@ -51,8 +51,6 @@ public abstract class Controller implements QueueCommandInterface<Character> {
                 Controller.this.sendInterrupt();
 
             }
-
-						//takeTurnandPrintTurn(foo);
         });
         Display.getDisplay().addGameInputerHandler(this);
         Display.getDisplay().setView(currentView_);
@@ -61,16 +59,22 @@ public abstract class Controller implements QueueCommandInterface<Character> {
 
     protected void sleepLoop() {
         while (true) {
-            try {
-                Thread.sleep(500L);
-            } catch (InterruptedException e) {
-                process();
-            }
+        	try {
+        		Thread.sleep(500L);
+        	} catch (InterruptedException e) {
+        		do  {
+        			process();
+        		} while ( this.controllerThread_.isInterrupted() );
+
+        	}
         }
     }
 
     protected void process() {
-        System.out.println("Processing!");
+        //System.out.println("Processing!");
+        if(characterQueue_.size()!=0){
+        	System.out.println("Qeueu size " + characterQueue_.size());
+        }
         while (!keyCommandQueue_.isEmpty()) {
             takeTurnandPrintTurn(keyCommandQueue_.remove());
         }
@@ -144,16 +148,19 @@ public abstract class Controller implements QueueCommandInterface<Character> {
     public void enqueue(Character c) {
         characterQueue_.add(c);
     }
-
+    int count = 0;
     @Override
     public void sendInterrupt() {
+    	++count;
         try {
-            System.out.println("Interuppting!");
+            System.out.println("Interuppting!" + count);
             controllerThread_.interrupt();
         } catch (Exception e) {
             System.err.println("Failed to interupt thread for input...Controller");
             e.printStackTrace();
         }
+        System.out.println("Ent interrupt");
+        
     }
 
     /**

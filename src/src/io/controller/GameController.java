@@ -77,6 +77,7 @@ public class GameController extends Controller {
                 Display.getDisplay().setMessage(i);
             }
         }
+        private ConcurrentLinkedQueue<String> commandQueue_ = new ConcurrentLinkedQueue<String>();
         private ConcurrentLinkedQueue<Character> commandChoiceQueue_ = new ConcurrentLinkedQueue<Character>();
 
         private class outputBoxFunction implements QueueCommandInterface<Character> {
@@ -94,7 +95,7 @@ public class GameController extends Controller {
             }
 
         }
-        private ConcurrentLinkedQueue<String> commandQueue_ = new ConcurrentLinkedQueue<String>();
+
 
         @Override
         public void enqueue(String command) {
@@ -280,7 +281,7 @@ public class GameController extends Controller {
 
     @Override
     public void process() {
-        System.out.println("Processing");
+        //System.out.println("Processing");
         super.process();
         chatbox_.processQueue();
         while (!stringQueue_.isEmpty()) {

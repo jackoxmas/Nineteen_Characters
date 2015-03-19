@@ -45,6 +45,7 @@ public class RunGame {
     private static boolean map_editor_mode_ = false;
     private static boolean use_internet = true;
     public static final boolean use_TCP = true;
+    public static final Internet internet = new Internet();
 
     public static boolean getUseInternet() {
         return RunGame.use_internet;
@@ -67,7 +68,7 @@ public class RunGame {
         } else {
             System.out.println("The controller thread is null");
         }
-        Internet.closeAndNullifyConnection();
+        internet.closeAndNullifyConnection();
     }
 
     public static String getAvatarName() {

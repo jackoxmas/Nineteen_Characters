@@ -261,6 +261,19 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         private boolean was_oos_closed = false;
         private IO_Bundle bundle_to_send_ = null;
         private byte[] my_bytes_ = null;
+        private Entity last_controlled = null;
+
+        public Entity seeLastControlled() {
+            return last_controlled;
+        }
+
+        public String seeLastControlledName() {
+            if (last_controlled != null) {
+                return last_controlled.name_;
+            } else {
+                return null;
+            }
+        }
 
         public void closeAndNullifyConnection() {
             if (tcp_output_socket_ != null) {
@@ -288,8 +301,9 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             }
         }
 
-        public synchronized void setBundleAndInterrupt(IO_Bundle to_set) {
+        public synchronized void setBundleAvatarAndInterrupt(Entity e, IO_Bundle to_set) {
             bundle_to_send_ = to_set;
+            last_controlled = e;
             this.interrupt();
         }
 
@@ -381,25 +395,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             super(name);
             recieving_socket = new DatagramSocket(Map.UDP_PORT_NUMBER_FOR_MAP_RECIEVING_AND_CLIENT_SENDING);
         }
-        /*
-         private void sendData() {
-         if (isUsingTCP()) {
-         System.out.println("Sending over TCP in Map.GetMapInputFromUsers.run()");
-         sender.setBundleAndInterrupt(return_package);
-         } else {
-         byte[] to_send = Internet.bundleToBytes(return_package);
-         System.out.println("Length of array sent over UDP in Map.GetMapInputFromUsers.run() : " + to_send.length);
-         if (to_send.length > 1400) {
-         System.out.println("Error. Cannot fit the whole byte array on one packet [Map.GetMapInputFromUsers.run()]");
-         System.exit(-63);
-         } else {
-         System.out.println("Fit the whole byte array on one packet [Map.GetMapInputFromUsers.run()]");
-         }
-         DatagramPacket packet_to_send = new DatagramPacket(
-         to_send, to_send.length, sender_address, UDP_PORT_NUMBER);
-         sending_socket.send(packet);
-         }
-         }*/
 
         public void run() {
 
@@ -462,12 +457,8 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     // Sender must recieve either TCP or UDP.
                     Single_User_TCP_Thread sender = null;
                     InetAddress sender_address = null;
-                    if (is_using_TCP) {
-                        while (sender == null) {
-                            sender = users.get(unique_id);
-                        }
-                    } else {
-                        sender_address = packet.getAddress();
+                    while (sender == null) {
+                        sender = users.get(unique_id);
                     }
 
                     // start the actual function
@@ -477,74 +468,17 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     } else {
                         to_recieve_command = null;
                     }
-                    ArrayList<String> strings_for_IO_Bundle = null;
-                    if (to_recieve_command != null) {
-                        if (to_recieve_command.getMapRelation() == null) {
-                            System.err.println(to_recieve_command.name_ + " has a null relation with this map. ");
-                            continue;
-                        }
-                        if (command == Key_Commands.STANDING_STILL) {
-                            strings_for_IO_Bundle = null;
-                        } else if (to_recieve_command.isAlive() == true && command != null) {
-                            strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, optional_text);
-                        } else {
-                            strings_for_IO_Bundle = null;
-                        }
-                        ArrayList<Character> compressed_characters = null;
-                        ArrayList<Short> character_frequencies = null;
-                        char[][] view = null;
-                        ArrayList<Color> compressed_colors = null;
-                        ArrayList<Short> color_frequencies = null;
-                        /*Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
-                         to_recieve_command.getMapRelation().getMyYCoordinate(),
-                         width_from_center, height_from_center);*/
-                        Color[][] colors = null;
-                        if (to_recieve_command.isAlive() && command != null) {
-                            compressed_characters = new ArrayList<>();
-                            character_frequencies = new ArrayList<>();
-                            compressed_colors = new ArrayList<>();
-                            color_frequencies = new ArrayList<>();
-                            runLengthEncodeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
-                                    to_recieve_command.getMapRelation().getMyYCoordinate(),
-                                    width_from_center, height_from_center, compressed_colors, color_frequencies);
-
-                            // compressed_characters and character_frequencies are pass by referance outputs
-                            runLengthEncodeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
-                                    to_recieve_command.getMapRelation().getMyYCoordinate(),
-                                    width_from_center, height_from_center, compressed_characters, character_frequencies);
-
-                            if (compressed_characters == null || character_frequencies == null || compressed_characters.isEmpty()) {
-                                System.out.println("Bad - compression produced no encodings");
-                                System.exit(-4);
+                    passAlongCommand(to_recieve_command, command, width_from_center, height_from_center, optional_text, sender);
+                    // tell each and every player to refresh their screens.
+                    for (ConcurrentHashMap.Entry<String, Single_User_TCP_Thread> entry : users.entrySet()) {
+                        if (entry.getValue() != null) {
+                            // for every thread except the one that just went
+                            if(! entry.getKey().equals(unique_id)) {
+                                passAlongCommand(entry.getValue().last_controlled, Key_Commands.DO_ABSOLUTELY_NOTHING, 
+                                        width_from_center, height_from_center, "", entry.getValue());
                             }
                         }
-
-                        IO_Bundle return_package = new IO_Bundle(
-                                compressed_characters,
-                                character_frequencies,
-                                compressed_colors,
-                                color_frequencies,
-                                view,
-                                colors,
-                                to_recieve_command.getInventory(),
-                                // Don't for get left and right hand items
-                                to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
-                                to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
-                                to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
-                                to_recieve_command.getPrimaryEquipped(),
-                                to_recieve_command.getSecondaryEquipped(),
-                                strings_for_IO_Bundle,
-                                to_recieve_command.getNumGoldCoins(),
-                                to_recieve_command.isAlive()
-                        );
-                        // return return_package;
-                        sender.setBundleAndInterrupt(return_package);
-                        continue;
-
-                    } else {
-                        // Silently ignore it.
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                     System.out.println("Connection is closed");
@@ -553,6 +487,75 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     continue;
                 }
             }
+        }
+
+        private void passAlongCommand(Entity to_recieve_command, Key_Commands command,
+                int width_from_center, int height_from_center, String optional_text, Single_User_TCP_Thread sender) {
+            ArrayList<String> strings_for_IO_Bundle = null;
+            if (to_recieve_command != null) {
+                if (to_recieve_command.getMapRelation() == null) {
+                    System.err.println(to_recieve_command.name_ + " has a null relation with this map. ");
+                    return;
+                }
+                if (command == Key_Commands.STANDING_STILL) {
+                    strings_for_IO_Bundle = null;
+                } else if (to_recieve_command.isAlive() == true && command != null) {
+                    strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, optional_text);
+                } else {
+                    strings_for_IO_Bundle = null;
+                }
+                ArrayList<Character> compressed_characters = null;
+                ArrayList<Short> character_frequencies = null;
+                char[][] view = null;
+                ArrayList<Color> compressed_colors = null;
+                ArrayList<Short> color_frequencies = null;
+                /*Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                 to_recieve_command.getMapRelation().getMyYCoordinate(),
+                 width_from_center, height_from_center);*/
+                Color[][] colors = null;
+                if (to_recieve_command.isAlive() && command != null) {
+                    compressed_characters = new ArrayList<>();
+                    character_frequencies = new ArrayList<>();
+                    compressed_colors = new ArrayList<>();
+                    color_frequencies = new ArrayList<>();
+                    runLengthEncodeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                            to_recieve_command.getMapRelation().getMyYCoordinate(),
+                            width_from_center, height_from_center, compressed_colors, color_frequencies);
+
+                    // compressed_characters and character_frequencies are pass by referance outputs
+                    runLengthEncodeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                            to_recieve_command.getMapRelation().getMyYCoordinate(),
+                            width_from_center, height_from_center, compressed_characters, character_frequencies);
+
+                    if (compressed_characters == null || character_frequencies == null || compressed_characters.isEmpty()) {
+                        System.out.println("Bad - compression produced no encodings");
+                        System.exit(-4);
+                    }
+                }
+
+                IO_Bundle return_package = new IO_Bundle(
+                        compressed_characters,
+                        character_frequencies,
+                        compressed_colors,
+                        color_frequencies,
+                        view,
+                        colors,
+                        to_recieve_command.getInventory(),
+                        // Don't for get left and right hand items
+                        to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
+                        to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
+                        to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
+                        to_recieve_command.getPrimaryEquipped(),
+                        to_recieve_command.getSecondaryEquipped(),
+                        strings_for_IO_Bundle,
+                        to_recieve_command.getNumGoldCoins(),
+                        to_recieve_command.isAlive()
+                );
+                sender.setBundleAvatarAndInterrupt(to_recieve_command, return_package);
+                return;
+            }
+            // Silently ignore it if the avatar name is wrong.
+
         }
     }
 //</editor-fold>

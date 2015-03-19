@@ -97,12 +97,7 @@ public final class Internet {
                 }
             }
             // recieve IO_Bundle from map over UTCP connection
-            Object temp = null;
-            try{
-            temp = object_input_stream.readObject();
-            }catch(Exception e){
-            	System.out.println("Failed to read object?");
-            }
+            Object temp = object_input_stream.readObject();
             IO_Bundle to_recieve = null;
             if (temp != null) {
                 to_recieve = (IO_Bundle) temp;

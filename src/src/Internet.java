@@ -25,34 +25,33 @@ import src.model.Map;
  */
 public final class Internet {
 
-    private static DatagramSocket udp_socket_for_outgoing_signals = null;
     private static InetAddress address = null;
+    private static DatagramSocket udp_socket_for_outgoing_signals = null;
     private static Socket tcp_socket_for_incoming_signals = null;
-    private static final Random rand = new Random();
-    //private static final int unique_id = rand.nextInt();
-    //private static final String unique_id_string = Integer.toString(unique_id, 10);
-    private static final String unique_id_string = Internet.getMacAddress();
     private static ObjectInputStream object_input_stream = null;
-    private static String last_ip_connected = null;
+    private static final Random rand = new Random();
+    private static final String unique_id_string = Internet.getMacAddress();
+    //private static String last_ip_connected = null;
     private static boolean isConnected = false;
 
     public static void closeAndNullifyConnection() {
-        if (tcp_socket_for_incoming_signals != null) {
-            if (tcp_socket_for_incoming_signals.isConnected()) {
-                try {
-                    tcp_socket_for_incoming_signals.close();
-                    tcp_socket_for_incoming_signals = null;
-                } catch (Exception e) {// socket already closed}
-                }
-            }
-        }
-        if (udp_socket_for_outgoing_signals != null) {
-            try {
+        try {
+            if (udp_socket_for_outgoing_signals != null) {
                 udp_socket_for_outgoing_signals.close();
                 udp_socket_for_outgoing_signals = null;
-            } catch (Exception e) {// socket already closed}
-                e.printStackTrace();
+                Internet.address = null;
             }
+            udp_socket_for_outgoing_signals = new DatagramSocket();
+            udp_socket_for_outgoing_signals.setReuseAddress(true);
+            if (tcp_socket_for_incoming_signals != null) {
+                if (tcp_socket_for_incoming_signals.isConnected()) {
+                    tcp_socket_for_incoming_signals.close();
+                }
+                tcp_socket_for_incoming_signals = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error while closing and nullifying connection");
         }
     }
 
@@ -70,13 +69,13 @@ public final class Internet {
      * to render the view.
      */
     public static IO_Bundle sendStuffToMap(String avatar_name, Enum key_command, int width, int height, String optional_text) {
-        if(!isConnected) {
-            int error_code = makeConnectionUsingIP_Address("localhost");
-            if(error_code == 0) {
-                isConnected = true;
+        System.out.println("Starting Internet.sendStuffToMap(" + avatar_name +", "+ key_command.name() + ",...)");
+        if (!isConnected) {
+            final int error_code = makeConnectionUsingIP_Address("localhost");
+            if(error_code != 0) {
+                System.out.println("Failed to send setuff over internet in Internet.sendStuffToMap(" + avatar_name +", "+ key_command.name() + ",...)");
             } else {
-                RunGame.setUseInternet(false);
-                return null;
+                System.out.println("Made initial connection to map in Internet.sendStuffToMap(" + avatar_name +", "+ key_command.name() + ",...)");
             }
         }
         try {
@@ -90,16 +89,16 @@ public final class Internet {
                 Internet.udp_socket_for_outgoing_signals.send(packet);
             } else {
                 // reconnect
-                if (Internet.udp_socket_for_outgoing_signals == null) {
-                    System.err.println("UDP or TCP or input stream is null");
-                    if (Internet.last_ip_connected != null) {
-                        Internet.makeConnectionUsingIP_Address(last_ip_connected);
-                    } else {
-                        System.err.println("Impossible error in Internet.sendStuffToMap");
-                        RunGame.grusomelyKillTheMapAndTheController();
-                        System.exit(-16);
-                    }
-                }
+                //if (Internet.udp_socket_for_outgoing_signals == null) {
+                    System.out.println("UDP or TCP or input stream is null in " + "Internet.sendStuffToMap(" + avatar_name +", "+ key_command.name() + ",...)");
+                    //if (Internet.last_ip_connected != null) {
+                    //    Internet.makeConnectionUsingIP_Address(last_ip_connected);
+                    //} else {
+                        System.out.println("Impossible error in " + "Internet.sendStuffToMap(" + avatar_name +", "+ key_command.name() + ",...)");
+                        // RunGame.grusomelyKillTheMapAndTheController();
+                        System.exit(-23);
+                    //}
+                //}
             }
             // recieve IO_Bundle from map over UTCP connection
             Object temp = object_input_stream.readObject();
@@ -116,6 +115,7 @@ public final class Internet {
             }
             return to_recieve;
         } catch (Exception e) {
+            System.err.println("Exception in " + "Internet.sendStuffToMap(" + avatar_name +", "+ key_command.name() + ",...)" + " named: " + e.toString());
             e.printStackTrace();
             return null;
         }
@@ -131,53 +131,59 @@ public final class Internet {
      */
     public static int makeConnectionUsingIP_Address(String ip_address) {
         ip_address = ip_address.trim().toLowerCase();
-        System.err.println("Going to connect to: " + ip_address);
+        System.out.println("Starting Internet.makeConnectionUsingIP_Address(" + ip_address + ")");
+        if (!ip_address.equals("localhost") && !ip_address.matches(".*[0-9].*")) {
+            RunGame.setUseInternet(false);
+            isConnected = false;
+            System.out.println("Not using internet in Internet.makeConnectionUsingIP_Address(String ip_address)");
+            return 0;
+        } else {
+            RunGame.setUseInternet(true);
+            System.out.println("Using internet in Internet.makeConnectionUsingIP_Address(String ip_address)");
+        }
+        ObjectOutputStream oos = null;
         try {
-            if (udp_socket_for_outgoing_signals != null) {
-                udp_socket_for_outgoing_signals.close();
-                udp_socket_for_outgoing_signals = null;
-                Internet.address = null;
-            }
-            udp_socket_for_outgoing_signals = new DatagramSocket();
-            udp_socket_for_outgoing_signals.setReuseAddress(true);
-            if (tcp_socket_for_incoming_signals != null) {
-                if (tcp_socket_for_incoming_signals.isConnected()) {
-                    tcp_socket_for_incoming_signals.close();
-                }
-                tcp_socket_for_incoming_signals = null;
-            }
-            if (!ip_address.equals("localhost") && !ip_address.matches(".*[0-9].*")) {
-                RunGame.setUseInternet(false);
-                System.out.println("Not using internet");
-                return 0;
-            } else {
-                RunGame.setUseInternet(true);
-                System.out.println("Using internet");
+            if (object_input_stream != null) {
+                object_input_stream.close();
+                object_input_stream = null;
             }
             Internet.address = InetAddress.getByName(ip_address);
+            udp_socket_for_outgoing_signals = new DatagramSocket();
             tcp_socket_for_incoming_signals = new Socket();
             tcp_socket_for_incoming_signals.setTcpNoDelay(true); // no latency
             tcp_socket_for_incoming_signals.setReuseAddress(true); // allow client to reconnect
             tcp_socket_for_incoming_signals.connect(new InetSocketAddress(ip_address, Map.TCP_PORT_NUMBER));
             tcp_socket_for_incoming_signals.setTcpNoDelay(true);
-            ObjectOutputStream oos = new ObjectOutputStream(tcp_socket_for_incoming_signals.getOutputStream());
+            tcp_socket_for_incoming_signals.setReuseAddress(true);
+            oos = new ObjectOutputStream(tcp_socket_for_incoming_signals.getOutputStream());
             oos.flush();
             oos.writeObject(unique_id_string);
-            System.err.println("You MAC address / identifier is: " + unique_id_string);
+            System.out.println("You MAC address / unique identifier in Internet.makeConnection is: " + unique_id_string);
             oos.flush();
             oos = null;
             object_input_stream = new ObjectInputStream(tcp_socket_for_incoming_signals.getInputStream());
-            last_ip_connected = ip_address;
+            //last_ip_connected = ip_address;
+            isConnected = true;
             return 0;
         } catch (Exception e) {
             RunGame.setUseInternet(false);
+            System.err.println("Exception in Internet.makeConnectionUsingIP_Address(" + ip_address + "). Not using internet.");
             e.printStackTrace();
-            System.err.println("Not using internet");
+            isConnected = false;
             return -1;
+        } finally {
+            try {
+                if (oos != null) {
+                    oos.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.err.println("Exception in closing ObjectOutputStream in makeConnectionUsingIP_Address(String ip_address)");
+            }
         }
     }
-    
-        public static byte[] bundleToBytes(IO_Bundle io_bundle) {
+
+    public static byte[] bundleToBytes(IO_Bundle io_bundle) {
         ByteArrayOutputStream boas = new ByteArrayOutputStream();
         ObjectOutput out = null;
         byte[] bytes = null;

@@ -223,7 +223,7 @@ abstract public class Entity extends DrawableThing {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
                     try {
-                        s += map_relationship_.getTileInfo((i + 1), (i + 1));
+                        s += map_relationship_.getTileInfo((i + 1), -(i + 1));
                         s += "\n";
                     } catch (NullPointerException e) {
                         s += "No tile here.\n";
@@ -234,7 +234,7 @@ abstract public class Entity extends DrawableThing {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
                     try {
-                        s += map_relationship_.getTileInfo(0, (i + 1));
+                        s += map_relationship_.getTileInfo(0, -(i + 1));
                         s += "\n";
                     } catch (NullPointerException e) {
                         s += "No tile here.\n";
@@ -245,7 +245,7 @@ abstract public class Entity extends DrawableThing {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
                     try {
-                        s += map_relationship_.getTileInfo((i + 1), (i + 1));
+                        s += map_relationship_.getTileInfo(-(i + 1), -(i + 1));
                         s += "\n";
                     } catch (NullPointerException e) {
                         s += "No tile here.\n";
@@ -256,7 +256,7 @@ abstract public class Entity extends DrawableThing {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
                     try {
-                        s += map_relationship_.getTileInfo((i + 1), 0);
+                        s += map_relationship_.getTileInfo(-(i + 1), 0);
                         s += "\n";
                     } catch (NullPointerException e) {
                         s += "No tile here.\n";
@@ -267,7 +267,7 @@ abstract public class Entity extends DrawableThing {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
                     try {
-                        s += map_relationship_.getTileInfo((i + 1), (i + 1));
+                        s += map_relationship_.getTileInfo(-(i + 1), (i + 1));
                         s += "\n";
                     } catch (NullPointerException e) {
                         s += "No tile here.\n";

@@ -64,11 +64,14 @@ public abstract class Controller implements QueueCommandInterface<Character> {
         	try {
         		if(!controllerThread_.interrupted()){//If we are interuppted, don't bother sleeping again.
         			Thread.sleep(500L);
+        			process();
         		}
-        	} catch (InterruptedException e) {}
+        	} catch (InterruptedException e) {
         		System.out.println("InterruptedInnerLoop");
     			process();
     			System.out.println("InterruptedInnerLoopEnd");
+        	}
+
 
         	System.out.println("Exited sleep loop"); //Exited
         }
@@ -76,14 +79,7 @@ public abstract class Controller implements QueueCommandInterface<Character> {
 
     protected void process() {
         System.out.println("Processing!");
-    	if(characterQueue_.peek()!=null){
-    	characterQueue_.add(characterQueue_.peek());
-    	characterQueue_.add(characterQueue_.peek());
-    	}
-    	System.out.println("Queue Size" + characterQueue_.size());
-        if(characterQueue_.size()!=0){
-        	System.out.println("Qeueu size " + characterQueue_.size());
-        }
+
         while (!keyCommandQueue_.isEmpty()) {
         	Key_Commands c = keyCommandQueue_.remove();
         	if(c!=null){

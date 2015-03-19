@@ -243,8 +243,9 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             }
         }
 
-        public void setBundle(IO_Bundle to_set) {
+        public synchronized void setBundleAndInterrupt(IO_Bundle to_set) {
             bundle_to_send_ = to_set;
+            this.interrupt();
         }
 
         public Single_User_TCP_Thread(Socket socket, String unique_id, ObjectOutputStream object_output_stream) {
@@ -440,9 +441,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                                         to_recieve_command.isAlive()
                                 );
                                 // return return_package;
-                                sender.setBundle(return_package);
-                                //tcp_thread.bundle_to_send_ = return_package;
-                                sender.interrupt();
+                                sender.setBundleAndInterrupt(return_package);
                                 continue;
                             } else {
                                 ArrayList<Character> compressed_characters = null;
@@ -472,11 +471,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                                         -1,
                                         to_recieve_command.isAlive()
                                 );
-                                // return return_package;
-                                //tcp_thread.bundle_to_send_ = return_package;
-                                //tcp_thread.interrupt();
-                                sender.setBundle(return_package);
-                                sender.interrupt();
+                                sender.setBundleAndInterrupt(return_package);
                                 continue;
                             }
                         } else if (command == null) {
@@ -494,16 +489,14 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                             // return return_package;
                             // tcp_thread.bundle_to_send_ = return_package;
                             // tcp_thread.interrupt();
-                            sender.setBundle(return_package);
-                            sender.interrupt();
+                            sender.setBundleAndInterrupt(return_package);
                             continue;
                         } else {
                             System.err.println("avatar + " + username + " is invalid. \n"
                                     + "Please check username and make sure he is on the map.");
                             //tcp_thread.bundle_to_send_ = null;
                             //tcp_thread.interrupt();
-                            sender.setBundle(null);
-                            sender.interrupt();
+                            sender.setBundleAndInterrupt(null);
                             continue;
                         }
                     } else {
@@ -511,8 +504,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                         // return null;
                         //tcp_thread.bundle_to_send_ = null;
                         //tcp_thread.interrupt();
-                        sender.setBundle(null);
-                        sender.interrupt();
+                        sender.setBundleAndInterrupt(null);
                         continue;
                     }
 

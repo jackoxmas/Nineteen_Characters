@@ -1,6 +1,11 @@
 package src;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -170,6 +175,50 @@ public final class Internet {
             System.err.println("Not using internet");
             return -1;
         }
+    }
+    
+        public static byte[] bundleToBytes(IO_Bundle io_bundle) {
+        ByteArrayOutputStream boas = new ByteArrayOutputStream();
+        ObjectOutput out = null;
+        byte[] bytes = null;
+        try {
+            out = new ObjectOutputStream(boas);
+            out.writeObject(io_bundle);
+            bytes = boas.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+                boas.close();
+            } catch (Exception ex) {
+            }
+        }
+        return bytes;
+    }
+
+    public static IO_Bundle bytesToBundle(byte[] data) {
+        ByteArrayInputStream bis = new ByteArrayInputStream(data);
+        ObjectInput in = null;
+        IO_Bundle io_bundle = null;
+        try {
+            in = new ObjectInputStream(bis);
+            io_bundle = (IO_Bundle) in.readObject();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                bis.close();
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ex) {
+            }
+        }
+        return io_bundle;
     }
 
     /**

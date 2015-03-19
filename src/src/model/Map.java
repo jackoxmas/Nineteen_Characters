@@ -593,6 +593,27 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     }
 
     /**
+     * Adds an entity to the map and provides it with a MapFlying_Relation.
+     *
+     * @param e - Entity to be added
+     * @param x - x position of where you want to add entity
+     * @param y - y posiition of where you want to add entity
+     * @return -1 on fail, 0 on success
+     */
+    public int addAsFlying(Entity e, int x, int y) {
+        e.setMapRelation(new MapFlying_Relation(this, e, x, y));
+        System.out.println(e.name_);
+        int error_code = this.map_grid_[y][x].addEntity(e);
+        System.out.println(e.name_ + "2");
+        if (error_code == 0) {
+            this.entity_list_.put(e.name_, e);
+        } else {
+            e.setMapRelation(null);
+            System.err.println("Error in entity list");
+        }
+        return error_code;
+    }
+    /**
      * Adds an avatar to the map and provides it with a MapAvatar_Relation. Can
      * only be used on Avatars.
      *

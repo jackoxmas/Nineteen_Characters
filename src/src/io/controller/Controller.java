@@ -64,7 +64,7 @@ public abstract class Controller implements QueueCommandInterface<Character> {
     protected void sleepLoop() {
 
         while (true) {
-            if(controllerThread_ == null){System.err.println("Controller thread null in sleep loop!");
+            if(controllerThread_ == null){System.err.println("Controller thread null in sleep loop!");}
                 System.out.println("Entetered sleep loop");
         	try {
         		if(!controllerThread_.interrupted()){//If we are interuppted, don't bother sleeping again.

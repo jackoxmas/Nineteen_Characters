@@ -160,7 +160,7 @@ abstract public class Entity extends DrawableThing {
         return bargain_;
     }
 
-    private int observation_ = 11;
+    private int observation_ = 1;
 
     public int getObservation_() {
         return observation_;

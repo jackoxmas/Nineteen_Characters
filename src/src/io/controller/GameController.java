@@ -99,7 +99,6 @@ public class GameController extends Controller {
 
         }
 
-
         @Override
         public void enqueue(String command) {
             commandQueue_.add(command);
@@ -118,17 +117,17 @@ public class GameController extends Controller {
         public void processQueue() {
             while (!commandQueue_.isEmpty()) {
                 String foo = commandQueue_.remove();
-                if (foo!= null && foo.startsWith("/")) {
+                if (foo != null && foo.startsWith("/")) {
                     processCommandAndDisplayOutput(foo);
                 }
-				//IF it starts with a /, it's a command, so send it
+                //IF it starts with a /, it's a command, so send it
                 //To the command function, not the map.
-                if(foo!=null){
-                	sendTextCommandAndUpdate(foo);
+                if (foo != null) {
+                    sendTextCommandAndUpdate(foo);
                 }
             }
             while (!commandChoiceQueue_.isEmpty()) {
-            	Character c = commandChoiceQueue_.remove();
+                Character c = commandChoiceQueue_.remove();
                 sendTextCommandAndUpdate(chatview_.getChoice(Character.getNumericValue(c)));
             }
         }
@@ -171,8 +170,10 @@ public class GameController extends Controller {
     public void updateDisplay(IO_Bundle bundle) {
         System.out.println("called function GameController.updateDisplay(IO_Bundle bundle)");
         // ** chatbox should not be getting the whole bundle ** //
-        chatbox_.chatBoxHandleMapInputAndPrintNewContents(
-                bundle.strings_for_communication_, bundle.is_alive_); 
+        if (bundle != null) {
+            chatbox_.chatBoxHandleMapInputAndPrintNewContents(
+                    bundle.strings_for_communication_, bundle.is_alive_);
+        }
         super.updateDisplay(bundle);
     }
 

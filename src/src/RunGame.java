@@ -17,6 +17,7 @@ import src.model.constructs.Terrain;
 import src.model.constructs.Villager;
 import src.model.constructs.items.Item;
 import src.model.constructs.items.KnightsSerum;
+import src.model.constructs.items.FlyingSerum;
 import src.model.constructs.items.ObstacleRemovingItem;
 import src.model.constructs.items.OneHandedSword;
 import src.model.constructs.items.OneShotAreaEffectItem;
@@ -127,6 +128,8 @@ public class RunGame {
         Avatar buddy = new Avatar("buddy", '☺');
         // map_.addAsAvatar(buddy, 3, 0);
         map_.addAsKnight(buddy, 3, 0); // buddy can jump over entities!
+        map_.addAsFlying(buddy, 4, 0); // buddy can jump over entities!
+        
 
         Villager villager1 = new Villager("villager1", '☺');
         villager1.getStatsPack().increaseQuantityOfExperienceBy(200);
@@ -150,6 +153,10 @@ public class RunGame {
 
         KnightsSerum knight_serum = new KnightsSerum("Knight serum", 'N');
         map_.addItem(knight_serum, 18, 12);
+        
+        FlyingSerum flying_serum = new FlyingSerum("Flying Serum", 'F');
+        map_.addItem(flying_serum, 14, 12);
+        
 
         ObstacleRemovingItem key = new ObstacleRemovingItem("Key", 'K');
         TemporaryObstacleItem door = new TemporaryObstacleItem("Door", 'D', key);

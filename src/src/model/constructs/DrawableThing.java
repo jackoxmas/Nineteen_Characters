@@ -135,6 +135,7 @@ abstract public class DrawableThing implements Serializable{
 
     public ArrayList<String> endConversation() {
         ArrayList<String> silence = new ArrayList<>();
+        silence.add(" [ End of Conversation]");
         return silence;
     }
 }

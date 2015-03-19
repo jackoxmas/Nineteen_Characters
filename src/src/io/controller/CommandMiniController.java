@@ -26,6 +26,7 @@ class CommandMiniController {
 	private static final String load = "load";
 	private static final String rebind = "rebind";
 	private static final String bindings = "bindings";
+        private static final String setIP = "set-ip";
 	private static final String setControl = "set-control";
 
 
@@ -44,8 +45,21 @@ class CommandMiniController {
 		if(foo.startsWith(commandKey + "cat")){return "meow";}
 		if(foo.startsWith(commandKey + "tiger")){return "ROAR!";}
 		if(foo.startsWith(commandKey + man)){return this.processManCommand(foo);}
-		if(foo.startsWith(commandKey+ bindings)){return this.remap_.getBindingList();}
-		if(foo.startsWith(commandKey+setControl)){return this.setControl(foo);}
+		if(foo.startsWith(commandKey + bindings)){return this.remap_.getBindingList();}
+                if(foo.startsWith(commandKey + setIP)){
+                    int error_code = src.Internet.makeConnectionUsingIP_Address(foo.split(" ")[foo.split(" ").length - 1]);
+                    if(error_code == 0) {
+                        return "Successfully connected to ip address: " + foo;
+                    } else {
+                        int error_code_2 = src.Internet.makeConnectionUsingIP_Address("localhost");
+                        if(error_code_2 == 0) {
+                            return "Connection failed. Reconnecting to localhost.";
+                        } else {
+                            return "Something is seriously wrong with the program. Cannot connect to the remote map or to localhost.";
+                        }
+                    }
+                }
+		if(foo.startsWith(commandKey + setControl)){return this.setControl(foo);}
 
 		return "No valid command given!";
 	}
@@ -83,6 +97,7 @@ class CommandMiniController {
 			if(in.equals(pwd)){return HardCodedStrings.pwdHelp;}
 			if(in.equals(man)){return HardCodedStrings.manHelp;}
 			if(in.equals(bindings)){return HardCodedStrings.bindingsHelp;}
+                        if(in.equals(setIP)){return HardCodedStrings.setIPHelp;}
 			if(in.equals(setControl)){return HardCodedStrings.setControlHelp;}
 			if(in.equals("fontsize")){return HardCodedStrings.fontsizeHelp;}
 		}

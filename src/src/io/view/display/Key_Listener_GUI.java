@@ -3,14 +3,19 @@ package src.io.view.display;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.JComponent;
 import javax.swing.text.StyledDocument;
 
 import src.Key_Commands;
 import src.QueueCommandInterface;
+import src.RunGame;
 
 /**
  * Computer generated code made with Netbeans GUI builder using instruction
@@ -18,8 +23,8 @@ import src.QueueCommandInterface;
  *
  * @author Matthew B [human-written code]
  */
-class Key_Listener_GUI extends javax.swing.JFrame {
-    //These two arraylists hold the things to apply when input is received by either the map, or by the chatbox
+class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
+
 
     public javax.swing.JTextArea getIncomingText() {
         return incoming_text_jTextArea;
@@ -60,11 +65,12 @@ class Key_Listener_GUI extends javax.swing.JFrame {
      *
      */
     private static final long serialVersionUID = 1L;
-    private ArrayList<QueueCommandInterface<Character>> game_inputHandlers_ = new ArrayList<QueueCommandInterface<Character>>();
-    private ArrayList<QueueCommandInterface<Character>> outputbox_inputHandlers_ = new ArrayList<QueueCommandInterface<Character>>();
-    private ArrayList<QueueCommandInterface<String>> inputchatbox_Handlers_ = new ArrayList<QueueCommandInterface<String>>();
-    private ArrayList<QueueCommandInterface<Key_Commands>> direct_command_receivers_ = new ArrayList<QueueCommandInterface<Key_Commands>>();
-    private ArrayList<QueueCommandInterface<String>> command_area_double_clicked_ = new ArrayList<QueueCommandInterface<String>>();
+    //These concurrent linked queues holds the things that called when an event happens.
+    private ConcurrentLinkedQueue<QueueCommandInterface<Character>> game_inputHandlers_ = new ConcurrentLinkedQueue<QueueCommandInterface<Character>>();
+    private ConcurrentLinkedQueue<QueueCommandInterface<Character>> outputbox_inputHandlers_ = new ConcurrentLinkedQueue<QueueCommandInterface<Character>>();
+    private ConcurrentLinkedQueue<QueueCommandInterface<String>> inputchatbox_Handlers_ = new ConcurrentLinkedQueue<QueueCommandInterface<String>>();
+    private ConcurrentLinkedQueue<QueueCommandInterface<Key_Commands>> direct_command_receivers_ = new ConcurrentLinkedQueue<QueueCommandInterface<Key_Commands>>();
+    private ConcurrentLinkedQueue<QueueCommandInterface<String>> command_area_double_clicked_ = new ConcurrentLinkedQueue<QueueCommandInterface<String>>();
 
     /**
      *
@@ -185,6 +191,40 @@ class Key_Listener_GUI extends javax.swing.JFrame {
                 occupation_skill_4_jButtonMouseClicked(evt);
             }
         });
+        addWindowListener(this);
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        // close all threads before closing.
+        RunGame.grusomelyKillTheMapAndTheController();
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+        //This will only be seen on standard output.
+        // close all threads before closing.
+        RunGame.grusomelyKillTheMapAndTheController();
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
     }
 
     /**
@@ -475,21 +515,34 @@ class Key_Listener_GUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private class TriggerEvents<T> implements Runnable{
+    	ConcurrentLinkedQueue<QueueCommandInterface<T>> triggers_;
+    	public TriggerEvents(ConcurrentLinkedQueue<QueueCommandInterface<T>> in){triggers_ = in;}
+		@Override
+		public void run() {
+			for(QueueCommandInterface<T> foo : triggers_){
+				foo.sendInterrupt();
+			}
+			
+		}
+    	
+    }
+    private Thread sendKeyCommandThread_ = new Thread(new TriggerEvents<Key_Commands>(direct_command_receivers_));
     private void sendKeyCommand(Key_Commands command) {
+
         for (QueueCommandInterface<Key_Commands> foo : direct_command_receivers_) {
             foo.enqueue(command);
-            foo.sendInterrupt();
         }
+        sendKeyCommandThread_.run();
     }
-
+    private Thread incoming_text_jTextAreaKeyTypedThread_ = new Thread(new TriggerEvents<Character>(outputbox_inputHandlers_));
     private void incoming_text_jTextAreaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_incoming_text_jTextAreaKeyTyped
         for (QueueCommandInterface<Character> foo : outputbox_inputHandlers_) {
             foo.enqueue(evt.getKeyChar());
-            foo.sendInterrupt();
         }
+        incoming_text_jTextAreaKeyTypedThread_.run();
     }//GEN-LAST:event_incoming_text_jTextAreaKeyTyped
-
+    private Thread outoging_text_jTextFieldKeyPressedThread_ = new Thread(new TriggerEvents<String>(inputchatbox_Handlers_));
     private void outgoing_text_jTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_outgoing_text_jTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String S = outgoing_text_jTextField.getText();
@@ -498,10 +551,9 @@ class Key_Listener_GUI extends javax.swing.JFrame {
             if (!outgoing_text_jTextField.getText().startsWith("/fontsize")) {
                 for (QueueCommandInterface<String> functor : inputchatbox_Handlers_) {
                     functor.enqueue(S);//Loop through and apply, but ONLY if we haven't already eaten /fontsize.
-                    functor.sendInterrupt();
                 }
-            }
-            else{
+                outoging_text_jTextFieldKeyPressedThread_.run();
+            } else {
                 try {
                     String temp = outgoing_text_jTextField.getText();
                     temp = temp.replaceAll("[^0-9 | .]", "");//Regex, to select anything not 0-9 or .
@@ -546,21 +598,23 @@ class Key_Listener_GUI extends javax.swing.JFrame {
     private void observe_jButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_observe_jButtonMouseClicked
         sendKeyCommand(Key_Commands.OBSERVE);
     }//GEN-LAST:event_observe_jButtonMouseClicked
-
+    private Thread game_jTextPaneKeyTypedThread_ = new Thread(new TriggerEvents<Character>(game_inputHandlers_));
     private void game_jTextPaneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_game_jTextPaneKeyTyped
+    	System.out.println("Was runA");
         for (QueueCommandInterface<Character> foo : game_inputHandlers_) {
             foo.enqueue(evt.getKeyChar());
-            foo.sendInterrupt();
         }
+        game_jTextPaneKeyTypedThread_.run();
+    	System.out.println("Was runB");
     }//GEN-LAST:event_game_jTextPaneKeyTyped
-
+    private Thread command_jButtonMouseClickedThread_ = new Thread(new TriggerEvents<String>(command_area_double_clicked_));
     private void command_jButtonMouseClicked(java.awt.event.MouseEvent evt) {
         if (evt.getClickCount() >= 2) {
             String selected = commands_jTextArea.getSelectedText();
             for (QueueCommandInterface<String> foo : command_area_double_clicked_) {
                 foo.enqueue(selected);
-                foo.sendInterrupt();
             }
+            command_jButtonMouseClickedThread_.run();
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

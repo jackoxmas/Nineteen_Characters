@@ -51,6 +51,7 @@ public class MapEditorController extends Controller {
 
 			@Override
 			public void sendInterrupt() {
+                            System.out.println("MapEditorController.sendInterrupt() in QueueCommandInterface<String> was called");
 				MapEditorController.this.sendInterrupt();
 				
 			}
@@ -85,6 +86,7 @@ public class MapEditorController extends Controller {
 		}
 		while(!commandQueue_.isEmpty()){
 			String foo = commandQueue_.remove();
+			if(foo==null){return;}
 			if(foo.startsWith("/")){Display.getDisplay().setMessage(cont_.processCommand(foo));}
 		}
 		super.process();

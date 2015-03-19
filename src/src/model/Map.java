@@ -9,6 +9,7 @@ import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,6 +21,7 @@ import org.w3c.dom.Element;
 import src.IO_Bundle;
 import src.Key_Commands;
 import src.RunGame;
+import src.SavedGame;
 import src.model.constructs.Avatar;
 import src.model.constructs.DrawableThingStatsPack;
 import src.model.constructs.Entity;
@@ -56,7 +58,24 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     private GetMapInputFromUsers udp_thread;
     private TCP_Connection_Maker tcp_thread;
     private ConcurrentHashMap<String, Single_User_TCP_Thread> users = new ConcurrentHashMap<>();
-    
+
+    public void grusomelyKillTheMapThread() {
+        if (tcp_thread != null && tcp_thread.isAlive()) {
+            tcp_thread.stop();
+            tcp_thread = null;
+        }
+        if (udp_thread != null && udp_thread.isAlive()) {
+            udp_thread.stop();
+            udp_thread = null;
+        }
+        for (ConcurrentHashMap.Entry<String, Single_User_TCP_Thread> entry : this.users.entrySet()) {
+            if (entry.getValue() != null) {
+                entry.getValue().closeAndNullifyConnection();
+                entry.getValue().stop();
+            }
+        }
+    }
+
     /**
      *
      * @param name - name of Entity
@@ -176,36 +195,9 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
 
     //</editor-fold>
     //<editor-fold desc="TCP TO User Thread (optional use)" defaultstate="collapsed">
-    private class Initiate extends Thread {
-
-        private final Socket socket_;
-        private ObjectInputStream object_input_stream_ = null;
-
-        Initiate(Socket s) {
-            super("Initiate");
-            socket_ = s;
-        }
-
-        @Override
-        public void run() {
-            try {
-                object_input_stream_ = new ObjectInputStream(socket_.getInputStream());
-                ObjectOutputStream object_output_stream = new ObjectOutputStream(socket_.getOutputStream());
-                object_output_stream.flush();
-                String unique_id = (String) object_input_stream_.readObject();
-                System.out.println("String was accepted. Unique id is: " + unique_id);
-                Map.Single_User_TCP_Thread new_thread = new Map.Single_User_TCP_Thread(socket_, unique_id, object_output_stream);
-                new_thread.start();
-                object_output_stream = null;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     private class TCP_Connection_Maker extends Thread {
 
-        public IO_Bundle bundle_to_send_ = null;
+        public IO_Bundle bundle_to_send_ = null; // ** bullshit **
 
         final int portNumber = Map.TCP_PORT_NUMBER;
 
@@ -216,10 +208,25 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     Socket to_accept = serverSocket.accept();
                     to_accept.setTcpNoDelay(true);
                     to_accept.setReuseAddress(true); // allow for re-connections
-                    (new Initiate(to_accept)).start();
-                    System.out.println("Socket was accepted");
+                    ObjectInputStream object_input_stream_ = new ObjectInputStream(to_accept.getInputStream());
+                    String unique_id = (String) object_input_stream_.readObject();
+                    System.out.println("String was accepted in Map.TCP_Connection_Maker.run() . Unique id is: " + unique_id);
+                    // remove and replace on re-connection
+                    if (users.containsKey(unique_id)) {
+                        Single_User_TCP_Thread to_kill = users.get(unique_id);
+                        // to_kill.closeAndNullifyConnection();
+                        to_kill.closeAndNullifyObjectOutputStream();
+                        users.remove(unique_id);
+                        System.out.println("Replacing already made connection in Map.TCP_Connection_Maker.run()");
+                    }
+                    ObjectOutputStream object_output_stream = new ObjectOutputStream(to_accept.getOutputStream());
+                    Map.Single_User_TCP_Thread new_thread = new Map.Single_User_TCP_Thread(to_accept, unique_id, object_output_stream);
+                    users.put(unique_id, new_thread);
+                    new_thread.start();
+                    object_output_stream = null;
                 }
             } catch (Exception e) {
+                System.err.println("Exception in Map.TCP_Connection_Maker.run() named: " + e.toString());
                 e.printStackTrace();
                 System.err.println("Could not listen on port " + portNumber);
                 System.exit(-1);
@@ -232,14 +239,39 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         public final String unique_id_;
         private final Socket socket_;
         private final ObjectOutputStream object_output_stream_;
+        private boolean was_oos_closed = false;
         private IO_Bundle bundle_to_send_ = null;
 
-        public void setBundle(IO_Bundle to_set) {
+        public void closeAndNullifyConnection() {
+            if (socket_ != null) {
+                if (socket_.isConnected()) {
+                    try {
+                        socket_.close();
+                    } catch (Exception e) {// socket already closed}
+                    }
+                }
+            }
+        }
+
+        public void closeAndNullifyObjectOutputStream() {
+            try {
+                if (object_output_stream_ != null && was_oos_closed == false) {
+                    object_output_stream_.close();
+                    was_oos_closed = true;
+                }
+            } catch (Exception e) {
+                System.err.println("object_output_stream_ was already closed in Map.ServerThread.run()");
+                e.printStackTrace();
+            }
+        }
+
+        public synchronized void setBundleAndInterrupt(IO_Bundle to_set) {
             bundle_to_send_ = to_set;
+            this.interrupt();
         }
 
         public Single_User_TCP_Thread(Socket socket, String unique_id, ObjectOutputStream object_output_stream) {
-            super("KKMultiServerThread");
+            super("Single_User_TCP_Thread");
             this.socket_ = socket;
             this.unique_id_ = unique_id;
             object_output_stream_ = object_output_stream;
@@ -247,30 +279,37 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
 
         public void run() {
             try {
+                //this.socket_.setKeepAlive(true); // hopefully will cause an exception to be thrown if used disconnected for 2+ hours
                 object_output_stream_.flush();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            users.putIfAbsent(unique_id_, this);
             while (true) {
+                // end of resource statement beginning of execution
+                if (bundle_to_send_ == null) {
+                    System.out.println("bundle_to_send_ in Map.ServerThread.run() is null");
+                } else {
+                    System.out.println("bundle_to_send_ in Map.ServerThread.run() not null");
+                }
                 try {
-                    // end of resource statement beginning of execution
-                    if (bundle_to_send_ == null) {
-                        System.out.println("bundle_to_send_ in ServerThread is null");
-                    } else {
-                        System.out.println("bundle_to_send_ in ServerThread not null");
-                    }
+                    Thread.sleep(Integer.MAX_VALUE);
+                } catch (InterruptedException e) {
                     try {
-                        Thread.sleep(Integer.MAX_VALUE);
-                    } catch (InterruptedException e) {
+                        // do {
                         object_output_stream_.writeObject(bundle_to_send_);
                         object_output_stream_.flush();
+                        // } while (Thread.currentThread().isInterrupted()); // ignore signal if theyinterrupt while I write.
+                    } catch (NullPointerException null_ptr_exception) {
+                        System.err.print("Err: Caught the NullPointerException. ObjectOutputStream has already been nullified by another thread in Map.ServerThread.run()");
+                        System.out.print("Out: Caught the NullPointerException. ObjectOutputStream has already been nullified by another thread in Map.ServerThread.run()");
+                        null_ptr_exception.printStackTrace();
+                        return;
+                    } catch (Exception e2) {
+                        System.err.println("Err: object_output_stream_ experienced an exception in Map.ServerThread.run() named: " + e2.toString());
+                        System.out.println("Out: object_output_stream_ experienced an exception in Map.ServerThread.run() named: " + e2.toString());
+                        e2.printStackTrace();
+                        return;
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    System.out.println("connection disconnected in ServerThread.run");
-                    users.remove(this);
-                    break;
                 }
             }
         }
@@ -307,7 +346,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     socket = null;
 
                     // "udp packet recieved in GetMapInputFromUsers
-
                     String decoded_string_with_trailing_zeros = new String(buf, "UTF-8");
 
                     String decoded_string = decoded_string_with_trailing_zeros.trim();
@@ -318,27 +356,21 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                         splitArray = decoded_string.split("\\s+");
                     } catch (PatternSyntaxException ex) {
                         ex.printStackTrace();
-                        System.exit(-16);
+                        System.exit(-15);
                         return;
                     }
- 
-
-                    String last = splitArray[splitArray.length - 1];
-                    final int last_length = last.length();
 
                     System.out.print("Recieved array: ");
                     for (int i = 0; i < splitArray.length; ++i) {
                         System.out.print(splitArray[i] + " ");
                     }
                     System.out.println();
-                    System.out.println();
-                    
+
                     String unique_id = splitArray[0];
                     String username = splitArray[0 + 1];
                     String command_enum_as_a_string = splitArray[1 + 1];
                     Key_Commands command = Key_Commands.valueOf(command_enum_as_a_string);
                     int width_from_center = Integer.parseInt(splitArray[2 + 1], 10);
- 
                     int height_from_center = Integer.parseInt(splitArray[3 + 1], 10);
                     String optional_text;
                     if (splitArray.length == 4 + 1) {
@@ -372,9 +404,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     if (to_recieve_command != null) {
                         if (to_recieve_command.getMapRelation() == null) {
                             System.err.println(to_recieve_command.name_ + " has a null relation with this map. ");
-                            // return null
-                            tcp_thread.bundle_to_send_ = null;
-                            tcp_thread.interrupt();
                             continue;
                         }
                         if (command != null) {
@@ -390,12 +419,12 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                                 ArrayList<Character> compressed_characters = new ArrayList<Character>();
                                 ArrayList<Short> frequencies = new ArrayList<Short>();
                                 char[][] view = null;
-                                
+
                                 ArrayList<Color> compressed_colors = new ArrayList<Color>();
                                 ArrayList<Short> color_frequencies = new ArrayList<Short>();
                                 /*Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
-                                        to_recieve_command.getMapRelation().getMyYCoordinate(),
-                                        width_from_center, height_from_center);*/
+                                 to_recieve_command.getMapRelation().getMyYCoordinate(),
+                                 width_from_center, height_from_center);*/
                                 Color[][] colors = null;
                                 runLengthEncodeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
                                         to_recieve_command.getMapRelation().getMyYCoordinate(),
@@ -430,9 +459,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                                         to_recieve_command.isAlive()
                                 );
                                 // return return_package;
-                                sender.setBundle(return_package);
-                                //tcp_thread.bundle_to_send_ = return_package;
-                                sender.interrupt();
+                                sender.setBundleAndInterrupt(return_package);
                                 continue;
                             } else {
                                 ArrayList<Character> compressed_characters = null;
@@ -462,11 +489,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                                         -1,
                                         to_recieve_command.isAlive()
                                 );
-                                // return return_package;
-                                //tcp_thread.bundle_to_send_ = return_package;
-                                //tcp_thread.interrupt();
-                                sender.setBundle(return_package);
-                                sender.interrupt();
+                                sender.setBundleAndInterrupt(return_package);
                                 continue;
                             }
                         } else if (command == null) {
@@ -481,42 +504,39 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                                     to_recieve_command.getNumGoldCoins(),
                                     to_recieve_command.isAlive()
                             );
-                            // return return_package;
+                        // return return_package;
                             // tcp_thread.bundle_to_send_ = return_package;
                             // tcp_thread.interrupt();
-                            sender.setBundle(return_package);
-                            sender.interrupt();
+                            sender.setBundleAndInterrupt(return_package);
                             continue;
                         } else {
                             System.err.println("avatar + " + username + " is invalid. \n"
                                     + "Please check username and make sure he is on the map.");
-                            //tcp_thread.bundle_to_send_ = null;
+                        //tcp_thread.bundle_to_send_ = null;
                             //tcp_thread.interrupt();
-                            sender.setBundle(null);
-                            sender.interrupt();
+                            sender.setBundleAndInterrupt(null);
                             continue;
                         }
                     } else {
                         System.out.println(username + " cannot be found on this map.");
-                        // return null;
+                    // return null;
                         //tcp_thread.bundle_to_send_ = null;
                         //tcp_thread.interrupt();
-                        sender.setBundle(null);
-                        sender.interrupt();
+                        sender.setBundleAndInterrupt(null);
                         continue;
                     }
 
                 } catch (IOException e) {
                     e.printStackTrace();
                     System.out.println("Connection is closed");
-                    //tcp_thread.bundle_to_send_ = null;
+                //tcp_thread.bundle_to_send_ = null;
                     //tcp_thread.interrupt();
                     continue;
                 }
             }
         }
     }
-    //</editor-fold>
+//</editor-fold>
 
 //<editor-fold desc="Map Methods" defaultstate="collapsed">
     /**
@@ -540,8 +560,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         }
         return error_code;
     }
-    
-    
+
     /**
      * Adds an entity to the map and provides it with a MapKnight_Relation.
      *
@@ -566,7 +585,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
 
     /**
      * Adds an avatar to the map and provides it with a MapAvatar_Relation.
-     *
+     * Can only be used on Avatars.
      * @param a - Avatar to be added
      * @param x - x position of where you want to add Avatar
      * @param y - y posiition of where you want to add Avatar
@@ -634,7 +653,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     /**
      * Adds an avatar to the map.
      *
-     * @param a - Avatar to be added
      * @param x - x position of where you want to add Avatar
      * @param y - y posiition of where you want to add Avatar
      * @return -1 on fail, 0 on success
@@ -726,10 +744,10 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             }
         } else {
             System.out.println("Precondition for Map.runLengthEncodeView not met - output parameters are not empty");
-            System.exit(-16);
+            System.exit(-7);
         }
     }
-    
+
     /**
      * Use this when the command the map is receiving requires a string
      * parameter
@@ -742,6 +760,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
      * @return Bundle of stuff used by the display.
      */
     public IO_Bundle sendCommandToMapWithOptionalText(String username, Key_Commands command, int width_from_center, int height_from_center, String text) {
+        System.out.println("Calling Map.sendCommandToMapWithOptionalText - No internet being used");
         // Avatar to_recieve_command = this.avatar_list_.get(username);
         Entity to_recieve_command;
         if (this.entity_list_.containsKey(username)) {
@@ -772,7 +791,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);
                     IO_Bundle return_package = new IO_Bundle(
-                            null, null, null, null, 
+                            null, null, null, null,
                             view,
                             colors,
                             to_recieve_command.getInventory(),
@@ -791,7 +810,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     char[][] view = null;
                     Color[][] colors = null;
                     IO_Bundle return_package = new IO_Bundle(
-                            null, null, null, null, 
+                            null, null, null, null,
                             view,
                             colors,
                             null,
@@ -857,11 +876,10 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             }
         } else {
             System.out.println("Precondition for Map.runLengthEncodeView not met - output parameters are not empty");
-            System.exit(-16);
+            System.exit(-27);
         }
     }
 
-    
     public Color[][] makeColors(int x_center, int y_center, int width_from_center, int height_from_center) {
         Color[][] colors = new Color[1 + 2 * height_from_center][1 + 2 * width_from_center];
         int y_index = 0;
@@ -939,6 +957,18 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
 
     //</editor-fold>
     //<editor-fold desc="XML Saving/Loading" defaultstate="collapsed">
+    public static Map xml_readMap(Document doc, Element e_map) {
+
+        Element e_mapgrid = (Element) e_map.getElementsByTagName(SavedGame.XML_MAP_MAPGRID).item(0);
+        Integer map_x = Integer.parseInt(e_mapgrid.getAttributes().getNamedItem(SavedGame.XML_MAP_MAPGRID_WIDTH).getNodeValue());
+        Integer map_y = Integer.parseInt(e_mapgrid.getAttributes().getNamedItem(SavedGame.XML_MAP_MAPGRID_HEIGHT).getNodeValue());
+        RunGame.dbgOut("XML Parsed: map grid x = " + map_x, 4);
+        RunGame.dbgOut("XML Parsed: map grid y = " + map_y, 4);
+
+        Map mm = new Map(map_x, map_y);
+        return mm;
+    }
+
     /**
      * Writes this map to the given XML Element in the given XML document
      *
@@ -949,13 +979,13 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
      */
     public int xml_writeMap(Document doc, Element e_map) {
         // MAP::TIME)
-        Element e_time = doc.createElement("time");
+        Element e_time = doc.createElement(SavedGame.XML_MAP_TIME);
         e_map.appendChild(doc.createTextNode(Integer.toString(this.time_measured_in_turns)));
 
         // MAP::MAP_GRID
-        Element e_map_grid = doc.createElement("map_grid");
-        e_map_grid.setAttribute("width", Integer.toString(this.width_));
-        e_map_grid.setAttribute("height", Integer.toString(this.height_));
+        Element e_map_grid = doc.createElement(SavedGame.XML_MAP_MAPGRID);
+        e_map_grid.setAttribute(SavedGame.XML_MAP_MAPGRID_WIDTH, Integer.toString(this.width_));
+        e_map_grid.setAttribute(SavedGame.XML_MAP_MAPGRID_HEIGHT, Integer.toString(this.height_));
 
         Element e_l;
         for (int j = 0; j < this.height_; j++) {
@@ -1012,10 +1042,10 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         // Name
         e_entity.setAttribute("name", entity.getName());
 
-        if (this.entity_list_.containsValue(entity)) {
-            e_entity.appendChild(doc.createElement("b_avatar"));
-        }
-
+        /*
+         if (this.avatar_list_.containsValue(entity)) {
+         e_entity.appendChild(doc.createElement("b_avatar"));
+         }*/
         // Direction
         Element e_dir = doc.createElement("direction");
         e_dir.appendChild(doc.createTextNode(entity.getFacingDirection().toString()));
@@ -1023,18 +1053,16 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         // Item List
         Element e_itemList = doc.createElement("item_list");
         // write inventory items to xml
-        Item equipped1 = (Item) entity.getPrimaryEquipped();
-        Item equipped2 = (Item) entity.getSecondaryEquipped();
-        /* Hey Alex I changed the item hierarchy and made entities dual weild */
-        ArrayList<PickupableItem> tmp_inv = entity.getInventory();
+        //Item equipped = entity.getEquipped(); //TODO FIX
+        //ArrayList<Item> tmp_inv = entity.getInventory();
         Element tmp_eInvItem; // temp inventory item
         for (int i = 0; i < entity.getInventory().size(); i++) {
-            tmp_eInvItem = xml_writeItem(doc, e_itemList, tmp_inv.get(i));
+            //tmp_eInvItem = xml_writeItem(doc, e_itemList, tmp_inv.get(i));
 
-            if (tmp_inv.get(i) == equipped1) {
-                tmp_eInvItem.appendChild(doc.createElement("b_equipped"));
-            }
-            e_itemList.appendChild(tmp_eInvItem);
+            /*
+             if (tmp_inv.get(i) == equipped)
+             tmp_eInvItem.appendChild(doc.createElement("b_equipped")); */
+            //e_itemList.appendChild(tmp_eInvItem);
         }
         e_entity.appendChild(e_itemList);
 
@@ -1092,13 +1120,13 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getArmor_rating_())));
             e_stats.appendChild(trans_eStat);
         }
+        // TODO FIX:
         /*
          if (stats.getDefensive_rating_() != 0) {
          trans_eStat = doc.createElement("def_rating");
          trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getDefensive_rating_())));
          e_stats.appendChild(trans_eStat);
-         }
-         */
+         }*/
         if (stats.getOffensive_rating_() != 0) {
             trans_eStat = doc.createElement("off_rating");
             trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getOffensive_rating_())));
@@ -1219,34 +1247,36 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         e_Terrain.appendChild(e_dChar);
 
         // Terrain::Color - only write if non-null
-        /* What is this?
+        /*
          if (terr.color_ != null) {
          Element e_color = doc.createElement("color");
          e_color.appendChild(doc.createTextNode(terr.color_.name()));
          e_Terrain.appendChild(e_color);
-         }
-         */
+         }*/
         parent.appendChild(e_Terrain);
         return e_Terrain;
     }
+
     //</editor-fold>
     /**
      * Takes in name so save to, defaults to date
+     *
      * @param foo
      */
-	@Override
-	public int saveGame(String foo) {
-        RunGame.saveGameToDisk(foo); 
-		return 0;
-	}
-	   /**
-     * Takes in name to load. 
-     * @param foo
-     */
-	@Override
-	public int loadGame(String foo) {
-		RunGame.loadGame(foo);
-		return 0;
-	}
+    @Override
+    public int saveGame(String foo) {
+        RunGame.saveGameToDisk(foo);
+        return 0;
+    }
 
+    /**
+     * Takes in name to load.
+     *
+     * @param foo
+     */
+    @Override
+    public int loadGame(String foo) {
+        //RunGame.loadGame(foo); //TODO FIX
+        return 0;
+    }
 }

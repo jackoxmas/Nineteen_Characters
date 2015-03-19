@@ -142,7 +142,9 @@ public class GameController extends Controller {
 
             @Override
             public void enqueue(String command) {
-                stringQueue_.add(command);
+            	if(command!=null){
+            		stringQueue_.add(command);
+            	}
 
             }
 
@@ -172,12 +174,12 @@ public class GameController extends Controller {
         // ** chatbox should not be getting the whole bundle ** //
         if (bundle != null) {
             chatbox_.chatBoxHandleMapInputAndPrintNewContents(
-                    bundle.strings_for_communication_, bundle.is_alive_);
+            		bundle.strings_for_communication_, bundle.is_alive_);
+            super.updateDisplay(bundle);
         }
-        super.updateDisplay(bundle);
+
     }
 
-    private static DatagramPacket packet = null;
 
     private IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
         if (SwingUtilities.isEventDispatchThread()) {
@@ -185,7 +187,7 @@ public class GameController extends Controller {
         } else {
             System.out.println("GameController is not running on the Swing Dispatch Thread in sendCommandToMapWithText [Good]");
         }
-        if (command == Key_Commands.GET_INTERACTION_OPTIONS) {
+        if (Key_Commands.GET_INTERACTION_OPTIONS.equals(command)) {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     Display.getDisplay().requestOutBoxFocus();

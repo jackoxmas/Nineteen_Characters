@@ -194,6 +194,7 @@ public class GameController extends Controller {
                 }
             });
         }
+        if(command == null){return null;}
         final IO_Bundle to_return;
         if (RunGame.getUseInternet()) {
             to_return = Internet.sendStuffToMap(getUserName(),

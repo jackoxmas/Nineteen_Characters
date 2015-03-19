@@ -226,7 +226,7 @@ public class RunGame {
         if (saveGame_ == null) {
             saveGame_ = SavedGame.newSavedGame();
         }
-        saveGame_.saveGame(map_, uc_, foo);
+        saveGame_.saveGame(map_);
     }
 
     // </editor-fold>

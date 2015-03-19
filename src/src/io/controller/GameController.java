@@ -298,7 +298,7 @@ public class GameController extends Controller {
     @Override
     public void process() {
         super.process();
-        System.out.println("Processing in GameController subclass");
+        //System.out.println("Processing in GameController subclass");
         chatbox_.processQueue();
         while (!stringQueue_.isEmpty()) {
             String foo = stringQueue_.remove();

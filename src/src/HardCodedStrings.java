@@ -44,6 +44,7 @@ public class HardCodedStrings {
 			"Type /bindings to see the key bindings"+
 			"Type in /set-control [entityname] to switch to controlling entitiy." +
                         "Type in /set-ip [ip-address] to switch to controlling a different ip." +
+                        "Type in /set-tcp [on/off] to switch to using TCP instead of UDP." +
 			System.lineSeparator() +
 			"If no such entity exists, you will be controlling nothing."+
 			System.lineSeparator()+
@@ -65,6 +66,9 @@ public class HardCodedStrings {
 			System.lineSeparator()+
 			"/[control]: [key]";
         public final static String setIPHelp = "Type in /set-ip [ip-address] to switch to controlling a different ip." +
+			System.lineSeparator() +
+			"If no such valid ip exists, you will be controlling localhost.";
+        public final static String setTCP = "Type in /set-tcp [yes/no] to switch to TCP or UDP." +
 			System.lineSeparator() +
 			"If no such valid ip exists, you will be controlling localhost.";
 	public final static String setControlHelp = "Type in /set-control [entityname] to switch to controlling a different ip." +

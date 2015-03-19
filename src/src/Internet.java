@@ -33,9 +33,9 @@ public final class Internet {
     private static final Random rand = new Random();
     private static final String unique_id_string = Internet.getMacAddress();
     private static boolean isConnected = false;
-    private static boolean is_using_TCP = RunGame.use_TCP;
     //private final String monitor_For_UDP_Sender = "";
     private final UDP_Sender_Thread sender_thread;
+    private int recieved_buffer_size = 30000;
 
     public Internet() {
         sender_thread = new UDP_Sender_Thread();
@@ -139,7 +139,7 @@ public final class Internet {
                 System.exit(-23);
             }
 
-            if (Internet.is_using_TCP) {
+            if (RunGame.getUseTCP()) {
                 System.out.println("Calling Internet.sendStuffToMap over TCP");
                 // recieve IO_Bundle from map over TCP connection
                 Object temp = object_input_stream.readObject();
@@ -159,7 +159,10 @@ public final class Internet {
                 System.out.println("Calling Internet.sendStuffToMap over UDP");
                 // recieve IO_Bundle from map over UDP connection
                 final byte[] recieved;
-                DatagramPacket recvPacket = new DatagramPacket(recieved = new byte[2048], recieved.length);
+                 System.err.println("Buffer size: " + udp_socket_for_incoming_signals.getReceiveBufferSize());
+                DatagramPacket recvPacket = new DatagramPacket(recieved = new byte[17597 * 2], recieved.length);
+                udp_socket_for_incoming_signals.receive(recvPacket);
+                System.err.println("Buffer size: " + udp_socket_for_incoming_signals.getReceiveBufferSize());
                 if (recieved[0] == 0 && recieved[1] == 0 && recieved[2] == 0 && recieved[3] == 0) {
                     System.err.println("To send is zeros in Internet [Controller]!!!!!!!!!!!");
                 } else {
@@ -168,8 +171,15 @@ public final class Internet {
                 final int numReceivedBytes = recvPacket.getLength(); // returns length of data to be sent or data recieved.
                 System.out.println("Number of recieved bytes in Internet.sendStuffToMap(" + avatar_name + ", " + key_command.name() + ",...): "
                         + numReceivedBytes);
-                IO_Bundle to_return = Internet.bytesToBundle(recieved);
-                return to_return;
+                IO_Bundle to_recieve = Internet.bytesToBundle(recieved);
+                // Decompression the IO_Bundle if characters are compressed.
+                if (to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
+                    to_recieve.view_for_display_ = IO_Bundle.runLengthDecodeView(width, height,
+                            to_recieve.compressed_characters_, to_recieve.character_frequencies_);
+                    to_recieve.color_for_display_ = IO_Bundle.runLengthDecodeColor(width, height,
+                            to_recieve.compressed_colors_, to_recieve.color_frequencies_);
+                }
+                return to_recieve;
             }
 
         } catch (Exception e) {
@@ -249,16 +259,19 @@ public final class Internet {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream(2048);
             ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.flush();
             oos.writeObject(io_bundle);
             oos.flush();
             oos.close();
             // get the byte array of the object
             byte[] obj = baos.toByteArray();
+            baos.flush();
             baos.close();
             return obj;
         } catch (Exception e) {
             System.err.println("Exception in Internet.bundleToBytes(IO_Bundle io_bundle) named: " + e.toString());
             e.printStackTrace();
+            System.exit(-78);
             return null;
         }
     }
@@ -272,12 +285,14 @@ public final class Internet {
         try {
             ByteArrayInputStream bais = new ByteArrayInputStream(data);
             ObjectInputStream ois = new ObjectInputStream(bais);
-            IO_Bundle obj = (IO_Bundle) ois.readObject();
+            Object object = ois.readObject();
+            IO_Bundle obj = (IO_Bundle) object;
             ois.close();
             return obj;
         } catch (Exception e) {
             System.err.println("Exception in Internet.bytesToBundle(byte[] data) named: " + e.toString());
             e.printStackTrace();
+            System.exit(-77);
             return null;
         }
     }

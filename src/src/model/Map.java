@@ -61,19 +61,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     private GetMapInputFromUsers udp_thread;
     private TCP_Connection_Maker tcp_thread;
     private ConcurrentHashMap<String, Single_User_TCP_Thread> users = new ConcurrentHashMap<>();
-    private boolean is_using_TCP = RunGame.use_TCP;
-
-    public void enableTCPmode() {
-        is_using_TCP = true;
-    }
-
-    public void disableTCPmode() {
-        is_using_TCP = false;
-    }
-
-    public boolean isUsingTCP() {
-        return this.is_using_TCP;
-    }
 
     public void grusomelyKillTheMapThread() {
         if (tcp_thread != null && tcp_thread.isAlive()) {
@@ -333,7 +320,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                 try {
                     Thread.sleep(Integer.MAX_VALUE);
                 } catch (InterruptedException e) {
-                    if (isUsingTCP()) {
+                    if (RunGame.getUseTCP()) {
                         try {
                             // do {
                             object_output_stream_.writeObject(bundle_to_send_);

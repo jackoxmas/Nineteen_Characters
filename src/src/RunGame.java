@@ -43,7 +43,7 @@ public class RunGame {
     private static int mapWidth_ = 40;
     private static boolean map_editor_mode_ = false;
     private static boolean use_internet = true;
-    public static final boolean use_TCP = true;
+    private static boolean use_TCP = true;
     public static final Internet internet = new Internet();
 
     public static boolean getUseInternet() {
@@ -52,6 +52,14 @@ public class RunGame {
 
     public static void setUseInternet(boolean b) {
         use_internet = b;
+    }
+    
+        public static boolean getUseTCP() {
+        return RunGame.use_TCP;
+    }
+
+    public static void setUseTCP(boolean b) {
+        use_TCP = b;
     }
 
     public static void grusomelyKillTheMapAndTheController() {

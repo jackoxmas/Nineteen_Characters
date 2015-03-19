@@ -65,7 +65,7 @@ public abstract class Controller implements QueueCommandInterface<Character> {
 
         while (true) {
             if(controllerThread_ == null){System.err.println("Controller thread null in sleep loop!");}
-                System.out.println("Entetered sleep loop");
+                //System.out.println("Entetered sleep loop");
         	try {
         		if(!controllerThread_.interrupted()){//If we are interuppted, don't bother sleeping again.
         			Thread.sleep(500L);
@@ -76,12 +76,12 @@ public abstract class Controller implements QueueCommandInterface<Character> {
     			process();
     			System.out.println("InterruptedInnerLoopEnd");
         	}
-                System.out.println("Exited sleep loop"); //Exited
+                //System.out.println("Exited sleep loop"); //Exited
         }
     }
 
     protected void process() {
-        System.out.println("Processing in Controller Superclass");
+        //System.out.println("Processing in Controller Superclass");
         while (!keyCommandQueue_.isEmpty()) {
         	Key_Commands c = keyCommandQueue_.remove();
         	if(c!=null){

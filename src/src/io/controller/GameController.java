@@ -70,8 +70,10 @@ public class GameController extends Controller {
             return null;
         }
 
-        public void chatBoxHandleMapInputAndPrintNewContents(IO_Bundle bundle) {
-            chatview_.renderToDisplay(bundle);
+        public void chatBoxHandleMapInputAndPrintNewContents(ArrayList<String> strings_for_communication, boolean is_alive) {
+            System.out.println("Calling GameController.chatBoxHandleMapInputAndPrintNewContents("
+                    + "ArrayList<String> strings_for_communication, boolean is_alive)");
+            chatview_.renderToDisplay(strings_for_communication, is_alive);
             ArrayList<String> list = chatview_.getContents();
             for (String i : list) {
                 Display.getDisplay().setMessage(i);
@@ -90,6 +92,7 @@ public class GameController extends Controller {
 
             @Override
             public void sendInterrupt() {
+                System.out.println("GameController.sendInterrupt @Override in QueueCommandInterface<Character> was called");
                 GameController.this.sendInterrupt();
 
             }
@@ -104,6 +107,7 @@ public class GameController extends Controller {
 
         @Override
         public void sendInterrupt() {
+            System.out.println("GameController.sendInterrupt @Override in ConcurrentLinkedQueue<String> was called");
             GameController.this.sendInterrupt();
 
         }
@@ -145,6 +149,7 @@ public class GameController extends Controller {
 
             @Override
             public void sendInterrupt() {
+                System.out.println("GameController.sendInterrupt() in QueueCommandInterface<String> was called");
                 GameController.this.sendInterrupt();
             }
 
@@ -164,7 +169,10 @@ public class GameController extends Controller {
      */
     @Override
     public void updateDisplay(IO_Bundle bundle) {
-        chatbox_.chatBoxHandleMapInputAndPrintNewContents(bundle);
+        System.out.println("called function GameController.updateDisplay(IO_Bundle bundle)");
+        // ** chatbox should not be getting the whole bundle ** //
+        chatbox_.chatBoxHandleMapInputAndPrintNewContents(
+                bundle.strings_for_communication_, bundle.is_alive_); 
         super.updateDisplay(bundle);
     }
 
@@ -172,9 +180,9 @@ public class GameController extends Controller {
 
     private IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
         if (SwingUtilities.isEventDispatchThread()) {
-            System.err.println("GameController is running on the Swing Dispatch Thread [Bad]");
+            System.err.println("GameController is running on the Swing Dispatch Thread in sendCommandToMapWithText [Bad]");
         } else {
-            System.out.println("GameController is not running on the Swing Dispatch Thread [Good]");
+            System.out.println("GameController is not running on the Swing Dispatch Thread in sendCommandToMapWithText [Good]");
         }
         if (command == Key_Commands.GET_INTERACTION_OPTIONS) {
             java.awt.EventQueue.invokeLater(new Runnable() {
@@ -187,10 +195,10 @@ public class GameController extends Controller {
         if (RunGame.getUseInternet()) {
             to_return = Internet.sendStuffToMap(getUserName(),
                     command, getView().getWidth() / 2, getView().getHeight() / 2, in);
-            System.out.println("Using internet");
+            System.out.println("Using internet to sendCommandToMapWithText");
         } else {
             to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
-            System.out.println("Not using internet");
+            System.out.println("Not using internet to sendCommandToMapWithText");
         }
         // Make the buttons says the right skill names.
         if (to_return != null && to_return.occupation_ != null && command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
@@ -234,6 +242,7 @@ public class GameController extends Controller {
     //Handles the view switching, uses the  instance of operator in a slightly evil way, 
     //ideally we should look into refactoring this to nots
     protected IO_Bundle updateViewsAndMap(Key_Commands input) {
+        System.out.println("Called GameController.updateViewsAndMap(Key_Commands input)");
         boolean taken = false;
         if (getView() instanceof AvatarCreationView) {
             if (Key_Commands.BECOME_SNEAK.equals(input) || Key_Commands.BECOME_SMASHER.equals(input)
@@ -265,6 +274,7 @@ public class GameController extends Controller {
 
     @Override
     protected void takeTurnandPrintTurn(Key_Commands input) {
+        System.out.println("calling GameController.takeTurnandPrintTurn(Key_Commands input)");
         IO_Bundle bundle = updateViewsAndMap(input);
         updateDisplay(bundle);
     }
@@ -283,8 +293,8 @@ public class GameController extends Controller {
 
     @Override
     public void process() {
-        //System.out.println("Processing");
         super.process();
+        System.out.println("Processing in GameController subclass");
         chatbox_.processQueue();
         while (!stringQueue_.isEmpty()) {
             String foo = stringQueue_.remove();

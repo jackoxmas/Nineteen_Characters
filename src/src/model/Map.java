@@ -21,6 +21,7 @@ import org.w3c.dom.Element;
 import src.IO_Bundle;
 import src.Key_Commands;
 import src.RunGame;
+import src.SavedGame;
 import src.model.constructs.Avatar;
 import src.model.constructs.DrawableThingStatsPack;
 import src.model.constructs.Entity;
@@ -296,7 +297,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     }
 
     //</editor-fold>
-//<editor-fold desc="User Input Thread (optional use)" defaultstate="collapsed">
+    //<editor-fold desc="User Input Thread (optional use)" defaultstate="collapsed">
     private class GetMapInputFromUsers extends Thread {
 
         public GetMapInputFromUsers() throws IOException {
@@ -527,7 +528,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     }
     //</editor-fold>
 
-//<editor-fold desc="Map Methods" defaultstate="collapsed">
+    //<editor-fold desc="Map Methods" defaultstate="collapsed">
     /**
      * Adds an entity to the map and provides it with a MapEntity_Relation.
      *
@@ -642,7 +643,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     /**
      * Adds an avatar to the map.
      *
-     * @param a - Avatar to be added
      * @param x - x position of where you want to add Avatar
      * @param y - y posiition of where you want to add Avatar
      * @return -1 on fail, 0 on success
@@ -945,10 +945,22 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     }
 
     //</editor-fold>
+
     //<editor-fold desc="XML Saving/Loading" defaultstate="collapsed">
+    public static Map xml_readMap(Document doc, Element e_map) {
+
+        Element e_mapgrid = (Element)e_map.getElementsByTagName(SavedGame.XML_MAP_MAPGRID).item(0);
+        Integer map_x = Integer.parseInt(e_mapgrid.getAttributes().getNamedItem(SavedGame.XML_MAP_MAPGRID_WIDTH).getNodeValue());
+        Integer map_y = Integer.parseInt(e_mapgrid.getAttributes().getNamedItem(SavedGame.XML_MAP_MAPGRID_HEIGHT).getNodeValue());
+        RunGame.dbgOut("XML Parsed: map grid x = " + map_x, 4);
+        RunGame.dbgOut("XML Parsed: map grid y = " + map_y, 4);
+
+        Map mm = new Map(map_x, map_y);
+        return mm;
+    }
+
     /**
      * Writes this map to the given XML Element in the given XML document
-     *
      * @param doc The XML Document to write to
      * @param e_map The XML Element to write to
      * @return 0 = success
@@ -956,13 +968,13 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
      */
     public int xml_writeMap(Document doc, Element e_map) {
         // MAP::TIME)
-        Element e_time = doc.createElement("time");
+        Element e_time = doc.createElement(SavedGame.XML_MAP_TIME);
         e_map.appendChild(doc.createTextNode(Integer.toString(this.time_measured_in_turns)));
 
         // MAP::MAP_GRID
-        Element e_map_grid = doc.createElement("map_grid");
-        e_map_grid.setAttribute("width", Integer.toString(this.width_));
-        e_map_grid.setAttribute("height", Integer.toString(this.height_));
+        Element e_map_grid = doc.createElement(SavedGame.XML_MAP_MAPGRID);
+        e_map_grid.setAttribute(SavedGame.XML_MAP_MAPGRID_WIDTH, Integer.toString(this.width_));
+        e_map_grid.setAttribute(SavedGame.XML_MAP_MAPGRID_HEIGHT, Integer.toString(this.height_));
 
         Element e_l;
         for (int j = 0; j < this.height_; j++) {
@@ -979,11 +991,11 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                 }
                 xml_writeTerrain(doc, e_l, terr);
 
+
                 // Entity
                 Entity ent = this.map_grid_[i][j].getEntity();
-                if (ent != null) {
+                if (ent != null)
                     xml_writeEntity(doc, e_l, ent);
-                }
 
                 // Item list
                 if (map_grid_[i][j].getItemList().size() != 0) {
@@ -1007,7 +1019,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
 
     /**
      * Writes an entity to an XML element
-     *
      * @param doc The DOM document to write to
      * @param parent The parent element to write this entity in
      * @param entity The Entity object to write
@@ -1019,9 +1030,10 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         // Name
         e_entity.setAttribute("name", entity.getName());
 
-        if (this.entity_list_.containsValue(entity)) {
+        /*
+        if (this.avatar_list_.containsValue(entity)) {
             e_entity.appendChild(doc.createElement("b_avatar"));
-        }
+        }*/
 
         // Direction
         Element e_dir = doc.createElement("direction");
@@ -1030,22 +1042,20 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         // Item List
         Element e_itemList = doc.createElement("item_list");
         // write inventory items to xml
-        Item equipped1 = (Item) entity.getPrimaryEquipped();
-        Item equipped2 = (Item) entity.getSecondaryEquipped();
-        /* Hey Alex I changed the item hierarchy and made entities dual weild */
-        ArrayList<PickupableItem> tmp_inv = entity.getInventory();
+        //Item equipped = entity.getEquipped(); //TODO FIX
+        //ArrayList<Item> tmp_inv = entity.getInventory();
         Element tmp_eInvItem; // temp inventory item
         for (int i = 0; i < entity.getInventory().size(); i++) {
-            tmp_eInvItem = xml_writeItem(doc, e_itemList, tmp_inv.get(i));
+            //tmp_eInvItem = xml_writeItem(doc, e_itemList, tmp_inv.get(i));
 
-            if (tmp_inv.get(i) == equipped1) {
-                tmp_eInvItem.appendChild(doc.createElement("b_equipped"));
-            }
-            e_itemList.appendChild(tmp_eInvItem);
+            /*
+            if (tmp_inv.get(i) == equipped)
+                tmp_eInvItem.appendChild(doc.createElement("b_equipped")); */
+            //e_itemList.appendChild(tmp_eInvItem);
         }
         e_entity.appendChild(e_itemList);
 
-        xml_writeStatsDrawable(doc, e_entity, (DrawableThingStatsPack) entity.getStatsPack());
+        xml_writeStatsDrawable(doc, e_entity, (DrawableThingStatsPack)entity.getStatsPack());
         xml_writeStatsEntity(doc, e_entity, entity.getStatsPack());
 
         parent.appendChild(e_entity);
@@ -1055,7 +1065,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
 
     /**
      * Writes an Item to a DOM document
-     *
      * @param doc The DOM Document to write to
      * @param parent The parent Element to insert the item in
      * @param item The Item to write
@@ -1067,17 +1076,14 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         // Name
         e_item.setAttribute("name", item.getName());
         // Is One Shot
-        if (item.isOneShot()) {
+        if (item.isOneShot())
             e_item.appendChild(doc.createElement("b_one_shot"));
-        }
         // Is Passable
-        if (item.isPassable()) {
+        if (item.isPassable())
             e_item.appendChild(doc.createElement("b_passable"));
-        }
         // Goes in Inventory
-        if (item.goesInInventory()) {
+        if (item.goesInInventory())
             e_item.appendChild(doc.createElement("b_inventory-able"));
-        }
 
         xml_writeStatsDrawable(doc, e_item, item.getStatsPack());
 
@@ -1099,13 +1105,13 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getArmor_rating_())));
             e_stats.appendChild(trans_eStat);
         }
+        // TODO FIX:
         /*
-         if (stats.getDefensive_rating_() != 0) {
-         trans_eStat = doc.createElement("def_rating");
-         trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getDefensive_rating_())));
-         e_stats.appendChild(trans_eStat);
-         }
-         */
+        if (stats.getDefensive_rating_() != 0) {
+            trans_eStat = doc.createElement("def_rating");
+            trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getDefensive_rating_())));
+            e_stats.appendChild(trans_eStat);
+        }*/
         if (stats.getOffensive_rating_() != 0) {
             trans_eStat = doc.createElement("off_rating");
             trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getOffensive_rating_())));
@@ -1205,13 +1211,11 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         e_Terrain.setAttribute("name", terr.getName());
 
         // BOOLEANS:
-        if (terr.isMountain()) {
+        if (terr.isMountain())
             e_Terrain.appendChild(doc.createElement("b_mountain"));
-        }
 
-        if (terr.isWater()) {
+        if (terr.isWater())
             e_Terrain.appendChild(doc.createElement("b_water"));
-        }
 
         // Terrain::Decal - only write if non-null
         if (terr.getDecal() != '\u0000') {
@@ -1226,18 +1230,19 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         e_Terrain.appendChild(e_dChar);
 
         // Terrain::Color - only write if non-null
-        /* What is this?
-         if (terr.color_ != null) {
-         Element e_color = doc.createElement("color");
-         e_color.appendChild(doc.createTextNode(terr.color_.name()));
-         e_Terrain.appendChild(e_color);
-         }
-         */
+        /*
+        if (terr.color_ != null) {
+            Element e_color = doc.createElement("color");
+            e_color.appendChild(doc.createTextNode(terr.color_.name()));
+            e_Terrain.appendChild(e_color);
+        }*/
+
         parent.appendChild(e_Terrain);
         return e_Terrain;
     }
 
     //</editor-fold>
+
     /**
      * Takes in name so save to, defaults to date
      *
@@ -1254,10 +1259,9 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
      *
      * @param foo
      */
-    @Override
-    public int loadGame(String foo) {
-        RunGame.loadGame(foo);
-        return 0;
-    }
-
+	@Override
+	public int loadGame(String foo) {
+		//RunGame.loadGame(foo); //TODO FIX
+		return 0;
+	}
 }

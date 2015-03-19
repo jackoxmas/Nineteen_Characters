@@ -51,6 +51,7 @@ public class MapEditorController extends Controller {
 
 			@Override
 			public void sendInterrupt() {
+                            System.out.println("MapEditorController.sendInterrupt() in QueueCommandInterface<String> was called");
 				MapEditorController.this.sendInterrupt();
 				
 			}

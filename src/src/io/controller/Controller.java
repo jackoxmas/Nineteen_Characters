@@ -23,9 +23,13 @@ public abstract class Controller implements QueueCommandInterface<Character> {
     private ConcurrentLinkedQueue<Key_Commands> keyCommandQueue_ = new ConcurrentLinkedQueue<Key_Commands>();
     private ConcurrentLinkedQueue<Character> characterQueue_ = new ConcurrentLinkedQueue<Character>();
     private Thread controllerThread_ = Thread.currentThread();
-    
+
     public void grusomelyKillTheControllerThread() {
-        if(controllerThread_.isAlive()) {
+        if (controllerThread_ == null) {
+            System.err.println("Controller thread is null too soon");
+            return;
+        }
+        if (controllerThread_.isAlive()) {
             controllerThread_.stop();
         }
     }
@@ -43,13 +47,13 @@ public abstract class Controller implements QueueCommandInterface<Character> {
             @Override
             public void enqueue(Key_Commands command) {
                 keyCommandQueue_.add(command);
-
             }
 
             @Override
             public void sendInterrupt() {
+                System.out.println("Controller.sendInterrupt() @Override QueueCommandInterface<Key_Commands>() was called.");
+                this.sendInterrupt();
                 Controller.this.sendInterrupt();
-
             }
         });
         Display.getDisplay().addGameInputerHandler(this);
@@ -60,7 +64,8 @@ public abstract class Controller implements QueueCommandInterface<Character> {
     protected void sleepLoop() {
 
         while (true) {
-        	System.out.println("Entetered sleep loop");
+            if(controllerThread_ == null){System.err.println("Controller thread null in sleep loop!");
+                System.out.println("Entetered sleep loop");
         	try {
         		if(!controllerThread_.interrupted()){//If we are interuppted, don't bother sleeping again.
         			Thread.sleep(500L);
@@ -71,15 +76,12 @@ public abstract class Controller implements QueueCommandInterface<Character> {
     			process();
     			System.out.println("InterruptedInnerLoopEnd");
         	}
-
-
-        	System.out.println("Exited sleep loop"); //Exited
+                System.out.println("Exited sleep loop"); //Exited
         }
     }
 
     protected void process() {
-        System.out.println("Processing!");
-
+        System.out.println("Processing in Controller Superclass");
         while (!keyCommandQueue_.isEmpty()) {
         	Key_Commands c = keyCommandQueue_.remove();
         	if(c!=null){
@@ -150,6 +152,7 @@ public abstract class Controller implements QueueCommandInterface<Character> {
      * @param bundle
      */
     public void updateDisplay(IO_Bundle bundle) {
+        System.out.println("called function Controller.updateDisplay(IO_Bundle bundle)");
         getView().renderToDisplay(bundle);
         Display.getDisplay().setView(getView());
         Display.getDisplay().printView();

@@ -353,7 +353,6 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      * @return -1 if respawn point is occupied
      */
     public int respawn() {
-        System.out.println("Entity [or subclass] is respawning");
         int error_code = this.teleportTo(x_respawn_point_, y_respawn_point_);
         if (error_code != 0) {
             error_code = this
@@ -386,7 +385,6 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             if (target_entity == null) {
                 return -2;
             } else {
-                System.out.println("You attacking an entity");
                 target_entity.receiveAttack(3 + entity_.getStatsPack()
                         .getOffensive_rating_(), entity_);
                 return 0;

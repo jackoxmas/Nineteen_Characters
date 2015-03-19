@@ -529,6 +529,7 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
     }
     private Thread sendKeyCommandThread_ = new Thread(new TriggerEvents<Key_Commands>(direct_command_receivers_));
     private void sendKeyCommand(Key_Commands command) {
+
         for (QueueCommandInterface<Key_Commands> foo : direct_command_receivers_) {
             foo.enqueue(command);
         }
@@ -599,10 +600,12 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
     }//GEN-LAST:event_observe_jButtonMouseClicked
     private Thread game_jTextPaneKeyTypedThread_ = new Thread(new TriggerEvents<Character>(game_inputHandlers_));
     private void game_jTextPaneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_game_jTextPaneKeyTyped
+    	System.out.println("Was runA");
         for (QueueCommandInterface<Character> foo : game_inputHandlers_) {
             foo.enqueue(evt.getKeyChar());
         }
         game_jTextPaneKeyTypedThread_.run();
+    	System.out.println("Was runB");
     }//GEN-LAST:event_game_jTextPaneKeyTyped
     private Thread command_jButtonMouseClickedThread_ = new Thread(new TriggerEvents<String>(command_area_double_clicked_));
     private void command_jButtonMouseClicked(java.awt.event.MouseEvent evt) {

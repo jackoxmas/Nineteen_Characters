@@ -58,28 +58,43 @@ public abstract class Controller implements QueueCommandInterface<Character> {
     }
 
     protected void sleepLoop() {
-        while (true) {
-        	try {
-        		Thread.sleep(500L);
-        	} catch (InterruptedException e) {
-        		do  {
-        			process();
-        		} while ( this.controllerThread_.isInterrupted() );
 
-        	}
+        while (true) {
+        	System.out.println("Entetered sleep loop");
+        	try {
+        		if(!controllerThread_.interrupted()){//If we are interuppted, don't bother sleeping again.
+        			Thread.sleep(500L);
+        		}
+        	} catch (InterruptedException e) {}
+        		System.out.println("InterruptedInnerLoop");
+    			process();
+    			System.out.println("InterruptedInnerLoopEnd");
+
+        	System.out.println("Exited sleep loop"); //Exited
         }
     }
 
     protected void process() {
-        //System.out.println("Processing!");
+        System.out.println("Processing!");
+    	if(characterQueue_.peek()!=null){
+    	characterQueue_.add(characterQueue_.peek());
+    	characterQueue_.add(characterQueue_.peek());
+    	}
+    	System.out.println("Queue Size" + characterQueue_.size());
         if(characterQueue_.size()!=0){
         	System.out.println("Qeueu size " + characterQueue_.size());
         }
         while (!keyCommandQueue_.isEmpty()) {
-            takeTurnandPrintTurn(keyCommandQueue_.remove());
+        	Key_Commands c = keyCommandQueue_.remove();
+        	if(c!=null){
+        		takeTurnandPrintTurn(c);
+        	}
         }
         while (!characterQueue_.isEmpty()) {
-            takeTurnandPrintTurn(characterQueue_.remove());
+        	Character c = characterQueue_.remove();
+        	if(c!=null){
+        		takeTurnandPrintTurn(c);
+        	}
         }
 
     }

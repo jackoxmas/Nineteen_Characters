@@ -114,16 +114,18 @@ public class GameController extends Controller {
         public void processQueue() {
             while (!commandQueue_.isEmpty()) {
                 String foo = commandQueue_.remove();
-                if (foo.startsWith("/")) {
+                if (foo!= null && foo.startsWith("/")) {
                     processCommandAndDisplayOutput(foo);
-                    return;
                 }
 				//IF it starts with a /, it's a command, so send it
                 //To the command function, not the map.
-                sendTextCommandAndUpdate(foo);
+                if(foo!=null){
+                	sendTextCommandAndUpdate(foo);
+                }
             }
             while (!commandChoiceQueue_.isEmpty()) {
-                sendTextCommandAndUpdate(chatview_.getChoice(Character.getNumericValue(commandChoiceQueue_.remove())));
+            	Character c = commandChoiceQueue_.remove();
+                sendTextCommandAndUpdate(chatview_.getChoice(Character.getNumericValue(c)));
             }
         }
 

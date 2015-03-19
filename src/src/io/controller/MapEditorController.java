@@ -86,6 +86,7 @@ public class MapEditorController extends Controller {
 		}
 		while(!commandQueue_.isEmpty()){
 			String foo = commandQueue_.remove();
+			if(foo==null){return;}
 			if(foo.startsWith("/")){Display.getDisplay().setMessage(cont_.processCommand(foo));}
 		}
 		super.process();

@@ -61,6 +61,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     private GetMapInputFromUsers udp_thread;
     private TCP_Connection_Maker tcp_thread;
     private ConcurrentHashMap<String, Single_User_TCP_Thread> users = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, InetAddress> addresses_for_udp = new ConcurrentHashMap<>();
     private boolean is_using_TCP = RunGame.use_TCP;
 
     public void enableTCPmode() {
@@ -236,8 +237,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                         System.out.println("Replacing already made connection in Map.TCP_Connection_Maker.run()");
                     }
                     ObjectOutputStream object_output_stream = new ObjectOutputStream(to_accept.getOutputStream());
-                    Map.Single_User_TCP_Thread new_thread = new Map.Single_User_TCP_Thread(to_accept,
-                            unique_id, object_output_stream, to_accept.getInetAddress());
+                    Map.Single_User_TCP_Thread new_thread = new Map.Single_User_TCP_Thread(to_accept, unique_id, object_output_stream);
                     users.put(unique_id, new_thread);
                     new_thread.start();
                     object_output_stream = null;
@@ -254,25 +254,19 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     private class Single_User_TCP_Thread extends Thread {
 
         public final String unique_id_;
-        private final Socket tcp_output_socket_;
-        private DatagramSocket udp_output_socket_;
+        private final Socket socket_;
         private final ObjectOutputStream object_output_stream_;
-        private final InetAddress address_;
         private boolean was_oos_closed = false;
         private IO_Bundle bundle_to_send_ = null;
-        private byte[] my_bytes_ = null;
 
         public void closeAndNullifyConnection() {
-            if (tcp_output_socket_ != null) {
-                if (tcp_output_socket_.isConnected()) {
+            if (socket_ != null) {
+                if (socket_.isConnected()) {
                     try {
-                        tcp_output_socket_.close();
+                        socket_.close();
                     } catch (Exception e) {// recieving_socket already closed}
                     }
                 }
-            }
-            if (udp_output_socket_ != null) {
-                udp_output_socket_.close();
             }
         }
 
@@ -293,18 +287,16 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             this.interrupt();
         }
 
-        public Single_User_TCP_Thread(Socket socket, String unique_id, ObjectOutputStream object_output_stream, InetAddress address) {
+        public Single_User_TCP_Thread(Socket socket, String unique_id, ObjectOutputStream object_output_stream) {
             super("Single_User_TCP_Thread");
-            this.tcp_output_socket_ = socket;
+            this.socket_ = socket;
             this.unique_id_ = unique_id;
             object_output_stream_ = object_output_stream;
-            address_ = address;
         }
 
         public void run() {
             try {
-                udp_output_socket_ = new DatagramSocket();
-                //this.tcp_output_socket_.setKeepAlive(true); // hopefully will cause an exception to be thrown if used disconnected for 2+ hours
+                //this.socket_.setKeepAlive(true); // hopefully will cause an exception to be thrown if used disconnected for 2+ hours
                 object_output_stream_.flush();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -319,48 +311,21 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                 try {
                     Thread.sleep(Integer.MAX_VALUE);
                 } catch (InterruptedException e) {
-                    if (isUsingTCP()) {
-                        try {
-                            // do {
-                            object_output_stream_.writeObject(bundle_to_send_);
-                            object_output_stream_.flush();
-                            // } while (Thread.currentThread().isInterrupted()); // ignore signal if theyinterrupt while I write.
-                        } catch (NullPointerException null_ptr_exception) {
-                            System.err.print("Err: Caught the NullPointerException. ObjectOutputStream has already been nullified by another thread in Map.ServerThread.run()");
-                            System.out.print("Out: Caught the NullPointerException. ObjectOutputStream has already been nullified by another thread in Map.ServerThread.run()");
-                            null_ptr_exception.printStackTrace();
-                            return;
-                        } catch (Exception e2) {
-                            System.err.println("Err: object_output_stream_ experienced an exception in Map.ServerThread.run() named: " + e2.toString());
-                            System.out.println("Out: object_output_stream_ experienced an exception in Map.ServerThread.run() named: " + e2.toString());
-                            e2.printStackTrace();
-                            return;
-                        }
-                    } else {
-                        if (bundle_to_send_ == null) {
-                            System.err.println("Return package is null in MAP!!!!!!!!!!!");
-                        } else {
-                            System.err.println("Return package is NOT null in MAP!!!!!!!!!!!");
-                        }
-                        byte[] to_send = Internet.bundleToBytes(bundle_to_send_);
-                        if (to_send[0] == 0 && to_send[0] == 0 && to_send[0] == 0 && to_send[0] == 0) {
-                            System.err.println("To send is zeros in MAP!!!!!!!!!!!");
-                        } else {
-                            System.err.println("To send is NOT zeros in MAP!!!!!!!!!!!");
-                        }
-                        System.out.println("Length of array sent over UDP in Map.GetMapInputFromUsers.run() : " + to_send.length);
-                        if (to_send.length > 1400) {
-                            System.out.println("Map cannot fit the whole byte array in one packet");
-                        } else {
-                            System.out.println("Map fit the whole byte array on one packet");
-                        }
-                        DatagramPacket packet_to_send = new DatagramPacket(
-                                to_send, to_send.length, address_, UDP_PORT_NUMBER_FOR_MAP_SENDING_AND_CLIENT_RECIEVING);
-                        try {
-                            udp_output_socket_.send(packet_to_send);
-                        } catch (IOException udp_send_exception) {
-                            udp_send_exception.printStackTrace();
-                        }
+                    try {
+                        // do {
+                        object_output_stream_.writeObject(bundle_to_send_);
+                        object_output_stream_.flush();
+                        // } while (Thread.currentThread().isInterrupted()); // ignore signal if theyinterrupt while I write.
+                    } catch (NullPointerException null_ptr_exception) {
+                        System.err.print("Err: Caught the NullPointerException. ObjectOutputStream has already been nullified by another thread in Map.ServerThread.run()");
+                        System.out.print("Out: Caught the NullPointerException. ObjectOutputStream has already been nullified by another thread in Map.ServerThread.run()");
+                        null_ptr_exception.printStackTrace();
+                        return;
+                    } catch (Exception e2) {
+                        System.err.println("Err: object_output_stream_ experienced an exception in Map.ServerThread.run() named: " + e2.toString());
+                        System.out.println("Out: object_output_stream_ experienced an exception in Map.ServerThread.run() named: " + e2.toString());
+                        e2.printStackTrace();
+                        return;
                     }
                 }
             }
@@ -372,6 +337,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     private class GetMapInputFromUsers extends Thread {
 
         private final DatagramSocket recieving_socket;
+        private final DatagramSocket sending_socket;
 
         public GetMapInputFromUsers() throws IOException {
             this("GetMapInput");
@@ -380,6 +346,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         public GetMapInputFromUsers(String name) throws IOException {
             super(name);
             recieving_socket = new DatagramSocket(Map.UDP_PORT_NUMBER_FOR_MAP_RECIEVING_AND_CLIENT_SENDING);
+            sending_socket = new DatagramSocket();
         }
         /*
          private void sendData() {
@@ -458,7 +425,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     }
 
                     // add to list of addresses for mass udp.
-                    // addresses_for_udp.put(unique_id, packet.getAddress());
+                    addresses_for_udp.put(unique_id, packet.getAddress());
                     // Sender must recieve either TCP or UDP.
                     Single_User_TCP_Thread sender = null;
                     InetAddress sender_address = null;
@@ -538,7 +505,32 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                                 to_recieve_command.isAlive()
                         );
                         // return return_package;
-                        sender.setBundleAndInterrupt(return_package);
+                        if (isUsingTCP()) {
+                            System.out.println("Sending over TCP in Map.GetMapInputFromUsers.run()");
+                            sender.setBundleAndInterrupt(return_package);
+                        } else {
+                            if(return_package == null) {
+                                System.err.println("Return package is null in MAP!!!!!!!!!!!");
+                            } else {
+                                System.err.println("Return package is NOT null in MAP!!!!!!!!!!!");
+                            }
+                            byte[] to_send = Internet.bundleToBytes(return_package);
+                            if(to_send[0] == 0 && to_send[0] == 0 && to_send[0] == 0 && to_send[0] == 0) {
+                                System.err.println("To send is zeros in MAP!!!!!!!!!!!");
+                            } else {
+                                System.err.println("To send is NOT zeros in MAP!!!!!!!!!!!");
+                            }
+                            System.out.println("Length of array sent over UDP in Map.GetMapInputFromUsers.run() : " + to_send.length);
+                            if (to_send.length > 1400) {
+                                System.out.println("Error. Cannot fit the whole byte array on one packet [Map.GetMapInputFromUsers.run()]");
+                                //System.exit(-63);
+                            } else {
+                                System.out.println("Fit the whole byte array on one packet [Map.GetMapInputFromUsers.run()]");
+                            }
+                            DatagramPacket packet_to_send = new DatagramPacket(
+                                    to_send, to_send.length, sender_address, UDP_PORT_NUMBER_FOR_MAP_SENDING_AND_CLIENT_RECIEVING);
+                            sending_socket.send(packet);
+                        }
                         continue;
 
                     } else {

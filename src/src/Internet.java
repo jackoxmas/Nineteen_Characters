@@ -26,31 +26,76 @@ import src.model.Map;
 public final class Internet {
 
     private static InetAddress address = null;
-    private static DatagramSocket udp_socket_for_outgoing_signals = null;
+
     private static DatagramSocket udp_socket_for_incoming_signals = null;
     private static Socket tcp_socket_for_incoming_signals = null;
     private static ObjectInputStream object_input_stream = null;
     private static final Random rand = new Random();
     private static final String unique_id_string = Internet.getMacAddress();
-    //private static String last_ip_connected = null;
     private static boolean isConnected = false;
     private static boolean is_using_TCP = RunGame.use_TCP;
+    //private final String monitor_For_UDP_Sender = "";
+    private final UDP_Sender_Thread sender_thread;
 
-    public static void closeAndNullifyConnection() {
+    public Internet() {
+        sender_thread = new UDP_Sender_Thread();
+        sender_thread.start();
         try {
-            if (udp_socket_for_outgoing_signals != null) {
-                udp_socket_for_outgoing_signals.close();
-                udp_socket_for_outgoing_signals = null;
-                Internet.address = null;
+            udp_socket_for_incoming_signals = new DatagramSocket(Map.UDP_PORT_NUMBER_FOR_MAP_SENDING_AND_CLIENT_RECIEVING);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private class UDP_Sender_Thread extends Thread {
+
+        private DatagramSocket udp_socket_for_outgoing_signals;
+        private DatagramPacket packet_to_send = null;
+
+        public synchronized void setPacketAndNotify(DatagramPacket s) {
+            packet_to_send = s;
+            synchronized (sender_thread) {
+                notify();
             }
-            udp_socket_for_outgoing_signals = new DatagramSocket();
-            udp_socket_for_outgoing_signals.setReuseAddress(true);
+        }
+
+        public UDP_Sender_Thread() {
+            try {
+                udp_socket_for_outgoing_signals = new DatagramSocket();
+                udp_socket_for_outgoing_signals.setReuseAddress(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void run() {
+            while (true) {
+                synchronized (sender_thread) {
+                    try {
+                        System.out.println("Waiting for Controller to notify me in Internet.UDP_Sender_Thread.run()");
+                        this.wait();
+                        System.out.println("Was notified in Internet.UDP_Sender_Thread.run()");
+                        udp_socket_for_outgoing_signals.send(packet_to_send);
+                    } catch (InterruptedException i) {
+                        i.printStackTrace();
+                        return; // safely kill the thread
+                    } catch (IOException io) {
+                        io.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    public void closeAndNullifyConnection() {
+        try {
             if (tcp_socket_for_incoming_signals != null) {
                 if (tcp_socket_for_incoming_signals.isConnected()) {
                     tcp_socket_for_incoming_signals.close();
                 }
                 tcp_socket_for_incoming_signals = null;
             }
+            sender_thread.interrupt(); // make the udp_sender thread commit suicide.
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error while closing and nullifying connection");
@@ -70,7 +115,7 @@ public final class Internet {
      * @return IO_Bundle object containing all the data needed by the controller
      * to render the view.
      */
-    public static IO_Bundle sendStuffToMap(String avatar_name, Enum key_command, int width, int height, String optional_text) {
+    public IO_Bundle sendStuffToMap(String avatar_name, Enum key_command, int width, int height, String optional_text) {
         System.out.println("Starting Internet.sendStuffToMap(" + avatar_name + ", " + key_command.name() + ",...)");
         if (!isConnected) {
             final int error_code = makeConnectionUsingIP_Address("localhost");
@@ -85,9 +130,9 @@ public final class Internet {
                     + key_command.name() + " " + width + " " + height + " " + optional_text;
             final byte[] buf = to_send.getBytes();
             final DatagramPacket packet = new DatagramPacket(buf, buf.length, Internet.address, Map.UDP_PORT_NUMBER_FOR_MAP_RECIEVING_AND_CLIENT_SENDING);
-            if (Internet.udp_socket_for_outgoing_signals != null && tcp_socket_for_incoming_signals != null
+            if (tcp_socket_for_incoming_signals != null
                     && object_input_stream != null && Internet.udp_socket_for_incoming_signals != null) {
-                Internet.udp_socket_for_outgoing_signals.send(packet);
+                sender_thread.setPacketAndNotify(packet);
             } else {
                 System.out.println("UDP or TCP or input stream is null in " + "Internet.sendStuffToMap(" + avatar_name + ", " + key_command.name() + ",...)");
                 System.out.println("Impossible error in " + "Internet.sendStuffToMap(" + avatar_name + ", " + key_command.name() + ",...)");
@@ -142,7 +187,7 @@ public final class Internet {
      * "192.***.***.***".
      * @return 0 if connection successful, -1 if connection not successful
      */
-    public static int makeConnectionUsingIP_Address(String ip_address) {
+    public int makeConnectionUsingIP_Address(String ip_address) {
         ip_address = ip_address.trim().toLowerCase();
         System.out.println("Starting Internet.makeConnectionUsingIP_Address(" + ip_address + ")");
         if (!ip_address.equals("localhost") && !ip_address.matches(".*[0-9].*")) {
@@ -161,8 +206,6 @@ public final class Internet {
                 object_input_stream = null;
             }
             Internet.address = InetAddress.getByName(ip_address);
-            udp_socket_for_outgoing_signals = new DatagramSocket();
-            udp_socket_for_incoming_signals = new DatagramSocket(Map.UDP_PORT_NUMBER_FOR_MAP_SENDING_AND_CLIENT_RECIEVING);
             tcp_socket_for_incoming_signals = new Socket();
             tcp_socket_for_incoming_signals.setTcpNoDelay(true); // no latency
             tcp_socket_for_incoming_signals.setReuseAddress(true); // allow client to reconnect
@@ -196,34 +239,6 @@ public final class Internet {
             }
         }
     }
-    /*
-     public static byte[] bundleToBytes1(IO_Bundle io_bundle) {
-     if (io_bundle == null) {
-     System.err.println("IO_Bundle to be converted to array is null in Internet.bundleToBytes(IO_Bundle io_bundle)");
-     } else {
-     System.err.println("IO_Bundle to be converted to array is null in Internet.bundleToBytes(IO_Bundle io_bundle)");
-     }
-     ByteArrayOutputStream boas = new ByteArrayOutputStream();
-     ObjectOutput out = null;
-     byte[] bytes = null;
-     try {
-     out = new ObjectOutputStream(boas);
-     out.writeObject(io_bundle);
-     bytes = boas.toByteArray();
-     } catch (Exception e) {
-     System.err.println("Exception in Internet.bundleToBytes(IO_Bundle io_bundle) named: " + e.toString());
-     e.printStackTrace();
-     } finally {
-     try {
-     if (out != null) {
-     out.close();
-     }
-     boas.close();
-     } catch (Exception ex) {
-     }
-     }
-     return bytes;
-     }*/
 
     public static byte[] bundleToBytes(IO_Bundle io_bundle) {
         if (io_bundle == null) {
@@ -267,41 +282,6 @@ public final class Internet {
         }
     }
 
-    /*
-     public static IO_Bundle bytesToBundle(byte[] data) {
-     // prevents invalid stream header
-     if (data[0] == 0 && data[1] == 0 && data[2] == 0 && data[3] == 0 && data[4] == 0) {
-     System.err.println("Array to be converted to IO_Bundle is null in Internet.bytesToBundle(byte[] data)");
-     } else {
-     System.err.println("Array to be converted to IO_Bundle is not null in Internet.bytesToBundle(byte[] data)");
-     }
-     ByteArrayInputStream bis = new ByteArrayInputStream(data);
-     ObjectInput in = null;
-     IO_Bundle io_bundle = null;
-     try {
-     in = new ObjectInputStream(bis);
-     io_bundle = (IO_Bundle) in.readObject();
-
-     } catch (Exception e) {
-     System.err.println("Exception in Internet.bytesToBundle(byte[] data) named: " + e.toString());
-     e.printStackTrace();
-     } finally {
-     try {
-     bis.close();
-     if (in != null) {
-     in.close();
-     }
-     } catch (IOException ex) {
-     }
-     }
-     return io_bundle;
-     }*/
-    /**
-     * Gets your MAC address to be used as a unique_id on success. Produces a
-     * random string if a valid MAC address could not be obtained.
-     *
-     * @return either MAC address or a random, unique identifier
-     */
     private static String getMacAddress() {
         try {
             //Get MAC address

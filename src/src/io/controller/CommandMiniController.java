@@ -1,8 +1,10 @@
 package src.io.controller;
 
 import java.util.Scanner;
+import javax.print.attribute.standard.RequestingUserName;
 
 import src.HardCodedStrings;
+import src.RunGame;
 import src.enumHandler;
 /**
  * Processes /commands given in the chatbox
@@ -47,15 +49,16 @@ class CommandMiniController {
 		if(foo.startsWith(commandKey + man)){return this.processManCommand(foo);}
 		if(foo.startsWith(commandKey + bindings)){return this.remap_.getBindingList();}
                 if(foo.startsWith(commandKey + setIP)){
-                    int error_code = src.Internet.makeConnectionUsingIP_Address(foo.split(" ")[foo.split(" ").length - 1]);
+                    int error_code = RunGame.internet.makeConnectionUsingIP_Address(foo.split(" ")[foo.split(" ").length - 1]);
                     if(error_code == 0) {
                         return "Successfully connected to ip address: " + foo;
                     } else {
-                        int error_code_2 = src.Internet.makeConnectionUsingIP_Address("localhost");
+                        int error_code_2 = RunGame.internet.makeConnectionUsingIP_Address("localhost");
                         if(error_code_2 == 0) {
                             return "Connection failed. Reconnecting to localhost.";
                         } else {
-                            return "Something is seriously wrong with the program. Cannot connect to the remote map or to localhost.";
+                            RunGame.setUseInternet(false);
+                            return "Something is seriously wrong with the program. Cannot connect to the internet.";
                         }
                     }
                 }

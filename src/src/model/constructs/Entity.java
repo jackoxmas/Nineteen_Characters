@@ -525,6 +525,8 @@ abstract public class Entity extends DrawableThing {
             case ATTACK:
                 getMapRelation().sendAttackInFacingDirection();
                 break;
+            case DO_ABSOLUTELY_NOTHING:
+                break;
             default:
                 System.out.println("Invalid command sent to avatar");
                 break;

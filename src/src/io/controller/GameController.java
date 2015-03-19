@@ -197,7 +197,7 @@ public class GameController extends Controller {
         if(command == null){return null;}
         final IO_Bundle to_return;
         if (RunGame.getUseInternet()) {
-            to_return = Internet.sendStuffToMap(getUserName(),
+            to_return = RunGame.internet.sendStuffToMap(getUserName(),
                     command, getView().getWidth() / 2, getView().getHeight() / 2, in);
             System.out.println("Using internet to sendCommandToMapWithText");
         } else {

@@ -28,7 +28,7 @@ import src.model.constructs.items.Trap;
 public class MapEntity_Relation extends MapDrawableThing_Relation {
 
 	public class AreaEffect extends MapDrawableThing_Relation.AreaEffect {
-
+		private int areaEffectDamageTimer_ = 20;
 		/**
 		 * For damage coming from entities
 		 *
@@ -49,13 +49,13 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
 				if (infliction.getTerrain() != null
 						&& !infliction.getTerrain().hasDecal()) {
 					if (effect == Effect.HURT) {
-						infliction.getTerrain().addDecal('♨', Color.magenta);
+						infliction.getTerrain().addTempDecal('♨', Color.magenta,areaEffectDamageTimer_);
 					} else if (effect == Effect.HEAL) {
-						infliction.getTerrain().addDecal('♥', Color.red);
+						infliction.getTerrain().addTempDecal('♥', Color.red,areaEffectDamageTimer_);
 					} else if (effect == Effect.LEVEL) {
-						infliction.getTerrain().addDecal('↑', Color.black);
+						infliction.getTerrain().addTempDecal('↑', Color.black,areaEffectDamageTimer_);
 					} else if (effect == Effect.KILL) {
-						infliction.getTerrain().addDecal('☣', Color.orange);
+						infliction.getTerrain().addTempDecal('☣', Color.orange,areaEffectDamageTimer_);
 					}
 				}
 				Entity to_effect = infliction.getEntity();

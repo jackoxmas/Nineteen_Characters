@@ -122,7 +122,6 @@ public class RunGame {
 
     private static void initialize() {
         map_ = new Map(mapWidth_, mapHeight_);
-
     }
 
     private static void populateMap() {

@@ -57,6 +57,52 @@ public class SavedGame {
     public static final String XML_MAP_MAPGRID_HEIGHT = "height";
     public static final String XML_MAP_TIME = "time";
 
+    /**
+     * Searches the given directory (or current dir, if the param is null) for the current files and returns a string
+     * that will be unique to the files in that directory.
+     * @param directory The directory to search for files in or NULL - to search the current directory
+     * @param extension The file extension to filter for
+     * @return A unique file name for the given directory or NULL, if an invalid directory was given
+     */
+    private static String autoGen (String directory, String extension) {
+        if (directory == null || directory.length() == 0)
+            directory = System.getProperty("user.dir"); // ask the JVM for the current dir
+
+        RunGame.dbgOut("New file requested for dir: " + directory);
+        File dir = new File(directory);
+        if (!dir.isDirectory() || !dir.exists()) {
+            RunGame.errOut("Requested directory path is invalid or does not exist");
+            return null;
+        }
+
+        String date = SAVE_DATE_FORMAT.format(new Date()); // get the current date string
+
+        // Search the current directory for existing files and keep an iterator to append the file name with a unique
+        // ID for this day.
+        int iterator = 1;
+        try {
+            File[] files = dir.listFiles();
+            String buf_string;
+
+            int buf_iter;
+            for (File f : files) { // Search files in directory
+                if (f.getName().endsWith(extension)) {
+                    buf_string = f.getName(); // temporarily store the filename
+                    if(!buf_string.startsWith(date))
+                        continue; // if the file isn't from this date, ignore it
+                    buf_string = buf_string.substring(buf_string.lastIndexOf('_') + 1, buf_string.lastIndexOf(".")); // otherwise, get the ID
+                    buf_iter = Integer.parseInt(buf_string);
+                    if (buf_iter >= iterator) iterator = buf_iter + 1; // ensure that the iterator is always ahead by 1
+                }
+            }
+        } catch (Exception e) {
+            RunGame.errOut(e);
+        }
+        // iterator is now the correct unique ID
+        // ready to construct path
+        return date + SAVE_ITERATOR_FLAG + iterator + extension;
+    }
+
     public static src.model.Map loadGame(String filepath) {//UserController controller) {
         try {
             File saveFile = null; // TODO: VALIDATE THIS
@@ -116,51 +162,13 @@ public class SavedGame {
         }
     }
 
-    /**
-     * Generates a new SavedGame object with the file path set to the next available save game file path in the current
-     * working directory.
-     * @return The new SavedGame object
-     */
-    public static SavedGame newSavedGame() {
-        String pwd = System.getProperty("user.dir"); // get the current working directory
-        return newSavedGame(pwd);
-    }
-
-    public static SavedGame newSavedGame(String directory) {
-        RunGame.dbgOut("New save game requested for dir: " + directory);
-        String date = SAVE_DATE_FORMAT.format(new Date()); // get the current date string
-
-        // Search the current directory for existing saves and keep an iterator to append the save name with a unique
-        // ID for this day.
-        int iterator = 1;
-        try {
-            File dir = new File(System.getProperty("user.dir"));
-            File[] files = dir.listFiles();
-            String s_buff;
-
-            int i_buff;
-            for (File f : files) { // Search files in directory
-                if (f.getName().endsWith(SavedGame.SAVE_EXT)) { // for save files...
-                    s_buff = f.getName(); // temporarily store the filename
-                    if(!s_buff.startsWith(date))
-                        continue; // if the save isn't from this date, ignore it
-                    s_buff = s_buff.substring(s_buff.lastIndexOf('_') + 1, s_buff.lastIndexOf(".")); // otherwise, get the ID
-                    i_buff = Integer.parseInt(s_buff);
-                    if (i_buff >= iterator) iterator = i_buff + 1; // ensure that the iterator is always ahead by 1
-                }
-            }
-        } catch (Exception e) {
-            RunGame.errOut(e);
-        }
-        // iterator is now the correct unique ID
-        // ready to construct path
-        String path = date + SAVE_ITERATOR_FLAG + iterator + SAVE_EXT;
-        return null;
-    }
-
     public static int saveGame(String filepath, src.model.Map map) {
         try {
-            File saveFile = null; //TODO: VALIDATE THIS
+            File saveFile = validateFile(filepath, SAVE_EXT);
+            if (saveFile == null)
+                throw new Exception("Could not save file");
+
+            saveFile.createNewFile(); // create the save file if it doesn't already exist
 
             // open or create the save file
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -213,7 +221,58 @@ public class SavedGame {
         return 0;
     }
 
+    /**
+     * Saves the given key remapping to the provided file (or a new autogenerated file)
+     * @param filepath The file to save to, the directory to save to, or null to autogenerate
+     * @param remap The key remapping to save
+     * @return <p>0 - General failure
+     * <br>1 - Success</p>
+     */
     public static int saveKeymap(String filepath, HashMap<Character, Key_Commands> remap) {
+
         return 0; // Return FAILURE
+    }
+
+    /**
+     * Validates a given filepath and returns a File object representing a valid file
+     * <p>NOTE: This function DOES NOT create a the file it validates. It does verify that the file that it returns
+     * can be read-from and written-to.</p>
+     * @param filepath Either a file path, a directory path for an autogenerate file, or null to auto-generate in the
+     *                 current directory.
+     * @param fileExt The file extension to look for or create with
+     * @return Either a valid File object or null, if there was a problem validating the file
+     */
+    private static File validateFile(String filepath, String fileExt) {
+        File ret_file;
+        // if the filepath is null or 0-length, autogenerate the file in the current dir
+        if (filepath == null || filepath.length() == 0) {
+            ret_file = new File(autoGen(null, fileExt));
+
+            // Check that the file can be read and written to
+            if (!ret_file.canRead() || !ret_file.canWrite())
+                return null;
+            else {
+                RunGame.dbgOut("Validate File: returning autogen file: " + ret_file.getPath());
+                return ret_file; // return the file
+            }
+        }
+
+        // otherwise, create a new file object
+        ret_file = new File(filepath);
+
+        // if the filepath is a directory, autogenerate a new file in that directory
+        if (ret_file.isDirectory()) {
+            ret_file = new File(autoGen(ret_file.getPath(), fileExt));
+        }
+        // otherwise, the file is a local file. Append with the appropriate extension
+        else if (!ret_file.getAbsolutePath().endsWith(fileExt))
+            ret_file = new File(ret_file.getAbsolutePath() + fileExt);
+
+        // Check that the file can be read and written to
+        if (!ret_file.canRead() || !ret_file.canWrite())
+            return null;
+
+        RunGame.dbgOut("Validate File: returning found file: " + ret_file.getPath(), 4);
+        return ret_file;
     }
 }

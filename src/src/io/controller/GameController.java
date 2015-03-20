@@ -211,7 +211,7 @@ public class GameController extends Controller implements Runnable {
                     command, getView().getWidth() / 2, getView().getHeight() / 2, in);
             //System.out.println("Using internet to sendCommandToMapWithText");
         } else {
-            to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
+            to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, in);
             //System.out.println("Not using internet to sendCommandToMapWithText");
         }
         // Make the buttons says the right skill names.

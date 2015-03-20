@@ -41,34 +41,35 @@ class CommandMiniController {
     public String processCommand(String foo) {
     	//Firstly ensure we are dealing with a command.
 
-        
-    	 Scanner sc = new Scanner(foo);
+        if(foo == null){System.err.println("Tried to give the commandminicontroller processCommand a null string?");}
          String command = "";
+         String[] inputs = new String[0];
          try {
-             command = sc.next();
+        	 inputs = foo.split(" ");
+             command = inputs[0];
              if (!command.startsWith(commandKey)) {
                  System.err.println("This isn't a command!");
                  return "Error in the CommandMini";
              }
              command = command.substring(1);//Strip the command key away now, we already checked that it exists.
-         }finally{sc.close();}
+         }catch(Exception e){}
          //invalid command send apparently, so nothing to read....
          
 
         if (command.equals(rebind)) {
-            return this.processRebind(foo);
+            return this.processRebind(inputs);
         }
         if (command.equals(saveControls)) {
-            return this.processSaveControls(foo);
+            return this.processSaveControls(inputs);
         }
         if (command.equals(loadControls)) {
-            return this.processLoadControls(foo);
+            return this.processLoadControls(inputs);
         }
         if (command.equals(save)) {
-            return this.processSave(foo);
+            return this.processSave(inputs);
         }
         if (command.equals(load)) {
-            return this.processLoad(foo);
+            return this.processLoad(inputs);
         }
         if (command.equals(controls)) {
             return this.processCommands();
@@ -86,7 +87,7 @@ class CommandMiniController {
             return "ROAR!";
         }
         if (command.equals(man)) {
-            return this.processManCommand(foo);
+            return this.processManCommand(inputs);
         }
         if (command.equals(bindings)) {
             return this.remap_.getBindingList();
@@ -106,10 +107,10 @@ class CommandMiniController {
             }
         }
         if (command.equals(setControl)) {
-            return this.setControl(foo);
+            return this.setControl(inputs);
         }
         if (command.equals(setTCP)) {
-            if (command.toLowerCase().contains("n")) {
+            if (foo.toLowerCase().contains("n")) {
                 RunGame.setUseTCP(false);
                 return "TCP turned off because you said no";
             } else {
@@ -121,33 +122,18 @@ class CommandMiniController {
         return "No valid command given!";
     }
 
-    private String setControl(String foo) {
-        Scanner sc = new Scanner(foo);
-        String in = "";
-        try {
-            sc.next(); //Get rid of the command /man
-            in = sc.next();
-            cont_.setControlling(in);
+    private String setControl(String[] foo) {
+    	if(foo.length < 2){return HardCodedStrings.setControl_error;}
 
-        } catch (Exception e) {
-            sc.close();
-            return HardCodedStrings.setControl_error;
-        }
-        sc.close();
-        return HardCodedStrings.setControlSuccess;
+
+    	cont_.setControlling(foo[1]);
+
+    	return HardCodedStrings.setControlSuccess;
     }
 
-    private String processManCommand(String foo) {
-        Scanner sc = new Scanner(foo);
-        String in = "";
-        try {
-            sc.next(); //Get rid of the command /man
-            in = sc.next();
-        } catch (Exception e) {
-            sc.close();
-            return HardCodedStrings.command_error;
-        }
-        try {
+    private String processManCommand(String[] foo) {
+        if(foo.length < 2){return HardCodedStrings.command_error;}
+        String in = foo[1];
             if (in.equals(rebind)) {
                 return HardCodedStrings.rebindHelp;
             }
@@ -187,34 +173,21 @@ class CommandMiniController {
             if (in.equals("fontsize")) {
                 return HardCodedStrings.fontsizeHelp;
             }
-        } finally {
-            sc.close();
-        }
         return HardCodedStrings.command_error;
     }
 
-    private String processLoad(String foo) {
-        Scanner sc = new Scanner(foo);
-        try {
-            sc.next();
-            if (sc.hasNext()) {
-                foo = sc.next();
-            } else {
-                return HardCodedStrings.loadHelp;
-            }
-        } finally {
-            sc.close();
-        }
-        cont_.saveGame(foo);
+    private String processLoad(String[] foo) {
+    	if(foo.length < 2){return HardCodedStrings.loadHelp;}
+        cont_.loadGame(foo[1]);
         return "Loaded " + foo;
     }
 
-    private String processLoadControls(String foo) {
+    private String processLoadControls(String[] foo) {
         // TODO Auto-generated method stub
         return "Not implemented yet";
     }
 
-    private String processSaveControls(String foo) {
+    private String processSaveControls(String[] foo) {
         // TODO Auto-generated method stub
         return "Not implemneted yet";
     }
@@ -229,44 +202,20 @@ class CommandMiniController {
         return HardCodedStrings.help;
     }
 
-    private String processRebind(String foo) {
+    private String processRebind(String[] foo) {
         String error = HardCodedStrings.command_error + System.lineSeparator() + HardCodedStrings.rebindHelp;
-        Scanner sc = new Scanner(foo);
-        String command;
-        char c = '\0';
-        try {
-            sc.next();
-            command = sc.next();
-            String temp = sc.next();
-            if (temp.length() != 1) {
-                sc.close();
-                return error;
-            }
-            c = temp.charAt(0);
-            remap_.bind(c, enumHandler.stringCommandToKeyCommand(command));
-        } catch (Exception e) {
-            sc.close();
-            return error;
-        }
-        sc.close();
-        return "Success, Rebound : " + command + " To " + String.valueOf(c);
+        if(foo.length < 3){return error;}
+        if(foo[2].length() < 1){return error;}
+        if(remap_.bind(foo[2].charAt(0), enumHandler.stringCommandToKeyCommand(foo[1])) != 0){return error;}
+        return "Success, Rebound : " + foo[1] + " To " + String.valueOf(foo[2].charAt(0));
     }
 
-    private String processSave(String foo) {
-        Scanner sc = new Scanner(foo);
-        try {
-            sc.next();
-            if (sc.hasNext()) {
-                foo = sc.next();
-            } else {
-                foo = "";
-            }
-        } finally {
-            sc.close();
-        }
-        cont_.saveGame(foo);
-        if (foo != "") {
-            return "Saved to " + foo;
+    private String processSave(String[] foo) {
+       String saveName = "";
+    	if(foo.length >= 2){saveName = foo[1];}
+        cont_.saveGame(saveName);
+        if (saveName != "") {
+            return "Saved to " + saveName;
         }
         return "Saved to  default";
     }

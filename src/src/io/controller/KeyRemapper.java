@@ -44,8 +44,16 @@ abstract class  KeyRemapper {
         }
         return command;
     }
-
-    public void bind(char input, Key_Commands command) {
+/**
+ * Puts the given command in the map with the char key. 
+ * If the command is null, it is not put into the map, and -1 is returned to indicate this. 
+ * @param input
+ * @param command
+ * @return
+ */
+    public int bind(char input, Key_Commands command) {
+    	if(command == null){return -1;}
         remap_.put(input, command);
+        return 0;
     }
 }

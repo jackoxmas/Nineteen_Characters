@@ -976,11 +976,16 @@ abstract public class Entity extends DrawableThing {
         if (amount_of_damage < 0) {
             amount_of_damage = 0;
         }
+        System.out.println("Amount of damage recieved in Entity.receiveAttack: " + amount_of_damage);
+        // return -1 if your health ran out, 0 if you did not
         getStatsPack().deductCurrentLifeBy(amount_of_damage);
         if (stats_pack_.getCurrent_life_() <= 0 && attacker != null) {
+            System.out.println("reciever died in in Entity.receiveAttack: ");
             int money = this.num_gold_coins_possessed_;
             this.decrementNumGoldCoinsBy(money); // All money goes to my attacker.
             attacker.incrementNumGoldCoinsBy(money);
+        } else {
+            System.out.println("reciever survived in in Entity.receiveAttack: ");
         }
         return checkHealthAndCommitSuicideIfDead(); // returns true if alive, false if dead
     }

@@ -135,13 +135,20 @@ public class RunGame {
         map_.addAsEntity(villager1, 3, 13);
 
         Monster monster = new Monster("monster1", '☺');
-        monster.getStatsPack().increaseQuantityOfExperienceBy(300);
+        monster.getStatsPack().increaseQuantityOfExperienceBy(400);
+        monster.getStatsPack().increaseDefenseLevelByOne();
+        monster.getStatsPack().increaseHardinessLevelByOne();
+        monster.getStatsPack().increaseCurrentLifeBy(100);
+
         map_.addAsEntity(monster, 13, 3);
 
         Merchant merchant = new Merchant("merchant1", '☺');
         merchant.getStatsPack().increaseQuantityOfExperienceBy(1000);
         map_.addAsEntity(merchant, 1, 1);
-        Item teleport = new OneWayTeleportItem("tele", 'T', 0, 0);
+        Item teleport1 = new OneWayTeleportItem("tele1", 'T', 6, 6);
+        Item teleport2 = new OneWayTeleportItem("tele2", 'T', 12, 12);
+        map_.addItem(teleport2, 5, 6);
+        map_.addItem(teleport1, 11, 12);
         Item onehandedsword = new OneHandedSword("Excalibur", '|');
         Item twohandedsword = new TwoHandedSword("Two_hander", '|');
         Item shield = new Shield("Shieldy", 'O');
@@ -175,7 +182,6 @@ public class RunGame {
         map_.addItem(trap1, 1, 0);
 
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
-        map_.addItem(teleport, 2, 4);
         map_.addItem(twohandedsword, 1, 1);
         map_.addItem(shield, 10, 10);
         map_.addItem(onehandedsword, 5, 5);
@@ -240,7 +246,6 @@ public class RunGame {
      * 5 - Iterator variables and other such information which is likely to fill up a log file if enabled
      * 6 - Special debug level for UDP packet output
      */
-
     /**
      * This class holds information about optional program utilities which may
      * be triggered via command line arguments. Reference {@link #parseArgs} for

@@ -73,18 +73,26 @@ public class Monster extends Entity {
     @Override
     public boolean receiveAttack(int damage, Entity attacker) {
         if (this.getMapRelation() != null) {
+            System.out.println("Monster's map relation is not null in Monster.receiveAttack");
             // precondition met.
             boolean isAlive = super.receiveAttack(damage, attacker);
             if (isAlive) {
                 if (attacker != null) {
+                    System.out.println("Attacker is " + attacker.name_ + " Monster.receiveAttack");
                     final int zero_if_I_moved = getMapRelation().moveTowardDrawable(attacker);
+                    System.out.println("Zero if I moved in Monster.receiveAttack: " + zero_if_I_moved);
                     final double pythagorean_distance = getMapRelation().measureDistanceTowardDrawable(attacker);
+                    System.out.println("pythagorean_distance  in Monster.receiveAttack: " + pythagorean_distance);
                     final double epsilon = .0001;
                     if (pythagorean_distance >= 0 - epsilon && pythagorean_distance < 2) {
                         this.sendAttack(attacker);
+                        System.out.println("Monster attacked back in Monster.receiveAttack");
                     } else {
                         // error pythagorean distance is negative or attacker is too far away.
+                        System.out.println("error pythagorean distance is negative or attacker is too far away in Monster.receiveAttack");
                     }
+                } else {
+                    System.out.println("Attacker is null Monster.receiveAttack");
                 }
             } else {
                 // I am dead I cannot move or attack back.
@@ -92,6 +100,8 @@ public class Monster extends Entity {
             return isAlive;
         } else {
             // precondition violated.
+            System.out.println("Precondition violated in Monster.receiveAttack");
+            System.exit(-76);
             return super.receiveAttack(damage, attacker);
         }
     }

@@ -97,10 +97,13 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     }
 
     /**
-     * Gets positive distance between entity_ [owner of this relation] and 
-     * a DrawableThing if that DrawableThing has a valid map relation.
-     * @param drawable - Drawable that my entity_ wants to measure its distance from.
-     * @return -1 on failure [drawable has no map relation], 0 or greater on success.
+     * Gets positive distance between entity_ [owner of this relation] and a
+     * DrawableThing if that DrawableThing has a valid map relation.
+     *
+     * @param drawable - Drawable that my entity_ wants to measure its distance
+     * from.
+     * @return -1 on failure [drawable has no map relation], 0 or greater on
+     * success.
      */
     public double measureDistanceTowardDrawable(DrawableThing drawable) {
         if (drawable.getMapRelation() == null) {
@@ -250,10 +253,10 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         } else if (x < 0 && y < 0) {
             entity_.setFacingDirection(FacingDirection.DOWN_LEFT);
         } else {
-            System.err
-                    .print("An impossible error occured in MapEntity_Relation.moveInDirection()");
+            System.err.print("An impossible error occured in MapEntity_Relation.moveInDirection()");
             System.exit(-1); // Impossible
         }
+        System.err.print("in MapEntity_Relation.moveInDirection, x: " + x + " y: " + y + " by: " + entity_.name_);
         return super.pushEntityInDirection(entity_, x, y);
     }
 
@@ -275,7 +278,23 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         final int my_y = this.getMyYCoordinate();
         final int delta_x = drawables_x - my_x;
         final int delta_y = drawables_y - my_y;
-        return this.moveInDirection(delta_x, delta_y);
+        final int amount_to_move_in_x_direction;
+        if (delta_x > 0) {
+            amount_to_move_in_x_direction = 1;
+        } else if ((delta_x< 0)) {
+            amount_to_move_in_x_direction = -1;
+        } else {
+            amount_to_move_in_x_direction = 0;
+        }
+        final int amount_to_move_in_y_direction;
+        if (delta_y > 0) {
+            amount_to_move_in_y_direction = 1;
+        } else if ((delta_y< 0)) {
+            amount_to_move_in_y_direction = -1;
+        } else {
+            amount_to_move_in_y_direction = 0;
+        }
+        return this.moveInDirection(amount_to_move_in_x_direction, amount_to_move_in_y_direction);
     }
 
     /**
@@ -654,9 +673,11 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 }
                 Entity to_effect = infliction.getEntity();
                 if (to_effect != null) {
+                    System.out.println("to_effect not null in MapEntity_Relation.repeat");
                     if (effect == Effect.HURT) {
-                        
+                        System.out.println("Effect is hurt in MapEntity_Relation.repeat");
                         to_effect.receiveAttack(strength, entity_); // kills
+                        System.out.println("Recieve attack completed in. MapEntity_Relation.repeat");
                         // avatar if
                         // health is
                         // negative

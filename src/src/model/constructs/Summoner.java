@@ -127,11 +127,13 @@ public final class Summoner extends Occupation {
                 }
             } else if (number == 2) {
                 // boon - magic that heals
-                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinLine(getSkill_2_() + 6, /*getSkill_2_()*/ 0, Effect.HURT);
-                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_2_() + 1, /*getSkill_2_()*/ 0, Effect.HEAL);
+                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinLine(getSkill_2_() + 6, getSkill_2_(), Effect.HURT);
+                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_2_() + 1, getSkill_2_(), Effect.HEAL);
             } else if (number == 3) {
                 // bane - magic that does damage or harm.
-                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinArc(getSkill_3_() + 8, 2 * /*getSkill_3_()*/ 0, Effect.HURT);
+                System.out.println("About to call Bane");
+                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinArc(getSkill_3_() + 8, 2 * getSkill_3_(), Effect.HURT);
+                System.out.println("Finished calling Bane");
             } else if (number == 4) {
                 // Staff attack
                 if (staff_ != null && target != null) {

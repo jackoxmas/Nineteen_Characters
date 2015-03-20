@@ -22,14 +22,14 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
     private String userName_;
     private ConcurrentLinkedQueue<Key_Commands> keyCommandQueue_ = new ConcurrentLinkedQueue<Key_Commands>();
     private ConcurrentLinkedQueue<Character> characterQueue_ = new ConcurrentLinkedQueue<Character>();
-    private Thread controllerThread_ = Thread.currentThread();
+    // private Thread controllerThread_ = Thread.currentThread(); Bad because constructor could be called by another thread.
 
     public void grusomelyKillTheControllerThread() {
-        if (controllerThread_ == null) {
+        if (Thread.currentThread() == null) {
             System.err.println("Controller thread is null too soon");
             return;
         }
-        controllerThread_.interrupt();
+        Thread.currentThread().interrupt();
     }
 
     public void setControlling(String in) {
@@ -65,10 +65,7 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
 
     protected void sleepLoop() {
 
-        while (!Thread.currentThread().isInterrupted()) {
-            if (controllerThread_ == null) {
-                System.err.println("Controller thread null in sleep loop!");
-            }
+        while ( !Thread.currentThread().isInterrupted() ) {
             //System.out.println("Entetered sleep loop");
             try {
                 //if(!controllerThread_.interrupted()){//If we are interuppted, don't bother sleeping again.

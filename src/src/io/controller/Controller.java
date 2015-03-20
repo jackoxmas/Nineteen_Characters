@@ -162,7 +162,7 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
      * @param bundle
      */
     public void updateDisplay(IO_Bundle bundle) {
-        System.out.println("called function Controller.updateDisplay(IO_Bundle bundle)");
+        //System.out.println("called function Controller.updateDisplay(IO_Bundle bundle)");
         getView().renderToDisplay(bundle);
         Display.getDisplay().setView(getView());
         Display.getDisplay().printView();

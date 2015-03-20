@@ -404,7 +404,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
      * @return Bundle of stuff used by the display.
      */
     public IO_Bundle sendCommandToMapWithOptionalText(String username, Key_Commands command, int width_from_center, int height_from_center, String text) {
-        System.out.println("Calling Map.sendCommandToMapWithOptionalText - No internet being used");
+        //System.out.println("Calling Map.sendCommandToMapWithOptionalText - No internet being used");
         // Avatar to_recieve_command = this.avatar_list_.get(username);
         Entity to_recieve_command;
         if (this.entity_list_.containsKey(username)) {

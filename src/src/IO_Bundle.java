@@ -61,9 +61,19 @@ public class IO_Bundle implements Serializable {
         observation_ = ob;
         primary_ = pri;
         second_ = sec;
+
+        //if (sfc == null) {
+        //    sfc = new ArrayList<String>();
+        //} 
         strings_for_communication_ = sfc;
         num_coins_ = num_coins;
         is_alive_ = is_alive;
+
+        //strings_for_communication_.add("^ Click on this text box to select chat options. ^");
+        //strings_for_communication_.add("^ Then click on the game window to re-focus. ^");
+        if(strings_for_communication_ != null) {
+        strings_for_communication_.trimToSize();
+        }
     }
 
     public static char[] convertArrayListOfCharToArray(ArrayList<Character> c) {

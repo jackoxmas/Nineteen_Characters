@@ -17,7 +17,7 @@ public class ChatBoxViewPort {
 	}
         
 	public void renderToDisplay(ArrayList<String> strings_for_communication, boolean is_alive){
-            System.out.println("Calling ChatBoxViewPort.renderToDisplay(ArrayList<String> strings_for_communication, boolean is_alive)");
+            //System.out.println("Calling ChatBoxViewPort.renderToDisplay(ArrayList<String> strings_for_communication, boolean is_alive)");
 		result_.clear();
 		if(is_alive == false){
                     result_.add("GAME OVER YOU ARE DEAD"); 

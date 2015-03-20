@@ -71,8 +71,8 @@ public class GameController extends Controller implements Runnable {
         }
 
         public void chatBoxHandleMapInputAndPrintNewContents(ArrayList<String> strings_for_communication, boolean is_alive) {
-            System.out.println("Calling GameController.chatBoxHandleMapInputAndPrintNewContents("
-                    + "ArrayList<String> strings_for_communication, boolean is_alive)");
+            //System.out.println("Calling GameController.chatBoxHandleMapInputAndPrintNewContents("
+            //        + "ArrayList<String> strings_for_communication, boolean is_alive)");
             chatview_.renderToDisplay(strings_for_communication, is_alive);
             ArrayList<String> list = chatview_.getContents();
             for (String i : list) {
@@ -179,7 +179,7 @@ public class GameController extends Controller implements Runnable {
      */
     @Override
     public void updateDisplay(IO_Bundle bundle) {
-        System.out.println("called function GameController.updateDisplay(IO_Bundle bundle)");
+        //System.out.println("called function GameController.updateDisplay(IO_Bundle bundle)");
         // ** chatbox should not be getting the whole bundle ** //
         if (bundle != null) {
             chatbox_.chatBoxHandleMapInputAndPrintNewContents(
@@ -191,9 +191,9 @@ public class GameController extends Controller implements Runnable {
 
     private IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
         if (SwingUtilities.isEventDispatchThread()) {
-            System.err.println("GameController is running on the Swing Dispatch Thread in sendCommandToMapWithText [Bad]");
+            //System.err.println("GameController is running on the Swing Dispatch Thread in sendCommandToMapWithText [Bad]");
         } else {
-            System.out.println("GameController is not running on the Swing Dispatch Thread in sendCommandToMapWithText [Good]");
+            //System.out.println("GameController is not running on the Swing Dispatch Thread in sendCommandToMapWithText [Good]");
         }
         if (Key_Commands.GET_INTERACTION_OPTIONS.equals(command)) {
             java.awt.EventQueue.invokeLater(new Runnable() {
@@ -209,10 +209,10 @@ public class GameController extends Controller implements Runnable {
         if (RunGame.getUseInternet()) {
             to_return = RunGame.internet.sendStuffToMap(getUserName(),
                     command, getView().getWidth() / 2, getView().getHeight() / 2, in);
-            System.out.println("Using internet to sendCommandToMapWithText");
+            //System.out.println("Using internet to sendCommandToMapWithText");
         } else {
             to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
-            System.out.println("Not using internet to sendCommandToMapWithText");
+            //System.out.println("Not using internet to sendCommandToMapWithText");
         }
         // Make the buttons says the right skill names.
         if (to_return != null && to_return.occupation_ != null && command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
@@ -231,6 +231,7 @@ public class GameController extends Controller implements Runnable {
             });
         }
         // Auto focus on chatbox
+        /*
         if ((to_return != null && to_return.strings_for_communication_ != null && !to_return.strings_for_communication_.isEmpty())
                 && (command == Key_Commands.MOVE_DOWN || command == Key_Commands.MOVE_DOWNLEFT
                 || command == Key_Commands.MOVE_DOWNRIGHT || command == Key_Commands.MOVE_LEFT
@@ -242,7 +243,7 @@ public class GameController extends Controller implements Runnable {
                     Display.getDisplay().requestOutBoxFocus();
                 }
             });
-        }
+        }*/
         return to_return;
     }
 
@@ -256,7 +257,7 @@ public class GameController extends Controller implements Runnable {
     //Handles the view switching, uses the  instance of operator in a slightly evil way, 
     //ideally we should look into refactoring this to nots
     protected IO_Bundle updateViewsAndMap(Key_Commands input) {
-        System.out.println("Called GameController.updateViewsAndMap(Key_Commands input)");
+        //System.out.println("Called GameController.updateViewsAndMap(Key_Commands input)");
         boolean taken = false;
         if (getView() instanceof AvatarCreationView) {
             if (Key_Commands.BECOME_SNEAK.equals(input) || Key_Commands.BECOME_SMASHER.equals(input)
@@ -288,7 +289,7 @@ public class GameController extends Controller implements Runnable {
 
     @Override
     protected void takeTurnandPrintTurn(Key_Commands input) {
-        System.out.println("calling GameController.takeTurnandPrintTurn(Key_Commands input)");
+        //System.out.println("calling GameController.takeTurnandPrintTurn(Key_Commands input)");
         IO_Bundle bundle = updateViewsAndMap(input);
         updateDisplay(bundle);
     }

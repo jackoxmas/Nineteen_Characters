@@ -102,20 +102,8 @@ public class RunGame {
 
     private static int startMapEditor() {
         initialize(); // Initialize any data we need to before loading
-        /*new Thread(new Runnable() {
-
-         @Override
-         public void run() {
-         uc_ = new MapEditorController(map_); // Begin the avatarcontroller loop
-         }
-         }).start();*/
         uc_ = new MapEditorController(map_);
-        /* Documentation: public void run()
-         When an object implementing interface Runnable is used to create a thread, 
-         starting the thread causes the object's run method to be called 
-         in that separately executing thread.
-         */
-        uc_.run();
+        (new Thread(uc_)).start();
         return 0;
     }
 
@@ -231,17 +219,8 @@ public class RunGame {
     }
 
     private static void startGame() {
-        /*
-         new Thread(new Runnable() {
-
-         @Override
-         public void run() {
-         uc_ = new GameController(map_, avatar_.name_);
-         }
-         }).start();*/
         uc_ = new GameController(map_, avatar_.name_);
-        uc_.run();
-        // starting the thread [with run] causes the object's run method to be called in that separately executing thread.
+        (new Thread(uc_)).start();
     }
 
     public static void saveGameToDisk(String foo) {

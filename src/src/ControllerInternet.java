@@ -140,7 +140,7 @@ public final class ControllerInternet {
             }
 
             if (RunGame.getUseTCP()) {
-                System.out.println("Calling Internet.sendStuffToMap over TCP");
+                //System.out.println("Calling Internet.sendStuffToMap over TCP");
                 // recieve IO_Bundle from map over TCP connection
                 Object temp = object_input_stream.readObject();
                 IO_Bundle to_recieve = null;
@@ -156,7 +156,7 @@ public final class ControllerInternet {
                 }
                 return to_recieve;
             } else {
-                System.out.println("Calling Internet.sendStuffToMap over UDP");
+                //System.out.println("Calling Internet.sendStuffToMap over UDP");
                 // recieve IO_Bundle from map over UDP connection
                 final byte[] recieved;
                  System.err.println("Buffer size: " + udp_socket_for_incoming_signals.getReceiveBufferSize());
@@ -203,11 +203,11 @@ public final class ControllerInternet {
         if (!ip_address.equals("localhost") && !ip_address.matches(".*[0-9].*")) {
             RunGame.setUseInternet(false);
             isConnected = false;
-            System.out.println("Not using internet in Internet.makeConnectionUsingIP_Address(String ip_address)");
+            //System.out.println("Not using internet in Internet.makeConnectionUsingIP_Address(String ip_address)");
             return 0;
         } else {
             RunGame.setUseInternet(true);
-            System.out.println("Using internet in Internet.makeConnectionUsingIP_Address(String ip_address)");
+            //System.out.println("Using internet in Internet.makeConnectionUsingIP_Address(String ip_address)");
         }
         ObjectOutputStream oos = null;
         try {

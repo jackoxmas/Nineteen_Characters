@@ -655,6 +655,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 Entity to_effect = infliction.getEntity();
                 if (to_effect != null) {
                     if (effect == Effect.HURT) {
+                        
                         to_effect.receiveAttack(strength, entity_); // kills
                         // avatar if
                         // health is

@@ -13,7 +13,7 @@ import javax.swing.SwingUtilities;
 
 import src.HardCodedStrings;
 import src.IO_Bundle;
-import src.Internet;
+import src.ControllerInternet;
 import src.Key_Commands;
 import src.QueueCommandInterface;
 import src.RunGame;

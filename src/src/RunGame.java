@@ -45,7 +45,7 @@ public class RunGame {
     private static boolean map_editor_mode_ = false;
     private static boolean use_internet = true;
     private static boolean use_TCP = false;
-    public static final Internet internet = new Internet();
+    public static final ControllerInternet internet = new ControllerInternet();
 
     public static boolean getUseInternet() {
         return RunGame.use_internet;

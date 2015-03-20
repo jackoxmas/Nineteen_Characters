@@ -58,7 +58,7 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
 
     @Override
     public void run() {
-        //override in subclasses
+        sleepLoop();
     }
 
     protected void sleepLoop() {
@@ -71,10 +71,7 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
                 process();
                 //}
             } catch (InterruptedException e) {
-                System.out.println("InterruptedInnerLoop");
-                System.exit(-65);
-                process();
-                System.out.println("InterruptedInnerLoopEnd");
+               break;
             }
             //System.out.println("Exited sleep loop"); //Exited
         }

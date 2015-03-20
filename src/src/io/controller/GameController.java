@@ -30,7 +30,7 @@ import src.model.MapUser_Interface;
  *
  * @author JohnReedLOL/mbregg
  */
-public class GameController extends Controller implements Runnable {
+public class GameController extends Controller {
 
     private ConcurrentLinkedQueue<String> stringQueue_ = new ConcurrentLinkedQueue<String>();
 
@@ -139,9 +139,7 @@ public class GameController extends Controller implements Runnable {
         }
 
     }
-
-    public GameController(MapUser_Interface mui, String uName) {
-        super(new AvatarCreationView(), new GameRemapper(), uName);
+    public void GameController_Constructor_Helper(MapUser_Interface mui, String uName){
         MapUserAble_ = mui;
         Display.getDisplay().setCommandList(HardCodedStrings.gameCommands);
         Display.getDisplay().addDoubleClickCommandEventReceiver(new QueueCommandInterface<String>() {
@@ -156,17 +154,21 @@ public class GameController extends Controller implements Runnable {
 
             @Override
             public void sendInterrupt() {
-                System.out.println("GameController.sendInterrupt() in QueueCommandInterface<String> was called");
                 GameController.this.sendInterrupt();
             }
 
         });
         takeTurnandPrintTurn('5');//For some reason need to take a empty turn for fonts to load...
     }
-    @Override
-    public void run() {
-        sleepLoop();
+    public GameController(MapUser_Interface mui, String uName, GameRemapper remap){
+    	super(new AvatarCreationView(),remap, uName);
+    	GameController_Constructor_Helper(mui, uName);
     }
+    public GameController(MapUser_Interface mui, String uName) {
+        super(new AvatarCreationView(),new GameRemapper(),uName);
+        GameController_Constructor_Helper(mui, uName);
+    }
+ 
 
     private MapUser_Interface MapUserAble_;
 

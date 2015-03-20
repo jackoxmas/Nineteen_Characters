@@ -23,7 +23,9 @@ public class MapEditorController extends Controller implements Runnable {
 	private String setToSpawn_ = "";
 	private MapAddableFactory factory_= new MapAddableFactory();
 	private MapAddable addable = null;
+	//Queue of things to spawn
 	private ConcurrentLinkedQueue<String> setToSpawnQueue_ = new ConcurrentLinkedQueue<String>();
+	//Queue of commands entered into chatbox.
 	private ConcurrentLinkedQueue<String> commandQueue_ = new ConcurrentLinkedQueue<String>();
 	CommandMiniController cont_ = new CommandMiniController(MapEditorController.this.getRemapper(), MapEditorController.this);
 	public MapEditorController(MapMapEditor_Interface map) {

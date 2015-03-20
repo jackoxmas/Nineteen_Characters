@@ -18,7 +18,9 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
     private KeyRemapper remap_;
     private Viewport currentView_;
     private String userName_;
+    //The queue for keyCommand given from the buttons. 
     private ConcurrentLinkedQueue<Key_Commands> keyCommandQueue_ = new ConcurrentLinkedQueue<Key_Commands>();
+    //The queue of keyboard input in the main game. 
     private ConcurrentLinkedQueue<Character> characterQueue_ = new ConcurrentLinkedQueue<Character>();
     // private Thread controllerThread_ = Thread.currentThread(); Bad because constructor could be called by another thread.
 

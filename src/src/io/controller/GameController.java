@@ -31,7 +31,7 @@ import src.model.MapUser_Interface;
  * @author JohnReedLOL/mbregg
  */
 public class GameController extends Controller {
-
+	//Queue of the strings from clicking on the command box inthe gui.
     private ConcurrentLinkedQueue<String> stringQueue_ = new ConcurrentLinkedQueue<String>();
 
     private final class ChatBoxMiniController implements QueueCommandInterface<String> {
@@ -79,7 +79,9 @@ public class GameController extends Controller {
                 Display.getDisplay().setMessage(i);
             }
         }
+        //The queue for commands given into the input box.
         private ConcurrentLinkedQueue<String> commandQueue_ = new ConcurrentLinkedQueue<String>();
+        //The queue for when you hit a character in the output box.
         private ConcurrentLinkedQueue<Character> commandChoiceQueue_ = new ConcurrentLinkedQueue<Character>();
 
         private class outputBoxFunction implements QueueCommandInterface<Character> {

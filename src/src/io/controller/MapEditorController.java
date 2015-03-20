@@ -16,7 +16,7 @@ import src.model.MapMapEditor_Interface;
  * @author mbregg
  *
  */
-public class MapEditorController extends Controller {
+public class MapEditorController extends Controller implements Runnable {
 	private MapMapEditor_Interface map_;
 	private MapEditorView mappy_viewy_ = new MapEditorView();
 	private ArrayList<String> spawnables_ = new ArrayList<String>(1);
@@ -72,8 +72,11 @@ public class MapEditorController extends Controller {
 			}
 			
 		});
-		this.sleepLoop();
 	}
+        @Override
+        public void run() {
+            this.sleepLoop();
+        }
 
         /**
          * The return type is an anachronism

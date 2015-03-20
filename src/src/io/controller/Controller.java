@@ -15,7 +15,7 @@ import src.io.view.display.Display;
  * @author mbregg
  *
  */
-public abstract class Controller implements QueueCommandInterface<Character> {
+public abstract class Controller implements QueueCommandInterface<Character>, Runnable {
 
     private KeyRemapper remap_;
     private Viewport currentView_;
@@ -59,6 +59,10 @@ public abstract class Controller implements QueueCommandInterface<Character> {
         Display.getDisplay().setView(currentView_);
         Display.getDisplay().printView();
     }
+    @Override
+    public void run() {
+        //override in subclasses
+    }
 
     protected void sleepLoop() {
 
@@ -83,7 +87,7 @@ public abstract class Controller implements QueueCommandInterface<Character> {
     }
 
     /**
-     * 
+     *
      * @return true if something was done and false if nothing was done.
      */
     protected boolean process() {

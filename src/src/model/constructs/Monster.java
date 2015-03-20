@@ -25,7 +25,16 @@ public class Monster extends Entity {
         options.add("Select a skill to use on me. " + HardCodedStrings.getAllSkills);
         return options;
     }
-
+    @Override
+    public void takeTurn(){
+    	if(Entity_to_follow_!=null){
+    		follow(Entity_to_follow_);
+    		--turns_to_follow_;
+    		attackIfNear(Entity_to_follow_);
+    		if(turns_to_follow_<0){Entity_to_follow_ = null;}
+    	}
+    	
+    }
     public ArrayList<String> getConversationStarterStrings() {
         ArrayList<String> options = new ArrayList<String>();
         return options;
@@ -60,7 +69,52 @@ public class Monster extends Entity {
         ArrayList<String> options = new ArrayList<String>();
         return options;
     }
+    /**
+     * Follow the given entity, AKA, move a square towards it.
+     * 
+     * @param followee
+     * @return 0
+     */
+    private int follow(Entity followee){
+    	 System.out.println("Attacker is " + followee.name_ + " Monster.receiveAttack");
+         final int zero_if_I_moved = getMapRelation().moveTowardDrawable(followee);
+         System.out.println("Zero if I moved in Monster.receiveAttack: " + zero_if_I_moved);
+         final double pythagorean_distance = getMapRelation().measureDistanceTowardDrawable(followee);
+         System.out.println("pythagorean_distance  in Monster.receiveAttack: " + pythagorean_distance);
 
+         
+         return 0;
+    }
+    /**
+     * Attempts to attack the given entity if they are near. 
+     * @param followee
+     * @return
+     */
+    private boolean attackIfNear(Entity followee){
+        final double epsilon = .0001;
+    	final double pythagorean_distance = getMapRelation().measureDistanceTowardDrawable(followee);
+    	if (pythagorean_distance >= 0 - epsilon && pythagorean_distance < 2) {
+            this.sendAttack(followee);
+            return true;
+        } else {
+        	return false;
+            // error pythagorean distance is negative or attacker is too far away.
+        }
+    }
+    int turns_to_follow_ = 0;
+    Entity Entity_to_follow_ = null;
+    /**
+     * Follow the given entity for X turns
+     * @param followee
+     * @param turns
+     * @return 0
+     */
+    private int setFollowing(Entity followee, int turns){
+    	turns_to_follow_ = turns;
+    	Entity_to_follow_ = followee;
+    	return 0;
+    	
+    }
     /**
      * Monsters will move toward attacker and attack back is distance is less
      * than 2. Precondition: Monsters must have a MapRelation to attack back if
@@ -78,19 +132,9 @@ public class Monster extends Entity {
             boolean isAlive = super.receiveAttack(damage, attacker);
             if (isAlive) {
                 if (attacker != null) {
-                    System.out.println("Attacker is " + attacker.name_ + " Monster.receiveAttack");
-                    final int zero_if_I_moved = getMapRelation().moveTowardDrawable(attacker);
-                    System.out.println("Zero if I moved in Monster.receiveAttack: " + zero_if_I_moved);
-                    final double pythagorean_distance = getMapRelation().measureDistanceTowardDrawable(attacker);
-                    System.out.println("pythagorean_distance  in Monster.receiveAttack: " + pythagorean_distance);
-                    final double epsilon = .0001;
-                    if (pythagorean_distance >= 0 - epsilon && pythagorean_distance < 2) {
-                        this.sendAttack(attacker);
-                        System.out.println("Monster attacked back in Monster.receiveAttack");
-                    } else {
-                        // error pythagorean distance is negative or attacker is too far away.
-                        System.out.println("error pythagorean distance is negative or attacker is too far away in Monster.receiveAttack");
-                    }
+                	setFollowing(attacker, 10);//Arbitary value for time to follow the thing.
+                	follow(attacker);
+                	attackIfNear(attacker);
                 } else {
                     System.out.println("Attacker is null Monster.receiveAttack");
                 }

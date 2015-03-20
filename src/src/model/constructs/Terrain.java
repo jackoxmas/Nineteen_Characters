@@ -118,6 +118,7 @@ public class Terrain extends DrawableThing {
      * Update anything that must be updated on a per turn basis. 
      * ATM that is the tempDecal and it's associates.
      */
+    @Override
     public void takeTurn(){
     	--tempTurnCount_;
     	if(tempTurnCount_ < 0){

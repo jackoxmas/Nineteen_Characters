@@ -4,8 +4,11 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map.Entry;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 import src.IO_Bundle;
 import src.Key_Commands;
 import src.RunGame;
@@ -337,6 +340,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                 makeMapTileTakeTurn(x, y);
             }
         }
+        for(Entry<String, Entity> e : entity_list_.entrySet()){e.getValue().takeTurn();}
         return;
     }
     /**

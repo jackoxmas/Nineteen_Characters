@@ -28,6 +28,8 @@ abstract public class DrawableThing implements Serializable{
         is_visible_ = true;
     }
 
+    public void takeTurn(){}//A drawable thing has nothing to do
+    
     protected DrawableThing(String name, char representation, boolean is_visible) {
         name_ = name;
         single_character_representation_ = representation;

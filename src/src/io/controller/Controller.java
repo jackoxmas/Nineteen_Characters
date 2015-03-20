@@ -16,7 +16,7 @@ import src.io.view.display.Display;
  * @author mbregg
  *
  */
-public abstract class Controller implements QueueCommandInterface<Character> {
+public abstract class Controller implements QueueCommandInterface<Character>, Runnable {
 
     private KeyRemapper remap_;
     private Viewport currentView_;
@@ -30,9 +30,7 @@ public abstract class Controller implements QueueCommandInterface<Character> {
             System.err.println("Controller thread is null too soon");
             return;
         }
-        if (controllerThread_.isAlive()) {
-            controllerThread_.stop();
-        }
+        controllerThread_.interrupt();
     }
 
     public void setControlling(String in) {
@@ -61,9 +59,14 @@ public abstract class Controller implements QueueCommandInterface<Character> {
         Display.getDisplay().printView();
     }
 
+    @Override
+    public void run() {
+        //override in subclasses
+    }
+
     protected void sleepLoop() {
 
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
             if (controllerThread_ == null) {
                 System.err.println("Controller thread null in sleep loop!");
             }
@@ -84,7 +87,7 @@ public abstract class Controller implements QueueCommandInterface<Character> {
     }
 
     /**
-     * 
+     *
      * @return true if something was done and false if nothing was done.
      */
     protected boolean process() {

@@ -54,7 +54,7 @@ public final class ControllerInternet {
 
         public synchronized void setPacketAndNotify(DatagramPacket s) {
             packet_to_send = s;
-            synchronized (sender_thread) {
+            synchronized (this /*sender_thread*/) {
                 notify();
             }
         }
@@ -70,7 +70,7 @@ public final class ControllerInternet {
 
         public void run() {
             while (true) {
-                synchronized (sender_thread) {
+                synchronized (this /*sender_thread*/) {
                     try {
                         System.out.println("Waiting for Controller to notify me in Internet.UDP_Sender_Thread.run()");
                         this.wait();

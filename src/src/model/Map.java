@@ -457,15 +457,17 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     }
                     passAlongCommand(to_recieve_command, command, width_from_center, height_from_center, optional_text, sender);
                     // tell each and every player to refresh their screens.
+                    /*
                     for (ConcurrentHashMap.Entry<String, Single_User_TCP_Thread> entry : users.entrySet()) {
                         if (entry.getValue() != null) {
                             // for every thread except the one that just went
+                            
                             if(! entry.getKey().equals(unique_id)) {
                                 passAlongCommand(entry.getValue().last_controlled, Key_Commands.DO_ABSOLUTELY_NOTHING, 
                                         width_from_center, height_from_center, "", entry.getValue());
                             }
                         }
-                    }
+                    }*/
                 } catch (IOException e) {
                     e.printStackTrace();
                     System.out.println("Connection is closed");

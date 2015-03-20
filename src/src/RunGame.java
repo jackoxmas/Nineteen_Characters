@@ -44,7 +44,7 @@ public class RunGame {
     private static int mapWidth_ = 40;
     private static boolean map_editor_mode_ = false;
     private static boolean use_internet = true;
-    private static boolean use_TCP = true;
+    private static boolean use_TCP = false;
     public static final Internet internet = new Internet();
 
     public static boolean getUseInternet() {

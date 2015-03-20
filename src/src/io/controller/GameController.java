@@ -113,8 +113,12 @@ public class GameController extends Controller {
 
         /**
          * Process the input that has built up in the two queues.
+         * @return true if there are commands on Queue false if there are none
          */
-        public void processQueue() {
+        public boolean processQueue() {
+            if(commandQueue_.isEmpty() && commandChoiceQueue_.isEmpty()) {
+                return false;
+            }
             while (!commandQueue_.isEmpty()) {
                 String foo = commandQueue_.remove();
                 if (foo != null && foo.startsWith("/")) {
@@ -130,6 +134,7 @@ public class GameController extends Controller {
                 Character c = commandChoiceQueue_.remove();
                 sendTextCommandAndUpdate(chatview_.getChoice(Character.getNumericValue(c)));
             }
+            return true;
         }
 
     }
@@ -295,23 +300,33 @@ public class GameController extends Controller {
 
     }
 
+    /**
+     * Do nothing if queues are empty.
+     * @return 
+     */
     @Override
-    public void process() {
-        super.process();
+    public boolean process() {
+        boolean did_something_super = super.process();
+        
         //System.out.println("Processing in GameController subclass");
-        chatbox_.processQueue();
+        boolean did_something_chatbox = chatbox_.processQueue();
+        if(!did_something_super && !did_something_chatbox && stringQueue_.isEmpty()) {
+             takeTurnandPrintTurn(Key_Commands.DO_ABSOLUTELY_NOTHING);
+            return false;
+        }
         while (!stringQueue_.isEmpty()) {
             String foo = stringQueue_.remove();
             if (foo == null) {
-                return;
+                break;
             }
             Key_Commands command = enumHandler.stringCommandToKeyCommand(foo);
             if (command == null) {
-                return;
+                break;
             }
             takeTurnandPrintTurn(command);
 
         }
+        return true;
     }
     // FIELD ACCESSORS
     /**

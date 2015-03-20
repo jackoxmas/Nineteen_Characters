@@ -75,21 +75,26 @@ public class MapEditorController extends Controller {
 		this.sleepLoop();
 	}
 
+        /**
+         * The return type is an anachronism
+         * @return false if either queue has a null entry true otherwise
+         */
 	@Override
-	protected void process(){
+	protected boolean process(){
 		while(!setToSpawnQueue_.isEmpty()){
 			String foo = setToSpawnQueue_.remove();
-			if(foo == null){return;}
+			if(foo == null){return false;}
 			setToSpawn_ = foo;
 			setLastSpawned(setToSpawn_);
 			updateDisplay();
 		}
 		while(!commandQueue_.isEmpty()){
 			String foo = commandQueue_.remove();
-			if(foo==null){return;}
+			if(foo==null){return false;}
 			if(foo.startsWith("/")){Display.getDisplay().setMessage(cont_.processCommand(foo));}
 		}
 		super.process();
+                return true;
 	}
 	int x = 0;
 	int y = 0;

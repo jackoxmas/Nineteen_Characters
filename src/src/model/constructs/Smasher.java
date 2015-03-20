@@ -126,7 +126,7 @@ public final class Smasher extends Occupation {
             case 3:
                 return "Fists";
             case 4:
-                return "";
+                return "NA";
             default:
                 System.err.println("Error");
                 System.exit(-56);

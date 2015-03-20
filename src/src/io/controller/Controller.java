@@ -29,9 +29,7 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
             System.err.println("Controller thread is null too soon");
             return;
         }
-        if (controllerThread_.isAlive()) {
-            controllerThread_.stop();
-        }
+        controllerThread_.interrupt();
     }
 
     public void setControlling(String in) {
@@ -59,6 +57,7 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
         Display.getDisplay().setView(currentView_);
         Display.getDisplay().printView();
     }
+
     @Override
     public void run() {
         //override in subclasses
@@ -66,7 +65,7 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
 
     protected void sleepLoop() {
 
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
             if (controllerThread_ == null) {
                 System.err.println("Controller thread null in sleep loop!");
             }

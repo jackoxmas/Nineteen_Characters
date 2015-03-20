@@ -41,8 +41,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     // 2d array of tiles.
     private MapTile map_grid_[][];
     private MapInternet my_internet_;
-
-
     //</editor-fold>
     //<editor-fold desc="Constructors" defaultstate="collapsed">
     // This should never get called

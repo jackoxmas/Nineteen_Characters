@@ -30,7 +30,7 @@ import src.model.MapUser_Interface;
  *
  * @author JohnReedLOL/mbregg
  */
-public class GameController extends Controller {
+public class GameController extends Controller implements Runnable {
 
     private ConcurrentLinkedQueue<String> stringQueue_ = new ConcurrentLinkedQueue<String>();
 
@@ -113,10 +113,11 @@ public class GameController extends Controller {
 
         /**
          * Process the input that has built up in the two queues.
+         *
          * @return true if there are commands on Queue false if there are none
          */
         public boolean processQueue() {
-            if(commandQueue_.isEmpty() && commandChoiceQueue_.isEmpty()) {
+            if (commandQueue_.isEmpty() && commandChoiceQueue_.isEmpty()) {
                 return false;
             }
             while (!commandQueue_.isEmpty()) {
@@ -147,9 +148,9 @@ public class GameController extends Controller {
 
             @Override
             public void enqueue(String command) {
-            	if(command!=null){
-            		stringQueue_.add(command);
-            	}
+                if (command != null) {
+                    stringQueue_.add(command);
+                }
 
             }
 
@@ -161,6 +162,9 @@ public class GameController extends Controller {
 
         });
         takeTurnandPrintTurn('5');//For some reason need to take a empty turn for fonts to load...
+    }
+    @Override
+    public void run() {
         sleepLoop();
     }
 
@@ -179,12 +183,11 @@ public class GameController extends Controller {
         // ** chatbox should not be getting the whole bundle ** //
         if (bundle != null) {
             chatbox_.chatBoxHandleMapInputAndPrintNewContents(
-            		bundle.strings_for_communication_, bundle.is_alive_);
+                    bundle.strings_for_communication_, bundle.is_alive_);
             super.updateDisplay(bundle);
         }
 
     }
-
 
     private IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
         if (SwingUtilities.isEventDispatchThread()) {
@@ -199,7 +202,9 @@ public class GameController extends Controller {
                 }
             });
         }
-        if(command == null){return null;}
+        if (command == null) {
+            return null;
+        }
         final IO_Bundle to_return;
         if (RunGame.getUseInternet()) {
             to_return = RunGame.internet.sendStuffToMap(getUserName(),
@@ -302,16 +307,17 @@ public class GameController extends Controller {
 
     /**
      * Do nothing if queues are empty.
-     * @return 
+     *
+     * @return
      */
     @Override
     public boolean process() {
         boolean did_something_super = super.process();
-        
+
         //System.out.println("Processing in GameController subclass");
         boolean did_something_chatbox = chatbox_.processQueue();
-        if(!did_something_super && !did_something_chatbox && stringQueue_.isEmpty()) {
-             takeTurnandPrintTurn(Key_Commands.DO_ABSOLUTELY_NOTHING);
+        if (!did_something_super && !did_something_chatbox && stringQueue_.isEmpty()) {
+            takeTurnandPrintTurn(Key_Commands.DO_ABSOLUTELY_NOTHING);
             return false;
         }
         while (!stringQueue_.isEmpty()) {

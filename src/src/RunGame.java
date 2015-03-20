@@ -54,7 +54,7 @@ public class RunGame {
     public static void setUseInternet(boolean b) {
         use_internet = b;
     }
-    
+
     public static boolean getUseTCP() {
         return RunGame.use_TCP;
     }
@@ -102,13 +102,20 @@ public class RunGame {
 
     private static int startMapEditor() {
         initialize(); // Initialize any data we need to before loading
-        new Thread(new Runnable() {
+        /*new Thread(new Runnable() {
 
-            @Override
-            public void run() {
-                uc_ = new MapEditorController(map_); // Begin the avatarcontroller loop
-            }
-        }).start();
+         @Override
+         public void run() {
+         uc_ = new MapEditorController(map_); // Begin the avatarcontroller loop
+         }
+         }).start();*/
+        uc_ = new MapEditorController(map_);
+        /* Documentation: public void run()
+         When an object implementing interface Runnable is used to create a thread, 
+         starting the thread causes the object's run method to be called 
+         in that separately executing thread.
+         */
+        uc_.run();
         return 0;
     }
 
@@ -134,7 +141,6 @@ public class RunGame {
         // map_.addAsAvatar(buddy, 3, 0);
         map_.addAsKnight(buddy, 3, 0); // buddy can jump over entities!
         map_.addAsFlying(buddy, 4, 0); // buddy can jump over entities!
-        
 
         Villager villager1 = new Villager("villager1", '☺');
         villager1.getStatsPack().increaseQuantityOfExperienceBy(200);
@@ -151,7 +157,7 @@ public class RunGame {
         Item onehandedsword = new OneHandedSword("Excalibur", '|');
         Item twohandedsword = new TwoHandedSword("Two_hander", '|');
         Item shield = new Shield("Shieldy", 'O');
-        shield.getStatsPack().addOn(new DrawableThingStatsPack(0,10));
+        shield.getStatsPack().addOn(new DrawableThingStatsPack(0, 10));
         OneShotAreaEffectItem heal = new OneShotAreaEffectItem("healer", 'h', Effect.HEAL, 10);
         OneShotAreaEffectItem hurt = new OneShotAreaEffectItem("hurter", 'u', Effect.HURT, 10);
         OneShotAreaEffectItem kill = new OneShotAreaEffectItem("killer", 'k', Effect.KILL, 10);
@@ -159,10 +165,9 @@ public class RunGame {
 
         KnightsSerum knight_serum = new KnightsSerum("Knight serum", 'N');
         map_.addItem(knight_serum, 18, 12);
-        
+
         FlyingSerum flying_serum = new FlyingSerum("Flying Serum", 'F');
         map_.addItem(flying_serum, 14, 12);
-        
 
         ObstacleRemovingItem key = new ObstacleRemovingItem("Key", 'K');
         TemporaryObstacleItem door = new TemporaryObstacleItem("Door", 'D', key);
@@ -226,14 +231,17 @@ public class RunGame {
     }
 
     private static void startGame() {
-        new Thread(new Runnable() {
+        /*
+         new Thread(new Runnable() {
 
-            @Override
-            public void run() {
-                uc_ = new GameController(map_, avatar_.name_);
-            }
-        }).start();
-
+         @Override
+         public void run() {
+         uc_ = new GameController(map_, avatar_.name_);
+         }
+         }).start();*/
+        uc_ = new GameController(map_, avatar_.name_);
+        uc_.run();
+        // starting the thread [with run] causes the object's run method to be called in that separately executing thread.
     }
 
     public static void saveGameToDisk(String foo) {
@@ -241,7 +249,6 @@ public class RunGame {
     }
 
     // </editor-fold>
-
     // <editor-fold desc="UTILITIES" defaultstate="collapsed">
     // Error date format for the errOut(Exception) write
     private static SimpleDateFormat errDateFormat_ = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
@@ -374,9 +381,11 @@ public class RunGame {
         if (pOpts_.lsg_flag) {
             Map tmp_map = SavedGame.loadGame(args[pOpts_.lsg_path]); // attempt to load the saved game
             if (tmp_map == null) // if the load has failed, log that
+            {
                 RunGame.errOut("MAIN: Could not load map from: " + args[pOpts_.lsg_path]);
-            else
+            } else {
                 map_ = tmp_map; // otherwise, apply the loaded map
+            }
         }
         if (pOpts_.editor_flag) {
             map_editor_mode_ = true;

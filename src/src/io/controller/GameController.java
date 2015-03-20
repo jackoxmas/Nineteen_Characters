@@ -231,6 +231,7 @@ public class GameController extends Controller implements Runnable {
             });
         }
         // Auto focus on chatbox
+        /*
         if ((to_return != null && to_return.strings_for_communication_ != null && !to_return.strings_for_communication_.isEmpty())
                 && (command == Key_Commands.MOVE_DOWN || command == Key_Commands.MOVE_DOWNLEFT
                 || command == Key_Commands.MOVE_DOWNRIGHT || command == Key_Commands.MOVE_LEFT
@@ -242,7 +243,7 @@ public class GameController extends Controller implements Runnable {
                     Display.getDisplay().requestOutBoxFocus();
                 }
             });
-        }
+        }*/
         return to_return;
     }
 

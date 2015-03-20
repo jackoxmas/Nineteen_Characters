@@ -90,25 +90,12 @@ public class GameController extends Controller {
 
             }
 
-            @Override
-            public void sendInterrupt() {
-                System.out.println("GameController.sendInterrupt @Override in QueueCommandInterface<Character> was called");
-                GameController.this.sendInterrupt();
-
-            }
 
         }
 
         @Override
         public void enqueue(String command) {
             commandQueue_.add(command);
-        }
-
-        @Override
-        public void sendInterrupt() {
-            System.out.println("GameController.sendInterrupt @Override in ConcurrentLinkedQueue<String> was called");
-            GameController.this.sendInterrupt();
-
         }
 
         /**
@@ -152,10 +139,6 @@ public class GameController extends Controller {
 
             }
 
-            @Override
-            public void sendInterrupt() {
-                GameController.this.sendInterrupt();
-            }
 
         });
         takeTurnandPrintTurn('5');//For some reason need to take a empty turn for fonts to load...

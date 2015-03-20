@@ -49,12 +49,6 @@ public class MapEditorController extends Controller implements Runnable {
 				}
 			}
 
-			@Override
-			public void sendInterrupt() {
-                            System.out.println("MapEditorController.sendInterrupt() in QueueCommandInterface<String> was called");
-				MapEditorController.this.sendInterrupt();
-				
-			}
 		});
 		
 		Display.getDisplay().addInputBoxTextEnteredFunction(new QueueCommandInterface<String>() {
@@ -65,11 +59,6 @@ public class MapEditorController extends Controller implements Runnable {
 				
 			}
 
-			@Override
-			public void sendInterrupt() {
-				MapEditorController.this.sendInterrupt();
-				
-			}
 			
 		});
 	}

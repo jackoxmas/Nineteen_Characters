@@ -45,11 +45,6 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
                 keyCommandQueue_.add(command);
             }
 
-            @Override
-            public void sendInterrupt() {
-                System.out.println("Controller.sendInterrupt() @Override QueueCommandInterface<Key_Commands>() was called.");
-                Controller.this.sendInterrupt();
-            }
         });
         Display.getDisplay().addGameInputerHandler(this);
         Display.getDisplay().setView(currentView_);
@@ -166,21 +161,7 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
     public void enqueue(Character c) {
         characterQueue_.add(c);
     }
-    int count = 0;
 
-    @Override
-    public void sendInterrupt() {
-        ++count;
-        try {
-            System.out.println("Interuppting!" + count);
-            // controllerThread_.interrupt();
-        } catch (Exception e) {
-            System.err.println("Failed to interupt thread for input...Controller");
-            e.printStackTrace();
-        }
-        System.out.println("Ent interrupt");
-
-    }
 
     /**
      * Should be overridden to save the file with the name given, if no name

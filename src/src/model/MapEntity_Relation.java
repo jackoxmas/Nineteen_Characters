@@ -12,6 +12,7 @@ import src.Effect;
 import src.FacingDirection;
 import src.io.view.display.Display;
 import src.model.constructs.Avatar;
+import src.model.constructs.DrawableThing;
 import src.model.constructs.Entity;
 import src.model.constructs.Merchant;
 import src.model.constructs.Monster;
@@ -28,7 +29,6 @@ import src.model.constructs.items.Trap;
 public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     //<editor-fold desc="Non-static fields" defaultstate="collapsed">
-
     private final Entity entity_;
     private final int x_respawn_point_;
     private final int y_respawn_point_;
@@ -48,7 +48,6 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     //</editor-fold>
     //<editor-fold desc="Accessors" defaultstate="collapsed">
-
     protected Entity getEntity() {
         return entity_;
     }
@@ -63,7 +62,6 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     //</editor-fold> 
     //<editor-fold desc="MapEntity Methods" defaultstate="collapsed">
-
     /**
      * @author John-Michael Reed
      * @return -1 if no item can be dropped (inventory empty)
@@ -96,6 +94,26 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
     public void becomeFlyingRelation() {
         entity_.setMapRelation(new MapFlying_Relation(super.getMap(),
                 this.entity_, this.x_respawn_point_, this.y_respawn_point_));
+    }
+
+    /**
+     * Gets positive distance between entity_ [owner of this relation] and 
+     * a DrawableThing if that DrawableThing has a valid map relation.
+     * @param drawable - Drawable that my entity_ wants to measure its distance from.
+     * @return -1 on failure [drawable has no map relation], 0 or greater on success.
+     */
+    public double measureDistanceTowardDrawable(DrawableThing drawable) {
+        if (drawable.getMapRelation() == null) {
+            return -1; // This thing cannot have its position ascertained without a map relation.
+        }
+        final int drawables_x = drawable.getMapRelation().getMyXCoordinate();
+        final int drawables_y = drawable.getMapRelation().getMyYCoordinate();
+        final int my_x = this.getMyXCoordinate();
+        final int my_y = this.getMyYCoordinate();
+        final double x_distance = Math.abs(drawables_x - my_x);
+        final double y_distance = Math.abs(drawables_y - my_y);
+        final double pythagoras_distance = Math.sqrt(Math.pow(x_distance, 2) + Math.pow(y_distance, 2));
+        return pythagoras_distance;
     }
 
     /**
@@ -237,6 +255,27 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             System.exit(-1); // Impossible
         }
         return super.pushEntityInDirection(entity_, x, y);
+    }
+
+    /**
+     * Moves entity_ [owner of this relation] towards a DrawableThing if it has
+     * a valid map relation.
+     *
+     * @param drawable - Thing that entity wants to move toward.
+     * @return -1 on failure [drawable has no map relation or path is blocked],
+     * 0 on success [move occured]
+     */
+    public int moveTowardDrawable(DrawableThing drawable) {
+        if (drawable.getMapRelation() == null) {
+            return -1; // This thing cannot have its position ascertained without a map relation.
+        }
+        final int drawables_x = drawable.getMapRelation().getMyXCoordinate();
+        final int drawables_y = drawable.getMapRelation().getMyYCoordinate();
+        final int my_x = this.getMyXCoordinate();
+        final int my_y = this.getMyYCoordinate();
+        final int delta_x = drawables_x - my_x;
+        final int delta_y = drawables_y - my_y;
+        return this.moveInDirection(delta_x, delta_y);
     }
 
     /**

@@ -204,22 +204,36 @@ public class IO_Bundle implements Serializable {
 
     public ArrayList<String> getSkillNames() {
         ArrayList<String> result = new ArrayList<String>();
-        result.add(occupation_.getSkillNameFromNumber(1));
-        result.add(occupation_.getSkillNameFromNumber(2));
-        result.add(occupation_.getSkillNameFromNumber(3));
-        result.add(occupation_.getSkillNameFromNumber(4));
-        result.add(0, "bind_wounds_");
-        result.add(0, "bargain_");
-        result.add(0, "observation_");
+        if (occupation_ != null) {
+            result.add(occupation_.getSkillNameFromNumber(1));
+            result.add(occupation_.getSkillNameFromNumber(2));
+            result.add(occupation_.getSkillNameFromNumber(3));
+            result.add(occupation_.getSkillNameFromNumber(4));
+        } else {
+            result.add("Special skill 1");
+            result.add("Special skill 2");
+            result.add("Special skill 3");
+            result.add("Special skill 4");
+        }
+        result.add(0, "Bind Wounds");
+        result.add(0, "Bargain");
+        result.add(0, "Observation");
         return result;
     }
 
     public ArrayList<Integer> getSkillLevels() {
         ArrayList<Integer> result = new ArrayList<Integer>();
-        result.add(occupation_.getSkill_1_());
-        result.add(occupation_.getSkill_2_());
-        result.add(occupation_.getSkill_3_());
-        result.add(occupation_.getSkill_4_());
+        if (occupation_ != null) {
+            result.add(occupation_.getSkill_1_());
+            result.add(occupation_.getSkill_2_());
+            result.add(occupation_.getSkill_3_());
+            result.add(occupation_.getSkill_4_());
+        } else {
+            result.add(0);
+            result.add(0);
+            result.add(0);
+            result.add(0);
+        }
         result.add(0, bind_wounds_);
         result.add(0, bargain_);
         result.add(0, observation_);

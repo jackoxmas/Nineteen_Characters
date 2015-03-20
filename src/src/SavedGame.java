@@ -38,7 +38,7 @@ public class SavedGame {
      * is modified. The version number 0 is reserved. This value has no 
      * relation to the Java native Serialization object ID.
      */
-    public static final long SAVE_DATA_VERSION = 3;
+    public static final long SAVE_DATA_VERSION = 4;
     public static final String SAVE_EXT = ".xml";
     public static final String KEY_EXT = ".key";
     public static final char SAVE_ITERATOR_FLAG = '_';
@@ -51,7 +51,7 @@ public class SavedGame {
     private static final String XML_USERNAME = "username";
     private static final String XML_KEYMAP = "keymap";
     private static final String XML_KEY = "key";
-    private static final String XML_REMAP = "remap";
+    private static final String XML_ROOT_CONTROLLER = "remap";
     public static final String XML_MAP_MAPGRID = "map_grid";
     public static final String XML_MAP_MAPGRID_WIDTH = "width";
     public static final String XML_MAP_MAPGRID_HEIGHT = "height";
@@ -164,6 +164,68 @@ public class SavedGame {
         }
     }
 
+    public static HashMap<Character, Key_Commands> loadKeymap(String filepath) {
+        try {
+            File loadFile = validateFile(filepath, KEY_EXT);
+            if (loadFile == null)
+                throw new Exception("Could not load file");
+
+            if (!loadFile.exists()) throw new Exception("Load file does not exist");
+
+            HashMap<Character, Key_Commands> ret_kMap = new HashMap<>();
+
+            // Initialize DOM document
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(false);
+            DocumentBuilder docBuilder = dbf.newDocumentBuilder();
+            Document load = docBuilder.parse(loadFile.getAbsolutePath());
+            RunGame.dbgOut("XML Key file loaded from: " + loadFile.getPath(), 3);
+
+            // Capture root element
+            Element root = load.getDocumentElement();
+            root.normalize();
+            RunGame.dbgOut("XML Captured document root as: " + root.getNodeName(), 4);
+
+            if (!validateDataVersion(root))
+                throw new Exception("Invalid data version");
+
+            // Load the user controller
+            NodeList ns_result = root.getElementsByTagName(XML_KEYMAP);
+            int numkeys = 0;
+            Node tmp_nRemap, tmp_nKey;
+            Character tmp_char;
+            Key_Commands tmp_cmd;
+
+            for (; numkeys < ns_result.getLength(); numkeys++) {
+                tmp_nRemap = ns_result.item(numkeys);
+                tmp_nKey = tmp_nRemap.getAttributes().getNamedItem(XML_KEY);
+                if (tmp_nKey == null
+                        || tmp_nKey.getNodeValue().length() != 1
+                        || tmp_nKey.getTextContent() == null
+                        || tmp_nKey.getTextContent().length() == 0) {
+                    RunGame.errOut("Malformed key remapping @ index = " + numkeys);
+                    continue;
+                }
+
+                tmp_char = tmp_nKey.getNodeValue().charAt(0);
+                tmp_cmd = Key_Commands.valueOf(tmp_nKey.getTextContent());
+                if (tmp_cmd == null) {
+                    RunGame.errOut("Malformed key remapping, invalid cmd @ index = " + numkeys);
+                    continue;
+                }
+
+                ret_kMap.put(tmp_char, tmp_cmd);
+                RunGame.dbgOut("Loaded mapping: " + tmp_char + " -> " + tmp_cmd.name(), 5);
+            }
+            RunGame.dbgOut("Processed " + numkeys + " key remaps.", 3);
+
+            return ret_kMap;
+        } catch (Exception e) {
+            RunGame.errOut(e, true);
+            return null;
+        }
+    }
+
     public static int saveGame(String filepath, src.model.Map map) {
         try {
             File saveFile = validateFile(filepath, SAVE_EXT);
@@ -259,11 +321,11 @@ public class SavedGame {
             e_version.appendChild(save.createTextNode(Long.toString(SAVE_DATA_VERSION)));
             root.appendChild(e_version);
 
-            Element eKeymap = save.createElement("keymap");
+            Element eKeymap = save.createElement(XML_KEYMAP);
             Element tmp_eKey;
             for (Map.Entry<Character, Key_Commands> e : remap.entrySet()) {
-                tmp_eKey = save.createElement("remap");
-                tmp_eKey.setAttribute("key", e.getKey().toString());
+                tmp_eKey = save.createElement(XML_ROOT_CONTROLLER);
+                tmp_eKey.setAttribute(XML_KEY, e.getKey().toString());
                 tmp_eKey.appendChild(save.createTextNode(e.getValue().name()));
                 eKeymap.appendChild(tmp_eKey);
                 RunGame.dbgOut("Keymap adding: <" + e.getKey().toString() + " -> " + e.getValue().name() + ">", 5);
@@ -283,6 +345,32 @@ public class SavedGame {
             RunGame.errOut(e, true);
         }
         return 0; // Return FAILURE
+    }
+
+    private static boolean validateDataVersion(Element root) {
+        // Validate save data version
+        NodeList ns_result = root.getElementsByTagName("version"); // ns_result used for node search results
+
+        // If there is no "version" tag, FAIL
+        if (ns_result.getLength() == 0) {
+            RunGame.errOut("XML Error: no save version found - cannot load");
+            return false;
+        }
+        // If there are multiple "version" tags, notify
+        else if (ns_result.getLength() > 1) {
+            RunGame.errOut("XML WARN: save file has [" + ns_result.getLength() + "] versions. Ignoring all but first.");
+        }
+
+        // Parse version number from first version tag
+        Integer v = Integer.parseInt(ns_result.item(0).getTextContent());
+        RunGame.dbgOut("XML DBG: Checking save versions. Expecting [" + SAVE_DATA_VERSION + "], got: [" + v + "].", 3);
+        // If the versions do not match, FAIL
+        if (SAVE_DATA_VERSION != v) {
+            RunGame.errOut("XML ERR: save data version mismatch. Save game cannot be loaded.");
+            return false;
+        }
+
+        return true; // Otherwise, return SUCCESS
     }
 
     /**

@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fbc16cae-2312-42a3-a657-0f99998ac22f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/SavedGame.java" afterPath="$PROJECT_DIR$/../src/src/SavedGame.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/io/controller/CommandMiniController.java" afterPath="$PROJECT_DIR$/../src/src/io/controller/CommandMiniController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/io/controller/Controller.java" afterPath="$PROJECT_DIR$/../src/src/io/controller/Controller.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="IDEA_Project.iws" />
@@ -31,18 +32,44 @@
       <file leaf-file-name="CommandMiniController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/src/io/controller/CommandMiniController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3275" max-vertical-offset="3893">
-              <caret line="230" column="0" selection-start-line="230" selection-start-column="0" selection-end-line="230" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2803" max-vertical-offset="3995">
+              <caret line="188" column="23" selection-start-line="188" selection-start-column="23" selection-end-line="188" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SavedGame.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Controller.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../src/src/io/controller/Controller.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="878" max-vertical-offset="2057">
+              <caret line="204" column="46" selection-start-line="204" selection-start-column="46" selection-end-line="204" selection-end-column="46" />
+              <folding>
+                <element signature="docComment;class#Controller#0" expanded="false" />
+                <element signature="docComment;method#process#0;class#Controller#0" expanded="false" />
+                <element signature="method#process#0;class#Controller#0" expanded="false" />
+                <element signature="method#takeTurnandPrintTurn#0;class#Controller#0" expanded="false" />
+                <element signature="docComment;method#getRemap#0;class#Controller#0" expanded="false" />
+                <element signature="method#getRemap#0;class#Controller#0" expanded="false" />
+                <element signature="docComment;method#setRemap#0;class#Controller#0" expanded="false" />
+                <element signature="method#setRemap#0;class#Controller#0" expanded="false" />
+                <element signature="docComment;method#updateDisplay#0;class#Controller#0" expanded="false" />
+                <element signature="method#updateDisplay#0;class#Controller#0" expanded="false" />
+                <element signature="method#sendInterrupt#0;class#Controller#0" expanded="false" />
+                <element signature="docComment;method#saveGame#0;class#Controller#0" expanded="false" />
+                <element signature="e#5706#5707#0" expanded="true" />
+                <element signature="e#5769#5770#0" expanded="true" />
+                <element signature="docComment;method#loadGame#0;class#Controller#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SavedGame.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/src/SavedGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2694215" vertical-offset="1384" max-vertical-offset="5848">
-              <caret line="167" column="13" selection-start-line="167" selection-start-column="13" selection-end-line="167" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1384" max-vertical-offset="5848">
+              <caret line="168" column="60" selection-start-line="168" selection-start-column="60" selection-end-line="168" selection-end-column="60" />
               <folding>
                 <element signature="docComment;class#SavedGame#0" expanded="false" />
                 <element signature="docComment;field#SAVE_DATA_VERSION#0;class#SavedGame#0" expanded="false" />
@@ -72,11 +99,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MapInternet.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MapInternet.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../src/src/model/MapInternet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="4862">
-              <caret line="79" column="34" selection-start-line="79" selection-start-column="34" selection-end-line="79" selection-end-column="34" />
+            <state vertical-scroll-proportion="0.47768596" vertical-offset="272" max-vertical-offset="4862">
+              <caret line="90" column="36" selection-start-line="90" selection-start-column="36" selection-end-line="90" selection-end-column="36" />
               <folding>
                 <element signature="docComment;class#MapInternet#0" expanded="false" />
                 <element signature="method#MapInternet#0;class#MapInternet#0" expanded="false" />
@@ -150,12 +177,12 @@
         <option value="$PROJECT_DIR$/../src/src/model/map/constructs/Avatar.java" />
         <option value="$PROJECT_DIR$/../src/src/model/map/Map.java" />
         <option value="$PROJECT_DIR$/../src/src/model/Map.java" />
-        <option value="$PROJECT_DIR$/../src/src/io/controller/Controller.java" />
         <option value="$PROJECT_DIR$/../src/src/io/controller/GameController.java" />
-        <option value="$PROJECT_DIR$/../src/src/io/controller/CommandMiniController.java" />
         <option value="$PROJECT_DIR$/../src/src/model/MapInternet.java" />
         <option value="$PROJECT_DIR$/../src/src/RunGame.java" />
         <option value="$PROJECT_DIR$/../src/src/SavedGame.java" />
+        <option value="$PROJECT_DIR$/../src/src/io/controller/CommandMiniController.java" />
+        <option value="$PROJECT_DIR$/../src/src/io/controller/Controller.java" />
       </list>
     </option>
   </component>
@@ -235,6 +262,54 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IDEA_Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NCR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IDEA_Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NCR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controller" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -580,7 +655,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.1637931" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="601" y="228" width="163" height="281" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.1637931" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="601" y="228" width="163" height="281" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3276923" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29648608" sideWeight="0.48297215" order="4" side_tool="false" content_ui="combo" />
@@ -908,10 +983,63 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/Key_Commands.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.47579297" vertical-offset="0" max-vertical-offset="645">
+          <caret line="23" column="65" selection-start-line="23" selection-start-column="65" selection-end-line="23" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/io/controller/KeyRemapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2754591" vertical-offset="120" max-vertical-offset="870">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/io/controller/GameController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5993322" vertical-offset="3526" max-vertical-offset="4230">
+          <caret line="296" column="38" selection-start-line="296" selection-start-column="38" selection-end-line="296" selection-end-column="38" />
+          <folding>
+            <element signature="docComment;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#processCommandAndDisplayOutput#0;class#ChatBoxMiniController#0;class#GameController#0" expanded="false" />
+            <element signature="e#9252#9253#0" expanded="true" />
+            <element signature="docComment;method#updateViewsAndMap#0;class#GameController#0" expanded="false" />
+            <element signature="method#process#0;class#GameController#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/SavedGame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1384" max-vertical-offset="5848">
+          <caret line="168" column="60" selection-start-line="168" selection-start-column="60" selection-end-line="168" selection-end-column="60" />
+          <folding>
+            <element signature="docComment;class#SavedGame#0" expanded="false" />
+            <element signature="docComment;field#SAVE_DATA_VERSION#0;class#SavedGame#0" expanded="false" />
+            <element signature="docComment;method#autoGen#0;class#SavedGame#0" expanded="false" />
+            <element signature="method#autoGen#0;class#SavedGame#0" expanded="false" />
+            <element signature="e#3145#3254#0" expanded="false" />
+            <element signature="e#4200#4240#0" expanded="false" />
+            <element signature="e#5998#6027#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/io/controller/CommandMiniController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2803" max-vertical-offset="3995">
+          <caret line="188" column="23" selection-start-line="188" selection-start-column="23" selection-end-line="188" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/io/controller/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1291" max-vertical-offset="1890">
-          <caret line="202" column="32" selection-start-line="202" selection-start-column="32" selection-end-line="202" selection-end-column="32" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1439" max-vertical-offset="2057">
+          <caret line="204" column="46" selection-start-line="204" selection-start-column="46" selection-end-line="204" selection-end-column="46" />
           <folding>
             <element signature="docComment;class#Controller#0" expanded="false" />
             <element signature="docComment;method#process#0;class#Controller#0" expanded="false" />
@@ -925,51 +1053,9 @@
             <element signature="method#updateDisplay#0;class#Controller#0" expanded="false" />
             <element signature="method#sendInterrupt#0;class#Controller#0" expanded="false" />
             <element signature="docComment;method#saveGame#0;class#Controller#0" expanded="false" />
+            <element signature="e#5706#5707#0" expanded="true" />
+            <element signature="e#5769#5770#0" expanded="true" />
             <element signature="docComment;method#loadGame#0;class#Controller#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/Key_Commands.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47579297" vertical-offset="0" max-vertical-offset="645">
-          <caret line="23" column="65" selection-start-line="23" selection-start-column="65" selection-end-line="23" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/io/controller/KeyRemapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2754591" vertical-offset="120" max-vertical-offset="870">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/io/controller/GameController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5993322" vertical-offset="3526" max-vertical-offset="4230">
-          <caret line="296" column="38" selection-start-line="296" selection-start-column="38" selection-end-line="296" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/model/MapInternet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="4862">
-          <caret line="79" column="34" selection-start-line="79" selection-start-column="34" selection-end-line="79" selection-end-column="34" />
-          <folding>
-            <element signature="docComment;class#MapInternet#0" expanded="false" />
-            <element signature="method#MapInternet#0;class#MapInternet#0" expanded="false" />
-            <element signature="method#MapInternet#1;class#MapInternet#0" expanded="false" />
-            <element signature="method#run#0;class#MapInternet#0" expanded="false" />
-            <element signature="e#5036#5077#0" expanded="false" />
-            <element signature="e#6628#6664#0" expanded="false" />
-            <element signature="e#10551#10637#0" expanded="true" />
-            <element signature="class#TCP_Connection_Maker#0;class#MapInternet#0" expanded="false" />
-            <element signature="method#run#0;class#TCP_Connection_Maker#0;class#MapInternet#0" expanded="false" />
-            <element signature="method#seeLastControlledName#0;class#Packet_Sender#0;class#MapInternet#0" expanded="false" />
-            <element signature="method#closeAndNullifyConnection#0;class#Packet_Sender#0;class#MapInternet#0" expanded="false" />
-            <element signature="method#closeAndNullifyObjectOutputStream#0;class#Packet_Sender#0;class#MapInternet#0" expanded="false" />
-            <element signature="method#setBundleAvatarAndInterrupt#0;class#Packet_Sender#0;class#MapInternet#0" expanded="false" />
-            <element signature="method#Packet_Sender#0;class#Packet_Sender#0;class#MapInternet#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -988,26 +1074,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/io/controller/CommandMiniController.java">
+    <entry file="file://$PROJECT_DIR$/../src/src/model/MapInternet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3893" max-vertical-offset="3995">
-          <caret line="230" column="0" selection-start-line="230" selection-start-column="0" selection-end-line="230" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/SavedGame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2694215" vertical-offset="1384" max-vertical-offset="5848">
-          <caret line="167" column="13" selection-start-line="167" selection-start-column="13" selection-end-line="167" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.47768596" vertical-offset="272" max-vertical-offset="4862">
+          <caret line="90" column="36" selection-start-line="90" selection-start-column="36" selection-end-line="90" selection-end-column="36" />
           <folding>
-            <element signature="docComment;class#SavedGame#0" expanded="false" />
-            <element signature="docComment;field#SAVE_DATA_VERSION#0;class#SavedGame#0" expanded="false" />
-            <element signature="docComment;method#autoGen#0;class#SavedGame#0" expanded="false" />
-            <element signature="method#autoGen#0;class#SavedGame#0" expanded="false" />
-            <element signature="e#3145#3254#0" expanded="false" />
-            <element signature="e#4200#4240#0" expanded="false" />
-            <element signature="e#5998#6027#0" expanded="false" />
+            <element signature="docComment;class#MapInternet#0" expanded="false" />
+            <element signature="method#MapInternet#0;class#MapInternet#0" expanded="false" />
+            <element signature="method#MapInternet#1;class#MapInternet#0" expanded="false" />
+            <element signature="method#run#0;class#MapInternet#0" expanded="false" />
+            <element signature="e#5036#5077#0" expanded="false" />
+            <element signature="e#6628#6664#0" expanded="false" />
+            <element signature="e#10551#10637#0" expanded="true" />
+            <element signature="class#TCP_Connection_Maker#0;class#MapInternet#0" expanded="false" />
+            <element signature="method#run#0;class#TCP_Connection_Maker#0;class#MapInternet#0" expanded="false" />
+            <element signature="method#seeLastControlledName#0;class#Packet_Sender#0;class#MapInternet#0" expanded="false" />
+            <element signature="method#closeAndNullifyConnection#0;class#Packet_Sender#0;class#MapInternet#0" expanded="false" />
+            <element signature="method#closeAndNullifyObjectOutputStream#0;class#Packet_Sender#0;class#MapInternet#0" expanded="false" />
+            <element signature="method#setBundleAvatarAndInterrupt#0;class#Packet_Sender#0;class#MapInternet#0" expanded="false" />
+            <element signature="method#Packet_Sender#0;class#Packet_Sender#0;class#MapInternet#0" expanded="false" />
           </folding>
         </state>
       </provider>

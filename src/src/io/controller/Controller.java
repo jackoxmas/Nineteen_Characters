@@ -3,10 +3,7 @@ package src.io.controller;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import src.IO_Bundle;
-import src.Key_Commands;
-import src.QueueCommandInterface;
-import src.SavedGame;
+import src.*;
 import src.io.view.Viewport;
 import src.io.view.display.Display;
 
@@ -208,6 +205,8 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
     public abstract void loadGame(String foo);
 
     public void loadKeys(String filepath) {
-        // TODO: Implement this
+        HashMap<Character, Key_Commands> newmap = SavedGame.loadKeymap(filepath);
+        if (newmap != null)
+            remap_.setMap(newmap);
     }
 }

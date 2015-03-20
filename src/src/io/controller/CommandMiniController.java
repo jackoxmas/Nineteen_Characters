@@ -182,9 +182,15 @@ class CommandMiniController {
         return "Loaded " + foo;
     }
 
-    private String processLoadControls(String[] foo) {
-        // TODO Auto-generated method stub
-        return "Not implemented yet";
+    private String processLoadControls(String[] words) {
+        RunGame.dbgOut("FUNC: processLoadControls()", 3);
+
+        if (words.length >= 2) {
+            cont_.loadKeys(words[1]);
+            return "Load Controls: " + words[1];
+        } else {
+            return "You must specify a key file to load.";
+        }
     }
 
     private String processSaveControls(String[] words) {

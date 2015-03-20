@@ -8,6 +8,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -29,8 +30,6 @@ import org.w3c.dom.*;
  * @author Alex Stewart
  */
 public class SavedGame {
-    private String file_path_ = null;
-    private ArrayList<String> array_list;
 
     public static final SimpleDateFormat SAVE_DATE_FORMAT = new SimpleDateFormat("yyMMdd");
     /**
@@ -41,8 +40,8 @@ public class SavedGame {
      */
     public static final long SAVE_DATA_VERSION = 3;
     public static final String SAVE_EXT = ".xml";
+    public static final String KEY_EXT = ".key";
     public static final char SAVE_ITERATOR_FLAG = '_';
-    private static final String SAVE_EOF_STRING = "///END OF FILE///";
     // SAVE FILE FORMAT: yyMMdd_<number>.sav
 
     // XML node names
@@ -57,19 +56,17 @@ public class SavedGame {
     public static final String XML_MAP_MAPGRID_WIDTH = "width";
     public static final String XML_MAP_MAPGRID_HEIGHT = "height";
     public static final String XML_MAP_TIME = "time";
-    
-    public SavedGame(String filePath) {
-        file_path_ = filePath;
-    }
 
-    public src.model.Map loadGame() {//UserController controller) {
+    public static src.model.Map loadGame(String filepath) {//UserController controller) {
         try {
+            File saveFile = null; // TODO: VALIDATE THIS
+
             // Initialize DOM document
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             dbf.setNamespaceAware(false);
             DocumentBuilder docBuilder = dbf.newDocumentBuilder();
-            Document load = docBuilder.parse(new File(file_path_));
-            RunGame.dbgOut("XML file loaded from: " + file_path_, 3);
+            Document load = docBuilder.parse(saveFile);
+            RunGame.dbgOut("XML file loaded from: " + saveFile.getPath(), 3);
 
             Element root = load.getDocumentElement();
             root.normalize();
@@ -119,8 +116,52 @@ public class SavedGame {
         }
     }
 
-    public int saveGame(src.model.Map map) {
+    /**
+     * Generates a new SavedGame object with the file path set to the next available save game file path in the current
+     * working directory.
+     * @return The new SavedGame object
+     */
+    public static SavedGame newSavedGame() {
+        String pwd = System.getProperty("user.dir"); // get the current working directory
+        return newSavedGame(pwd);
+    }
+
+    public static SavedGame newSavedGame(String directory) {
+        RunGame.dbgOut("New save game requested for dir: " + directory);
+        String date = SAVE_DATE_FORMAT.format(new Date()); // get the current date string
+
+        // Search the current directory for existing saves and keep an iterator to append the save name with a unique
+        // ID for this day.
+        int iterator = 1;
         try {
+            File dir = new File(System.getProperty("user.dir"));
+            File[] files = dir.listFiles();
+            String s_buff;
+
+            int i_buff;
+            for (File f : files) { // Search files in directory
+                if (f.getName().endsWith(SavedGame.SAVE_EXT)) { // for save files...
+                    s_buff = f.getName(); // temporarily store the filename
+                    if(!s_buff.startsWith(date))
+                        continue; // if the save isn't from this date, ignore it
+                    s_buff = s_buff.substring(s_buff.lastIndexOf('_') + 1, s_buff.lastIndexOf(".")); // otherwise, get the ID
+                    i_buff = Integer.parseInt(s_buff);
+                    if (i_buff >= iterator) iterator = i_buff + 1; // ensure that the iterator is always ahead by 1
+                }
+            }
+        } catch (Exception e) {
+            RunGame.errOut(e);
+        }
+        // iterator is now the correct unique ID
+        // ready to construct path
+        String path = date + SAVE_ITERATOR_FLAG + iterator + SAVE_EXT;
+        return null;
+    }
+
+    public static int saveGame(String filepath, src.model.Map map) {
+        try {
+            File saveFile = null; //TODO: VALIDATE THIS
+
             // open or create the save file
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             dbf.setNamespaceAware(false);
@@ -162,56 +203,17 @@ public class SavedGame {
             // write the content into xml file
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             DOMSource source = new DOMSource(save);
-            StreamResult result = new StreamResult(new File(file_path_));
+            StreamResult result = new StreamResult(saveFile);
             transformer.transform(source, result); // actually write the XML to the file
 
         } catch (Exception e) {
             RunGame.errOut(e, true);
         }
 
-    	return 0;
+        return 0;
     }
 
-
-    /**
-     * Generates a new SavedGame object with the file path set to the next available save game file path in the current
-     * working directory.
-     * @return The new SavedGame object
-     */
-    public static SavedGame newSavedGame() {
-        String pwd = System.getProperty("user.dir"); // get the current working directory
-        return newSavedGame(pwd);
-    }
-
-    public static SavedGame newSavedGame(String directory) {
-        RunGame.dbgOut("New save game requested for dir: " + directory);
-        String date = SAVE_DATE_FORMAT.format(new Date()); // get the current date string
-
-        // Search the current directory for existing saves and keep an iterator to append the save name with a unique
-        // ID for this day.
-        int iterator = 1;
-        try {
-            File dir = new File(System.getProperty("user.dir"));
-            File[] files = dir.listFiles();
-            String s_buff;
-
-            int i_buff;
-            for (File f : files) { // Search files in directory
-                if (f.getName().endsWith(SavedGame.SAVE_EXT)) { // for save files...
-                    s_buff = f.getName(); // temporarily store the filename
-                    if(!s_buff.startsWith(date))
-                        continue; // if the save isn't from this date, ignore it
-                    s_buff = s_buff.substring(s_buff.lastIndexOf('_') + 1, s_buff.lastIndexOf(".")); // otherwise, get the ID
-                    i_buff = Integer.parseInt(s_buff);
-                    if (i_buff >= iterator) iterator = i_buff + 1; // ensure that the iterator is always ahead by 1
-                }
-            }
-        } catch (Exception e) {
-            RunGame.errOut(e);
-        }
-        // iterator is now the correct unique ID
-        // ready to construct path
-        String path = date + SAVE_ITERATOR_FLAG + iterator + SAVE_EXT;
-        return new SavedGame(path);
+    public static int saveKeymap(String filepath, HashMap<Character, Key_Commands> remap) {
+        return 0; // Return FAILURE
     }
 }

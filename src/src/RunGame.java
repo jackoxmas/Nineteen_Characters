@@ -36,7 +36,6 @@ import src.model.constructs.items.TwoHandedSword;
 public class RunGame {
 
     private static ProgramOpts pOpts_ = null;
-    private static SavedGame saveGame_;
     private static Avatar avatar_;
     private static Map map_;
     private static Controller uc_;
@@ -122,9 +121,6 @@ public class RunGame {
     }
 
     private static void initialize() {
-        if (saveGame_ == null) {
-            saveGame_ = SavedGame.newSavedGame();
-        }
         map_ = new Map(mapWidth_, mapHeight_);
 
     }
@@ -240,10 +236,7 @@ public class RunGame {
     }
 
     public static void saveGameToDisk(String foo) {
-        if (saveGame_ == null) {
-            saveGame_ = SavedGame.newSavedGame();
-        }
-        saveGame_.saveGame(map_);
+        SavedGame.saveGame(foo, map_); // save game to file "foo"
     }
 
     // </editor-fold>
@@ -376,18 +369,11 @@ public class RunGame {
             dbgOut("ARGS: debug mode enabled at level: " + pOpts_.dbg_level, 2);
         }
         if (pOpts_.lsg_flag) {
-            saveGame_ = new SavedGame(args[pOpts_.lsg_path]);
-            Exception e = null;
-
-            //int s = saveGame_.loadFile(mmr_, e);
-            /*
-             if (s == 0) { // the saved game load has failed
-             errOut(e);  // print out error
-             if (startNewGame() == 0) {
-             errOut(e);
-             exitGame();
-             }
-             }*/
+            Map tmp_map = SavedGame.loadGame(args[pOpts_.lsg_path]); // attempt to load the saved game
+            if (tmp_map == null) // if the load has failed, log that
+                RunGame.errOut("MAIN: Could not load map from: " + args[pOpts_.lsg_path]);
+            else
+                map_ = tmp_map; // otherwise, apply the loaded map
         }
         if (pOpts_.editor_flag) {
             map_editor_mode_ = true;

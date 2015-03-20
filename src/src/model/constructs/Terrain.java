@@ -29,6 +29,9 @@ public class Terrain extends DrawableThing {
     private boolean contains_mountain_;
 
     private char decal_ = '\u0000'; // null character
+    private Character tempDecal_ = null;
+    private Color tempColor_ = null;
+    private int tempTurnCount_ = -1;
     /**
      * Sets Terrain's decal. and color.
      * @param decal, Color col_
@@ -36,6 +39,12 @@ public class Terrain extends DrawableThing {
     public void addDecal(char decal,Color col_) {
         this.setColor(col_);
         this.addDecal(decal);
+    }
+    public void addTempDecal(char decal, Color col_, int turns){
+    	tempTurnCount_ =  turns;
+    	tempColor_ = col_;
+    	tempDecal_ = decal;
+    	
     }
     /**
      * Sets Terrain's decal
@@ -45,7 +54,9 @@ public class Terrain extends DrawableThing {
         decal_ = decal;
     }
     public char getDecal() {
-    	return decal_;
+    	if(tempDecal_ == null){
+    		return decal_;
+    	}else{return tempDecal_;}
     }
     
     /**
@@ -53,6 +64,7 @@ public class Terrain extends DrawableThing {
      * @return true if terrain has decal. False if not.
      */
     public boolean hasDecal() {
+    	if(tempDecal_ != null){return true;}
         if (decal_ == '\u0000' || decal_ == ' ') {
             return false;
         } else {
@@ -66,6 +78,9 @@ public class Terrain extends DrawableThing {
 
     public void removeDecal(char decal) {
         decal_ = ' ';
+        tempDecal_= null;
+        tempColor_ = null;
+        tempTurnCount_ = -1;
     }
 
     //potential duplicate of isPassable
@@ -82,13 +97,35 @@ public class Terrain extends DrawableThing {
      */
     @Override
     public char getRepresentation() {
-        if(!this.hasDecal()) {
-            return super.getRepresentation();
-        } else {
-            return decal_;
-        }
-    }
+    	if(!this.hasDecal()) {
+    		return super.getRepresentation();
+    	} else {
+    		if(tempDecal_ == null){
+    			return decal_;
+    		}else{return tempDecal_;}
 
+    	}
+    }
+    /**
+     * Returns the tempColor if there is one, else call super.
+     */
+    @Override
+    public Color getColor(){
+    	if(tempColor_ == null){return super.getColor();}
+    	else{return tempColor_;}
+    }
+    /**
+     * Update anything that must be updated on a per turn basis. 
+     * ATM that is the tempDecal and it's associates.
+     */
+    public void takeTurn(){
+    	--tempTurnCount_;
+    	if(tempTurnCount_ < 0){
+    		tempTurnCount_ = -1;
+    		tempColor_ = null;
+    		tempDecal_ = null;
+    	}
+    }
     @Override
     public boolean isPassable() {
         if (contains_water_ || contains_mountain_) {

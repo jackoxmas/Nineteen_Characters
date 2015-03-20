@@ -135,6 +135,18 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             return tile_at_x_y.getTopColor();
         }
     }
+    /**
+     * Returns true if the tile_at_x_y exists, and thus can take a turn, else false.
+     * @param x
+     * @param y
+     * @return
+     */
+    private boolean makeMapTileTakeTurn(int x, int y){
+    	MapTile tile_at_x_y = this.getTile(x, y);
+        if (tile_at_x_y == null) {return false;}
+        tile_at_x_y.takeTurn();
+        return true;
+    }
 
     //</editor-fold>
     //<editor-fold desc="Constructors" defaultstate="collapsed">
@@ -455,6 +467,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     } else {
                         to_recieve_command = null;
                     }
+                    if(!Key_Commands.DO_ABSOLUTELY_NOTHING.equals(command)){makeTakeTurns();}
                     passAlongCommand(to_recieve_command, command, width_from_center, height_from_center, optional_text, sender);
                     // tell each and every player to refresh their screens.
                     /*
@@ -740,7 +753,25 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         }
         return view;
     }
-
+    /**
+     * Makes a rectangular view with y coordinates in first [] of 2D array
+     *
+     * @param x_center
+     * @param y_center
+     * @param width_from_center - how much offset from the left side and the
+     * right side the view has
+     * @param height_from_center- how much horizontal offset from the center
+     * point the view has
+     * @return
+     */
+    public void makeTakeTurns() {
+        for (int y = 0; y< height_;++y) {
+            for (int x = 0; x<width_;++x) {
+                makeMapTileTakeTurn(x, y);
+            }
+        }
+        return;
+    }
     /**
      * Uses run length encoding with characters "char[] unchanged_characters"
      * and character_frequencies "int[] unchanged_indexes."
@@ -824,6 +855,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);
+                    makeTakeTurns();//Make all the maptiles take a turn.
                     IO_Bundle return_package = new IO_Bundle(
                             null, null, null, null,
                             view,

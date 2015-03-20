@@ -48,7 +48,7 @@ public class MapDrawableThing_Relation {
                 }
             }
         }
-
+        private int effectDecalDuration_ = 20;
         /**
          * For damage coming from non-entities
          * @param x_pos - x coordinate of effect
@@ -62,13 +62,13 @@ public class MapDrawableThing_Relation {
                 // If there is no decal, fuck shit up
                 if (infliction.getTerrain() != null && !infliction.getTerrain().hasDecal()) {
                     if (effect == Effect.HURT) {
-                        infliction.getTerrain().addDecal('♨',Color.magenta);
+                        infliction.getTerrain().addTempDecal('♨',Color.magenta,effectDecalDuration_);
                     } else if (effect == Effect.HEAL) {
-                        infliction.getTerrain().addDecal('♥',Color.red);
+                        infliction.getTerrain().addTempDecal('♥',Color.red,effectDecalDuration_);
                     } else if (effect == Effect.LEVEL) {
-                        infliction.getTerrain().addDecal('↑',Color.black);
+                        infliction.getTerrain().addTempDecal('↑',Color.black,effectDecalDuration_);
                     } else if (effect == Effect.KILL) {
-                        infliction.getTerrain().addDecal('☣',Color.orange);
+                        infliction.getTerrain().addTempDecal('☣',Color.orange,effectDecalDuration_);
                     }
                 }
                 Entity to_effect = infliction.getEntity();

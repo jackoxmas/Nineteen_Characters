@@ -248,7 +248,7 @@ public class MapInternet extends Thread {
         public void run() {
             try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
                 serverSocket.setPerformancePreferences(0, 1, 0);
-                while (true) {
+                while (! isInterrupted()) {
                     Socket to_accept = serverSocket.accept();
                     to_accept.setTcpNoDelay(true);
                     to_accept.setReuseAddress(true); // allow for re-connections
@@ -355,7 +355,7 @@ public class MapInternet extends Thread {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            while (true) {
+            while (! isInterrupted()) {
                 // end of resource statement beginning of execution
                 if (bundle_to_send_ == null) {
                     System.out.println("bundle_to_send_ in Map.ServerThread.run() is null");

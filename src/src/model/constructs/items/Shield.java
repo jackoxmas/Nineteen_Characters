@@ -18,7 +18,6 @@ public class Shield extends EquipableItem implements SecondaryHandHoldable, Seri
 
     public Shield(String name, char representation) {
         super(name, representation);
-        this.getStatsPack().addOn(new DrawableThingStatsPack(0,10));
     }
     public int equipMyselfTo(Entity to_equip) {
         return to_equip.equipShield(this);

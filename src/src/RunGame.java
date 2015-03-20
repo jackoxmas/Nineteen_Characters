@@ -11,6 +11,7 @@ import src.io.controller.GameController;
 import src.io.controller.MapEditorController;
 import src.model.Map;
 import src.model.constructs.Avatar;
+import src.model.constructs.DrawableThingStatsPack;
 import src.model.constructs.Merchant;
 import src.model.constructs.Monster;
 import src.model.constructs.Terrain;
@@ -150,6 +151,7 @@ public class RunGame {
         Item onehandedsword = new OneHandedSword("Excalibur", '|');
         Item twohandedsword = new TwoHandedSword("Two_hander", '|');
         Item shield = new Shield("Shieldy", 'O');
+        shield.getStatsPack().addOn(new DrawableThingStatsPack(0,10));
         OneShotAreaEffectItem heal = new OneShotAreaEffectItem("healer", 'h', Effect.HEAL, 10);
         OneShotAreaEffectItem hurt = new OneShotAreaEffectItem("hurter", 'u', Effect.HURT, 10);
         OneShotAreaEffectItem kill = new OneShotAreaEffectItem("killer", 'k', Effect.KILL, 10);

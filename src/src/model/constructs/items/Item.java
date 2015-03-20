@@ -64,7 +64,7 @@ public abstract class Item extends DrawableThing implements Serializable{
     }
 
     // map_relationship_ is used in place of a map_referance_
-    private MapItem_Relation map_relationship_;
+    private transient MapItem_Relation map_relationship_;
 
     /**
      * Use this to call functions contained within the MapItem relationship

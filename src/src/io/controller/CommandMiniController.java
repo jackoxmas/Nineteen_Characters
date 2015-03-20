@@ -39,47 +39,59 @@ class CommandMiniController {
     private static final String commandKey = "/";
 
     public String processCommand(String foo) {
-        if (!foo.startsWith(commandKey)) {
-            System.err.println("This isn't a command!");
-            return "Error in the CommandMini";
-        }
-        if (foo.startsWith(commandKey + rebind)) {
+    	//Firstly ensure we are dealing with a command.
+
+        
+    	 Scanner sc = new Scanner(foo);
+         String command = "";
+         try {
+             command = sc.next();
+             if (!command.startsWith(commandKey)) {
+                 System.err.println("This isn't a command!");
+                 return "Error in the CommandMini";
+             }
+             command = command.substring(1);//Strip the command key away now, we already checked that it exists.
+         }finally{sc.close();}
+         //invalid command send apparently, so nothing to read....
+         
+
+        if (command.equals(rebind)) {
             return this.processRebind(foo);
         }
-        if (foo.startsWith(commandKey + saveControls)) {
+        if (command.equals(saveControls)) {
             return this.processSaveControls(foo);
         }
-        if (foo.startsWith(commandKey + loadControls)) {
+        if (command.equals(loadControls)) {
             return this.processLoadControls(foo);
         }
-        if (foo.startsWith(commandKey + save)) {
+        if (command.equals(save)) {
             return this.processSave(foo);
         }
-        if (foo.startsWith(commandKey + load)) {
+        if (command.equals(load)) {
             return this.processLoad(foo);
         }
-        if (foo.startsWith(commandKey + controls)) {
+        if (command.equals(controls)) {
             return this.processCommands();
         }
-        if (foo.startsWith(commandKey + help)) {
+        if (command.equals(help)) {
             return this.processHelp();
         }
-        if (foo.startsWith(commandKey + pwd)) {
+        if (command.equals(pwd)) {
             return System.getProperty("user.dir");
         }
-        if (foo.startsWith(commandKey + "cat")) {
+        if (command.equals("cat")) {
             return "meow";
         }
-        if (foo.startsWith(commandKey + "tiger")) {
+        if (command.equals("tiger")) {
             return "ROAR!";
         }
-        if (foo.startsWith(commandKey + man)) {
+        if (command.equals(man)) {
             return this.processManCommand(foo);
         }
-        if (foo.startsWith(commandKey + bindings)) {
+        if (command.equals(bindings)) {
             return this.remap_.getBindingList();
         }
-        if (foo.startsWith(commandKey + setIP)) {
+        if (command.equals(setIP)) {
             int error_code = RunGame.internet.makeConnectionUsingIP_Address(foo.split(" ")[foo.split(" ").length - 1]);
             if (error_code == 0) {
                 return "Successfully connected to ip address: " + foo;
@@ -93,11 +105,11 @@ class CommandMiniController {
                 }
             }
         }
-        if (foo.startsWith(commandKey + setControl)) {
+        if (command.equals(setControl)) {
             return this.setControl(foo);
         }
-        if (foo.startsWith(commandKey + setTCP)) {
-            if (foo.toLowerCase().contains("n")) {
+        if (command.equals(setTCP)) {
+            if (command.toLowerCase().contains("n")) {
                 RunGame.setUseTCP(false);
                 return "TCP turned off because you said no";
             } else {

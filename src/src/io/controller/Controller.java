@@ -52,7 +52,6 @@ public abstract class Controller implements QueueCommandInterface<Character> {
             @Override
             public void sendInterrupt() {
                 System.out.println("Controller.sendInterrupt() @Override QueueCommandInterface<Key_Commands>() was called.");
-                this.sendInterrupt();
                 Controller.this.sendInterrupt();
             }
         });

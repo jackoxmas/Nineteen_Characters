@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import src.IO_Bundle;
 import src.Key_Commands;
 import src.QueueCommandInterface;
+import src.SavedGame;
 import src.io.view.Viewport;
 import src.io.view.display.Display;
 
@@ -195,6 +196,10 @@ public abstract class Controller implements QueueCommandInterface<Character> {
      */
     public abstract void saveGame(String foo);
 
+    public void saveKeys(String filepath) {
+        SavedGame.saveKeymap(filepath, remap_.getMap());
+    }
+
     /**
      * Should be overrridden to load given save file.
      *
@@ -202,4 +207,7 @@ public abstract class Controller implements QueueCommandInterface<Character> {
      */
     public abstract void loadGame(String foo);
 
+    public void loadKeys(String filepath) {
+        // TODO: Implement this
+    }
 }

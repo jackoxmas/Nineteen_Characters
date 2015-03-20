@@ -291,13 +291,11 @@ public class GameController extends Controller {
     @Override
     public void saveGame(String foo) {
         MapUserAble_.saveGame(foo);
-
     }
 
     @Override
     public void loadGame(String foo) {
         MapUserAble_.loadGame(foo);
-
     }
 
     /**
@@ -328,13 +326,4 @@ public class GameController extends Controller {
         }
         return true;
     }
-    // FIELD ACCESSORS
-    /**
-     * Gets this UserController's user name value
-     * <p>
-     * Used for saving. Loading is done through the constructor</p>
-     *
-     * @return A String object with this UserController's user name
-     * @author Alex Stewart
-     */
 }

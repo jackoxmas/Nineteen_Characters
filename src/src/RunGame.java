@@ -246,6 +246,14 @@ public class RunGame {
     // Error date format for the errOut(Exception) write
     private static SimpleDateFormat errDateFormat_ = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
 
+    /* DEBUG LEVEL GUIDELINES
+     * 1 - Basic program functionality (application functions and important checkpoints)
+     * 2 - Sublevel game and application methods (such as save/load)
+     * 3 - Sublevel key details (those which are infrequent and important)
+     * 4 - Method details which are not important except for debugging and are otherwise extraneous
+     * 5 - Iterator variables and other such information which is likely to fill up a log file if enabled
+     */
+
     /**
      * This class holds information about optional program utilities which may
      * be triggered via command line arguments. Reference {@link #parseArgs} for
@@ -288,6 +296,8 @@ public class RunGame {
     }
 
     /**
+     * <strong>DEPRECIATED! DO NOT USE!</strong>
+     *
      * Writes the provided String to the errOut stream with the prefix:
      * (DEBUG|X) where X is the debug level of the output. If the provided debug
      * level is greater (larger number) than the debug level option set in

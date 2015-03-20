@@ -46,17 +46,17 @@ class CommandMiniController {
         if (foo.startsWith(commandKey + rebind)) {
             return this.processRebind(foo);
         }
-        if (foo.startsWith(commandKey + save)) {
-            return this.processSave(foo);
-        }
-        if (foo.startsWith(commandKey + load)) {
-            return this.processLoad(foo);
-        }
         if (foo.startsWith(commandKey + saveControls)) {
             return this.processSaveControls(foo);
         }
         if (foo.startsWith(commandKey + loadControls)) {
             return this.processLoadControls(foo);
+        }
+        if (foo.startsWith(commandKey + save)) {
+            return this.processSave(foo);
+        }
+        if (foo.startsWith(commandKey + load)) {
+            return this.processLoad(foo);
         }
         if (foo.startsWith(commandKey + controls)) {
             return this.processCommands();

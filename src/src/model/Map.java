@@ -436,7 +436,9 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);
-                    makeTakeTurns();//Make all the maptiles take a turn.
+                    if(!Key_Commands.DO_ABSOLUTELY_NOTHING .equals(command)){
+                    	makeTakeTurns();//Make all the maptiles take a turn.
+                    }
                     IO_Bundle return_package = new IO_Bundle(
                             null, null, null, null,
                             view,

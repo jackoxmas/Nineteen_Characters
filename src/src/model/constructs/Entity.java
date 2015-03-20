@@ -969,7 +969,7 @@ abstract public class Entity extends DrawableThing {
      * @param damage - damage received
      * @param attacker - who the attack is coming from. Specify null if the
      * attacker is from an unreachable source i.e. the map
-     * @return true if I am still alive, false if I am dead
+     * @return true if I did not die on attack, false if I did die
      */
     public boolean receiveAttack(int damage, Entity attacker) {
         int amount_of_damage = damage - getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_();

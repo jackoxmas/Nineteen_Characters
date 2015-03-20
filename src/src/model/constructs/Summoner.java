@@ -109,17 +109,17 @@ public final class Summoner extends Occupation {
         final int cost = 1;
         System.out.println("Starting skill 2: DEBUG");
         int has_run_out_of_mana = getEntity().getStatsPack().deductCurrentManaBy(cost);
+        Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection();
         if (has_run_out_of_mana == 0) {
             if (number == 1) {
                 // influencing another's behavior [Confusion spell]
                 Random randomGenerator = new Random();
                 Boolean isConfused = randomGenerator.nextBoolean();
                 if (isConfused) {
-                    super.getEntity().receiveAttack(10, null); // hurt myself
+                    super.getEntity().receiveAttack(getSkill_1_(), null); // hurt myself by skill1
                 } else {
-                    Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection();
                     if (target != null) {
-                        target.receiveAttack(getSkill_1_() * 2 + 5, null); // hurt enemy [no attack-back]
+                        target.receiveAttack(getSkill_1_() * 2, null); // hurt enemy double [no attack-back]
                     } else {
                         // get your mana back
                         getEntity().getStatsPack().increaseCurrentManaBy(cost);
@@ -127,17 +127,15 @@ public final class Summoner extends Occupation {
                 }
             } else if (number == 2) {
                 // boon - magic that heals
-                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinLine(getSkill_2_() + 6, getSkill_2_() * 2, Effect.HURT);
-                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_2_() + 1, getSkill_2_() * 2, Effect.HEAL);
+                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinLine(getSkill_2_() + 6, getSkill_2_(), Effect.HURT);
+                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_2_() + 1, getSkill_2_(), Effect.HEAL);
             } else if (number == 3) {
                 // bane - magic that does damage or harm.
-                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinArc(getSkill_3_() + 8, 2 * getSkill_3_() * 3, Effect.HURT);
+                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinArc(getSkill_3_() + 8, 2 * getSkill_3_(), Effect.HURT);
             } else if (number == 4) {
                 // Staff attack
-                if (staff_ != null) {
-                    for (int num_attacks = 0; num_attacks <= super.getSkill_4_(); ++num_attacks) {
-                        getEntity().getMapRelation().sendAttackInFacingDirection();
-                    }
+                if (staff_ != null && target != null) {
+                        target.receiveAttack(getSkill_4_(), null); // hurt enemy [no attack-back]
                 } else {
                     // get your mana back
                     getEntity().getStatsPack().increaseCurrentManaBy(cost);

@@ -143,38 +143,33 @@ public final class Smasher extends Occupation {
     @Override
     public int performOccupationSkill(int number) {
         final int cost = 1;
+        Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection();
         if (number == 1) {
             // one-handed weapon
-            if (current_weapon == ActiveWeapon.ONE_HANDED_SWORD) {
+            if (current_weapon == ActiveWeapon.ONE_HANDED_SWORD && target != null) {
                 // Case that you have enough mana:
                 if (getEntity().getStatsPack().deductCurrentManaBy(cost) == 0) {
-                    for (int num_attacks = 0; num_attacks <= super.getSkill_1_(); ++num_attacks) {
-                        getEntity().getMapRelation().sendAttackInFacingDirection();
-                    }
+                    target.receiveAttack(getSkill_1_(), null); // hurt enemy [no attack-back]
                 } else {
                     System.out.println("Out of mana in Smasher1");
                 }
             }
         } else if (number == 2) {
             // two-handed weapon
-            if (current_weapon == ActiveWeapon.TWO_HANDED_SWORD) {
+            if (current_weapon == ActiveWeapon.TWO_HANDED_SWORD && target != null) {
                 // Case that you have enough mana:
                 if (getEntity().getStatsPack().deductCurrentManaBy(cost) == 0) {
-                    for (int num_attacks = 0; num_attacks <= super.getSkill_2_(); ++num_attacks) {
-                        getEntity().getMapRelation().sendAttackInFacingDirection();
-                    }
+                    target.receiveAttack(getSkill_2_(), null); // hurt enemy [no attack-back]
                 } else {
                     System.out.println("Out of mana in Smasher2");
                 }
             }
         } else if (number == 3) {
             // brawling 
-            if (current_weapon == ActiveWeapon.FISTS) {
+            if (current_weapon == ActiveWeapon.FISTS && target != null) {
                 // Case that you have enough mana:
                 if (getEntity().getStatsPack().deductCurrentManaBy(cost) == 0) {
-                    for (int num_attacks = 0; num_attacks <= super.getSkill_3_(); ++num_attacks) {
-                        getEntity().getMapRelation().sendAttackInFacingDirection();
-                    }
+                    target.receiveAttack(getSkill_3_(), null); // hurt enemy [no attack-back]
                 } else {
                     System.out.println("Out of mana in Smasher3");
                 }

@@ -183,12 +183,9 @@ public final class Sneak extends Occupation {
 				getEntity().setViewable(!is_visible);
 			} else if (number == 4) {
 				// Bow attack
-				if (bow_ != null) {
-					for (int num_attacks = 0; num_attacks <= super
-							.getSkill_4_(); ++num_attacks) {
-						getEntity().getMapRelation()
-								.sendAttackInFacingDirection();
-					}
+                            Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection();
+				if (bow_ != null && target != null) {
+					target.receiveAttack(getSkill_4_(), null); // hurt enemy [no attack-back]
 				}
 			}
 		} else {

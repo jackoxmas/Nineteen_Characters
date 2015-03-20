@@ -136,7 +136,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         }
         return map_grid_[y_pos][x_pos];
     }
-
     /**
      * Gets the character representation of a tile
      *
@@ -321,7 +320,25 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         }
         return view;
     }
-
+    /**
+     * Makes a rectangular view with y coordinates in first [] of 2D array
+     *
+     * @param x_center
+     * @param y_center
+     * @param width_from_center - how much offset from the left side and the
+     * right side the view has
+     * @param height_from_center- how much horizontal offset from the center
+     * point the view has
+     * @return
+     */
+    public void makeTakeTurns() {
+        for (int y = 0; y< height_;++y) {
+            for (int x = 0; x<width_;++x) {
+                // makeMapTileTakeTurn(x, y); cannot find symbol makeMapTileTakeTurn
+            }
+        }
+        return;
+    }
     /**
      * Uses run length encoding with characters "char[] unchanged_characters"
      * and character_frequencies "int[] unchanged_indexes."
@@ -405,6 +422,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);
+                    makeTakeTurns();//Make all the maptiles take a turn.
                     IO_Bundle return_package = new IO_Bundle(
                             null, null, null, null,
                             view,

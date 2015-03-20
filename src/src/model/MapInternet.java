@@ -122,6 +122,7 @@ public class MapInternet extends Thread {
                     System.out.println("Error. splitArray.length == " + splitArray.length);
                     return;
                 }
+                if(!Key_Commands.DO_ABSOLUTELY_NOTHING.equals(command)){my_owner_.makeTakeTurns();}
 
                 // add to list of addresses for mass udp.
                 // addresses_for_udp.put(unique_id, packet.getAddress());

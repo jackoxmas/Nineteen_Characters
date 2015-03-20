@@ -54,7 +54,7 @@ public class RunGame {
         use_internet = b;
     }
     
-        public static boolean getUseTCP() {
+    public static boolean getUseTCP() {
         return RunGame.use_TCP;
     }
 
@@ -239,6 +239,7 @@ public class RunGame {
     }
 
     // </editor-fold>
+
     // <editor-fold desc="UTILITIES" defaultstate="collapsed">
     // Error date format for the errOut(Exception) write
     private static SimpleDateFormat errDateFormat_ = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
@@ -252,10 +253,11 @@ public class RunGame {
 
         // Debug Mode
         String[] dbg_match = {"-d", "--debug"};
-        String[] editor_match = {"-e", "--editor"};
         boolean dbg_flag = false;
-        boolean editor_flag = false;
         int dbg_level = 1;
+
+        String[] editor_match = {"-e", "--editor"};
+        boolean editor_flag = false;
 
         // Load Saved Game
         String[] lsg_match = {"-l", "--load"}; // option flag match string
@@ -263,7 +265,7 @@ public class RunGame {
         int lsg_path = -1; // the index in args to get the path from
 
         // Redirect STDERR
-        String[] err_match = {"-e", "-err-out"};
+        String[] err_match = {"--error-out"};
         boolean err_flag = false;
         int err_path = -1;
     }
@@ -359,7 +361,7 @@ public class RunGame {
         if (pOpts_.err_flag) {
             try {
                 System.setErr(new PrintStream(args[pOpts_.err_path]));
-                dbgOut("ARGS: error out set piped to: " + pOpts_.err_path, 2);
+                dbgOut("ARGS: error out set piped to: " + args[pOpts_.err_path], 2);
             } catch (FileNotFoundException e) {
                 errOut(e);
             }

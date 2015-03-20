@@ -17,13 +17,13 @@ import java.util.Enumeration;
 import java.util.Random;
 
 import src.model.Map;
+import src.model.MapInternet;
 
 /**
- * This class is used to connect to and send stuff over the Internet.
- *
- * @author JohnReedLOL
+ * Used for sending and receiving data from a Controller [not part of Iteration 2]
+ * @author John-Michael Reed
  */
-public final class Internet {
+public final class ControllerInternet {
 
     private static InetAddress address = null;
 
@@ -31,17 +31,17 @@ public final class Internet {
     private static Socket tcp_socket_for_incoming_signals = null;
     private static ObjectInputStream object_input_stream = null;
     private static final Random rand = new Random();
-    private static final String unique_id_string = Internet.getMacAddress();
+    private static final String unique_id_string = ControllerInternet.getMacAddress();
     private static boolean isConnected = false;
     //private final String monitor_For_UDP_Sender = "";
     private final UDP_Sender_Thread sender_thread;
     private int recieved_buffer_size = 30000;
 
-    public Internet() {
+    public ControllerInternet() {
         sender_thread = new UDP_Sender_Thread();
         sender_thread.start();
         try {
-            udp_socket_for_incoming_signals = new DatagramSocket(Map.UDP_PORT_NUMBER_FOR_MAP_SENDING_AND_CLIENT_RECIEVING);
+            udp_socket_for_incoming_signals = new DatagramSocket(MapInternet.UDP_PORT_NUMBER_FOR_MAP_SENDING_AND_CLIENT_RECIEVING);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -129,9 +129,9 @@ public final class Internet {
             final String to_send = unique_id_string + " " + avatar_name + " "
                     + key_command.name() + " " + width + " " + height + " " + optional_text;
             final byte[] buf = to_send.getBytes();
-            final DatagramPacket packet = new DatagramPacket(buf, buf.length, Internet.address, Map.UDP_PORT_NUMBER_FOR_MAP_RECIEVING_AND_CLIENT_SENDING);
+            final DatagramPacket packet = new DatagramPacket(buf, buf.length, ControllerInternet.address, MapInternet.UDP_PORT_NUMBER_FOR_MAP_RECIEVING_AND_CLIENT_SENDING);
             if (tcp_socket_for_incoming_signals != null
-                    && object_input_stream != null && Internet.udp_socket_for_incoming_signals != null) {
+                    && object_input_stream != null && ControllerInternet.udp_socket_for_incoming_signals != null) {
                 sender_thread.setPacketAndNotify(packet);
             } else {
                 System.out.println("UDP or TCP or input stream is null in " + "Internet.sendStuffToMap(" + avatar_name + ", " + key_command.name() + ",...)");
@@ -171,7 +171,7 @@ public final class Internet {
                 final int numReceivedBytes = recvPacket.getLength(); // returns length of data to be sent or data recieved.
                 System.out.println("Number of recieved bytes in Internet.sendStuffToMap(" + avatar_name + ", " + key_command.name() + ",...): "
                         + numReceivedBytes);
-                IO_Bundle to_recieve = Internet.bytesToBundle(recieved);
+                IO_Bundle to_recieve = ControllerInternet.bytesToBundle(recieved);
                 // Decompression the IO_Bundle if characters are compressed.
                 if (to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
                     to_recieve.view_for_display_ = IO_Bundle.runLengthDecodeView(width, height,
@@ -191,7 +191,7 @@ public final class Internet {
 
     /**
      * Allows the controller to connects itself to an internet connection and
-     * use Internet.sendStuffToMap(String, Enum, int, int, "")
+ use ControllerInternet.sendStuffToMap(String, Enum, int, int, "")
      *
      * @param ip_address - use "localhost" to connect to local machine, ex.
      * "192.***.***.***".
@@ -215,11 +215,11 @@ public final class Internet {
                 object_input_stream.close();
                 object_input_stream = null;
             }
-            Internet.address = InetAddress.getByName(ip_address);
+            ControllerInternet.address = InetAddress.getByName(ip_address);
             tcp_socket_for_incoming_signals = new Socket();
             tcp_socket_for_incoming_signals.setTcpNoDelay(true); // no latency
             tcp_socket_for_incoming_signals.setReuseAddress(true); // allow client to reconnect
-            tcp_socket_for_incoming_signals.connect(new InetSocketAddress(ip_address, Map.TCP_PORT_NUMBER));
+            tcp_socket_for_incoming_signals.connect(new InetSocketAddress(ip_address, MapInternet.TCP_PORT_NUMBER));
             tcp_socket_for_incoming_signals.setTcpNoDelay(true);
             tcp_socket_for_incoming_signals.setReuseAddress(true);
             oos = new ObjectOutputStream(tcp_socket_for_incoming_signals.getOutputStream());

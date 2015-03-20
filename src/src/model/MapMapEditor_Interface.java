@@ -43,7 +43,7 @@ public interface MapMapEditor_Interface {
      * @return -1 on fail, 0 on success
      */
 	// public int addAvatar(Avatar avatar_, int x, int y);
-	public boolean withinMap(int x, int y);
+	public boolean isWithinMap(int x, int y);
 	
     /**
      * Takes in name so save to, defaults to date

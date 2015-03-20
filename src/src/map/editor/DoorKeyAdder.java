@@ -19,7 +19,7 @@ class DoorKeyAdder implements MapAddable {
 	@Override
 	public int addToMap(MapMapEditor_Interface mapp_, int x, int y) {
 		if(isEmpty()){return 2;}
-		if(!mapp_.withinMap(x, y)){return 1;}
+		if(!mapp_.isWithinMap(x, y)){return 1;}
 		int result;
 		if(key_ == null) {
 			result = mapp_.addItem(door_, x, y);

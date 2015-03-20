@@ -7,10 +7,11 @@ package src.io.controller;
 
 import java.net.DatagramPacket;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.SwingUtilities;
-
+import java.util.Queue;
 import src.HardCodedStrings;
 import src.IO_Bundle;
 import src.ControllerInternet;
@@ -22,6 +23,7 @@ import src.io.view.AvatarCreationView;
 import src.io.view.ChatBoxViewPort;
 import src.io.view.MapView;
 import src.io.view.StatsView;
+import src.io.view.Viewport;
 import src.io.view.display.Display;
 import src.model.MapUser_Interface;
 
@@ -143,6 +145,8 @@ public class GameController extends Controller {
 
 
         });
+        views_.add(new MapView());
+        views_.add(new StatsView(getUserName()));//Build our two views.
         takeTurnandPrintTurn('5');//For some reason need to take a empty turn for fonts to load...
     }
     public GameController(MapUser_Interface mui, String uName, GameRemapper remap){
@@ -233,6 +237,8 @@ public class GameController extends Controller {
         }
         return to_return;
     }
+   
+    private Queue<Viewport> views_ = new LinkedList<Viewport>();
 
     /**
      * Sends the command and string to the map.
@@ -246,26 +252,21 @@ public class GameController extends Controller {
     protected IO_Bundle updateViewsAndMap(Key_Commands input) {
         //System.out.println("Called GameController.updateViewsAndMap(Key_Commands input)");
         boolean taken = false;
-        if (getView() instanceof AvatarCreationView) {
-            if (Key_Commands.BECOME_SNEAK.equals(input) || Key_Commands.BECOME_SMASHER.equals(input)
-                    || Key_Commands.BECOME_SUMMONER.equals(input)) {
-                setView(new MapView());
-                System.gc();
-            }
+        
+        if (Key_Commands.BECOME_SNEAK.equals(input) || Key_Commands.BECOME_SMASHER.equals(input)
+        		|| Key_Commands.BECOME_SUMMONER.equals(input)) {
+        	setView(views_.element());
+        	System.gc();
+
         }
-        if (getView() instanceof MapView) {
-            if (Key_Commands.TOGGLE_VIEW.equals(input)) {
-                setView(new StatsView(getUserName()));
-                System.gc();
-                taken = true;
-            }
-        } else if (getView() instanceof StatsView) {
-            if (Key_Commands.TOGGLE_VIEW.equals(input)) {
-                setView(new MapView());
-                System.gc();
-                taken = true;
-            }
+        if (Key_Commands.TOGGLE_VIEW.equals(input)) {
+        	views_.add(views_.remove());//Pop the last element and bring it front.
+        	setView(views_.element());
+        	System.gc();
+        	taken = true;
         }
+
+
         if (!taken) {
             return sendCommandToMapWithText(input, "");
         } else {

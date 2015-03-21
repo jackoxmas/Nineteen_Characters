@@ -34,7 +34,7 @@ class CommandMiniController {
     private static final String bindings = "bindings";
     private static final String setIP = "set-ip";
     private static final String setControl = "set-control";
-    //private static final String setTCP = "set-tcp";
+    private static final String setCompression = "set-compression";
 
     private static final String commandKey = "/";
 
@@ -95,8 +95,8 @@ class CommandMiniController {
             return this.remap_.getBindingList();
         }
         if (command.equals(setIP)) {
-            final String[] parsed_command = foo.split(" ");
-            final String ip_address = parsed_command[parsed_command.length - 1];
+            if(inputs.length == 2) {
+            final String ip_address = inputs[inputs.length - 1];
             int error_code = cont_.setNetworkIPTo(ip_address);
             if (error_code == 0) {
                 cont_.tellToUseNetwork();
@@ -104,6 +104,24 @@ class CommandMiniController {
             } else {
                 cont_.tellNotToUseNetwork();
                 return "Something went wrong. Cannot connect to the ip address provided.";
+            }
+            } else {
+                return "The " + setIP + " command requires one word other than \"" + setIP + "\"" +
+                        ".\nSpecify either \"on\" or \"off\".";
+            }
+        }
+        if(command.equals(setCompression)) {
+            if(inputs.length == 2) {
+                if (inputs[inputs.length-1].contains("f") || inputs[inputs.length-1].contains("y")) {
+                    cont_.getMap().disableFramCompressionInMap();
+                    return "Map frame compression disabled";
+                } else {
+                    cont_.getMap().enableFramCompressionInMap();
+                    return "Map frame compression enabled";
+                }
+            } else {
+                return "The " + setCompression + " command requires one word other than \"" + setCompression + "\"" +
+                        ".\nSpecify either \"on\" or \"off\".";
             }
         }
         if (command.equals(setControl)) {

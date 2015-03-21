@@ -149,6 +149,8 @@ public final class ControllerInternet {
                         to_recieve.compressed_characters_, to_recieve.character_frequencies_);
                 to_recieve.color_for_display_ = IO_Bundle.runLengthDecodeColor(width, height,
                         to_recieve.compressed_colors_, to_recieve.color_frequencies_);
+            } else {
+                // No Decompression
             }
             return to_recieve;
             //}

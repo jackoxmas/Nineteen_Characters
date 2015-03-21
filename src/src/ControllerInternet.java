@@ -130,34 +130,34 @@ public final class ControllerInternet {
                 System.exit(-23);
             }
 
-            if (RunGame.getUseTCP()) {
-                //System.out.println("Calling Internet.sendStuffToMap over TCP");
-                // recieve IO_Bundle from map over TCP connection
-                Object temp = object_input_stream.readObject();
-                IO_Bundle to_recieve = null;
-                if (temp != null) {
-                    to_recieve = (IO_Bundle) temp;
-                    // Decompression the IO_Bundle if characters are compressed.
-                    if (to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
-                        to_recieve.view_for_display_ = IO_Bundle.runLengthDecodeView(width, height,
-                                to_recieve.compressed_characters_, to_recieve.character_frequencies_);
-                        to_recieve.color_for_display_ = IO_Bundle.runLengthDecodeColor(width, height,
-                                to_recieve.compressed_colors_, to_recieve.color_frequencies_);
-                    }
-                }
-                return to_recieve;
-            } else {
-                // recieve IO_Bundle from map over UDP connection
-                IO_Bundle to_recieve = getBundleFromBufferOfSize(40000);
-                // Decompression the IO_Bundle if characters are compressed.
-                if (to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
-                    to_recieve.view_for_display_ = IO_Bundle.runLengthDecodeView(width, height,
-                            to_recieve.compressed_characters_, to_recieve.character_frequencies_);
-                    to_recieve.color_for_display_ = IO_Bundle.runLengthDecodeColor(width, height,
-                            to_recieve.compressed_colors_, to_recieve.color_frequencies_);
-                }
-                return to_recieve;
+            /*if (RunGame.getUseTCP()) {
+             //System.out.println("Calling Internet.sendStuffToMap over TCP");
+             // recieve IO_Bundle from map over TCP connection
+             Object temp = object_input_stream.readObject();
+             IO_Bundle to_recieve = null;
+             if (temp != null) {
+             to_recieve = (IO_Bundle) temp;
+             // Decompression the IO_Bundle if characters are compressed.
+             if (to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
+             to_recieve.view_for_display_ = IO_Bundle.runLengthDecodeView(width, height,
+             to_recieve.compressed_characters_, to_recieve.character_frequencies_);
+             to_recieve.color_for_display_ = IO_Bundle.runLengthDecodeColor(width, height,
+             to_recieve.compressed_colors_, to_recieve.color_frequencies_);
+             }
+             }
+             return to_recieve;
+             } else {*/
+            // recieve IO_Bundle from map over UDP connection
+            IO_Bundle to_recieve = getBundleFromBufferOfSize(40000);
+            // Decompression the IO_Bundle if characters are compressed.
+            if (to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
+                to_recieve.view_for_display_ = IO_Bundle.runLengthDecodeView(width, height,
+                        to_recieve.compressed_characters_, to_recieve.character_frequencies_);
+                to_recieve.color_for_display_ = IO_Bundle.runLengthDecodeColor(width, height,
+                        to_recieve.compressed_colors_, to_recieve.color_frequencies_);
             }
+            return to_recieve;
+            //}
 
         } catch (Exception e) {
             System.err.println("Exception in " + "Internet.sendStuffToMap(" + avatar_name + ", " + key_command.name() + ",...)" + " named: " + e.toString());
@@ -169,7 +169,7 @@ public final class ControllerInternet {
     private IO_Bundle getBundleFromBufferOfSize(int buffer_size) {
         boolean is_too_small = true;
         IO_Bundle to_return = null;
-        
+
         while (is_too_small) {
             byte[] recieved = new byte[buffer_size];
             DatagramPacket recvPacket = new DatagramPacket(recieved, recieved.length);
@@ -183,7 +183,7 @@ public final class ControllerInternet {
                 is_too_small = false;
             } catch (IOException eof) {
                 // if the buffer is too small.
-                buffer_size = buffer_size*2;
+                buffer_size = buffer_size * 2;
             }
         }
         return to_return;

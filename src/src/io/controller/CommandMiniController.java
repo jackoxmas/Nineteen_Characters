@@ -34,7 +34,7 @@ class CommandMiniController {
     private static final String bindings = "bindings";
     private static final String setIP = "set-ip";
     private static final String setControl = "set-control";
-    private static final String setTCP = "set-tcp";
+    //private static final String setTCP = "set-tcp";
 
     private static final String commandKey = "/";
 
@@ -109,6 +109,7 @@ class CommandMiniController {
         if (command.equals(setControl)) {
             return this.setControl(inputs);
         }
+        /*
         if (command.equals(setTCP)) {
             if (foo.contains("no") || foo.contains("off") || foo.contains("Off")) {
                 RunGame.setUseTCP(false);
@@ -118,7 +119,7 @@ class CommandMiniController {
                 return "TCP turned on because you said neither no nor off.";
             }
         }
-
+        */
         return "No valid command given!";
     }
 

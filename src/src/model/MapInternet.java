@@ -266,7 +266,7 @@ public class MapInternet extends Thread {
     private class Packet_Sender extends Thread {
 
         public final String unique_id_;
-        private final Socket tcp_output_socket_;
+        // private final Socket tcp_output_socket_;
         private DatagramSocket udp_output_socket_;
         private final ObjectOutputStream object_output_stream_;
         private final InetAddress address_;
@@ -288,14 +288,14 @@ public class MapInternet extends Thread {
         }
 
         public void closeAndNullifyConnection() {
-            if (tcp_output_socket_ != null) {
+            /* if (tcp_output_socket_ != null) {
                 if (tcp_output_socket_.isConnected()) {
                     try {
                         tcp_output_socket_.close();
                     } catch (Exception e) {// recieving_socket already closed}
                     }
                 }
-            }
+            }*/
             if (udp_output_socket_ != null) {
                 udp_output_socket_.close();
             }
@@ -323,7 +323,7 @@ public class MapInternet extends Thread {
 
         public Packet_Sender(Socket socket, String unique_id, ObjectOutputStream object_output_stream, InetAddress address) {
             super("Single_User_TCP_Thread");
-            this.tcp_output_socket_ = socket;
+            // this.tcp_output_socket_ = socket;
             this.unique_id_ = unique_id;
             object_output_stream_ = object_output_stream;
             address_ = address;
@@ -350,7 +350,7 @@ public class MapInternet extends Thread {
                         //is_notified = false;
                     }
                 //}
-                if (RunGame.getUseTCP()) {
+                /*if (RunGame.getUseTCP()) {
                     try {
                         // do {
                         object_output_stream_.writeObject(bundle_to_send_);
@@ -365,7 +365,7 @@ public class MapInternet extends Thread {
                         e2.printStackTrace();
                         return;
                     }
-                } else {
+                } else {*/
                     byte[] to_send = ControllerInternet.bundleToBytes(bundle_to_send_);
                     DatagramPacket packet_to_send = new DatagramPacket(
                             to_send, to_send.length, address_, UDP_PORT_NUMBER_FOR_MAP_SENDING_AND_CLIENT_RECIEVING);
@@ -374,7 +374,7 @@ public class MapInternet extends Thread {
                     } catch (IOException udp_send_exception) {
                         udp_send_exception.printStackTrace();
                     }
-                }
+                //}
             }
         }
     }

@@ -68,9 +68,9 @@ public class HardCodedStrings {
         public final static String setIPHelp = "Type in /set-ip [ip-address] to switch to controlling a different ip." +
 			System.lineSeparator() +
 			"If no such valid ip exists, you will be controlling localhost.";
-        public final static String setTCP = "Type in /set-tcp [yes/no] to switch to TCP or UDP." +
+        /*public final static String setTCP = "Type in /set-tcp [yes/no] to switch to TCP or UDP." +
 			System.lineSeparator() +
-			"If no such valid ip exists, you will be controlling localhost.";
+			"If no such valid ip exists, you will be controlling localhost.";*/
 	public final static String setControlHelp = "Type in /set-control [entityname] to switch to controlling a different ip." +
 			System.lineSeparator() +
 			"If no such ip exists, you will be controlling nothing."+

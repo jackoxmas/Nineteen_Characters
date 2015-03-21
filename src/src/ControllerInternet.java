@@ -38,7 +38,6 @@ public final class ControllerInternet {
     private static boolean isConnected = false;
     //private final String monitor_For_UDP_Sender = "";
     private final UDP_Sender_Thread sender_thread;
-    private int recieved_buffer_size = 30000;
 
     public ControllerInternet() {
         sender_thread = new UDP_Sender_Thread();
@@ -70,12 +69,12 @@ public final class ControllerInternet {
         }
 
         public synchronized void run() {
-            while (true) {
+            while (! Thread.currentThread().isInterrupted()) {
                 try {
-                    this.wait();
+                    wait();
                     udp_socket_for_outgoing_signals.send(packet_to_send);
                 } catch (InterruptedException i) {
-                    i.printStackTrace();
+                    // This thread got interrupted.
                     return; // safely kill the thread
                 } catch (IOException io) {
                     io.printStackTrace();
@@ -84,7 +83,7 @@ public final class ControllerInternet {
         }
     }
 
-    public void closeAndNullifyConnection() {
+    public void terminate() {
         try {
             if (tcp_socket_for_incoming_signals != null) {
                 if (tcp_socket_for_incoming_signals.isConnected()) {
@@ -93,6 +92,7 @@ public final class ControllerInternet {
                 tcp_socket_for_incoming_signals = null;
             }
             sender_thread.interrupt(); // make the udp_sender thread commit suicide.
+            isConnected = false;
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error while closing and nullifying connection");
@@ -201,10 +201,10 @@ public final class ControllerInternet {
     public int makeConnectionUsingIP_Address(String ip_address) {
         ip_address = ip_address.trim().toLowerCase();
         System.out.println("Starting Internet.makeConnectionUsingIP_Address(" + ip_address + ")");
-        if (!ip_address.equals("localhost") && !ip_address.matches(".*[0-9].*")) {
+        if (!ip_address.contains("localhost") && !ip_address.matches(".*[0-9].*")) {
             RunGame.setUseInternet(false);
             isConnected = false;
-            //System.out.println("Not using internet in Internet.makeConnectionUsingIP_Address(String ip_address)");
+            System.out.println("Internet disabled in Internet.makeConnectionUsingIP_Address(String ip_address)");
             return 0;
         } else {
             RunGame.setUseInternet(true);
@@ -226,12 +226,11 @@ public final class ControllerInternet {
             oos = new ObjectOutputStream(tcp_socket_for_incoming_signals.getOutputStream());
             oos.flush();
             oos.writeObject(unique_id_string);
-            System.out.println("You MAC address / unique identifier in Internet.makeConnection is: " + unique_id_string);
+            System.out.println("Your MAC address / unique identifier in Internet.makeConnection is: " + unique_id_string);
             oos.flush();
-            oos = null;
             object_input_stream = new ObjectInputStream(tcp_socket_for_incoming_signals.getInputStream());
-            //last_ip_connected = ip_address;
             isConnected = true;
+            System.out.println("Successfully connected to ip address in Internet.makeConnectionUsingIP_Address(" + ip_address + ")");
             return 0;
         } catch (Exception e) {
             RunGame.setUseInternet(false);
@@ -243,6 +242,7 @@ public final class ControllerInternet {
             try {
                 if (oos != null) {
                     oos.close();
+                    oos = null;
                 }
             } catch (Exception e) {
                 e.printStackTrace();

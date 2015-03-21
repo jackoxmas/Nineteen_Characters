@@ -1,4 +1,4 @@
-package src.map.editor;
+package src.Not_part_of_iteration_2_requirements.BONUS.MapEditor;
 import java.awt.Color;
 import java.util.UUID;
 

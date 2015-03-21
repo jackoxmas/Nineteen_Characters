@@ -219,7 +219,7 @@ public class RunGame {
         map_.addTerrain(mountain, 22, 12);
         // this should be cyan
         Terrain cyan_mountain = new Terrain("cyan_mountain", '\u25B2', true, true);
-        map_.addTerrain(mountain, 23, 11);
+        map_.addTerrain(cyan_mountain, 23, 11);
 
         PermanentObstacleItem obstacle = new PermanentObstacleItem("boulder", '■');
         map_.addItem(obstacle, 2, 2);

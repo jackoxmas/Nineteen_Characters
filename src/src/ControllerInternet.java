@@ -201,7 +201,7 @@ public final class ControllerInternet {
             //e.printStackTrace();
             is_internet_connected = false;
             return -1;
-        }
+        }  
         is_internet_connected = true;
         return 0;
     }

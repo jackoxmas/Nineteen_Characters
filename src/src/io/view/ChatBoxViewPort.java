@@ -26,7 +26,7 @@ public class ChatBoxViewPort {
 		if(strings_for_communication == null){return;}
 		clear();
 		for(int i = 0; i != strings_for_communication.size(); ++i){
-			String temp = String.valueOf(i) + ": ";
+			String temp = "Press " + String.valueOf(i) + ": ";
 			view_content_strings_.add(strings_for_communication.get(i));
 			headings_.add(temp);
 		}

@@ -145,7 +145,7 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
 
     /**
      * Sets the given styled doc to be displayed in the main view.
-     *
+     * This must be called in a Runnable to be executed by the GUI thread
      * @param doc
      */
     public void setGameContent(StyledDocument doc) {
@@ -384,7 +384,8 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         incoming_text_jTextArea.setEditable(false);
         incoming_text_jTextArea.setColumns(20);
         incoming_text_jTextArea.setRows(5);
-        incoming_text_jTextArea.setText("Game Messages: " + System.lineSeparator());
+        incoming_text_jTextArea.setText("Click on me when you want to reply to in-game chat options.\n\n"
+                + "Game Messages: " );
         incoming_text_jTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 incoming_text_jTextAreaKeyTyped(evt);

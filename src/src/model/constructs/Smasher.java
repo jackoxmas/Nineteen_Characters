@@ -5,6 +5,7 @@
  */
 package src.model.constructs;
 
+import src.Effect;
 import src.SkillEnum;
 import src.model.constructs.items.OneHandedSword;
 import src.model.constructs.items.OneHandedWeapon;
@@ -150,6 +151,7 @@ public final class Smasher extends Occupation {
                 // Case that you have enough mana:
                 if (getEntity().getStatsPack().deductCurrentManaBy(cost) == 0) {
                     target.receiveAttack(getSkill_1_(), null); // hurt enemy [no attack-back]
+                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_1_(), getSkill_1_(), Effect.HEAL);
                 } else {
                     System.out.println("Out of mana in Smasher1");
                 }
@@ -160,6 +162,7 @@ public final class Smasher extends Occupation {
                 // Case that you have enough mana:
                 if (getEntity().getStatsPack().deductCurrentManaBy(cost) == 0) {
                     target.receiveAttack(getSkill_2_(), null); // hurt enemy [no attack-back]
+                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_2_(), getSkill_2_(), Effect.HURT);
                 } else {
                     System.out.println("Out of mana in Smasher2");
                 }
@@ -170,6 +173,7 @@ public final class Smasher extends Occupation {
                 // Case that you have enough mana:
                 if (getEntity().getStatsPack().deductCurrentManaBy(cost) == 0) {
                     target.receiveAttack(getSkill_3_(), null); // hurt enemy [no attack-back]
+                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_3_(), getSkill_3_(), Effect.LEVEL);
                 } else {
                     System.out.println("Out of mana in Smasher3");
                 }

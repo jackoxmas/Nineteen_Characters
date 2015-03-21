@@ -65,7 +65,7 @@ public class MapInternet extends Thread {
     //</editor-fold>
     //<editor-fold desc="MapInternet Methods" defaultstate="collapsed">
     @Override
-    public void run() {
+    public synchronized void run() {
         while (!this.isInterrupted()) {
             this.getInputForMap();
         }
@@ -74,80 +74,85 @@ public class MapInternet extends Thread {
         for (ConcurrentHashMap.Entry<String, Packet_Sender> entry : this.users.entrySet()) {
             if (entry.getValue() != null) {
                 entry.getValue().interrupt();
+                System.out.println("Killed a packet_sender thread");
+            }
+        }
+    }
+
+    public void interruptAllMyUserThreads() {
+        for (ConcurrentHashMap.Entry<String, Packet_Sender> entry : this.users.entrySet()) {
+            if (entry.getValue() != null) {
+                entry.getValue().interrupt();
+                System.out.println("Killed a packet_sender thread");
             }
         }
     }
 
     private void getInputForMap() {
+        try {
+            byte[] buf = new byte[256];
 
-        //RunGame.dbgOut("Incoming UDP thread is running in Map.GetMapInputFromUsers.run()", 2);
-        while (true) {
-            try {
-                byte[] buf = new byte[256];
+            // receive request
+            DatagramPacket packet = new DatagramPacket(buf, buf.length);
 
-                // receive request
-                DatagramPacket packet = new DatagramPacket(buf, buf.length);
-
-                recieving_socket.receive(packet);
+            recieving_socket.receive(packet);
                 //RunGame.dbgOut("The map recieved a packet in Map.GetMapInputFromUsers.run() from address: " + packet.getAddress().toString(), 6);
 
-                // "udp packet recieved in GetMapInputFromUsers
-                String decoded_string_with_trailing_zeros = new String(buf, "UTF-8");
+            // "udp packet recieved in GetMapInputFromUsers
+            String decoded_string_with_trailing_zeros = new String(buf, "UTF-8");
 
-                String decoded_string = decoded_string_with_trailing_zeros.trim();
+            String decoded_string = decoded_string_with_trailing_zeros.trim();
 
-                String[] splitArray;
-                try {
-                    // split whenever at least one whitespace is encountered
-                    splitArray = decoded_string.split("\\s+");
-                } catch (PatternSyntaxException ex) {
-                    ex.printStackTrace();
-                    System.exit(-15);
-                    return;
-                }
-                String unique_id = splitArray[0];
-                String username = splitArray[0 + 1];
-                String command_enum_as_a_string = splitArray[1 + 1];
-                Key_Commands command = Key_Commands.valueOf(command_enum_as_a_string);
-                int width_from_center = Integer.parseInt(splitArray[2 + 1], 10);
-                int height_from_center = Integer.parseInt(splitArray[3 + 1], 10);
-                String optional_text;
-                if (splitArray.length == 4 + 1) {
-                    optional_text = null;
-                } else if (splitArray.length >= 5 + 1) {
-                    optional_text = "";
-                    for (int i = 4 + 1; i < splitArray.length; ++i) {
-                        optional_text = optional_text + " " + splitArray[i];
-                    }
-                    // RunGame.dbgOut("Optional text: " + optional_text, 6);
-                    optional_text = optional_text.trim();
-                } else {
-                    // RunGame.dbgOut("Error. splitArray.length == " + splitArray.length, 6);
-                    return;
-                }
-                if (!users.containsKey(unique_id)) {
-                    Packet_Sender new_users_packet_sender = new Packet_Sender(unique_id, packet.getAddress());
-                    new_users_packet_sender.start();
-                    users.put(unique_id, new_users_packet_sender);
-                }
-                if (!Key_Commands.DO_ABSOLUTELY_NOTHING.equals(command)) {
-                    my_owner_.makeTakeTurns();
-                }
-                Packet_Sender sender = users.get(unique_id);
-
-                // start the actual function
-                Entity to_recieve_command;
-                if (my_owner_.hasEntity(username)) {
-                    to_recieve_command = my_owner_.getEntityByName(username);
-                } else {
-                    to_recieve_command = null;
-                }
-                sendToClient(to_recieve_command, command, width_from_center, height_from_center, optional_text, sender);
-            } catch (IOException e) {
-                e.printStackTrace();
-                RunGame.errOut("Connection is closed");
-                continue;
+            String[] splitArray;
+            try {
+                // split whenever at least one whitespace is encountered
+                splitArray = decoded_string.split("\\s+");
+            } catch (PatternSyntaxException ex) {
+                ex.printStackTrace();
+                System.exit(-15);
+                return;
             }
+            String unique_id = splitArray[0];
+            String username = splitArray[0 + 1];
+            String command_enum_as_a_string = splitArray[1 + 1];
+            Key_Commands command = Key_Commands.valueOf(command_enum_as_a_string);
+            int width_from_center = Integer.parseInt(splitArray[2 + 1], 10);
+            int height_from_center = Integer.parseInt(splitArray[3 + 1], 10);
+            String optional_text;
+            if (splitArray.length == 4 + 1) {
+                optional_text = null;
+            } else if (splitArray.length >= 5 + 1) {
+                optional_text = "";
+                for (int i = 4 + 1; i < splitArray.length; ++i) {
+                    optional_text = optional_text + " " + splitArray[i];
+                }
+                // RunGame.dbgOut("Optional text: " + optional_text, 6);
+                optional_text = optional_text.trim();
+            } else {
+                // RunGame.dbgOut("Error. splitArray.length == " + splitArray.length, 6);
+                return;
+            }
+            if (!users.containsKey(unique_id)) {
+                Packet_Sender new_users_packet_sender = new Packet_Sender(unique_id, packet.getAddress());
+                new_users_packet_sender.start();
+                users.put(unique_id, new_users_packet_sender);
+            }
+            if (!Key_Commands.DO_ABSOLUTELY_NOTHING.equals(command)) {
+                my_owner_.makeTakeTurns();
+            }
+            Packet_Sender sender = users.get(unique_id);
+
+            // start the actual function
+            Entity to_recieve_command;
+            if (my_owner_.hasEntity(username)) {
+                to_recieve_command = my_owner_.getEntityByName(username);
+            } else {
+                to_recieve_command = null;
+            }
+            sendToClient(to_recieve_command, command, width_from_center, height_from_center, optional_text, sender);
+        } catch (IOException e) {
+            e.printStackTrace();
+            RunGame.errOut("Connection is closed");
         }
     }
 
@@ -232,11 +237,8 @@ public class MapInternet extends Thread {
     private class Packet_Sender extends Thread {
 
         public final String unique_id_;
-        // private final Socket tcp_output_socket_;
         private DatagramSocket udp_output_socket_;
-        //private final ObjectOutputStream object_output_stream_;
         private final InetAddress address_;
-        //private boolean was_oos_closed = false;
         private IO_Bundle bundle_to_send_ = null;
         private byte[] my_bytes_ = null;
         private Entity last_controlled = null;
@@ -287,7 +289,7 @@ public class MapInternet extends Thread {
                 }
                 byte[] to_send = ControllerInternet.bundleToBytes(bundle_to_send_);
                 if (frame_number % 32 == 0) {
-                    if(is_using_compression) {
+                    if (is_using_compression) {
                         System.out.print("With compression, ");
                     } else {
                         System.out.print("Without compression, ");
@@ -303,6 +305,7 @@ public class MapInternet extends Thread {
                     udp_send_exception.printStackTrace();
                 }
             }
+            return; // only return if interrupted.
         }
     }
     //</editor-fold>

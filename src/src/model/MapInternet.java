@@ -33,9 +33,8 @@ public class MapInternet extends Thread {
     //</editor-fold>
     //<editor-fold desc="Non-static fields" defaultstate="collapsed">
     private final DatagramSocket recieving_socket;
-    private TCP_Connection_Maker tcp_thread;
     private ConcurrentHashMap<String, Packet_Sender> users = new ConcurrentHashMap<>();
-    private final TCP_Connection_Maker connection_initiator = new TCP_Connection_Maker();
+    //private final TCP_Connection_Maker connection_initiator = new TCP_Connection_Maker();
     private final Map my_owner_;
     //</editor-fold>
     //<editor-fold desc="Constructors" defaultstate="collapsed">
@@ -49,7 +48,7 @@ public class MapInternet extends Thread {
     public MapInternet(Map owner) throws SocketException {
         super("MapInternet");
         recieving_socket = new DatagramSocket(MapInternet.UDP_PORT_NUMBER_FOR_MAP_RECIEVING_AND_CLIENT_SENDING);
-        connection_initiator.start();
+        //connection_initiator.start();
         my_owner_ = owner;
     }
 
@@ -61,7 +60,7 @@ public class MapInternet extends Thread {
             this.getInputForMap();
         }
         //cleanup
-        connection_initiator.interrupt();
+        //connection_initiator.interrupt();
         for (ConcurrentHashMap.Entry<String, Packet_Sender> entry : this.users.entrySet()) {
             if (entry.getValue() != null) {
                 entry.getValue().interrupt();
@@ -72,7 +71,6 @@ public class MapInternet extends Thread {
     private void getInputForMap() {
 
         //RunGame.dbgOut("Incoming UDP thread is running in Map.GetMapInputFromUsers.run()", 2);
-
         while (true) {
             try {
                 byte[] buf = new byte[256];
@@ -97,12 +95,6 @@ public class MapInternet extends Thread {
                     System.exit(-15);
                     return;
                 }
-
-                RunGame.dbgOut("Recieved array: ", 6);
-                for (int i = 0; i < splitArray.length; ++i) {
-                    RunGame.dbgOut(splitArray[i] + " ", 6);
-                }
-
                 String unique_id = splitArray[0];
                 String username = splitArray[0 + 1];
                 String command_enum_as_a_string = splitArray[1 + 1];
@@ -117,24 +109,21 @@ public class MapInternet extends Thread {
                     for (int i = 4 + 1; i < splitArray.length; ++i) {
                         optional_text = optional_text + " " + splitArray[i];
                     }
-                    RunGame.dbgOut("Optional text: " + optional_text, 6);
+                    // RunGame.dbgOut("Optional text: " + optional_text, 6);
                     optional_text = optional_text.trim();
                 } else {
-                    RunGame.dbgOut("Error. splitArray.length == " + splitArray.length, 6);
+                    // RunGame.dbgOut("Error. splitArray.length == " + splitArray.length, 6);
                     return;
+                }
+                if (!users.containsKey(unique_id)) {
+                    Packet_Sender new_users_packet_sender = new Packet_Sender(unique_id, packet.getAddress());
+                    new_users_packet_sender.start();
+                    users.put(unique_id, new_users_packet_sender);
                 }
                 if (!Key_Commands.DO_ABSOLUTELY_NOTHING.equals(command)) {
                     my_owner_.makeTakeTurns();
                 }
-
-                // add to list of addresses for mass udp.
-                // addresses_for_udp.put(unique_id, packet.getAddress());
-                // Sender must recieve either TCP or UDP.
-                Packet_Sender sender = null;
-                InetAddress sender_address = null;
-                while (sender == null) {
-                    sender = users.get(unique_id);
-                }
+                Packet_Sender sender = users.get(unique_id);
 
                 // start the actual function
                 Entity to_recieve_command;
@@ -221,56 +210,14 @@ public class MapInternet extends Thread {
 
     }
 
-    //</editor-fold>
-    //<editor-fold desc="TCP_Connection_Maker and Packet_Sender" defaultstate="collapsed">
-    public class TCP_Connection_Maker extends Thread {
-
-        public IO_Bundle bundle_to_send_ = null; // ** bullshit **
-
-        final int portNumber = MapInternet.TCP_PORT_NUMBER;
-
-        public void run() {
-            try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
-                serverSocket.setPerformancePreferences(0, 1, 0);
-                while (!isInterrupted()) {
-                    Socket to_accept = serverSocket.accept();
-                    to_accept.setTcpNoDelay(true);
-                    to_accept.setReuseAddress(true); // allow for re-connections
-                    ObjectInputStream object_input_stream_ = new ObjectInputStream(to_accept.getInputStream());
-                    String unique_id = (String) object_input_stream_.readObject();
-                    RunGame.dbgOut("String was accepted in Map.TCP_Connection_Maker.run() . Unique id is: " + unique_id, 3);
-                    // remove and replace on re-connection
-                    if (users.containsKey(unique_id)) {
-                        Packet_Sender to_kill = users.get(unique_id);
-                        // to_kill.closeAndNullifyConnection();
-                        to_kill.closeAndNullifyObjectOutputStream();
-                        users.remove(unique_id);
-                        RunGame.dbgOut("Replacing already made connection in Map.TCP_Connection_Maker.run()", 3);
-                    }
-                    ObjectOutputStream object_output_stream = new ObjectOutputStream(to_accept.getOutputStream());
-                    Packet_Sender new_thread = new Packet_Sender(to_accept,
-                            unique_id, object_output_stream, to_accept.getInetAddress());
-                    users.put(unique_id, new_thread);
-                    new_thread.start();
-                    object_output_stream = null;
-                }
-            } catch (Exception e) {
-                RunGame.errOut("Exception in Map.TCP_Connection_Maker.run() named: " + e.toString());
-                e.printStackTrace();
-                RunGame.errOut("Could not listen on port " + portNumber);
-                System.exit(-1);
-            }
-        }
-    }
-
     private class Packet_Sender extends Thread {
 
         public final String unique_id_;
         // private final Socket tcp_output_socket_;
         private DatagramSocket udp_output_socket_;
-        private final ObjectOutputStream object_output_stream_;
+        //private final ObjectOutputStream object_output_stream_;
         private final InetAddress address_;
-        private boolean was_oos_closed = false;
+        //private boolean was_oos_closed = false;
         private IO_Bundle bundle_to_send_ = null;
         private byte[] my_bytes_ = null;
         private Entity last_controlled = null;
@@ -288,28 +235,8 @@ public class MapInternet extends Thread {
         }
 
         public void closeAndNullifyConnection() {
-            /* if (tcp_output_socket_ != null) {
-                if (tcp_output_socket_.isConnected()) {
-                    try {
-                        tcp_output_socket_.close();
-                    } catch (Exception e) {// recieving_socket already closed}
-                    }
-                }
-            }*/
             if (udp_output_socket_ != null) {
                 udp_output_socket_.close();
-            }
-        }
-
-        public void closeAndNullifyObjectOutputStream() {
-            try {
-                if (object_output_stream_ != null && was_oos_closed == false) {
-                    object_output_stream_.close();
-                    was_oos_closed = true;
-                }
-            } catch (Exception e) {
-                RunGame.errOut("object_output_stream_ was already closed in Map.ServerThread.run()");
-                e.printStackTrace();
             }
         }
         //private volatile boolean is_notified = false;
@@ -321,60 +248,32 @@ public class MapInternet extends Thread {
             this.notify();
         }
 
-        public Packet_Sender(Socket socket, String unique_id, ObjectOutputStream object_output_stream, InetAddress address) {
+        public Packet_Sender(String unique_id, InetAddress address) {
             super("Single_User_TCP_Thread");
-            // this.tcp_output_socket_ = socket;
             this.unique_id_ = unique_id;
-            object_output_stream_ = object_output_stream;
             address_ = address;
         }
 
         public synchronized void run() {
             try {
                 udp_output_socket_ = new DatagramSocket();
-                //this.tcp_output_socket_.setKeepAlive(true); // hopefully will cause an exception to be thrown if used disconnected for 2+ hours
-                object_output_stream_.flush();
             } catch (Exception e) {
                 e.printStackTrace();
             }
             while (!isInterrupted()) {
-                // end of resource statement beginning of execution
-
-                //Thread.sleep(Integer.MAX_VALUE);
-                //if (is_notified) {
-                //    is_notified = false;
-                //} else {
-                    try {
-                        wait();
-                    } catch (InterruptedException e) {
-                        //is_notified = false;
-                    }
-                //}
-                /*if (RunGame.getUseTCP()) {
-                    try {
-                        // do {
-                        object_output_stream_.writeObject(bundle_to_send_);
-                        object_output_stream_.flush();
-                        // } while (Thread.currentThread().isInterrupted()); // ignore signal if theyinterrupt while I write.
-                    } catch (NullPointerException null_ptr_exception) {
-                        RunGame.errOut("Err: Caught the NullPointerException. ObjectOutputStream has already been nullified by another thread in Map.ServerThread.run()");
-                        null_ptr_exception.printStackTrace();
-                        return;
-                    } catch (Exception e2) {
-                        RunGame.errOut("Err: object_output_stream_ experienced an exception in Map.ServerThread.run() named: " + e2.toString());
-                        e2.printStackTrace();
-                        return;
-                    }
-                } else {*/
-                    byte[] to_send = ControllerInternet.bundleToBytes(bundle_to_send_);
-                    DatagramPacket packet_to_send = new DatagramPacket(
-                            to_send, to_send.length, address_, UDP_PORT_NUMBER_FOR_MAP_SENDING_AND_CLIENT_RECIEVING);
-                    try {
-                        udp_output_socket_.send(packet_to_send);
-                    } catch (IOException udp_send_exception) {
-                        udp_send_exception.printStackTrace();
-                    }
-                //}
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    //is_notified = false;
+                }
+                byte[] to_send = ControllerInternet.bundleToBytes(bundle_to_send_);
+                DatagramPacket packet_to_send = new DatagramPacket(
+                        to_send, to_send.length, address_, UDP_PORT_NUMBER_FOR_MAP_SENDING_AND_CLIENT_RECIEVING);
+                try {
+                    udp_output_socket_.send(packet_to_send);
+                } catch (IOException udp_send_exception) {
+                    udp_send_exception.printStackTrace();
+                }
             }
         }
     }

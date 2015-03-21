@@ -167,7 +167,7 @@ public class Terrain extends DrawableThing {
         contains_mountain_ = contains_mountain;
         if(!contains_mountain_ && contains_water_){this.setColor(Color.blue);}
         else if(contains_mountain_ && !contains_water_){this.setColor(Color.gray);}
-        else if(contains_mountain_ && contains_water_){this.setColor(Color.cyan.brighter());}
+        else if(contains_mountain_ && contains_water_){this.setColor(Color.cyan.darker());}
         else if(!contains_mountain_ && !contains_water_){this.setColor(Color.green.darker());}//Set grass to be green.
         decal_ = decal;
     }
@@ -195,7 +195,7 @@ public class Terrain extends DrawableThing {
         contains_mountain_ = contains_mountain;
         if(!contains_mountain_ && contains_water_){this.setColor(Color.blue);}
         else if(contains_mountain_ && !contains_water_){this.setColor(Color.gray);}
-        else if(contains_mountain_ && contains_water_){this.setColor(Color.cyan.brighter());}
+        else if(contains_mountain_ && contains_water_){this.setColor(Color.cyan.darker());}
         else if(!contains_mountain_ && !contains_water_){this.setColor(Color.green.darker());}//Set grass to be green.
     }
 }

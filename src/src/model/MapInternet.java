@@ -241,17 +241,18 @@ public class MapInternet extends Thread {
                     RunGame.dbgOut("String was accepted in Map.TCP_Connection_Maker.run() . Unique id is: " + unique_id, 3);
                     // remove and replace on re-connection
                     if (users.containsKey(unique_id)) {
-                        Packet_Sender to_kill = users.get(unique_id);
-                        // to_kill.closeAndNullifyConnection();
-                        to_kill.closeAndNullifyObjectOutputStream();
+                        Packet_Sender to_close = users.get(unique_id);
+                        to_close.interrupt();
+                        //to_close.closeAndNullifyObjectOutputStream();
                         users.remove(unique_id);
-                        RunGame.dbgOut("Replacing already made connection in Map.TCP_Connection_Maker.run()", 3);
+                        to_close = null;
+                        RunGame.dbgOut("Removed already made connection in Map.TCP_Connection_Maker.run()", 3);
                     }
                     ObjectOutputStream object_output_stream = new ObjectOutputStream(to_accept.getOutputStream());
-                    Packet_Sender new_thread = new Packet_Sender(to_accept,
+                    Packet_Sender packet_sender = new Packet_Sender(to_accept,
                             unique_id, object_output_stream, to_accept.getInetAddress());
-                    users.put(unique_id, new_thread);
-                    new_thread.start();
+                    users.put(unique_id, packet_sender);
+                    packet_sender.start();
                     object_output_stream = null;
                 }
             } catch (Exception e) {
@@ -286,21 +287,7 @@ public class MapInternet extends Thread {
                 return null;
             }
         }
-
-        public void closeAndNullifyConnection() {
-            /* if (tcp_output_socket_ != null) {
-                if (tcp_output_socket_.isConnected()) {
-                    try {
-                        tcp_output_socket_.close();
-                    } catch (Exception e) {// recieving_socket already closed}
-                    }
-                }
-            }*/
-            if (udp_output_socket_ != null) {
-                udp_output_socket_.close();
-            }
-        }
-
+/*
         public void closeAndNullifyObjectOutputStream() {
             try {
                 if (object_output_stream_ != null && was_oos_closed == false) {
@@ -311,7 +298,7 @@ public class MapInternet extends Thread {
                 RunGame.errOut("object_output_stream_ was already closed in Map.ServerThread.run()");
                 e.printStackTrace();
             }
-        }
+        }*/
         //private volatile boolean is_notified = false;
 
         public synchronized void setBundleAvatarAndInterrupt(Entity e, IO_Bundle to_set) {
@@ -347,7 +334,7 @@ public class MapInternet extends Thread {
                     try {
                         wait();
                     } catch (InterruptedException e) {
-                        //is_notified = false;
+                        return;
                     }
                 //}
                 /*if (RunGame.getUseTCP()) {

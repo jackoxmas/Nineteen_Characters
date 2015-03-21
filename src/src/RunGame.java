@@ -78,7 +78,7 @@ public class RunGame {
         } else {
             System.out.println("The controller thread is null");
         }
-        internet.closeAndNullifyConnection();
+        internet.terminate();
     }
 
     public static String getAvatarName() {

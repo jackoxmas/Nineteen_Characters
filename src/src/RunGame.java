@@ -121,17 +121,17 @@ public class RunGame {
         map_.addAsKnight(buddy, 3, 0); // buddy can jump over entities!
         map_.addAsFlying(buddy, 4, 0); // buddy can jump over entities!
 
-        Villager villager1 = new Villager("villager1", '☺');
+        Villager villager1 = new Villager("villager1", '♙');
         villager1.getStatsPack().increaseQuantityOfExperienceBy(200);
         map_.addAsEntity(villager1, 3, 13);
 
-        Monster strong = new Monster("monster1", '☺');
+        Monster strong = new Monster("monster1", '♟');
         strong.getStatsPack().increaseQuantityOfExperienceBy(400);
         strong.getStatsPack().increaseDefenseLevelByOne();
         strong.getStatsPack().increaseHardinessLevelByOne();
         map_.addAsEntity(strong, 13, 3);
 
-        Merchant merchant = new Merchant("merchant1", '☺');
+        Merchant merchant = new Merchant("merchant1", '♖');
         merchant.getStatsPack().increaseQuantityOfExperienceBy(1000);
         map_.addAsEntity(merchant, 1, 1);
         Item teleport1 = new OneWayTeleportItem("tele1", 'T', 6, 6);

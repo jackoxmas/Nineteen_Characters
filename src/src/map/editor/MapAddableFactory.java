@@ -73,28 +73,28 @@ public class MapAddableFactory {
 			RedCross.addDecal('✚',Color.red);
 			return new TerrainAdder(RedCross);
 		case VILLAGER_ENTITY:
-			Villager villagerA = new Villager("villager1", '욋');
+			Villager villagerA = new Villager("villager1", '♙');
 			villagerA.getStatsPack().increaseQuantityOfExperienceBy(200);
 			return new EntityAdder(villagerA);
 		case TRADER_ENTITY:
-			Merchant merchant = new Merchant("merchant1", '웃');
+			Merchant merchant = new Merchant("merchant1", '♖');
 			merchant.getStatsPack().increaseQuantityOfExperienceBy(1000);
 			return new EntityAdder(merchant);
 		case MONSTER_ENTITY:
-			Monster monster = new Monster("monster1", '웃');
+			Monster monster = new Monster("monster1", '♟');
 			monster.getStatsPack().increaseQuantityOfExperienceBy(300);
 			return new EntityAdder(monster);
 		case AVATAR_ENTITY:
 			aveString_ = UUID.randomUUID().toString();//We use a unique name for each avatar.
-			Avatar buddy = new Avatar(aveString_, '웃');
+			Avatar buddy = new Avatar(aveString_, '♔');
 			return new AvatarAdder(buddy);
 		case KNIGHT_ENTITY:
 			aveString_ = UUID.randomUUID().toString();//We use a unique name for each avatar.
-			Avatar knight_buddy = new Avatar(aveString_, '웃');
+			Avatar knight_buddy = new Avatar(aveString_, '♘');
 			return new KnightAvatarAdder(knight_buddy);
 		case FLIGHT_ENTITY:
 			aveString_ = UUID.randomUUID().toString();//We use a unique name for each avatar.
-			Avatar flight_buddy = new Avatar(aveString_, '웃');
+			Avatar flight_buddy = new Avatar(aveString_, '♕');
 			return new FlightAvatarAdder(flight_buddy);
 		case HURT_EFFECT_ITEM:
 			OneShotAreaEffectItem heal = new OneShotAreaEffectItem("healer", 'h', Effect.HEAL, 10);

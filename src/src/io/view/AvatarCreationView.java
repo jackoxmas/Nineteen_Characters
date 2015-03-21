@@ -77,7 +77,7 @@ public final class AvatarCreationView extends Viewport
      * Generates a new ChaAvatarCreationViewses avatar_reference_ to modify the avatar.
      */
     public AvatarCreationView() {
-    	super();
+    	super(40, 80);
 		title_ = getAsciiArtFromFile("ASCIIART/class.txt");
 		smasherArt_ = getAsciiArtFromFile("ASCIIART/smasher.txt");
 		sneakerArt_ = getAsciiArtFromFile("ASCIIART/sneaker.txt");

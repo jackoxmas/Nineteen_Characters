@@ -119,7 +119,6 @@ public class RunGame {
         Avatar buddy = new Avatar("buddy", '☺');
         // map_.addAsAvatar(buddy, 3, 0);
         map_.addAsKnight(buddy, 3, 0); // buddy can jump over entities!
-        map_.addAsFlying(buddy, 4, 0); // buddy can jump over entities!
 
         Villager villager1 = new Villager("villager1", '♙');
         villager1.getStatsPack().increaseQuantityOfExperienceBy(200);

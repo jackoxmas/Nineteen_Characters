@@ -6,6 +6,7 @@
 package src.model;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 import src.Effect;
@@ -29,7 +30,7 @@ import src.model.constructs.items.Trap;
 public class MapEntity_Relation extends MapDrawableThing_Relation {
 
     //<editor-fold desc="Non-static fields" defaultstate="collapsed">
-    private final Entity entity_;
+    private transient final Entity entity_;
     private final int x_respawn_point_;
     private final int y_respawn_point_;
 
@@ -88,11 +89,8 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 this.entity_, this.x_respawn_point_, this.y_respawn_point_));
     }
 
-    /**
-     * Turns an entity's MapEntityRelation into a MapFlying_Relation
-     */
-    public void becomeFlyingRelation() {
-        entity_.setMapRelation(new MapFlying_Relation(super.getMap(),
+    public void becomeEntityRelation() {
+        entity_.setMapRelation(new MapEntity_Relation(super.getMap(),
                 this.entity_, this.x_respawn_point_, this.y_respawn_point_));
     }
 
@@ -280,7 +278,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         final int amount_to_move_in_x_direction;
         if (delta_x > 0) {
             amount_to_move_in_x_direction = 1;
-        } else if ((delta_x< 0)) {
+        } else if ((delta_x < 0)) {
             amount_to_move_in_x_direction = -1;
         } else {
             amount_to_move_in_x_direction = 0;
@@ -288,7 +286,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         final int amount_to_move_in_y_direction;
         if (delta_y > 0) {
             amount_to_move_in_y_direction = 1;
-        } else if ((delta_y< 0)) {
+        } else if ((delta_y < 0)) {
             amount_to_move_in_y_direction = -1;
         } else {
             amount_to_move_in_y_direction = 0;
@@ -639,7 +637,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      *
      * @author John-Michael Reed
      */
-    public final AreaEffect areaEffectFunctor = new MapEntity_Relation.AreaEffect();
+    public final transient AreaEffect areaEffectFunctor = new MapEntity_Relation.AreaEffect();
 
     public class AreaEffect extends MapDrawableThing_Relation.AreaEffect {
 

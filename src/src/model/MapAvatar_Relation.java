@@ -5,6 +5,7 @@
  */
 package src.model;
 
+import java.io.Serializable;
 import src.io.view.display.Display;
 import src.model.constructs.Avatar;
 import src.model.constructs.Entity;
@@ -17,7 +18,7 @@ import src.model.constructs.Entity;
  */
 public class MapAvatar_Relation extends MapEntity_Relation {
 
-    private final Avatar avatar_;
+    private transient final Avatar avatar_;
 
     /**
      * Gets Avatar associated with the relation.

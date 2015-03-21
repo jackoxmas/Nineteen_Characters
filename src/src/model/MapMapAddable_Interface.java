@@ -43,13 +43,4 @@ public interface MapMapAddable_Interface {
      * @return -1 on fail, 0 on success
      **/
 	public int addAsKnight(Entity e, int x, int y);
-    /**
-     * Adds an Flight avatar to the map.
-     *
-     * @param a - Avatar to be added
-     * @param x - x position of where you want to add Avatar
-     * @param y - y posiition of where you want to add Avatar
-     * @return -1 on fail, 0 on success
-     **/
-	public int addAsFlying(Entity e, int x, int y);
 }

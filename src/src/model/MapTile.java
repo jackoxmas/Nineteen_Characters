@@ -45,6 +45,7 @@ public final class MapTile {
      */
     public void takeTurn(){
     	if(terrain_ != null){terrain_.takeTurn();}
+        if(entity_ != null){entity_.takeTurn();}
     }
     /**
      * Returns a reference to the terrain object used by this map tile

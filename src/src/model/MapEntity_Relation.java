@@ -256,7 +256,6 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             System.err.print("An impossible error occured in MapEntity_Relation.moveInDirection()");
             System.exit(-1); // Impossible
         }
-        System.err.print("in MapEntity_Relation.moveInDirection, x: " + x + " y: " + y + " by: " + entity_.name_);
         return super.pushEntityInDirection(entity_, x, y);
     }
 

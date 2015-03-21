@@ -2,6 +2,7 @@ package src;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
@@ -20,7 +21,9 @@ import src.model.Map;
 import src.model.MapInternet;
 
 /**
- * Used for sending and receiving data from a Controller [not part of Iteration 2]
+ * Used for sending and receiving data from a Controller [not part of Iteration
+ * 2]
+ *
  * @author John-Michael Reed
  */
 public final class ControllerInternet {
@@ -54,9 +57,7 @@ public final class ControllerInternet {
 
         public synchronized void setPacketAndNotify(DatagramPacket s) {
             packet_to_send = s;
-            synchronized (this /*sender_thread*/) {
-                notify();
-            }
+            notify();
         }
 
         public UDP_Sender_Thread() {
@@ -68,20 +69,16 @@ public final class ControllerInternet {
             }
         }
 
-        public void run() {
+        public synchronized void run() {
             while (true) {
-                synchronized (this /*sender_thread*/) {
-                    try {
-                        System.out.println("Waiting for Controller to notify me in Internet.UDP_Sender_Thread.run()");
-                        this.wait();
-                        System.out.println("Was notified in Internet.UDP_Sender_Thread.run()");
-                        udp_socket_for_outgoing_signals.send(packet_to_send);
-                    } catch (InterruptedException i) {
-                        i.printStackTrace();
-                        return; // safely kill the thread
-                    } catch (IOException io) {
-                        io.printStackTrace();
-                    }
+                try {
+                    this.wait();
+                    udp_socket_for_outgoing_signals.send(packet_to_send);
+                } catch (InterruptedException i) {
+                    i.printStackTrace();
+                    return; // safely kill the thread
+                } catch (IOException io) {
+                    io.printStackTrace();
                 }
             }
         }
@@ -116,14 +113,8 @@ public final class ControllerInternet {
      * to render the view.
      */
     public IO_Bundle sendStuffToMap(String avatar_name, Enum key_command, int width, int height, String optional_text) {
-        System.out.println("Starting Internet.sendStuffToMap(" + avatar_name + ", " + key_command.name() + ",...)");
         if (!isConnected) {
             final int error_code = makeConnectionUsingIP_Address("localhost");
-            if (error_code != 0) {
-                System.out.println("Failed to send setuff over internet in Internet.sendStuffToMap(" + avatar_name + ", " + key_command.name() + ",...)");
-            } else {
-                System.out.println("Made initial connection to map in Internet.sendStuffToMap(" + avatar_name + ", " + key_command.name() + ",...)");
-            }
         }
         try {
             final String to_send = unique_id_string + " " + avatar_name + " "
@@ -156,22 +147,8 @@ public final class ControllerInternet {
                 }
                 return to_recieve;
             } else {
-                //System.out.println("Calling Internet.sendStuffToMap over UDP");
                 // recieve IO_Bundle from map over UDP connection
-                final byte[] recieved;
-                 System.err.println("Buffer size: " + udp_socket_for_incoming_signals.getReceiveBufferSize());
-                DatagramPacket recvPacket = new DatagramPacket(recieved = new byte[17597 * 2], recieved.length);
-                udp_socket_for_incoming_signals.receive(recvPacket);
-                System.err.println("Buffer size: " + udp_socket_for_incoming_signals.getReceiveBufferSize());
-                if (recieved[0] == 0 && recieved[1] == 0 && recieved[2] == 0 && recieved[3] == 0) {
-                    System.err.println("To send is zeros in Internet [Controller]!!!!!!!!!!!");
-                } else {
-                    System.err.println("To send is NOT zeros in Internet [Controller]!!!!!!!!!!!");
-                }
-                final int numReceivedBytes = recvPacket.getLength(); // returns length of data to be sent or data recieved.
-                System.out.println("Number of recieved bytes in Internet.sendStuffToMap(" + avatar_name + ", " + key_command.name() + ",...): "
-                        + numReceivedBytes);
-                IO_Bundle to_recieve = ControllerInternet.bytesToBundle(recieved);
+                IO_Bundle to_recieve = getBundleFromBufferOfSize(40000);
                 // Decompression the IO_Bundle if characters are compressed.
                 if (to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
                     to_recieve.view_for_display_ = IO_Bundle.runLengthDecodeView(width, height,
@@ -189,9 +166,32 @@ public final class ControllerInternet {
         }
     }
 
+    private IO_Bundle getBundleFromBufferOfSize(int buffer_size) {
+        boolean is_too_small = true;
+        IO_Bundle to_return = null;
+        
+        while (is_too_small) {
+            byte[] recieved = new byte[buffer_size];
+            DatagramPacket recvPacket = new DatagramPacket(recieved, recieved.length);
+            try {
+                udp_socket_for_incoming_signals.receive(recvPacket);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+            try {
+                to_return = ControllerInternet.bytesToBundle(recieved);
+                is_too_small = false;
+            } catch (IOException eof) {
+                // if the buffer is too small.
+                buffer_size = buffer_size*2;
+            }
+        }
+        return to_return;
+    }
+
     /**
      * Allows the controller to connects itself to an internet connection and
- use ControllerInternet.sendStuffToMap(String, Enum, int, int, "")
+     * use ControllerInternet.sendStuffToMap(String, Enum, int, int, "")
      *
      * @param ip_address - use "localhost" to connect to local machine, ex.
      * "192.***.***.***".
@@ -251,11 +251,6 @@ public final class ControllerInternet {
     }
 
     public static byte[] bundleToBytes(IO_Bundle io_bundle) {
-        if (io_bundle == null) {
-            System.err.println("IO_Bundle to be converted to array IS null in Internet.bundleToBytes(IO_Bundle io_bundle)");
-        } else {
-            System.err.println("IO_Bundle to be converted to array ISN'T null in Internet.bundleToBytes(IO_Bundle io_bundle)");
-        }
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream(2048);
             ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -276,25 +271,28 @@ public final class ControllerInternet {
         }
     }
 
-    public static IO_Bundle bytesToBundle(byte[] data) {
-        if (data[0] == 0 && data[1] == 0 && data[2] == 0 && data[3] == 0 && data[4] == 0) {
-            System.err.println("Array to be converted to IO_Bundle DOES start with zeros in Internet.bytesToBundle(byte[] data)");
-        } else {
-            System.err.println("Array to be converted to IO_Bundle DOESN'T start with zeros in Internet.bytesToBundle(byte[] data)");
-        }
+    /**
+     * THROWS AN IO EXCEPTION [EOF EXCEPTION] IF THE BYTE ARRAY SO TOO SMALL TO
+     * FIT THE OBJECT
+     *
+     * @param data
+     * @return
+     * @throws IOException
+     */
+    public static IO_Bundle bytesToBundle(byte[] data) throws IOException {
+        ByteArrayInputStream bais = new ByteArrayInputStream(data);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        IO_Bundle to_return = null;
         try {
-            ByteArrayInputStream bais = new ByteArrayInputStream(data);
-            ObjectInputStream ois = new ObjectInputStream(bais);
             Object object = ois.readObject();
-            IO_Bundle obj = (IO_Bundle) object;
-            ois.close();
-            return obj;
-        } catch (Exception e) {
-            System.err.println("Exception in Internet.bytesToBundle(byte[] data) named: " + e.toString());
-            e.printStackTrace();
-            System.exit(-77);
-            return null;
+            to_return = (IO_Bundle) object;
+        } catch (ClassNotFoundException cnfe) {
+            System.err.println("Impossible error");
+            cnfe.printStackTrace();
+            System.exit(-76);
         }
+        ois.close();
+        return to_return;
     }
 
     private static String getMacAddress() {

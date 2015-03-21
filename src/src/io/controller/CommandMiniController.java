@@ -110,12 +110,12 @@ class CommandMiniController {
             return this.setControl(inputs);
         }
         if (command.equals(setTCP)) {
-            if (foo.toLowerCase().contains("n")) {
+            if (foo.contains("no") || foo.contains("off") || foo.contains("Off")) {
                 RunGame.setUseTCP(false);
-                return "TCP turned off because you said no";
+                return "TCP turned off because you said no/off";
             } else {
                 RunGame.setUseTCP(true);
-                return "TCP turned on because you didn't say no.";
+                return "TCP turned on because you said neither no nor off.";
             }
         }
 

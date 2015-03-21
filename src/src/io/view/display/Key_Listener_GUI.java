@@ -582,11 +582,11 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         sendKeyCommand(Key_Commands.OBSERVE);
     }//GEN-LAST:event_observe_jButtonMouseClicked
     private void game_jTextPaneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_game_jTextPaneKeyTyped
-    	System.out.println("Was runA");
+    	//System.out.println("Was runA");
         for (QueueCommandInterface<Character> foo : game_inputHandlers_) {
             foo.enqueue(evt.getKeyChar());
         }
-    	System.out.println("Was runB");
+    	//System.out.println("Was runB");
     }//GEN-LAST:event_game_jTextPaneKeyTyped
     private void command_jButtonMouseClicked(java.awt.event.MouseEvent evt) {
         if (evt.getClickCount() >= 2) {

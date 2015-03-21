@@ -143,7 +143,7 @@ public class RunGame {
         Item shield = new Shield("Shieldy", 'O');
         shield.getStatsPack().addOn(new DrawableThingStatsPack(0, 10));
         OneShotAreaEffectItem heal = new OneShotAreaEffectItem("healer", 'h', Effect.HEAL, 10);
-        OneShotAreaEffectItem hurt = new OneShotAreaEffectItem("hurter", 'u', Effect.HURT, 10);
+        OneShotAreaEffectItem hurt = new OneShotAreaEffectItem("hurter", 'u', Effect.HURT, 2);
         OneShotAreaEffectItem kill = new OneShotAreaEffectItem("killer", 'k', Effect.KILL, 10);
         OneShotAreaEffectItem level = new OneShotAreaEffectItem("leveler", 'l', Effect.LEVEL, 10);
 
@@ -167,7 +167,7 @@ public class RunGame {
         map_.addAsEntity(villager, 0, 5);
 
         //Add some traps
-        Trap trap1 = new Trap("trap1", 'b', Effect.HURT, 3);
+        Trap trap1 = new Trap("trap1", 'b', Effect.HURT, 2);
         map_.addItem(trap1, 1, 0);
 
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.

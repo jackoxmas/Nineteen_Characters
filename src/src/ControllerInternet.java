@@ -181,8 +181,7 @@ public final class ControllerInternet {
         try {
             ControllerInternet.address = InetAddress.getByName(ip_address);
         } catch (IOException e) {
-
-            e.printStackTrace();
+            //e.printStackTrace();
             isConnected = false;
             RunGame.setUseInternet(false);
             return -1;

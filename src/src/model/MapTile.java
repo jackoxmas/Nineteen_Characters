@@ -39,6 +39,7 @@ public final class MapTile {
             return -1;
         }
     }
+
     /**
      * Update anything that must be updated on a per turn basis
      * ATM, that is only terrain.
@@ -46,6 +47,7 @@ public final class MapTile {
     public void takeTurn(){
     	if(terrain_ != null){terrain_.takeTurn();}
     }
+
     /**
      * Returns a reference to the terrain object used by this map tile
      * <p>

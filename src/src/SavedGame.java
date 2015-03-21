@@ -22,6 +22,8 @@ import src.model.*;
 import src.model.constructs.*;
 
 import org.w3c.dom.*;
+import src.model.constructs.Entity;
+import src.model.constructs.items.Item;
 
 /**
  * This class manages a saved game object. A saved game has a file path and 
@@ -247,28 +249,10 @@ public class SavedGame {
             e_version.appendChild(save.createTextNode(Long.toString(SAVE_DATA_VERSION)));
             root.appendChild(e_version);
 
-            /*
-            if (controller != null) {
-                // CONTROLLER KEYMAP
-                Element e_keymap = save.createElement(XML_KEYMAP);
-                e_keymap.setAttribute(XML_USERNAME, controller.getUserName());
-
-                Element e_key;
-                for (Map.Entry<Character, Character> e : controller.getRemap().entrySet()) {
-                    e_key = save.createElement(XML_REMAP);
-                    e_key.setAttribute(XML_KEY, e.getKey().toString());
-                    e_key.appendChild(save.createTextNode(e.getValue().toString()));
-                    e_keymap.appendChild(e_key);
-                }
-                root.appendChild(e_keymap);
-            } else {
-                RunGame.dbgOut("XML INFO: no user controller provided for saving.", 3);
-            */
-
             // MAP
             Element e_map = save.createElement(XML_MAP);
 
-            map.xml_writeMap(save, e_map);
+            xml_writeMap(save, e_map, map);
 
             root.appendChild(e_map);
 
@@ -410,5 +394,308 @@ public class SavedGame {
 
         RunGame.dbgOut("Validate File: returning found file: " + ret_file.getPath(), 4);
         return ret_file;
+    }
+
+    public static Map xml_readMap(Document doc, Element e_map) {
+
+        Element e_mapgrid = (Element) e_map.getElementsByTagName(SavedGame.XML_MAP_MAPGRID).item(0);
+        Integer map_x = Integer.parseInt(e_mapgrid.getAttributes().getNamedItem(SavedGame.XML_MAP_MAPGRID_WIDTH).getNodeValue());
+        Integer map_y = Integer.parseInt(e_mapgrid.getAttributes().getNamedItem(SavedGame.XML_MAP_MAPGRID_HEIGHT).getNodeValue());
+        RunGame.dbgOut("XML Parsed: map grid x = " + map_x, 4);
+        RunGame.dbgOut("XML Parsed: map grid y = " + map_y, 4);
+
+        Map mm = new Map(map_x, map_y);
+        return mm;
+    }
+
+    /**
+     * Writes this map to the given XML Element in the given XML document
+     *
+     * @param doc The XML Document to write to
+     * @param e_map The XML Element to write to
+     * @return 0 = success
+     * @author Alex Stewart
+     */
+    public static int xml_writeMap(Document doc, Element e_map, src.model.Map map) {
+        // MAP::TIME)
+        Element e_time = doc.createElement(SavedGame.XML_MAP_TIME);
+        e_map.appendChild(doc.createTextNode(Integer.toString(map.getTime())));
+
+        // MAP::MAP_GRID
+        Element e_map_grid = doc.createElement(SavedGame.XML_MAP_MAPGRID);
+        e_map_grid.setAttribute(SavedGame.XML_MAP_MAPGRID_WIDTH, Integer.toString(map.getWidth()));
+        e_map_grid.setAttribute(SavedGame.XML_MAP_MAPGRID_HEIGHT, Integer.toString(map.getHeight()));
+
+        Element e_l;
+        for (int j = 0; j < map.getHeight(); j++) {
+            for (int i = 0; i < map.getWidth(); i++) {
+                e_l = doc.createElement("map_tile");
+                e_l.setAttribute("x", Integer.toString(i));
+                e_l.setAttribute("y", Integer.toString(j));
+
+                MapTile[][] grid = map.getMapGrid();
+                // Terrain
+                Terrain terr = grid[i][j].getTerrain();
+                if (terr == null) {
+                    RunGame.errOut("xml_writeMap: null terrain @ [" + i + ", " + j + "]");
+                    return 1;
+                }
+                xml_writeTerrain(doc, e_l, terr);
+
+                /*
+                // Entity
+                Entity ent = grid[i][j].getEntity();
+                if (ent != null) {
+                    xml_writeEntity(doc, e_l, ent);
+                }
+
+                // Item list
+                if (map.getMapGrid()[i][j].getItemList().size() != 0) {
+                    Element e_itemlist = doc.createElement("item_list");
+                    for (Item item : grid[i][j].getItemList()) {
+                        xml_writeItem(doc, e_itemlist, item);
+                    }
+                    e_l.appendChild(e_itemlist);
+                }
+                */
+
+                e_map_grid.appendChild(e_l);
+            }
+        }
+
+        // MAP - APPEND
+        e_map.appendChild(e_time);
+        e_map.appendChild(e_map_grid);
+
+        return 0; // Return success
+    }
+
+    /**
+     * Writes an entity to an XML element
+     *
+     * @param doc The DOM document to write to
+     * @param parent The parent element to write this entity in
+     * @param entity The Entity object to write
+     * @return The entity's DOM Element, or null - on failure.
+     */
+    private static Element xml_writeEntity(Document doc, Element parent, Entity entity) {
+        Element e_entity = doc.createElement("entity");
+
+        // Name
+        e_entity.setAttribute("name", entity.getName());
+
+        /*
+         if (this.avatar_list_.containsValue(entity)) {
+         e_entity.appendChild(doc.createElement("b_avatar"));
+         }*/
+        // Direction
+        Element e_dir = doc.createElement("direction");
+        e_dir.appendChild(doc.createTextNode(entity.getFacingDirection().toString()));
+
+        // Item List
+        Element e_itemList = doc.createElement("item_list");
+        // write inventory items to xml
+        //Item equipped = entity.getEquipped(); //TODO FIX
+        //ArrayList<Item> tmp_inv = entity.getInventory();
+        Element tmp_eInvItem; // temp inventory item
+        for (int i = 0; i < entity.getInventory().size(); i++) {
+            //tmp_eInvItem = xml_writeItem(doc, e_itemList, tmp_inv.get(i));
+
+            /*
+             if (tmp_inv.get(i) == equipped)
+             tmp_eInvItem.appendChild(doc.createElement("b_equipped")); */
+            //e_itemList.appendChild(tmp_eInvItem);
+        }
+        e_entity.appendChild(e_itemList);
+
+        xml_writeStatsDrawable(doc, e_entity, (DrawableThingStatsPack) entity.getStatsPack());
+        xml_writeStatsEntity(doc, e_entity, entity.getStatsPack());
+
+        parent.appendChild(e_entity);
+
+        return e_entity;
+    }
+
+    /**
+     * Writes an Item to a DOM document
+     *
+     * @param doc The DOM Document to write to
+     * @param parent The parent Element to insert the item in
+     * @param item The Item to write
+     * @return The item's DOM Element, or null - if there was an error
+     */
+    private static Element xml_writeItem(Document doc, Element parent, Item item) {
+        Element e_item = doc.createElement("item");
+
+        // Name
+        e_item.setAttribute("name", item.getName());
+        // Is One Shot
+        if (item.isOneShot()) {
+            e_item.appendChild(doc.createElement("b_one_shot"));
+        }
+        // Is Passable
+        if (item.isPassable()) {
+            e_item.appendChild(doc.createElement("b_passable"));
+        }
+        // Goes in Inventory
+        if (item.goesInInventory()) {
+            e_item.appendChild(doc.createElement("b_inventory-able"));
+        }
+
+        xml_writeStatsDrawable(doc, e_item, item.getStatsPack());
+
+        parent.appendChild(e_item);
+        return e_item;
+    }
+
+    private static Element xml_writeStatsDrawable(Document doc, Element parent, DrawableThingStatsPack stats) {
+        if (stats == null) {
+            RunGame.errOut("xml_writeStatsDrawable: null statspack");
+            return null;
+        }
+
+        Element e_stats = doc.createElement("stats_drawable");
+        Element trans_eStat;
+
+        if (stats.getArmor_rating_() != 0) {
+            trans_eStat = doc.createElement("armor_rating");
+            trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getArmor_rating_())));
+            e_stats.appendChild(trans_eStat);
+        }
+        // TODO FIX:
+        /*
+         if (stats.getDefensive_rating_() != 0) {
+         trans_eStat = doc.createElement("def_rating");
+         trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getDefensive_rating_())));
+         e_stats.appendChild(trans_eStat);
+         }*/
+        if (stats.getOffensive_rating_() != 0) {
+            trans_eStat = doc.createElement("off_rating");
+            trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getOffensive_rating_())));
+            e_stats.appendChild(trans_eStat);
+        }
+
+        parent.appendChild(e_stats);
+        return e_stats;
+    }
+
+    private static Element xml_writeStatsEntity(Document doc, Element parent, EntityStatsPack stats) {
+        if (stats == null) {
+            RunGame.errOut("xml_writeStatsEntity: null statspack");
+            return null;
+        }
+
+        Element e_stats = doc.createElement("stats_entity");
+        Element tra_eStat;
+
+        if (stats.getLives_left_() != 0) {
+            tra_eStat = doc.createElement("lives");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getLives_left_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getStrength_level_() != 0) {
+            tra_eStat = doc.createElement("strength");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getStrength_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getAgility_level_() != 0) {
+            tra_eStat = doc.createElement("agility");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getAgility_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getIntellect_level_() != 0) {
+            tra_eStat = doc.createElement("intellect");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getIntellect_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getHardiness_level_() != 0) {
+            tra_eStat = doc.createElement("hardness");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getHardiness_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getQuantity_of_experience_() != 0) {
+            tra_eStat = doc.createElement("XP");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getQuantity_of_experience_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getMovement_level_() != 0) {
+            tra_eStat = doc.createElement("movement");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getMovement_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getMax_life_() != 0) {
+            tra_eStat = doc.createElement("max_life");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getMax_life_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getMax_mana_() != 0) {
+            tra_eStat = doc.createElement("max_mana");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getMax_mana_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getMoves_left_in_turn_() != 0) {
+            tra_eStat = doc.createElement("moves_remaining");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getMoves_left_in_turn_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getCached_current_level_() != 0) {
+            tra_eStat = doc.createElement("level");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getCached_current_level_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getCurrent_life_() != 0) {
+            tra_eStat = doc.createElement("life");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getCurrent_life_())));
+            e_stats.appendChild(tra_eStat);
+        }
+        if (stats.getCurrent_mana_() != 0) {
+            tra_eStat = doc.createElement("mana");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getCurrent_mana_())));
+            e_stats.appendChild(tra_eStat);
+        }
+
+        parent.appendChild(e_stats);
+        return e_stats;
+    }
+
+    private static Element xml_writeTerrain(Document doc, Element parent, Terrain terr) {
+        Element e_Terrain = doc.createElement("terrain");
+
+        if (terr.getName() == null) {
+            RunGame.errOut("xml_writeTerrain: null Terrain name");
+            return null;
+        }
+        e_Terrain.setAttribute("name", terr.getName());
+
+        // BOOLEANS:
+        if (terr.isMountain()) {
+            e_Terrain.appendChild(doc.createElement("b_mountain"));
+        }
+
+        if (terr.isWater()) {
+            e_Terrain.appendChild(doc.createElement("b_water"));
+        }
+
+        // Terrain::Decal - only write if non-null
+        if (terr.getDecal() != '\u0000') {
+            Element e_decal = doc.createElement("decal");
+            e_decal.appendChild(doc.createTextNode(Character.toString(terr.getDecal())));
+            e_Terrain.appendChild(e_decal);
+        }
+
+        // Terrain::Character
+        Element e_dChar = doc.createElement("terr_char");
+        e_dChar.appendChild(doc.createTextNode(Character.toString(terr.getRepresentation())));
+        e_Terrain.appendChild(e_dChar);
+
+        // Terrain::Color - only write if non-null
+        /*
+         if (terr.color_ != null) {
+         Element e_color = doc.createElement("color");
+         e_color.appendChild(doc.createTextNode(terr.color_.name()));
+         e_Terrain.appendChild(e_color);
+         }*/
+        parent.appendChild(e_Terrain);
+        return e_Terrain;
     }
 }

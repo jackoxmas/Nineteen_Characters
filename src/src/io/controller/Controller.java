@@ -243,13 +243,13 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
         return message_deliverer_;
     }
 
-    public int tellToSetNetworkIPTo(String ip) {
+    /**
+     * 
+     * @param ip
+     * @return -1 if ip is invalid, 0 if ip is valid.
+     */
+    public int setNetworkIPTo(String ip) {
         int error_code = internet.makeConnectionUsingIP_Address(ip);
-        if (error_code == 0) {
-            tellToUseNetwork();
-        } else {
-            tellNotToUseNetwork();
-        }
         return error_code;
     }
     

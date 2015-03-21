@@ -97,10 +97,12 @@ class CommandMiniController {
         if (command.equals(setIP)) {
             final String[] parsed_command = foo.split(" ");
             final String ip_address = parsed_command[parsed_command.length - 1];
-            int error_code = cont_.tellToSetNetworkIPTo(ip_address);
+            int error_code = cont_.setNetworkIPTo(ip_address);
             if (error_code == 0) {
+                cont_.tellToUseNetwork();
                 return "Successfully connected to ip address: " + foo;
             } else {
+                cont_.tellNotToUseNetwork();
                 return "Something went wrong. Cannot connect to the ip address provided.";
             }
         }

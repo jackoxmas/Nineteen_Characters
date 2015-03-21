@@ -122,6 +122,7 @@ public final class ControllerInternet {
             final int error_code = makeConnectionUsingIP_Address("localhost");
             if(error_code == 0) {
             } else {
+                who_I_am_providing_internet_to_.tellNotToUseNetwork();
                 System.err.println("An impossible error occured in ControllerInternet.sendStuffToMap(). Could not connect to localhost");
                 System.exit(-43);
                 return null;
@@ -197,11 +198,9 @@ public final class ControllerInternet {
         } catch (IOException e) {
             //e.printStackTrace();
             is_internet_connected = false;
-            who_I_am_providing_internet_to_.tellNotToUseNetwork();
             return -1;
         }
         is_internet_connected = true;
-        who_I_am_providing_internet_to_.tellToUseNetwork();
         return 0;
     }
 

@@ -11,7 +11,9 @@ import src.model.constructs.Monster;
 import src.model.constructs.Terrain;
 import src.model.constructs.Villager;
 import src.model.constructs.items.Bow;
+import src.model.constructs.items.InvisibilitySerum;
 import src.model.constructs.items.Item;
+import src.model.constructs.items.KnightsSerum;
 import src.model.constructs.items.ObstacleRemovingItem;
 import src.model.constructs.items.OneHandedSword;
 import src.model.constructs.items.OneShotAreaEffectItem;
@@ -71,21 +73,29 @@ public class MapAddableFactory {
 			RedCross.addDecal('✚',Color.red);
 			return new TerrainAdder(RedCross);
 		case VILLAGER_ENTITY:
-			Villager villagerA = new Villager("villager1", '욋');
+			Villager villagerA = new Villager("villager1", '♙');
 			villagerA.getStatsPack().increaseQuantityOfExperienceBy(200);
 			return new EntityAdder(villagerA);
 		case TRADER_ENTITY:
-			Merchant merchant = new Merchant("merchant1", '웃');
+			Merchant merchant = new Merchant("merchant1", '♖');
 			merchant.getStatsPack().increaseQuantityOfExperienceBy(1000);
 			return new EntityAdder(merchant);
 		case MONSTER_ENTITY:
-			Monster monster = new Monster("monster1", '웃');
+			Monster monster = new Monster("monster1", '♟');
 			monster.getStatsPack().increaseQuantityOfExperienceBy(300);
 			return new EntityAdder(monster);
 		case AVATAR_ENTITY:
 			aveString_ = UUID.randomUUID().toString();//We use a unique name for each avatar.
-			Avatar buddy = new Avatar(aveString_, '웃');
+			Avatar buddy = new Avatar(aveString_, '♔');
 			return new AvatarAdder(buddy);
+		case KNIGHT_ENTITY:
+			aveString_ = UUID.randomUUID().toString();//We use a unique name for each avatar.
+			Avatar knight_buddy = new Avatar(aveString_, '♘');
+			return new KnightAvatarAdder(knight_buddy);
+		case FLIGHT_ENTITY:
+			aveString_ = UUID.randomUUID().toString();//We use a unique name for each avatar.
+			Avatar flight_buddy = new Avatar(aveString_, '♕');
+			return new FlightAvatarAdder(flight_buddy);
 		case HURT_EFFECT_ITEM:
 			OneShotAreaEffectItem heal = new OneShotAreaEffectItem("healer", 'h', Effect.HEAL, 10);
 			return new ItemAdder(heal);
@@ -132,6 +142,12 @@ public class MapAddableFactory {
 		case LEVELUP_TRAP:
 			Trap trapLevel = new Trap("trapLevel",'b',Effect.LEVEL,2);
 			return new ItemAdder(trapLevel);
+		case FLIGHT_POTION:
+			InvisibilitySerum flying_serum = new InvisibilitySerum("Invisibility Serum", 'I');
+			return new ItemAdder(flying_serum);
+		case KNIGHT_POTION:
+			KnightsSerum knight_serum = new KnightsSerum("Knight serum", 'N');
+			return new ItemAdder(knight_serum);
 
 		default: return null;
 		}

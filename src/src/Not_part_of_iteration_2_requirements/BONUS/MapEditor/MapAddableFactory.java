@@ -92,10 +92,6 @@ public class MapAddableFactory {
 			aveString_ = UUID.randomUUID().toString();//We use a unique name for each avatar.
 			Avatar knight_buddy = new Avatar(aveString_, '♘');
 			return new KnightAvatarAdder(knight_buddy);
-		case FLIGHT_ENTITY:
-			aveString_ = UUID.randomUUID().toString();//We use a unique name for each avatar.
-			Avatar flight_buddy = new Avatar(aveString_, '♕');
-			return new FlightAvatarAdder(flight_buddy);
 		case HURT_EFFECT_ITEM:
 			OneShotAreaEffectItem heal = new OneShotAreaEffectItem("healer", 'h', Effect.HEAL, 10);
 			return new ItemAdder(heal);
@@ -142,9 +138,9 @@ public class MapAddableFactory {
 		case LEVELUP_TRAP:
 			Trap trapLevel = new Trap("trapLevel",'b',Effect.LEVEL,2);
 			return new ItemAdder(trapLevel);
-		case FLIGHT_POTION:
-			InvisibilitySerum flying_serum = new InvisibilitySerum("Invisibility Serum", 'I');
-			return new ItemAdder(flying_serum);
+		case INVISIBILITY_SERUM:
+			InvisibilitySerum invisibility_serum = new InvisibilitySerum("Invisibility Serum", 'I');
+			return new ItemAdder(invisibility_serum);
 		case KNIGHT_POTION:
 			KnightsSerum knight_serum = new KnightsSerum("Knight serum", 'N');
 			return new ItemAdder(knight_serum);

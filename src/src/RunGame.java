@@ -134,13 +134,11 @@ public class RunGame {
         villager1.getStatsPack().increaseQuantityOfExperienceBy(200);
         map_.addAsEntity(villager1, 3, 13);
 
-        Monster monster = new Monster("monster1", '☺');
-        monster.getStatsPack().increaseQuantityOfExperienceBy(400);
-        monster.getStatsPack().increaseDefenseLevelByOne();
-        monster.getStatsPack().increaseHardinessLevelByOne();
-        monster.getStatsPack().increaseCurrentLifeBy(100);
-
-        map_.addAsEntity(monster, 13, 3);
+        Monster strong = new Monster("monster1", '☺');
+        strong.getStatsPack().increaseQuantityOfExperienceBy(400);
+        strong.getStatsPack().increaseDefenseLevelByOne();
+        strong.getStatsPack().increaseHardinessLevelByOne();
+        map_.addAsEntity(strong, 13, 3);
 
         Merchant merchant = new Merchant("merchant1", '☺');
         merchant.getStatsPack().increaseQuantityOfExperienceBy(1000);

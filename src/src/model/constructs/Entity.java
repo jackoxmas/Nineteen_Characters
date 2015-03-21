@@ -150,7 +150,7 @@ abstract public class Entity extends DrawableThing {
     }
 
     public int bindWounds() {
-        this.getMapRelation().areaEffectFunctor.effectAreaWithinRadius(0, getBind_wounds_(), Effect.HEAL);
+        this.getMapRelation().areaEffectFunctor.effectAreaWithinRadius(1, getBind_wounds_()+1, Effect.HEAL);
         return 0;
     }
 
@@ -972,7 +972,7 @@ abstract public class Entity extends DrawableThing {
      * @return true if I did not die on attack, false if I did die
      */
     public boolean receiveAttack(int damage, Entity attacker) {
-        int amount_of_damage = damage - getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_();
+        int amount_of_damage = damage - (getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_())/4;
         if (amount_of_damage < 0) {
             amount_of_damage = 0;
         }

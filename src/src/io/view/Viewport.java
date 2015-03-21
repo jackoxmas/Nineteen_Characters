@@ -89,10 +89,10 @@ public abstract class Viewport {
 	protected void populateEquipped(IO_Bundle bundle){
 		equipped_list_ = "";
 		if(bundle.primary_!= null){
-			equipped_list_ += "Primary: "+System.lineSeparator()+"   "+bundle.primary_.getName();
+			equipped_list_ += "Primary: "+System.lineSeparator()+"   "+bundle.primary_.getName()+System.lineSeparator();
 		}
 		if(bundle.second_ != null){
-			equipped_list_ += "Secondary : "+System.lineSeparator()+"   "+bundle.second_.getName();
+			equipped_list_ += "Secondary : "+System.lineSeparator()+"   "+bundle.second_.getName()+System.lineSeparator();
 		}
 	}
 	/**

@@ -40,7 +40,7 @@ public class RunGame {
     private static Avatar avatar_;
     private static Map map_;
     private static Controller uc_;
-    private static int mapHeight_ = 40;
+    private static int mapHeight_ = 20;
     private static int mapWidth_ = 40;
     private static boolean map_editor_mode_ = false;
     private static boolean use_internet = true;
@@ -55,13 +55,13 @@ public class RunGame {
         use_internet = b;
     }
     /*
-    public static boolean getUseTCP() {
-        return RunGame.use_TCP;
-    }
+     public static boolean getUseTCP() {
+     return RunGame.use_TCP;
+     }
 
-    public static void setUseTCP(boolean b) {
-        use_TCP = b;
-    }*/
+     public static void setUseTCP(boolean b) {
+     use_TCP = b;
+     }*/
 
     public static void grusomelyKillTheMapAndTheController() {
         if (RunGame.map_ != null) {
@@ -185,24 +185,36 @@ public class RunGame {
         map_.addItem(twohandedsword, 1, 1);
         map_.addItem(shield, 10, 10);
         map_.addItem(onehandedsword, 5, 5);
+
         for (int y = 0; y < mapHeight_; ++y) {
             for (int x = 0; x < mapWidth_; ++x) {
-                Terrain obstacle = new Terrain("land", '▨', false, false);
+                Terrain land = new Terrain("land", '▨', false, false);
                 if (y == 4) {
                     if (x == 2) {
-                        obstacle.addDecal('☠', Color.black);
+                        land.addDecal('☠', Color.black);
                     } else if (x == 6) {
-                        obstacle.addDecal('★', Color.yellow);
+                        land.addDecal('★', Color.yellow);
                     } else if (x == 9) {
-                        obstacle.addDecal('✚', Color.red);
+                        land.addDecal('✚', Color.red);
                     }
                 }
-                map_.addTerrain(obstacle, x, y);
+                map_.addTerrain(land, x, y);
             }
         }
 
-        //Terrain obstacle = new Terrain("boulder", '■', true, false);
-        //map_.addTerrain(obstacle, 2, 2);
+        Terrain river = new Terrain("blue_river", '~', true, false);
+        for (int x = 0; x < mapWidth_; ++x) {
+            map_.addTerrain(river, x, 18);
+        }
+        // this should be gray
+        Terrain mountain = new Terrain("gray_mountain", '\u25B2', false, true);
+        map_.addTerrain(mountain, 20, 14);
+        map_.addTerrain(mountain, 21, 13);
+        map_.addTerrain(mountain, 22, 12);
+        // this should be cyan
+        Terrain cyan_mountain = new Terrain("cyan_mountain", '\u25B2', true, true);
+        map_.addTerrain(mountain, 23, 11);
+
         PermanentObstacleItem obstacle = new PermanentObstacleItem("boulder", '■');
         map_.addItem(obstacle, 2, 2);
 

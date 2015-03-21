@@ -44,9 +44,11 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     // 2d array of tiles.
     private MapTile map_grid_[][];
     private MapInternet my_internet_;
+
     //</editor-fold>
     //<editor-fold desc="Constructors" defaultstate="collapsed">
     // This should never get called
+
     @SuppressWarnings("unused")
     private Map() {
         height_ = 0;
@@ -102,6 +104,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     //<editor-fold desc="Accessors" defaultstate="collapsed">
     /**
      * Gets an entity by name
+     *
      * @param name - name of Entity
      * @return Entity with the name provided in parenthesis.
      */
@@ -138,6 +141,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         }
         return map_grid_[y_pos][x_pos];
     }
+
     /**
      * Gets the character representation of a tile
      *
@@ -163,7 +167,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             return tile_at_x_y.getTopColor();
         }
     }
-    
+
     public boolean hasEntity(String name) {
         return entity_list_.containsKey(name);
     }
@@ -322,6 +326,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         }
         return view;
     }
+
     /**
      * Makes a rectangular view with y coordinates in first [] of 2D array
      *
@@ -334,27 +339,34 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
      * @return
      */
     public void makeTakeTurns() {
-        for (int y = 0; y< height_;++y) {
-            for (int x = 0; x<width_;++x) {
+        for (int y = 0; y < height_; ++y) {
+            for (int x = 0; x < width_; ++x) {
 
                 makeMapTileTakeTurn(x, y);
             }
         }
-        for(Entry<String, Entity> e : entity_list_.entrySet()){e.getValue().takeTurn();}
+        for (Entry<String, Entity> e : entity_list_.entrySet()) {
+            e.getValue().takeTurn();
+        }
         return;
     }
+
     /**
      * Makes the tile specified run it's take turn function if it exists.
+     *
      * @param x
      * @param y
      * @return
      */
-    private boolean makeMapTileTakeTurn(int x, int y){
-    	MapTile tile_at_x_y = this.getTile(x, y);
-    	if (tile_at_x_y == null) {return false;}
-    	tile_at_x_y.takeTurn();
-    	return true;
+    private boolean makeMapTileTakeTurn(int x, int y) {
+        MapTile tile_at_x_y = this.getTile(x, y);
+        if (tile_at_x_y == null) {
+            return false;
+        }
+        tile_at_x_y.takeTurn();
+        return true;
     }
+
     /**
      * Uses run length encoding with characters "char[] unchanged_characters"
      * and character_frequencies "int[] unchanged_indexes."
@@ -379,6 +391,9 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             char first = this.getTileRepresentation(x_start, y_start);
             for (int y = y_start; y <= y_center + height_from_center; ++y) {
                 for (int x = x_start; x <= x_center + width_from_center; ++x) {
+                    if (x == x_start && y == y_start) {
+                        ++x; // you have to be one after the first tile.
+                    }
                     if (this.getTileRepresentation(x, y) != first) {
                         unchanged_characters.add(first); // java.lang.ArrayIndexOutOfBoundsException
                         frequencies.add(length);
@@ -438,8 +453,8 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);
-                    if(!Key_Commands.DO_ABSOLUTELY_NOTHING .equals(command)){
-                    	makeTakeTurns();//Make all the maptiles take a turn.
+                    if (!Key_Commands.DO_ABSOLUTELY_NOTHING.equals(command)) {
+                        makeTakeTurns();//Make all the maptiles take a turn.
                     }
                     IO_Bundle return_package = new IO_Bundle(
                             null, null, null, null,
@@ -514,6 +529,9 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             Color first = this.getColorRepresentation(x_start, y_start);
             for (int y = y_start; y <= y_center + height_from_center; ++y) {
                 for (int x = x_start; x <= x_center + width_from_center; ++x) {
+                    if (x == x_start && y == y_start) {
+                        ++x; // you have to be one after the first tile.
+                    }
                     if (this.getColorRepresentation(x, y) != first) {
                         unchanged_colors.add(first); // java.lang.ArrayIndexOutOfBoundsException
                         frequencies.add(length);

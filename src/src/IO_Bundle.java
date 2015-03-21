@@ -110,19 +110,21 @@ public class IO_Bundle implements Serializable {
         if (unchanged_characters != null && frequencies != null && (unchanged_characters.length == frequencies.length)) {
             char[][] view = new char[1 + 2 * height_from_center][1 + 2 * width_from_center];
             int unchanged_indexes_index = 0;
-            int character_length_counter = frequencies[unchanged_indexes_index];
+            
+            int character_length_counter = 0;
+            
             int y_index = 0;
             for (int y = -height_from_center; y <= +height_from_center; ++y) {
                 int x_index = 0;
                 for (int x = 0 - width_from_center; x <= 0 + width_from_center; ++x) {
                     view[y_index][x_index] = unchanged_characters[unchanged_indexes_index];
-                    --character_length_counter;
-                    if (character_length_counter == 0) {
+                    ++character_length_counter;
+                    if (! (character_length_counter < frequencies[unchanged_indexes_index])) {
                         ++unchanged_indexes_index;
                         if (unchanged_indexes_index == frequencies.length) {
                             return view;
                         }
-                        character_length_counter = frequencies[unchanged_indexes_index];
+                        character_length_counter = 0;
                     }
                     if (character_length_counter < 0) {
                         System.err.println("Impossible error in runLengthDecodeView");

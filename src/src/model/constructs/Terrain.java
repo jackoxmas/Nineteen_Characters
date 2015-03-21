@@ -160,8 +160,8 @@ public class Terrain extends DrawableThing {
      * @param contains_water
      * @param decal - Character that will represent terrain on map.
      */
-    public Terrain(String name, char representation, boolean contains_mountain,
-            boolean contains_water, char decal) {
+    public Terrain(String name, char representation, boolean contains_water,
+            boolean contains_mountain, char decal) {
         super(name, representation);
         contains_water_ = contains_water;
         contains_mountain_ = contains_mountain;
@@ -171,8 +171,8 @@ public class Terrain extends DrawableThing {
         if(!contains_mountain_ && !contains_water_){this.setColor(Color.green.darker());}//Set grass to be green.
         decal_ = decal;
     }
-    public Terrain(String name, char representation, boolean contains_mountain,
-            boolean contains_water, char decal, Color col_) {
+    public Terrain(String name, char representation, boolean contains_water,
+            boolean contains_mountain, char decal, Color col_) {
         super(name, representation);
         contains_water_ = contains_water;
         contains_mountain_ = contains_mountain;
@@ -187,13 +187,13 @@ public class Terrain extends DrawableThing {
      * @param contains_mountain
      * @param contains_water
      */
-    public Terrain(String name, char representation, boolean contains_mountain,
-            boolean contains_water) {
+    public Terrain(String name, char representation, boolean contains_water,
+            boolean contains_mountain) {
         super(name, representation);
 
         contains_water_ = contains_water;
         contains_mountain_ = contains_mountain;
-        if(contains_water){this.setColor(Color.blue);}
+        if(contains_water_){this.setColor(Color.blue);}
         if(contains_mountain_){this.setColor(Color.gray);}
         if(contains_mountain_ && contains_water_){this.setColor(Color.cyan);}
         if(!contains_mountain_ && !contains_water_){this.setColor(Color.green.darker());}//Set grass to be green.

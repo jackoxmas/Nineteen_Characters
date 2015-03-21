@@ -135,11 +135,7 @@ public class Monster extends Entity {
                 	setFollowing(attacker, 10);//Arbitary value for time to follow the thing.
                 	follow(attacker);
                 	attackIfNear(attacker);
-                } else {
-                    System.out.println("Attacker is null Monster.receiveAttack");
-                }
-            } else {
-                // I am dead I cannot move or attack back.
+                } 
             }
             return isAlive;
         } else {

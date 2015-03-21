@@ -560,8 +560,8 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         }
         if (this.map_grid_[e.getMapRelation().getMyYCoordinate()][e.getMapRelation().getMyXCoordinate()].getEntity() == e) {
             this.map_grid_[e.getMapRelation().getMyYCoordinate()][e.getMapRelation().getMyXCoordinate()].removeEntity();
-            e.setMapRelation(null);
-            System.gc();
+            //e.setMapRelation(null);
+            //System.gc();
             return 0;
         } else {
             System.err.println("The avatar to be removed cannot be found on the map.");

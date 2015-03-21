@@ -147,33 +147,43 @@ public final class Smasher extends Occupation {
         Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection();
         if (number == 1) {
             // one-handed weapon
-            if (current_weapon == ActiveWeapon.ONE_HANDED_SWORD && target != null) {
+            if (current_weapon == ActiveWeapon.ONE_HANDED_SWORD) {
                 // Case that you have enough mana:
                 if (getEntity().getStatsPack().deductCurrentManaBy(cost) == 0) {
-                    target.receiveAttack(getSkill_1_(), null); // hurt enemy [no attack-back]
-                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_1_(), getSkill_1_(), Effect.HEAL);
+                    if (target != null) {
+                        target.receiveAttack(getSkill_1_(), null); // hurt enemy [no attack-back]
+                    }
+                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinLine(getSkill_1_()+1, getSkill_1_(), Effect.HURT);
                 } else {
                     System.out.println("Out of mana in Smasher1");
                 }
             }
         } else if (number == 2) {
             // two-handed weapon
-            if (current_weapon == ActiveWeapon.TWO_HANDED_SWORD && target != null) {
+            System.out.println("Starting skill 2");
+            if (current_weapon == ActiveWeapon.TWO_HANDED_SWORD) {
                 // Case that you have enough mana:
                 if (getEntity().getStatsPack().deductCurrentManaBy(cost) == 0) {
-                    target.receiveAttack(getSkill_2_(), null); // hurt enemy [no attack-back]
-                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_2_(), getSkill_2_(), Effect.HURT);
+                    if (target != null) {
+                        target.receiveAttack(getSkill_2_(), null); // hurt enemy [no attack-back]
+                    }
+                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinArc(getSkill_2_(), getSkill_2_(), Effect.HURT);
                 } else {
                     System.out.println("Out of mana in Smasher2");
                 }
             }
         } else if (number == 3) {
             // brawling 
-            if (current_weapon == ActiveWeapon.FISTS && target != null) {
+            System.out.println("Starting skill 3");
+            if (current_weapon == ActiveWeapon.FISTS) {
+                System.out.println("Doing skill 3");
                 // Case that you have enough mana:
                 if (getEntity().getStatsPack().deductCurrentManaBy(cost) == 0) {
-                    target.receiveAttack(getSkill_3_(), null); // hurt enemy [no attack-back]
-                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_3_(), getSkill_3_(), Effect.LEVEL);
+                    if (target != null) {
+                        target.receiveAttack(getSkill_3_(), null); // hurt enemy [no attack-back]
+                    }
+                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(0, getSkill_3_(), Effect.HEAL);
+                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_3_(), 1, Effect.LEVEL);
                 } else {
                     System.out.println("Out of mana in Smasher3");
                 }

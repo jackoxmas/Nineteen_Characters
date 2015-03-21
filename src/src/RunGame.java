@@ -18,7 +18,7 @@ import src.model.constructs.Terrain;
 import src.model.constructs.Villager;
 import src.model.constructs.items.Item;
 import src.model.constructs.items.KnightsSerum;
-import src.model.constructs.items.FlyingSerum;
+import src.model.constructs.items.InvisibilitySerum;
 import src.model.constructs.items.ObstacleRemovingItem;
 import src.model.constructs.items.OneHandedSword;
 import src.model.constructs.items.OneShotAreaEffectItem;
@@ -159,7 +159,7 @@ public class RunGame {
         KnightsSerum knight_serum = new KnightsSerum("Knight serum", 'N');
         map_.addItem(knight_serum, 18, 10);
 
-        FlyingSerum flying_serum = new FlyingSerum("Flying Serum", 'F');
+        InvisibilitySerum flying_serum = new InvisibilitySerum("Invisibility Serum", 'I');
         map_.addItem(flying_serum, 14, 10);
 
         ObstacleRemovingItem key = new ObstacleRemovingItem("Key", 'K');

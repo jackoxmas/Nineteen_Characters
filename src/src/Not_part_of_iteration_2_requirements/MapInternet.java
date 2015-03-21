@@ -1,4 +1,4 @@
-package src.model;
+package src.Not_part_of_iteration_2_requirements;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.PatternSyntaxException;
 import src.IO_Bundle;
-import src.ControllerInternet;
 import src.Key_Commands;
 import src.RunGame;
+import src.model.Map;
 import src.model.constructs.Entity;
 
 /**

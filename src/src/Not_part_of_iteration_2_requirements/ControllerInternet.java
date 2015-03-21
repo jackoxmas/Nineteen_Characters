@@ -1,4 +1,4 @@
-package src;
+package src.Not_part_of_iteration_2_requirements;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,11 +16,12 @@ import java.net.NetworkInterface;
 import java.net.Socket;
 import java.util.Enumeration;
 import java.util.Random;
+import src.IO_Bundle;
 import src.io.controller.Controller;
 import src.io.controller.GameController;
 
 import src.model.Map;
-import src.model.MapInternet;
+import src.Not_part_of_iteration_2_requirements.MapInternet;
 
 /**
  * Used for sending and receiving data from a Controller [not part of Iteration

@@ -14,7 +14,7 @@ import javax.swing.SwingUtilities;
 import java.util.Queue;
 import src.HardCodedStrings;
 import src.IO_Bundle;
-import src.ControllerInternet;
+import src.Not_part_of_iteration_2_requirements.ControllerInternet;
 import src.Key_Commands;
 import src.QueueCommandInterface;
 import src.RunGame;

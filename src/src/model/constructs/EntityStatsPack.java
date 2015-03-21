@@ -301,7 +301,13 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
             System.err.println("Warning! Current mana increasing function cannot increase mana by negative amount: " + amount);
             amount = 0;
         }
-        if (current_mana_ + amount <= max_mana_) {
+        // check for overflow
+        if(current_mana_ + amount < current_mana_) {
+        	// overflow case
+        	current_mana_ = max_mana_;
+        	return -1;
+        }
+        else if (current_mana_ + amount <= max_mana_) {
             current_mana_ += amount;
             return 0;
         } else {

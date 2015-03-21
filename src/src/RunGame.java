@@ -167,7 +167,7 @@ public class RunGame {
         map_.addAsEntity(villager, 0, 5);
 
         //Add some traps
-        Trap trap1 = new Trap("trap1", 'b', Effect.HURT, 2);
+        Trap trap1 = new Trap("trap1", 'b', Effect.HURT, 3);
         map_.addItem(trap1, 1, 0);
 
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.

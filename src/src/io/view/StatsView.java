@@ -86,7 +86,7 @@ public final class StatsView extends Viewport
     	writeStringToContents(44, 7, rightAlign(3, "" + bundle_.getStatsPack().getMax_life_()));
 
     	StringBuilder diamonds = new StringBuilder();
-    	for (int i = 0; i < bundle_.getStatsPack().getCurrent_mana_()/bundle_.getStatsPack().getMax_mana_()*10; i++)
+    	for (int i = 0; i < bundle_.getStatsPack().getCurrent_mana_()/bundle_.getStatsPack().getMax_mana_()*10 &&  i< 10000; i++)
     		diamonds.append("♦");
     	writeStringToContents(38, 9, rightAlign(10, diamonds.toString()));
     	writeStringToContents(40, 10, rightAlign(3, "" + bundle_.getStatsPack().getCurrent_mana_()));

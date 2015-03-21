@@ -36,7 +36,6 @@ public final class ControllerInternet {
     private static boolean isConnected = false;
     //private final String monitor_For_UDP_Sender = "";
     private final UDP_Sender_Thread sender_thread;
-    private int recieved_buffer_size = 30000;
 
     public ControllerInternet() {
         sender_thread = new UDP_Sender_Thread();
@@ -70,7 +69,7 @@ public final class ControllerInternet {
         }
 
         public synchronized void run() {
-            while (true) {
+            while (! Thread.currentThread().isInterrupted()) {
                 try {
                     //if (!has_package_) {
                         this.wait();
@@ -78,7 +77,7 @@ public final class ControllerInternet {
                     //}
                     //has_package_ = false;
                 } catch (InterruptedException i) {
-                    i.printStackTrace();
+                    // This thread got interrupted.
                     return; // safely kill the thread
                 } catch (IOException io) {
                     io.printStackTrace();
@@ -87,9 +86,10 @@ public final class ControllerInternet {
         }
     }
 
-    public void closeAndNullifyConnection() {
+    public void terminate() {
         try {
             sender_thread.interrupt(); // make the udp_sender thread commit suicide.
+            isConnected = false;
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error while closing and nullifying connection");
@@ -181,6 +181,7 @@ public final class ControllerInternet {
         try {
             ControllerInternet.address = InetAddress.getByName(ip_address);
         } catch (IOException e) {
+
             e.printStackTrace();
             isConnected = false;
             RunGame.setUseInternet(false);

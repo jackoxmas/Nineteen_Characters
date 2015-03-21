@@ -239,6 +239,7 @@ public class MapInternet extends Thread {
                 udp_output_socket_.close();
             }
         }
+
         //private volatile boolean is_notified = false;
 
         public synchronized void setBundleAvatarAndInterrupt(Entity e, IO_Bundle to_set) {

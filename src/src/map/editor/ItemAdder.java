@@ -1,6 +1,6 @@
 package src.map.editor;
 
-import src.model.MapMapEditor_Interface;
+import src.model.MapMapAddable_Interface;
 import src.model.constructs.items.Item;
 /**
  * Class to add the given thing to the map when add is called.
@@ -15,7 +15,7 @@ class ItemAdder implements MapAddable {
 	}
 
 	@Override
-	public int addToMap(MapMapEditor_Interface mapp_, int x, int y) {
+	public int addToMap(MapMapAddable_Interface mapp_, int x, int y) {
 		if(isEmpty()){return 2;}
 		if(!mapp_.isWithinMap(x, y)){return 1;}
 		int result = mapp_.addItem(item_,x,y);

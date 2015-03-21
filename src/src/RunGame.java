@@ -2,38 +2,34 @@ package src;
 
 import java.awt.Color;
 import java.io.FileNotFoundException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.PrintStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
 
 import src.io.controller.Controller;
 import src.io.controller.GameController;
 import src.io.controller.MapEditorController;
-import src.model.map.Map;
-import src.model.map.constructs.Avatar;
-import src.model.map.constructs.Item;
-import src.model.map.constructs.KnightsSerum;
-import src.model.map.constructs.Merchant;
-import src.model.map.constructs.Monster;
-import src.model.map.constructs.ObstacleRemovingItem;
-import src.model.map.constructs.OneHandedSword;
-import src.model.map.constructs.OneShotAreaEffectItem;
-import src.model.map.constructs.OneWayTeleportItem;
-import src.model.map.constructs.PermanentObstacleItem;
-import src.model.map.constructs.Shield;
-import src.model.map.constructs.TemporaryObstacleItem;
-import src.model.map.constructs.Terrain;
-import src.model.map.constructs.Trap;
-import src.model.map.constructs.TwoHandedSword;
-import src.model.map.constructs.Villager;
+import src.model.Map;
+import src.model.constructs.Avatar;
+import src.model.constructs.DrawableThingStatsPack;
+import src.model.constructs.Merchant;
+import src.model.constructs.Monster;
+import src.model.constructs.Terrain;
+import src.model.constructs.Villager;
+import src.model.constructs.items.Bow;
+import src.model.constructs.items.Item;
+import src.model.constructs.items.KnightsSerum;
+import src.model.constructs.items.InvisibilitySerum;
+import src.model.constructs.items.ObstacleRemovingItem;
+import src.model.constructs.items.OneHandedSword;
+import src.model.constructs.items.OneShotAreaEffectItem;
+import src.model.constructs.items.OneWayTeleportItem;
+import src.model.constructs.items.PermanentObstacleItem;
+import src.model.constructs.items.Shield;
+import src.model.constructs.items.Staff;
+import src.model.constructs.items.TemporaryObstacleItem;
+import src.model.constructs.items.Trap;
+import src.model.constructs.items.TwoHandedSword;
 
 /**
  * Initializes, opens the program.
@@ -43,13 +39,36 @@ import src.model.map.constructs.Villager;
 public class RunGame {
 
     private static ProgramOpts pOpts_ = null;
-    private static SavedGame saveGame_;
     private static Avatar avatar_;
     private static Map map_;
     private static Controller uc_;
-    private static int mapHeight_ = 40;
-    private static int mapWidth_ = 40;
+    private static int mapHeight_ = 20;
+    private static int mapWidth_ = 35;
     private static boolean map_editor_mode_ = false;
+
+    /*
+     public static boolean getUseTCP() {
+     return RunGame.use_TCP;
+     }
+
+     public static void setUseTCP(boolean b) {
+     use_TCP = b;
+     }*/
+
+    public static void grusomelyKillTheMapAndTheController() {
+        if (RunGame.map_ != null) {
+            map_.grusomelyKillTheMapThread();
+            System.out.println("Killed the map thread");
+        } else {
+            System.out.println("The map thread is null");
+        }
+        if (RunGame.uc_ != null) {
+            uc_.grusomelyKillTheControllerThread();
+            System.out.println("Killed the controller thread");
+        } else {
+            System.out.println("The controller thread is null");
+        }
+    }
 
     public static String getAvatarName() {
         return avatar_.name_;
@@ -58,16 +77,10 @@ public class RunGame {
     public static void main(String[] args) {
         parseArgs(args); // Parse command line arguments
         handleArgs(args);
-
         if (!map_editor_mode_) {
             startNewGame();
         } else {
             startMapEditor();
-        }
-        final String ip_address = "localhost";
-        int error_code = Internet.makeConnectionUsingIP_Address(ip_address);
-        if(error_code == 0) {
-            System.out.println("Successfully connected to ip-address: " + ip_address);
         }
     }
 
@@ -80,13 +93,8 @@ public class RunGame {
 
     private static int startMapEditor() {
         initialize(); // Initialize any data we need to before loading
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                uc_ = new MapEditorController(map_); // Begin the avatarcontroller loop
-            }
-        }).start();
+        uc_ = new MapEditorController(map_);
+        (new Thread(uc_)).start();
         return 0;
     }
 
@@ -100,11 +108,7 @@ public class RunGame {
     }
 
     private static void initialize() {
-        if (saveGame_ == null) {
-            saveGame_ = SavedGame.newSavedGame();
-        }
         map_ = new Map(mapWidth_, mapHeight_);
-
     }
 
     private static void populateMap() {
@@ -115,29 +119,39 @@ public class RunGame {
         Avatar buddy = new Avatar("buddy", '☺');
         // map_.addAsAvatar(buddy, 3, 0);
         map_.addAsKnight(buddy, 3, 0); // buddy can jump over entities!
+        map_.addAsFlying(buddy, 4, 0); // buddy can jump over entities!
 
-        Villager villager1 = new Villager("villager1", '☺');
+        Villager villager1 = new Villager("villager1", '♙');
         villager1.getStatsPack().increaseQuantityOfExperienceBy(200);
         map_.addAsEntity(villager1, 3, 13);
 
-        Monster monster = new Monster("monster1", '☺');
-        monster.getStatsPack().increaseQuantityOfExperienceBy(300);
-        map_.addAsEntity(monster, 13, 3);
+        Monster strong = new Monster("monster1", '♟');
+        strong.getStatsPack().increaseQuantityOfExperienceBy(400);
+        strong.getStatsPack().increaseDefenseLevelByOne();
+        strong.getStatsPack().increaseHardinessLevelByOne();
+        map_.addAsEntity(strong, 13, 3);
 
-        Merchant merchant = new Merchant("merchant1", '☺');
+        Merchant merchant = new Merchant("merchant1", '♖');
         merchant.getStatsPack().increaseQuantityOfExperienceBy(1000);
         map_.addAsEntity(merchant, 1, 1);
-        Item teleport = new OneWayTeleportItem("tele", '☺', 0, 0);
+        Item teleport1 = new OneWayTeleportItem("tele1", 'T', 6, 6);
+        Item teleport2 = new OneWayTeleportItem("tele2", 'T', 12, 12);
+        map_.addItem(teleport2, 5, 6);
+        map_.addItem(teleport1, 11, 12);
         Item onehandedsword = new OneHandedSword("Excalibur", '|');
         Item twohandedsword = new TwoHandedSword("Two_hander", '|');
         Item shield = new Shield("Shieldy", 'O');
+        shield.getStatsPack().addOn(new DrawableThingStatsPack(0, 10));
         OneShotAreaEffectItem heal = new OneShotAreaEffectItem("healer", 'h', Effect.HEAL, 10);
         OneShotAreaEffectItem hurt = new OneShotAreaEffectItem("hurter", 'u', Effect.HURT, 10);
         OneShotAreaEffectItem kill = new OneShotAreaEffectItem("killer", 'k', Effect.KILL, 10);
         OneShotAreaEffectItem level = new OneShotAreaEffectItem("leveler", 'l', Effect.LEVEL, 10);
 
         KnightsSerum knight_serum = new KnightsSerum("Knight serum", 'N');
-        map_.addItem(knight_serum, 18, 12);
+        map_.addItem(knight_serum, 18, 10);
+
+        InvisibilitySerum flying_serum = new InvisibilitySerum("Invisibility Serum", 'I');
+        map_.addItem(flying_serum, 14, 10);
 
         ObstacleRemovingItem key = new ObstacleRemovingItem("Key", 'K');
         TemporaryObstacleItem door = new TemporaryObstacleItem("Door", 'D', key);
@@ -153,32 +167,49 @@ public class RunGame {
         map_.addAsEntity(villager, 0, 5);
 
         //Add some traps
-        Trap trap1 = new Trap("trap1", 'b', Effect.HURT, 2);
+        Trap trap1 = new Trap("trap1", 'b', Effect.HURT, 3);
         map_.addItem(trap1, 1, 0);
 
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
-        map_.addItem(teleport, 2, 4);
-        map_.addItem(twohandedsword, 1, 1);
-        map_.addItem(shield, 10, 10);
+        map_.addItem(twohandedsword, 25, 1);
+        map_.addItem(shield, 10, 7);
         map_.addItem(onehandedsword, 5, 5);
+        Bow bow = new Bow("Bow", 'B');
+        Staff staff = new Staff("Staff", 'S');
+        bow.getStatsPack().incrementOffensive_rating_();
+        staff.getStatsPack().incrementOffensive_rating_();
+        map_.addItem(bow, 28, 4);
+        map_.addItem(staff, 20, 6);
+
         for (int y = 0; y < mapHeight_; ++y) {
             for (int x = 0; x < mapWidth_; ++x) {
-                Terrain obstacle = new Terrain("land", '▨', false, false);
+                Terrain land = new Terrain("land", '▨', false, false);
                 if (y == 4) {
                     if (x == 2) {
-                        obstacle.addDecal('☠', Color.black);
+                        land.addDecal('☠', Color.black);
                     } else if (x == 6) {
-                        obstacle.addDecal('★', Color.yellow);
+                        land.addDecal('★', Color.yellow);
                     } else if (x == 9) {
-                        obstacle.addDecal('✚', Color.red);
+                        land.addDecal('✚', Color.red);
                     }
                 }
-                map_.addTerrain(obstacle, x, y);
+                map_.addTerrain(land, x, y);
             }
         }
 
-        //Terrain obstacle = new Terrain("boulder", '■', true, false);
-        //map_.addTerrain(obstacle, 2, 2);
+        Terrain river = new Terrain("blue_river", '~', true, false);
+        for (int x = 0; x < mapWidth_; ++x) {
+            map_.addTerrain(river, x, 18);
+        }
+        // this should be gray
+        Terrain mountain = new Terrain("gray_mountain", '\u25B2', false, true);
+        map_.addTerrain(mountain, 20, 14);
+        map_.addTerrain(mountain, 21, 13);
+        map_.addTerrain(mountain, 22, 12);
+        // this should be cyan
+        Terrain cyan_mountain = new Terrain("cyan_mountain", '\u25B2', true, true);
+        map_.addTerrain(cyan_mountain, 23, 11);
+
         PermanentObstacleItem obstacle = new PermanentObstacleItem("boulder", '■');
         map_.addItem(obstacle, 2, 2);
 
@@ -201,21 +232,12 @@ public class RunGame {
     }
 
     private static void startGame() {
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                uc_ = new GameController(map_, avatar_.name_);
-            }
-        }).start();
-
+        uc_ = new GameController(map_, avatar_.name_);
+        (new Thread(uc_)).start();
     }
 
     public static void saveGameToDisk(String foo) {
-        if (saveGame_ == null) {
-            saveGame_ = SavedGame.newSavedGame();
-        }
-        saveGame_.saveGame(map_, uc_, foo);
+        SavedGame.saveGame(foo, map_); // save game to file "foo"
     }
 
     // </editor-fold>
@@ -223,6 +245,14 @@ public class RunGame {
     // Error date format for the errOut(Exception) write
     private static SimpleDateFormat errDateFormat_ = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
 
+    /* DEBUG LEVEL GUIDELINES
+     * 1 - Basic program functionality (application functions and important checkpoints)
+     * 2 - Sublevel game and application methods (such as save/load)
+     * 3 - Sublevel key details (those which are infrequent and important)
+     * 4 - Method details which are not important except for debugging and are otherwise extraneous
+     * 5 - Iterator variables and other such information which is likely to fill up a log file if enabled
+     * 6 - Special debug level for UDP packet output
+     */
     /**
      * This class holds information about optional program utilities which may
      * be triggered via command line arguments. Reference {@link #parseArgs} for
@@ -232,10 +262,11 @@ public class RunGame {
 
         // Debug Mode
         String[] dbg_match = {"-d", "--debug"};
-        String[] editor_match = {"-e", "--editor"};
         boolean dbg_flag = false;
-        boolean editor_flag = false;
         int dbg_level = 1;
+
+        String[] editor_match = {"-e", "--editor"};
+        boolean editor_flag = false;
 
         // Load Saved Game
         String[] lsg_match = {"-l", "--load"}; // option flag match string
@@ -243,7 +274,7 @@ public class RunGame {
         int lsg_path = -1; // the index in args to get the path from
 
         // Redirect STDERR
-        String[] err_match = {"-e", "-err-out"};
+        String[] err_match = {"--error-out"};
         boolean err_flag = false;
         int err_path = -1;
     }
@@ -264,6 +295,8 @@ public class RunGame {
     }
 
     /**
+     * <strong>DEPRECIATED! DO NOT USE!</strong>
+     *
      * Writes the provided String to the errOut stream with the prefix:
      * (DEBUG|X) where X is the debug level of the output. If the provided debug
      * level is greater (larger number) than the debug level option set in
@@ -339,7 +372,7 @@ public class RunGame {
         if (pOpts_.err_flag) {
             try {
                 System.setErr(new PrintStream(args[pOpts_.err_path]));
-                dbgOut("ARGS: error out set piped to: " + pOpts_.err_path, 2);
+                dbgOut("ARGS: error out set piped to: " + args[pOpts_.err_path], 2);
             } catch (FileNotFoundException e) {
                 errOut(e);
             }
@@ -348,18 +381,13 @@ public class RunGame {
             dbgOut("ARGS: debug mode enabled at level: " + pOpts_.dbg_level, 2);
         }
         if (pOpts_.lsg_flag) {
-            saveGame_ = new SavedGame(args[pOpts_.lsg_path]);
-            Exception e = null;
-
-            //int s = saveGame_.loadFile(mmr_, e);
-            /*
-             if (s == 0) { // the saved game load has failed
-             errOut(e);  // print out error
-             if (startNewGame() == 0) {
-             errOut(e);
-             exitGame();
-             }
-             }*/
+            Map tmp_map = SavedGame.loadGame(args[pOpts_.lsg_path]); // attempt to load the saved game
+            if (tmp_map == null) // if the load has failed, log that
+            {
+                RunGame.errOut("MAIN: Could not load map from: " + args[pOpts_.lsg_path]);
+            } else {
+                map_ = tmp_map; // otherwise, apply the loaded map
+            }
         }
         if (pOpts_.editor_flag) {
             map_editor_mode_ = true;

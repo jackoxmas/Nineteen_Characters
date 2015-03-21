@@ -47,6 +47,7 @@
 /IDEA/*.sav
 /IDEA/*.log
 /IDEA/*.xml
+/IDEA/*.key
 /build.xml
 /src/src/Main$ProgramOpts.class
 /src/src/SavedGame.class

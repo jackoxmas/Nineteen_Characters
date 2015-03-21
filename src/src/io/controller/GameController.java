@@ -6,18 +6,15 @@
 package src.io.controller;
 
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.SwingUtilities;
-
-import src.Function;
+import java.util.Queue;
 import src.HardCodedStrings;
 import src.IO_Bundle;
-import src.Internet;
+import src.Not_part_of_iteration_2_requirements.ControllerInternet;
 import src.Key_Commands;
 import src.QueueCommandInterface;
 import src.RunGame;
@@ -26,9 +23,10 @@ import src.io.view.AvatarCreationView;
 import src.io.view.ChatBoxViewPort;
 import src.io.view.MapView;
 import src.io.view.StatsView;
+import src.io.view.Viewport;
 import src.io.view.display.Display;
-import src.model.map.Map;
-import src.model.map.MapUser_Interface;
+import src.model.Map;
+import src.model.MapUser_Interface;
 
 /**
  * Uses keyboard input to control the avatar Handles the main game mode
@@ -36,12 +34,14 @@ import src.model.map.MapUser_Interface;
  * @author JohnReedLOL/mbregg
  */
 public class GameController extends Controller {
-	private ConcurrentLinkedQueue<String> stringQueue_ = new ConcurrentLinkedQueue<String>();
+
+    //Queue of the strings from clicking on the command box inthe gui.
+    private ConcurrentLinkedQueue<String> stringQueue_ = new ConcurrentLinkedQueue<String>();
+
     private final class ChatBoxMiniController implements QueueCommandInterface<String> {
 
         private CommandMiniController commandController_ = new CommandMiniController(getRemapper(), GameController.this);
         private ChatBoxViewPort chatview_ = new ChatBoxViewPort();
-
 
         public ChatBoxMiniController() {
             Display.getDisplay().addInputBoxTextEnteredFunction(this);
@@ -57,8 +57,6 @@ public class GameController extends Controller {
         private void processCommandAndDisplayOutput(String foo) {
             Display.getDisplay().setMessage(commandController_.processCommand(foo));
         }
-
-
 
         private Void sendTextCommandAndUpdate(String foo) {
             Key_Commands command = Key_Commands.GET_CONVERSATION_CONTINUATION_OPTIONS;
@@ -76,81 +74,91 @@ public class GameController extends Controller {
             return null;
         }
 
-        public void chatBoxHandleMapInputAndPrintNewContents(IO_Bundle bundle) {
-            chatview_.renderToDisplay(bundle);
+        public void chatBoxHandleMapInputAndPrintNewContents(ArrayList<String> strings_for_communication, boolean is_alive) {
+            //System.out.println("Calling GameController.chatBoxHandleMapInputAndPrintNewContents("
+            //        + "ArrayList<String> strings_for_communication, boolean is_alive)");
+            chatview_.renderToDisplay(strings_for_communication, is_alive);
             ArrayList<String> list = chatview_.getContents();
             for (String i : list) {
                 Display.getDisplay().setMessage(i);
             }
         }
-        private ConcurrentLinkedQueue<Character> commandChoiceQueue_ = new ConcurrentLinkedQueue<Character>(); 
+        //The queue for commands given into the input box.
+        private ConcurrentLinkedQueue<String> commandQueue_ = new ConcurrentLinkedQueue<String>();
+        //The queue for when you hit a character in the output box.
+        private ConcurrentLinkedQueue<Character> commandChoiceQueue_ = new ConcurrentLinkedQueue<Character>();
+
         private class outputBoxFunction implements QueueCommandInterface<Character> {
 
-			@Override
-			public void enqueue(Character command) {
-				commandChoiceQueue_.add(command);
-				
-			}
+            @Override
+            public void enqueue(Character command) {
+                commandChoiceQueue_.add(command);
 
-			@Override
-			public void sendInterrupt() {
-				GameController.this.sendInterrupt();
-				
-			}
+            }
 
         }
-        private ConcurrentLinkedQueue<String> commandQueue_ = new ConcurrentLinkedQueue<String>(); 
-		@Override
-		public void enqueue(String command) {
-			commandQueue_.add(command);
-		}
 
-		@Override
-		public void sendInterrupt() {
-			GameController.this.sendInterrupt();
-			
-		}
-		/**
-		 * Process the input that has built up in the two queues. 
-		 */
-		public void processQueue(){
-			while(!commandQueue_.isEmpty()){
-				String foo = commandQueue_.remove();
-				if (foo.startsWith("/")) {
-					processCommandAndDisplayOutput(foo);
-					return;
-				}
-				//IF it starts with a /, it's a command, so send it
-				//To the command function, not the map.
-				sendTextCommandAndUpdate(foo);
-			}
-			while(!commandChoiceQueue_.isEmpty()){
-				sendTextCommandAndUpdate(chatview_.getChoice(Character.getNumericValue(commandChoiceQueue_.remove())));
-			}
-		}
+        @Override
+        public void enqueue(String command) {
+            commandQueue_.add(command);
+        }
+
+        /**
+         * Process the input that has built up in the two queues.
+         *
+         * @return true if there are commands on Queue false if there are none
+         */
+        public boolean processQueue() {
+            if (commandQueue_.isEmpty() && commandChoiceQueue_.isEmpty()) {
+                return false;
+            }
+            while (!commandQueue_.isEmpty()) {
+                String foo = commandQueue_.remove();
+                if (foo != null && foo.startsWith("/")) {
+                    processCommandAndDisplayOutput(foo);
+                }
+                //IF it starts with a /, it's a command, so send it
+                //To the command function, not the map.
+                if (foo != null) {
+                    sendTextCommandAndUpdate(foo);
+                }
+            }
+            while (!commandChoiceQueue_.isEmpty()) {
+                Character c = commandChoiceQueue_.remove();
+                sendTextCommandAndUpdate(chatview_.getChoice(Character.getNumericValue(c)));
+            }
+            return true;
+        }
 
     }
 
-    public GameController(MapUser_Interface mui, String uName) {
-        super(new AvatarCreationView(), new GameRemapper(), uName);
+    public void GameController_Constructor_Helper(MapUser_Interface mui, String uName) {
         MapUserAble_ = mui;
         Display.getDisplay().setCommandList(HardCodedStrings.gameCommands);
         Display.getDisplay().addDoubleClickCommandEventReceiver(new QueueCommandInterface<String>() {
 
-			@Override
-			public void enqueue(String command) {
-				stringQueue_.add(command);
-				
-			}
+            @Override
+            public void enqueue(String command) {
+                if (command != null) {
+                    stringQueue_.add(command);
+                }
 
-			@Override
-			public void sendInterrupt() {
-				GameController.this.sendInterrupt();
-			}
+            }
 
         });
+        views_.add(new MapView());
+        views_.add(new StatsView(getUserName()));//Build our two views.
         takeTurnandPrintTurn('5');//For some reason need to take a empty turn for fonts to load...
-        sleepLoop();
+    }
+
+    public GameController(Map map, String uName, GameRemapper remap) {
+        super(map, new AvatarCreationView(), remap, uName);
+        GameController_Constructor_Helper(super.getMap(), uName);
+    }
+
+    public GameController(Map map, String uName) {
+        super(map, new AvatarCreationView(), new GameRemapper(), uName);
+        GameController_Constructor_Helper(super.getMap(), uName);
     }
 
     private MapUser_Interface MapUserAble_;
@@ -164,32 +172,36 @@ public class GameController extends Controller {
      */
     @Override
     public void updateDisplay(IO_Bundle bundle) {
-        chatbox_.chatBoxHandleMapInputAndPrintNewContents(bundle);
-        super.updateDisplay(bundle);
+        //System.out.println("called function GameController.updateDisplay(IO_Bundle bundle)");
+        // ** chatbox should not be getting the whole bundle ** //
+        if (bundle != null) {
+            chatbox_.chatBoxHandleMapInputAndPrintNewContents(
+                    bundle.strings_for_communication_, bundle.is_alive_);
+            super.updateDisplay(bundle);
+        }
+
     }
 
-    private static DatagramPacket packet = null;
-
-    private IO_Bundle sendCommandToMapWithText(Key_Commands command, String in) {
+    private IO_Bundle sendCommandToMapWithText(Key_Commands command, String input) {
         if (SwingUtilities.isEventDispatchThread()) {
-            System.err.println("GameController is running on the Swing Dispatch Thread [Bad]");
+            //System.err.println("GameController is running on the Swing Dispatch Thread input sendCommandToMapWithText [Bad]");
         } else {
-            System.out.println("GameController is not running on the Swing Dispatch Thread [Good]");
+            //System.out.println("GameController is not running on the Swing Dispatch Thread input sendCommandToMapWithText [Good]");
         }
-        if (command == Key_Commands.GET_INTERACTION_OPTIONS) {
+        if (Key_Commands.GET_INTERACTION_OPTIONS.equals(command)) {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     Display.getDisplay().requestOutBoxFocus();
                 }
             });
         }
-        final IO_Bundle to_return = Internet.sendStuffToTheMap(getUserName(),
-                command, getView().getWidth() / 2, getView().getHeight() / 2, in);
-
-        //final IO_Bundle to_return = MapUserAble_.sendCommandToMapWithOptionalText(getUserName(), command, getView().getWidth() / 2, getView().getHeight() / 2, "");
+        if (command == null) {
+            return null;
+        }
+        final IO_Bundle to_return = super.getMessenger().sendCommandToMap(command, input);
         // Make the buttons says the right skill names.
-        if (command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
-                || command == Key_Commands.BECOME_SNEAK && to_return != null) {
+        if (to_return != null && to_return.occupation_ != null && command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
+                || command == Key_Commands.BECOME_SNEAK) {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     Display.getDisplay().getSkillButton(1).
@@ -204,6 +216,7 @@ public class GameController extends Controller {
             });
         }
         // Auto focus on chatbox
+
         if ((to_return != null && to_return.strings_for_communication_ != null && !to_return.strings_for_communication_.isEmpty())
                 && (command == Key_Commands.MOVE_DOWN || command == Key_Commands.MOVE_DOWNLEFT
                 || command == Key_Commands.MOVE_DOWNRIGHT || command == Key_Commands.MOVE_LEFT
@@ -219,6 +232,8 @@ public class GameController extends Controller {
         return to_return;
     }
 
+    private Queue<Viewport> views_ = new LinkedList<Viewport>();
+
     /**
      * Sends the command and string to the map.
      *
@@ -229,27 +244,22 @@ public class GameController extends Controller {
     //Handles the view switching, uses the  instance of operator in a slightly evil way, 
     //ideally we should look into refactoring this to nots
     protected IO_Bundle updateViewsAndMap(Key_Commands input) {
+        //System.out.println("Called GameController.updateViewsAndMap(Key_Commands input)");
         boolean taken = false;
-        if (getView() instanceof AvatarCreationView) {
-            if (Key_Commands.BECOME_SNEAK.equals(input) || Key_Commands.BECOME_SMASHER.equals(input)
-                    || Key_Commands.BECOME_SUMMONER.equals(input)) {
-                setView(new MapView());
-                System.gc();
-            }
+
+        if (Key_Commands.BECOME_SNEAK.equals(input) || Key_Commands.BECOME_SMASHER.equals(input)
+                || Key_Commands.BECOME_SUMMONER.equals(input)) {
+            setView(views_.element());
+            System.gc();
+
         }
-        if (getView() instanceof MapView) {
-            if (Key_Commands.TOGGLE_VIEW.equals(input)) {
-                setView(new StatsView(getUserName()));
-                System.gc();
-                taken = true;
-            }
-        } else if (getView() instanceof StatsView) {
-            if (Key_Commands.TOGGLE_VIEW.equals(input)) {
-                setView(new MapView());
-                System.gc();
-                taken = true;
-            }
+        if (Key_Commands.TOGGLE_VIEW.equals(input)) {
+            views_.add(views_.remove());//Pop the last element and bring it front.
+            setView(views_.element());
+            System.gc();
+            taken = true;
         }
+
         if (!taken) {
             return sendCommandToMapWithText(input, "");
         } else {
@@ -260,6 +270,7 @@ public class GameController extends Controller {
 
     @Override
     protected void takeTurnandPrintTurn(Key_Commands input) {
+        //System.out.println("calling GameController.takeTurnandPrintTurn(Key_Commands input)");
         IO_Bundle bundle = updateViewsAndMap(input);
         updateDisplay(bundle);
     }
@@ -267,40 +278,40 @@ public class GameController extends Controller {
     @Override
     public void saveGame(String foo) {
         MapUserAble_.saveGame(foo);
-
     }
 
     @Override
     public void loadGame(String foo) {
         MapUserAble_.loadGame(foo);
-
     }
 
-    @Override
-    public void process(){
-    	System.out.println("Processing");
-    	super.process();
-    	chatbox_.processQueue();
-    	while(!stringQueue_.isEmpty()){
-    		String foo = stringQueue_.remove();
-    		 if (foo == null) {
-                 return;
-             }
-             Key_Commands command = enumHandler.stringCommandToKeyCommand(foo);
-             if (command == null) {
-                 return;
-             }
-             takeTurnandPrintTurn(command);
-
-    	}
-    }
-    // FIELD ACCESSORS
     /**
-     * Gets this UserController's user name value
-     * <p>
-     * Used for saving. Loading is done through the constructor</p>
+     * Do nothing if queues are empty.
      *
-     * @return A String object with this UserController's user name
-     * @author Alex Stewart
+     * @return
      */
+    @Override
+    public boolean process() {
+        boolean did_something_super = super.process();
+
+        //System.out.println("Processing in GameController subclass");
+        boolean did_something_chatbox = chatbox_.processQueue();
+        if (!did_something_super && !did_something_chatbox && stringQueue_.isEmpty()) {
+            takeTurnandPrintTurn(Key_Commands.DO_ABSOLUTELY_NOTHING);
+            return false;
+        }
+        while (!stringQueue_.isEmpty()) {
+            String foo = stringQueue_.remove();
+            if (foo == null) {
+                break;
+            }
+            Key_Commands command = enumHandler.stringCommandToKeyCommand(foo);
+            if (command == null) {
+                break;
+            }
+            takeTurnandPrintTurn(command);
+
+        }
+        return true;
+    }
 }

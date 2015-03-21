@@ -9,11 +9,11 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import src.model.map.constructs.EntityStatsPack;
-import src.model.map.constructs.Occupation;
-import src.model.map.constructs.PickupableItem;
-import src.model.map.constructs.PrimaryHandHoldable;
-import src.model.map.constructs.SecondaryHandHoldable;
+import src.model.constructs.EntityStatsPack;
+import src.model.constructs.Occupation;
+import src.model.constructs.items.PickupableItem;
+import src.model.constructs.items.PrimaryHandHoldable;
+import src.model.constructs.items.SecondaryHandHoldable;
 
 /**
  * Contains contents of data for IO to user.
@@ -61,9 +61,19 @@ public class IO_Bundle implements Serializable {
         observation_ = ob;
         primary_ = pri;
         second_ = sec;
+
+        //if (sfc == null) {
+        //    sfc = new ArrayList<String>();
+        //} 
         strings_for_communication_ = sfc;
         num_coins_ = num_coins;
         is_alive_ = is_alive;
+
+        //strings_for_communication_.add("^ Click on this text box to select chat options. ^");
+        //strings_for_communication_.add("^ Then click on the game window to re-focus. ^");
+        if(strings_for_communication_ != null) {
+        strings_for_communication_.trimToSize();
+        }
     }
 
     public static char[] convertArrayListOfCharToArray(ArrayList<Character> c) {
@@ -100,19 +110,21 @@ public class IO_Bundle implements Serializable {
         if (unchanged_characters != null && frequencies != null && (unchanged_characters.length == frequencies.length)) {
             char[][] view = new char[1 + 2 * height_from_center][1 + 2 * width_from_center];
             int unchanged_indexes_index = 0;
-            int character_length_counter = frequencies[unchanged_indexes_index];
+            
+            int character_length_counter = 0;
+            
             int y_index = 0;
             for (int y = -height_from_center; y <= +height_from_center; ++y) {
                 int x_index = 0;
                 for (int x = 0 - width_from_center; x <= 0 + width_from_center; ++x) {
                     view[y_index][x_index] = unchanged_characters[unchanged_indexes_index];
-                    --character_length_counter;
-                    if (character_length_counter == 0) {
+                    ++character_length_counter;
+                    if (! (character_length_counter < frequencies[unchanged_indexes_index])) {
                         ++unchanged_indexes_index;
                         if (unchanged_indexes_index == frequencies.length) {
                             return view;
                         }
-                        character_length_counter = frequencies[unchanged_indexes_index];
+                        character_length_counter = 0;
                     }
                     if (character_length_counter < 0) {
                         System.err.println("Impossible error in runLengthDecodeView");
@@ -204,22 +216,36 @@ public class IO_Bundle implements Serializable {
 
     public ArrayList<String> getSkillNames() {
         ArrayList<String> result = new ArrayList<String>();
-        result.add(occupation_.getSkillNameFromNumber(1));
-        result.add(occupation_.getSkillNameFromNumber(2));
-        result.add(occupation_.getSkillNameFromNumber(3));
-        result.add(occupation_.getSkillNameFromNumber(4));
-        result.add(0, "bind_wounds_");
-        result.add(0, "bargain_");
-        result.add(0, "observation_");
+        if (occupation_ != null) {
+            result.add(occupation_.getSkillNameFromNumber(1));
+            result.add(occupation_.getSkillNameFromNumber(2));
+            result.add(occupation_.getSkillNameFromNumber(3));
+            result.add(occupation_.getSkillNameFromNumber(4));
+        } else {
+            result.add("Special skill 1");
+            result.add("Special skill 2");
+            result.add("Special skill 3");
+            result.add("Special skill 4");
+        }
+        result.add(0, "Bind Wounds");
+        result.add(0, "Bargain");
+        result.add(0, "Observation");
         return result;
     }
 
     public ArrayList<Integer> getSkillLevels() {
         ArrayList<Integer> result = new ArrayList<Integer>();
-        result.add(occupation_.getSkill_1_());
-        result.add(occupation_.getSkill_2_());
-        result.add(occupation_.getSkill_3_());
-        result.add(occupation_.getSkill_4_());
+        if (occupation_ != null) {
+            result.add(occupation_.getSkill_1_());
+            result.add(occupation_.getSkill_2_());
+            result.add(occupation_.getSkill_3_());
+            result.add(occupation_.getSkill_4_());
+        } else {
+            result.add(0);
+            result.add(0);
+            result.add(0);
+            result.add(0);
+        }
         result.add(0, bind_wounds_);
         result.add(0, bargain_);
         result.add(0, observation_);

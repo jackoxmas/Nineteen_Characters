@@ -1,41 +1,38 @@
 package src.io.controller;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import src.Function;
 import src.Key_Commands;
 import src.QueueCommandInterface;
 import src.enumHandler;
+import src.Not_part_of_iteration_2_requirements.BONUS.MapEditor.MapAddable;
+import src.Not_part_of_iteration_2_requirements.BONUS.MapEditor.MapAddableFactory;
 import src.io.view.MapEditorView;
 import src.io.view.display.Display;
-import src.map.editor.MapAddable;
-import src.map.editor.MapAddableFactory;
-import src.model.map.MapMapEditor_Interface;
-import src.model.map.constructs.Item;
-import src.model.map.constructs.Monster;
-import src.model.map.constructs.OneHandedSword;
-import src.model.map.constructs.Terrain;
+import src.model.Map;
+import src.model.MapMapEditor_Interface;
 /**
  * The controller subclass for the mapeditor game mode
  * @author mbregg
  *
  */
-public class MapEditorController extends Controller {
+public class MapEditorController extends Controller implements Runnable {
 	private MapMapEditor_Interface map_;
 	private MapEditorView mappy_viewy_ = new MapEditorView();
 	private ArrayList<String> spawnables_ = new ArrayList<String>(1);
 	private String setToSpawn_ = "";
 	private MapAddableFactory factory_= new MapAddableFactory();
 	private MapAddable addable = null;
+	//Queue of things to spawn
 	private ConcurrentLinkedQueue<String> setToSpawnQueue_ = new ConcurrentLinkedQueue<String>();
+	//Queue of commands entered into chatbox.
 	private ConcurrentLinkedQueue<String> commandQueue_ = new ConcurrentLinkedQueue<String>();
 	CommandMiniController cont_ = new CommandMiniController(MapEditorController.this.getRemapper(), MapEditorController.this);
-	public MapEditorController(MapMapEditor_Interface map) {
-		super(new MapEditorView(),new MapEditRemapper(), "Temporary Name Map User");
+	public MapEditorController(Map map) {
+		super(map, new MapEditorView(),new MapEditRemapper(), "Temporary Name Map User");
 		super.setView(mappy_viewy_);
-		map_ = map;
+		map_ = super.getMap();
 
 
 		spawnables_.add(enumHandler.getAllAddables());
@@ -55,11 +52,6 @@ public class MapEditorController extends Controller {
 				}
 			}
 
-			@Override
-			public void sendInterrupt() {
-				MapEditorController.this.sendInterrupt();
-				
-			}
 		});
 		
 		Display.getDisplay().addInputBoxTextEnteredFunction(new QueueCommandInterface<String>() {
@@ -70,30 +62,34 @@ public class MapEditorController extends Controller {
 				
 			}
 
-			@Override
-			public void sendInterrupt() {
-				MapEditorController.this.sendInterrupt();
-				
-			}
 			
 		});
-		this.sleepLoop();
 	}
+        @Override
+        public void run() {
+            this.sleepLoop();
+        }
 
+        /**
+         * The return type is an anachronism
+         * @return false if either queue has a null entry true otherwise
+         */
 	@Override
-	protected void process(){
+	protected boolean process(){
 		while(!setToSpawnQueue_.isEmpty()){
 			String foo = setToSpawnQueue_.remove();
-			if(foo == null){return;}
+			if(foo == null){return false;}
 			setToSpawn_ = foo;
 			setLastSpawned(setToSpawn_);
 			updateDisplay();
 		}
 		while(!commandQueue_.isEmpty()){
 			String foo = commandQueue_.remove();
+			if(foo==null){return false;}
 			if(foo.startsWith("/")){Display.getDisplay().setMessage(cont_.processCommand(foo));}
 		}
 		super.process();
+                return true;
 	}
 	int x = 0;
 	int y = 0;

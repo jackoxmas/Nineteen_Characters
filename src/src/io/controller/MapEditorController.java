@@ -6,10 +6,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import src.Key_Commands;
 import src.QueueCommandInterface;
 import src.enumHandler;
+import src.Not_part_of_iteration_2_requirements.BONUS.MapEditor.MapAddable;
+import src.Not_part_of_iteration_2_requirements.BONUS.MapEditor.MapAddableFactory;
 import src.io.view.MapEditorView;
 import src.io.view.display.Display;
-import src.map.editor.MapAddable;
-import src.map.editor.MapAddableFactory;
 import src.model.Map;
 import src.model.MapMapEditor_Interface;
 /**

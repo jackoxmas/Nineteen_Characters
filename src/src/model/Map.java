@@ -296,6 +296,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
 
     public void grusomelyKillTheMapThread() {
         my_internet_.interrupt();
+        my_internet_.interruptAllMyUserThreads();
     }
 
     /**

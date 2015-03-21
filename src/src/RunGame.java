@@ -16,6 +16,7 @@ import src.model.constructs.Merchant;
 import src.model.constructs.Monster;
 import src.model.constructs.Terrain;
 import src.model.constructs.Villager;
+import src.model.constructs.items.Bow;
 import src.model.constructs.items.Item;
 import src.model.constructs.items.KnightsSerum;
 import src.model.constructs.items.InvisibilitySerum;
@@ -25,6 +26,7 @@ import src.model.constructs.items.OneShotAreaEffectItem;
 import src.model.constructs.items.OneWayTeleportItem;
 import src.model.constructs.items.PermanentObstacleItem;
 import src.model.constructs.items.Shield;
+import src.model.constructs.items.Staff;
 import src.model.constructs.items.TemporaryObstacleItem;
 import src.model.constructs.items.Trap;
 import src.model.constructs.items.TwoHandedSword;
@@ -180,9 +182,15 @@ public class RunGame {
         map_.addItem(trap1, 1, 0);
 
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
-        map_.addItem(twohandedsword, 1, 1);
+        map_.addItem(twohandedsword, 25, 1);
         map_.addItem(shield, 10, 7);
         map_.addItem(onehandedsword, 5, 5);
+        Bow bow = new Bow("Bow", 'B');
+        Staff staff = new Staff("Staff", 'S');
+        bow.getStatsPack().incrementOffensive_rating_();
+        staff.getStatsPack().incrementOffensive_rating_();
+        map_.addItem(bow, 28, 4);
+        map_.addItem(staff, 20, 6);
 
         for (int y = 0; y < mapHeight_; ++y) {
             for (int x = 0; x < mapWidth_; ++x) {

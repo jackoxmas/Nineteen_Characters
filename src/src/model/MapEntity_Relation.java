@@ -683,9 +683,9 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                     } else if (effect == Effect.HEAL) {
                         to_effect.receiveHeal(strength);
                     } else if (effect == Effect.LEVEL) {
-                        to_effect.commitSuicide();
-                    } else if (effect == Effect.KILL) {
                         to_effect.gainEnoughExperienceTolevelUp();
+                    } else if (effect == Effect.KILL) {
+                        to_effect.commitSuicide();
                     }
                 }
             }

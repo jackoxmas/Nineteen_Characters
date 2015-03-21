@@ -41,7 +41,7 @@ public class RunGame {
     private static Map map_;
     private static Controller uc_;
     private static int mapHeight_ = 20;
-    private static int mapWidth_ = 40;
+    private static int mapWidth_ = 35;
     private static boolean map_editor_mode_ = false;
     private static boolean use_internet = true;
     // private static boolean use_TCP = false;
@@ -157,10 +157,10 @@ public class RunGame {
         OneShotAreaEffectItem level = new OneShotAreaEffectItem("leveler", 'l', Effect.LEVEL, 10);
 
         KnightsSerum knight_serum = new KnightsSerum("Knight serum", 'N');
-        map_.addItem(knight_serum, 18, 12);
+        map_.addItem(knight_serum, 18, 10);
 
         FlyingSerum flying_serum = new FlyingSerum("Flying Serum", 'F');
-        map_.addItem(flying_serum, 14, 12);
+        map_.addItem(flying_serum, 14, 10);
 
         ObstacleRemovingItem key = new ObstacleRemovingItem("Key", 'K');
         TemporaryObstacleItem door = new TemporaryObstacleItem("Door", 'D', key);
@@ -181,7 +181,7 @@ public class RunGame {
 
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
         map_.addItem(twohandedsword, 1, 1);
-        map_.addItem(shield, 10, 10);
+        map_.addItem(shield, 10, 7);
         map_.addItem(onehandedsword, 5, 5);
 
         for (int y = 0; y < mapHeight_; ++y) {

@@ -56,7 +56,7 @@ class CommandMiniController {
             command = command.substring(1);//Strip the command key away now, we already checked that it exists.
         } catch (Exception e) {
         }
-         //invalid command send apparently, so nothing to read....
+        //invalid command send apparently, so nothing to read....
 
         if (command.equals(rebind)) {
             return this.processRebind(inputs);
@@ -95,11 +95,12 @@ class CommandMiniController {
             return this.remap_.getBindingList();
         }
         if (command.equals(setIP)) {
-            int error_code = RunGame.internet.makeConnectionUsingIP_Address(foo.split(" ")[foo.split(" ").length - 1]);
+            final String[] parsed_command = foo.split(" ");
+            final String ip_address = parsed_command[parsed_command.length - 1];
+            int error_code = cont_.tellToSetNetworkIPTo(ip_address);
             if (error_code == 0) {
                 return "Successfully connected to ip address: " + foo;
             } else {
-                RunGame.setUseInternet(false);
                 return "Something went wrong. Cannot connect to the ip address provided.";
             }
         }

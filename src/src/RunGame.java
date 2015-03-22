@@ -152,8 +152,24 @@ public class RunGame {
         Item teleport2 = new OneWayTeleportItem("tele2", 'T', 12, 12);
         map_.addItem(teleport2, 5, 6);
         map_.addItem(teleport1, 11, 12);
-        Item onehandedsword = new OneHandedSword("Excalibur", '|');
-        Item twohandedsword = new TwoHandedSword("Two_hander", '|');
+        
+        //Add The one handed swords
+        Item onehandedsword = new OneHandedSword("Excalibur", '†');
+        Item SteelSword = new OneHandedSword("Steel Sword", '†');
+        Item BlackSword = new OneHandedSword("Black Sword", '†');
+        
+        map_.addItem(SteelSword, 5, 5);
+        map_.addItem(BlackSword, 6, 5);
+        map_.addItem(onehandedsword, 7, 5);
+        //Two handed weapon.
+        Item twohandedsword = new TwoHandedSword("Two hander", '|');
+        Item LightningSword = new TwoHandedSword("Lightning Sword", '⚡');
+        Item BoatAnchor = new TwoHandedSword("Boat Anchor", '⚓');
+        map_.addItem(twohandedsword, 25, 1);
+        map_.addItem(LightningSword, 25, 2);
+        map_.addItem(BoatAnchor, 25, 3);
+        
+        
         Item shield = new Shield("Shieldy", 'O');
         shield.getStatsPack().addOn(new DrawableThingStatsPack(0, 10));
         OneShotAreaEffectItem heal = new OneShotAreaEffectItem("healer", 'h', Effect.HEAL, 10);
@@ -182,15 +198,20 @@ public class RunGame {
         Trap trap1 = new Trap("trap1", 'b', Effect.HURT, 2);
         map_.addItem(trap1, 1, 0);
 
-        //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
-        map_.addItem(twohandedsword, 25, 1);
         map_.addItem(shield, 10, 7);
-        map_.addItem(onehandedsword, 5, 5);
+        //Three Weapons : Ranged
+        
         Bow bow = new Bow("Bow", 'B');
-        Staff staff = new Staff("Staff", 'S');
+        Bow ThrowStar = new Bow("Throwing Star", '✪');
+        Bow Coffe_SquirtGun = new Bow("Coffe Squirt Gun",'☕');
+        map_.addItem(Coffe_SquirtGun, 34,17);
+        map_.addItem(ThrowStar, 33,17);      
+        map_.addItem(bow, 32, 17);
+        
+        Staff staff = new Staff("Staff", '⚚');
         bow.getStatsPack().incrementOffensive_rating_();
         staff.getStatsPack().incrementOffensive_rating_();
-        map_.addItem(bow, 28, 4);
+
         map_.addItem(staff, 20, 6);
 
         for (int y = 0; y < mapHeight_; ++y) {

@@ -126,7 +126,11 @@ public class MapEditorController extends Controller implements Runnable {
 		if(addable == null){
 			addable = factory_.getAddable(spawnName);
 		}
-		if(addable == null){Display.getDisplay().setMessage("Invalid spawnable!"); return;}
+		if(addable == null){
+			Display.getDisplay().setMessage("Invalid spawnable!"); 
+			mappy_viewy_.setLastSpawned("INVALID");
+			return;
+			}
 		if(addable.addToMap(map_, x,y) == 0){
 			setLastSpawned(spawnName);
 		}

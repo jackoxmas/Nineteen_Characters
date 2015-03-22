@@ -46,13 +46,13 @@ public class MapAddableFactory {
 		if(addable == null){return null;}
 		switch(addable){
 		case MOUNTAIN_TERRAIN:
-			Terrain mountain = new Terrain("mountain", '▨', true, false);
+			Terrain mountain = new Terrain("mountain", '\u25B2', false, true);
 			return new TerrainAdder(mountain);
 		case GRASS_TERRAIN:
 			Terrain grass = new Terrain("grass", '▨', false, false);
 			return new TerrainAdder(grass);
 		case WATER_TERRAIN:
-			Terrain water = new Terrain("water", '▨', false, true);
+			Terrain water = new Terrain("water", '~', true, false);
 			return new TerrainAdder(water);
 		case WATER_MOUNTAIN_TERRAIN:
 			Terrain water_mountain = new Terrain("water-mountain", '▨', true,true);

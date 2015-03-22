@@ -526,9 +526,10 @@ public class SavedGame {
      */
     private static Element xml_writeItem(Document doc, Element parent, Item item) {
         Element e_item = doc.createElement("item");
+        e_item.setAttribute("id", item.getID())
 
         // Name
-        e_item.setAttribute("name", item.getName());
+        //e_item.setAttribute("name", item.getName());
         // Is One Shot
         if (item.isOneShot()) {
             e_item.appendChild(doc.createElement("b_one_shot"));
@@ -548,10 +549,9 @@ public class SavedGame {
         return e_item;
     }
 
-    private static Element xml_writeStatsDrawable(Document doc, Element parent, DrawableThingStatsPack stats) {
+    private static void xml_writeStatsDrawable(Document doc, Element parent, DrawableThingStatsPack stats) {
         if (stats == null) {
             RunGame.errOut("xml_writeStatsDrawable: null statspack");
-            return null;
         }
 
         Element e_stats = doc.createElement("stats_drawable");
@@ -579,115 +579,110 @@ public class SavedGame {
         return e_stats;
     }
 
-    private static Element xml_writeStatsEntity(Document doc, Element parent, EntityStatsPack stats) {
+    private static void xml_writeEntityStatsPack(Document doc, Element parent, EntityStatsPack stats) {
         if (stats == null) {
             RunGame.errOut("xml_writeStatsEntity: null statspack");
-            return null;
+            return;
         }
 
-        Element e_stats = doc.createElement("stats_entity");
         Element tra_eStat;
 
         if (stats.getLives_left_() != 0) {
             tra_eStat = doc.createElement("lives");
             tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getLives_left_())));
-            e_stats.appendChild(tra_eStat);
+            parent.appendChild(tra_eStat);
         }
         if (stats.getStrength_level_() != 0) {
             tra_eStat = doc.createElement("strength");
             tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getStrength_level_())));
-            e_stats.appendChild(tra_eStat);
+            parent.appendChild(tra_eStat);
         }
         if (stats.getAgility_level_() != 0) {
             tra_eStat = doc.createElement("agility");
             tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getAgility_level_())));
-            e_stats.appendChild(tra_eStat);
+            parent.appendChild(tra_eStat);
         }
         if (stats.getIntellect_level_() != 0) {
             tra_eStat = doc.createElement("intellect");
             tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getIntellect_level_())));
-            e_stats.appendChild(tra_eStat);
+            parent.appendChild(tra_eStat);
         }
         if (stats.getHardiness_level_() != 0) {
             tra_eStat = doc.createElement("hardness");
             tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getHardiness_level_())));
-            e_stats.appendChild(tra_eStat);
+            parent.appendChild(tra_eStat);
         }
         if (stats.getQuantity_of_experience_() != 0) {
             tra_eStat = doc.createElement("XP");
             tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getQuantity_of_experience_())));
-            e_stats.appendChild(tra_eStat);
+            parent.appendChild(tra_eStat);
         }
         if (stats.getMovement_level_() != 0) {
             tra_eStat = doc.createElement("movement");
             tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getMovement_level_())));
-            e_stats.appendChild(tra_eStat);
+            parent.appendChild(tra_eStat);
         }
         if (stats.getMax_life_() != 0) {
             tra_eStat = doc.createElement("max_life");
             tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getMax_life_())));
-            e_stats.appendChild(tra_eStat);
+            parent.appendChild(tra_eStat);
         }
         if (stats.getMax_mana_() != 0) {
             tra_eStat = doc.createElement("max_mana");
             tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getMax_mana_())));
-            e_stats.appendChild(tra_eStat);
+            parent.appendChild(tra_eStat);
         }
         if (stats.getMoves_left_in_turn_() != 0) {
             tra_eStat = doc.createElement("moves_remaining");
             tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getMoves_left_in_turn_())));
-            e_stats.appendChild(tra_eStat);
+            parent.appendChild(tra_eStat);
         }
         if (stats.getCached_current_level_() != 0) {
             tra_eStat = doc.createElement("level");
             tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getCached_current_level_())));
-            e_stats.appendChild(tra_eStat);
+            parent.appendChild(tra_eStat);
         }
         if (stats.getCurrent_life_() != 0) {
             tra_eStat = doc.createElement("life");
             tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getCurrent_life_())));
-            e_stats.appendChild(tra_eStat);
+            parent.appendChild(tra_eStat);
         }
         if (stats.getCurrent_mana_() != 0) {
             tra_eStat = doc.createElement("mana");
             tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getCurrent_mana_())));
-            e_stats.appendChild(tra_eStat);
+            parent.appendChild(tra_eStat);
         }
-
-        parent.appendChild(e_stats);
-        return e_stats;
     }
 
-    private static Element xml_writeTerrain(Document doc, Element parent, Terrain terr) {
-        Element e_Terrain = doc.createElement("terrain");
-
+    private static void xml_writeTerrain(Document doc, Element parent, Terrain terr) {
         if (terr.getName() == null) {
             RunGame.errOut("xml_writeTerrain: null Terrain name");
-            return null;
+            return;
         }
-        e_Terrain.setAttribute("name", terr.getName());
+        parent.setAttribute("name", terr.getName());
 
         // BOOLEANS:
         if (terr.isMountain()) {
-            e_Terrain.appendChild(doc.createElement("b_mountain"));
+            parent.appendChild(doc.createElement("b_mountain"));
         }
 
         if (terr.isWater()) {
-            e_Terrain.appendChild(doc.createElement("b_water"));
+            parent.appendChild(doc.createElement("b_water"));
         }
 
         // Terrain::Decal - only write if non-null
         if (terr.getDecal() != '\u0000') {
             Element e_decal = doc.createElement("decal");
             e_decal.appendChild(doc.createTextNode(Character.toString(terr.getDecal())));
-            e_Terrain.appendChild(e_decal);
+            parent.appendChild(e_decal);
         }
 
         // Terrain::Character
         Element e_dChar = doc.createElement("terr_char");
         e_dChar.appendChild(doc.createTextNode(Character.toString(terr.getRepresentation())));
-        e_Terrain.appendChild(e_dChar);
+        parent.appendChild(e_dChar);
 
+        // TODO TERRAIN COLOR
         // Terrain::Color - only write if non-null
         /*
          if (terr.color_ != null) {
@@ -695,7 +690,35 @@ public class SavedGame {
          e_color.appendChild(doc.createTextNode(terr.color_.name()));
          e_Terrain.appendChild(e_color);
          }*/
-        parent.appendChild(e_Terrain);
-        return e_Terrain;
     }
+
+    private static Element xml_writeDrawable(Document doc, Element parent, DrawableThing dt) {
+        if (dt == null) {
+            RunGame.errOut("Invalid drawable thing reference");
+            return null;
+        }
+
+        Element e_dt = doc.createElement("drawable_thing");
+
+        e_dt.setAttribute("id", Integer.toString(dt.getID()));
+
+        switch (dt.getID()) {
+            case 0:
+                RunGame.errOut("Attempted to write invalid DrawableThing ID (0)");
+                break;
+            case 1:
+                xml_writeTerrain(doc, e_dt, (Terrain)dt);
+                break;
+            default:
+                RunGame.errOut("Attempted to write invalid DrawableThing ID (default)");
+        };
+
+        parent.appendChild(e_dt);
+        return e_dt;
+    }
+    /**
+     * MAGIC NUMBERS:
+     * 0     Reserved
+     *
+     */
 }

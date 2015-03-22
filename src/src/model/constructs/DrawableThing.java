@@ -3,6 +3,7 @@ package src.model.constructs;
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import src.model.MapDrawableThing_Relation;
 
@@ -21,6 +22,8 @@ abstract public class DrawableThing implements Serializable{
     public String getName() {
         return name_;
     }
+
+
 
     protected DrawableThing(String name, char representation) {
         name_ = name;
@@ -140,4 +143,8 @@ abstract public class DrawableThing implements Serializable{
         silence.add(" [ End of Conversation]");
         return silence;
     }
+
+    public abstract int getID();
+
+
 }

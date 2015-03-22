@@ -31,7 +31,7 @@ public final class Sneak extends Occupation {
     private Bow bow_ = null;
 
     @Override
-    public void change_stats(EntityStatsPack current_stats) {
+    public void changeStats(EntityStatsPack current_stats) {
         // for sneak
         current_stats.increaseAgilityLevelByOne();
 

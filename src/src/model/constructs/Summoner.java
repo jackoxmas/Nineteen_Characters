@@ -27,7 +27,8 @@ public final class Summoner extends Occupation {
     }
     private Staff staff_ = null;
 
-    public void change_stats(EntityStatsPack current_stats) {
+    @Override
+    public void changeStats(EntityStatsPack current_stats) {
         //for sneak
         current_stats.increaseIntellectLevelByOne();
     }

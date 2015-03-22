@@ -92,12 +92,14 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
     public int getDefensive_rating_() {
         return defensive_rating_;
     }
+    final transient Entity statspack_owner_;
 
     /**
      * Constructor: sets values to 1.
      */
-    public EntityStatsPack() {
+    public EntityStatsPack(Entity owner) {
         super(1, 1);
+        statspack_owner_ = owner;
     }
 
     /**
@@ -116,7 +118,7 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
         max_life_ = INITIAL_VALUE_FOR_LIFE_AND_MANA;
         max_mana_ = INITIAL_VALUE_FOR_LIFE_AND_MANA;
         defensive_rating_ = 1;
-        
+
         moves_left_in_turn_ = 1;
         cached_current_level_ = 1;
         current_life_ = max_life_;
@@ -124,12 +126,14 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
     }
 
     /**
-     * Copy constructor
+     * Copy constructor should never be called 
+     * because a statspack is an internal part 
+     * of one and only one entity from creation until deletion
      *
      * @param in : Stats pack to copy
      */
-    public EntityStatsPack(EntityStatsPack in) {
-        super(in);
+    private EntityStatsPack(EntityStatsPack in) {
+        /*super(in);
         lives_left_ = in.getLives_left_(); // this can change without leveling up
         strength_level_ = in.getStrength_level_();
         agility_level_ = in.getAgility_level_();
@@ -140,11 +144,12 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
         max_life_ = in.getMax_life_();
         max_mana_ = in.getMax_mana_();
         defensive_rating_ = in.defensive_rating_;
-        
+
         moves_left_in_turn_ = in.getMoves_left_in_turn_();
         cached_current_level_ = in.getCached_current_level_();
         current_life_ = in.getMax_life_();
-        current_mana_ = in.getCurrent_mana_();
+        current_mana_ = in.getCurrent_mana_();*/
+        statspack_owner_ = null;
     }
 
     public void increaseCurrentLevelByOne() {
@@ -156,7 +161,6 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
 
         //super.incrementOffensive_rating_();
         //super.incrementtArmor_rating_();
-
         //increaseDefenseLevelByOne();
         increaseHardinessLevelByOne();
         increaseMovementLevelByOne();
@@ -164,6 +168,9 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
         increaseStrengthLevelByOne();
         increaseAgilityLevelByOne();
         increaseIntellectLevelByOne();
+        if(statspack_owner_ != null && statspack_owner_.getOccupation() != null) {
+            statspack_owner_.getOccupation().changeStats(this);
+        }
     }
 
     public void decreaseLivesLeftByOne() {

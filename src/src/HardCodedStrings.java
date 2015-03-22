@@ -25,8 +25,6 @@ public class HardCodedStrings {
 	public final static String getItemList = "[ Item ]"; // lists items that this entity will accept
 	public final static String trade = "[ Trade ]"; // actually puts the item into your inventory
 
-	//Command list
-	public final static String gameCommands = src.enumHandler.getAllCommands();
 	//String from the command mini module
 	public final static String fontsizeHelp = "Format /fontsize [number] "+System.lineSeparator()+
 			"Sets the fontsize in the main game screen, chatboxes, and list areas to the given number";

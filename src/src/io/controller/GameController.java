@@ -8,10 +8,13 @@ package src.io.controller;
 import java.net.DatagramPacket;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.SwingUtilities;
+
 import java.util.Queue;
+
 import src.HardCodedStrings;
 import src.IO_Bundle;
 import src.Not_part_of_iteration_2_requirements.ControllerInternet;
@@ -131,10 +134,22 @@ public class GameController extends Controller {
         }
 
     }
+    private String getListOfCommands(){
+    	StringBuilder commands = new StringBuilder();
+    	for(Entry<Character, Key_Commands> i : this.getRemap().entrySet()){
+    		commands.append(i.getValue().toString() + "  :  " + i.getKey() + System.lineSeparator());
+    	}
+    	
+    	return commands.toString();
 
+    }
+    @Override
+    public void regenerateCommandsBox(){
+	   Display.getDisplay().setCommandList(getListOfCommands());
+    }
     public void GameController_Constructor_Helper(MapUser_Interface mui, String uName) {
         MapUserAble_ = mui;
-        Display.getDisplay().setCommandList(HardCodedStrings.gameCommands);
+        Display.getDisplay().setCommandList(getListOfCommands());
         Display.getDisplay().addDoubleClickCommandEventReceiver(new QueueCommandInterface<String>() {
 
             @Override

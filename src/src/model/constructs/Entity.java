@@ -1046,7 +1046,7 @@ abstract public class Entity extends DrawableThing {
     }
 
     public String toString() {
-        String s = "Entity name: " + name_;
+        String s = "Entity name("+getStatsPack().getLives_left_()+"): " + name_;
 
         /*if (!(equipped_item_ == null)) {
          s += "\n equppied item: " + equipped_item_.name_;
@@ -1066,9 +1066,12 @@ abstract public class Entity extends DrawableThing {
         } else {
             s += "Not null";
         }
-
-        s += "\n associated with map:" + map_relationship_.isAssociatedWithMap();
-
+        try{
+        	s += "\n associated with map:" + map_relationship_.isAssociatedWithMap();
+        }catch(NullPointerException e){
+        	
+        }
+       
         return s;
     }
 }

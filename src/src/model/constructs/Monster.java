@@ -219,4 +219,17 @@ public class Monster extends Entity {
 		turns_to_run_ = turns;
 		Entity_to_avoid_ = avoidee;
 	}
+
+    /**
+     * Monsters don't respawn.
+     */
+    @Override
+    public void commitSuicide() {
+        int health_left = getStatsPack().getCurrent_life_();
+        getStatsPack().deductCurrentLifeBy(health_left);
+        getStatsPack().decreaseLivesLeftByOne();
+        gameOver();
+        
+    }
+
 }

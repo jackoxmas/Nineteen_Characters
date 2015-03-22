@@ -168,4 +168,16 @@ public class Monster extends Entity {
             return super.receiveAttack(damage, attacker);
         }
     }
+
+    /**
+     * Monsters don't respawn.
+     */
+    @Override
+    public void commitSuicide() {
+        int health_left = getStatsPack().getCurrent_life_();
+        getStatsPack().deductCurrentLifeBy(health_left);
+        getStatsPack().decreaseLivesLeftByOne();
+        gameOver();
+        
+    }
 }

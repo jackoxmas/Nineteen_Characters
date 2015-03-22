@@ -147,6 +147,7 @@ public class RunGame {
         villager1.getStatsPack().increaseQuantityOfExperienceBy(200);
         map_.addAsEntity(villager1, 3, 13);
 
+        
         Monster strong = new Monster("monster1", '♟');
         strong.getStatsPack().increaseQuantityOfExperienceBy(400);
         strong.getStatsPack().increaseDefenseLevelByOne();

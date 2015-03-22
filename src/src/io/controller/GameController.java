@@ -210,6 +210,16 @@ public class GameController extends Controller {
             return null;
         }
         final IO_Bundle to_return = super.getMessenger().sendCommandToMap(command, input);
+        if(to_return == null) {
+            System.out.println("To return is null!");
+            try {
+                Thread.sleep(100);
+            } 
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+            return sendCommandToMapWithText(command, input);
+        }
 
         if (to_return != null && to_return.strings_for_communication_ != null && 
                 !to_return.strings_for_communication_.isEmpty() && Key_Commands.GET_INTERACTION_OPTIONS.equals(command)) {

@@ -56,11 +56,11 @@ public final class ControllerInternet {
 
         private DatagramSocket udp_socket_for_outgoing_signals;
         private DatagramPacket packet_to_send = null;
-        //private volatile boolean has_package_ = false;
+        private volatile boolean is_notified = false;
 
         public synchronized void setPacketAndNotify(DatagramPacket s) {
             packet_to_send = s;
-            //has_package_ = true;
+            is_notified = true;
             notify();
         }
 
@@ -76,11 +76,11 @@ public final class ControllerInternet {
         public synchronized void run() {
             while (! Thread.currentThread().isInterrupted()) {
                 try {
-                    //if (!has_package_) {
+                    if (!is_notified) {
                         this.wait();
                         udp_socket_for_outgoing_signals.send(packet_to_send);
-                    //}
-                    //has_package_ = false;
+                    }
+                    is_notified = false;
                 } catch (InterruptedException i) {
                     // This thread got interrupted.
                     return; // safely kill the thread
@@ -141,10 +141,12 @@ public final class ControllerInternet {
                 System.out.println("Impossible error in " + "Internet.sendStuffToMap(" + avatar_name + ", " + key_command.name() + ",...)");
                 System.exit(-23);
             }
-
+            System.out.println("Controller is about to send a packet");
             // recieve IO_Bundle from map over UDP connection
-            IO_Bundle to_recieve = getBundleFromBufferOfSize(40000);
+            IO_Bundle to_recieve = getBundleFromBufferOfSize(80000);
             // Decompression the IO_Bundle if characters are compressed.
+            System.out.println("Controller received a packet");
+            
             if (to_recieve != null && to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
                 to_recieve.view_for_display_ = IO_Bundle.runLengthDecodeView(width, height,
                         to_recieve.compressed_characters_, to_recieve.character_frequencies_);

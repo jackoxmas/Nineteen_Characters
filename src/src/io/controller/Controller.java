@@ -74,7 +74,7 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
             //System.out.println("Entetered sleep loop");
             try {
                 //if(!controllerThread_.interrupted()){//If we are interuppted, don't bother sleeping again.
-                Thread.sleep(200L);
+                Thread.sleep(50L);
                 process();
                 //}
             } catch (InterruptedException e) {
@@ -234,6 +234,7 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
     private final sendCommandToMapViaNetwork sendCommandViaNetwork_Functor_ = new sendCommandToMapViaNetwork();
 
     private Functor message_deliverer_ = sendCommandViaNetwork_Functor_;
+    //private Functor message_deliverer_ = sendCommandViaLocalReferance_Functor_;
 
     /**
      * Returns the functor responsible for relaying signals to maps.

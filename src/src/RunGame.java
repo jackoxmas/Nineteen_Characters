@@ -196,9 +196,9 @@ public class RunGame {
             }
         }
 
-        Terrain river = new Terrain("blue_river", '~', true, false);
         for (int x = 0; x < mapWidth_; ++x) {
-            map_.addTerrain(river, x, 18);
+            Terrain river = new Terrain("blue_river", '~', true, false);
+        	map_.addTerrain(river, x, 18);
         }
         // this should be gray
         Terrain mountain = new Terrain("gray_mountain", '\u25B2', false, true);

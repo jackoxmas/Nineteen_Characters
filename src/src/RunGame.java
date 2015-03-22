@@ -169,6 +169,14 @@ public class RunGame {
         map_.addItem(LightningSword, 25, 2);
         map_.addItem(BoatAnchor, 25, 3);
         
+        //UnArmed Weps.
+        Item spiked_gauntlet = new Shield("Spiked Gauntlet", '♕');
+        Item radiationEmittingGloves = new Shield("Radiation Gloves",'☣');
+        Item atomicFists = new Shield("Atomic Fists",'⚛');
+        map_.addItem(spiked_gauntlet, 28, 1);
+        map_.addItem(radiationEmittingGloves, 28, 2);
+        map_.addItem(atomicFists, 28, 3);
+        
         
         Item shield = new Shield("Shieldy", 'O');
         shield.getStatsPack().addOn(new DrawableThingStatsPack(0, 10));

@@ -89,6 +89,10 @@ public final class Avatar extends Entity {
         }
         return isAlive;
     }
+    @Override
+    public void takeTurn() {
+        
+    }
 
     @Override
     public String toString() {

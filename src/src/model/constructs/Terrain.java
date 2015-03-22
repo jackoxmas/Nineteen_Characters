@@ -184,8 +184,8 @@ public class Terrain extends DrawableThing {
      * Constructor for Terrain. Decal set to null.
      * @param name
      * @param representation
-     * @param contains_mountain
      * @param contains_water
+     * @param contains_mountain
      */
     public Terrain(String name, char representation, boolean contains_water,
             boolean contains_mountain) {

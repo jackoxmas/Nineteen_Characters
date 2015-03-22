@@ -87,9 +87,9 @@ public class Merchant extends Villager {
         } else {
             //reply.add("You will be amazed at what my weapons can do.");
             if (buyer.getBargain_() == 1) {
-                reply.add("With your bargaining skills, I give you " + buyer.getBargain_() + " coin off.");
+                reply.add("With your bargaining skills, you get " + buyer.getBargain_() + " coin off.");
             } else {
-                reply.add("With your bargaining skills, I give you " + buyer.getBargain_() + " coins off.");
+                reply.add("With your bargaining skills, you get " + buyer.getBargain_() + " coins off.");
             }
             reply.add(endConversation().get(0));
             buyer.decrementNumGoldCoinsBy(10 - buyer.getBargain_());

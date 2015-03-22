@@ -3,7 +3,6 @@ package src.model.constructs;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
 /**
  * Stats Pack for an Entity. Inherits from DrawableThingStatsPack.
  *
@@ -13,6 +12,8 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
 
     public static final int NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL = 100;
 
+    private static final int INITIAL_VALUE_FOR_LIFE_AND_MANA = 10;
+
 // Primary stats - SHOULD ALL BE PRIVATE!!!!!!!!!!!
     private int lives_left_ = 1; // this can change without leveling up
     private int strength_level_ = 1;
@@ -21,8 +22,8 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
     private int hardiness_level_ = 1;
     private int quantity_of_experience_ = 1;
     private int movement_level_ = 1;
-    private int max_life_ = 1;
-    private int max_mana_ = 1;
+    private int max_life_ = INITIAL_VALUE_FOR_LIFE_AND_MANA;
+    private int max_mana_ = INITIAL_VALUE_FOR_LIFE_AND_MANA;
     private int defensive_rating_ = 1;
 
     public int getMax_life_() {
@@ -41,8 +42,8 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
 
 // Modifiable Secondary Stats
 // These secondary stats can be modified without leveling up
-    public int current_life_ = 1;
-    public int current_mana_ = 1;
+    public int current_life_ = max_life_;
+    public int current_mana_ = max_mana_;
 
     public int getLives_left_() {
         return lives_left_;
@@ -87,8 +88,9 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
     public int getCurrent_mana_() {
         return current_mana_;
     }
-    public int getDefensive_rating_(){
-    	return defensive_rating_;
+
+    public int getDefensive_rating_() {
+        return defensive_rating_;
     }
 
     /**
@@ -97,50 +99,66 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
     public EntityStatsPack() {
         super(1, 1);
     }
+
     /**
-     * Resets the stat pack back to it's natural, pristine state.
+     * Resets the stat pack back to it's natural, pristine state. DO NOT USE
+     * MAGIC NUMBERS!!!!
      */
     public void reset() {
-    	super.reset();
-    	lives_left_ = 1; // this can change without leveling up
-    	strength_level_ = 1;
-    	agility_level_ = 1;
-    	intellect_level_ = 1;
-    	hardiness_level_ = 1;
-    	quantity_of_experience_ = 1;
-    	movement_level_ = 1;
-    	max_life_ = 1;
-    	max_mana_ = 1;
-    	defensive_rating_ = 1;
+        super.reset();
+        lives_left_ = 1; // this can change without leveling up
+        strength_level_ = 1;
+        agility_level_ = 1;
+        intellect_level_ = 1;
+        hardiness_level_ = 1;
+        quantity_of_experience_ = 1;
+        movement_level_ = 1;
+        max_life_ = INITIAL_VALUE_FOR_LIFE_AND_MANA;
+        max_mana_ = INITIAL_VALUE_FOR_LIFE_AND_MANA;
+        defensive_rating_ = 1;
+
+        moves_left_in_turn_ = 1;
+        cached_current_level_ = 1;
+        current_life_ = max_life_;
+        current_mana_ = max_mana_;
     }
-    /** 
-     * Copy constructor
+
+    /**
+     * Copy constructor should never be called 
+     * because a statspack is an internal part 
+     * of one and only one entity from creation until deletion
+     *
      * @param in : Stats pack to copy
      */
-    public EntityStatsPack(EntityStatsPack in){
-    	super(in);
-    	lives_left_ = in.lives_left_; // this can change without leveling up
-    	strength_level_ = in.strength_level_;
-    	agility_level_ = in.agility_level_;
-    	intellect_level_ = in.intellect_level_;
-    	hardiness_level_ = in.hardiness_level_;
-    	quantity_of_experience_ = in.quantity_of_experience_;
-    	movement_level_ = in.movement_level_;
-    	max_life_ = in.max_life_;
-    	max_mana_ = in.max_mana_;
-    	defensive_rating_ = in.defensive_rating_;
+    private EntityStatsPack(EntityStatsPack in) {
+        super(in);
+        lives_left_ = in.getLives_left_(); // this can change without leveling up
+        strength_level_ = in.getStrength_level_();
+        agility_level_ = in.getAgility_level_();
+        intellect_level_ = in.getIntellect_level_();
+        hardiness_level_ = in.getHardiness_level_();
+        quantity_of_experience_ = in.getQuantity_of_experience_();
+        movement_level_ = in.getMovement_level_();
+        max_life_ = in.getMax_life_();
+        max_mana_ = in.getMax_mana_();
+        defensive_rating_ = in.defensive_rating_;
+
+        moves_left_in_turn_ = in.getMoves_left_in_turn_();
+        cached_current_level_ = in.getCached_current_level_();
+        current_life_ = in.getMax_life_();
+        current_mana_ = in.getCurrent_mana_();
     }
 
     public void increaseCurrentLevelByOne() {
         ++cached_current_level_;
-        ++max_life_;
-        ++current_life_;
-        ++max_mana_;
-        ++current_mana_;
-        
-        super.incrementOffensive_rating_();
-       
-        increaseDefenseLevelByOne();
+        //++max_life_;
+        //++current_life_;
+        //++max_mana_;
+        //++current_mana_;
+
+        //super.incrementOffensive_rating_();
+        //super.incrementtArmor_rating_();
+        //increaseDefenseLevelByOne();
         increaseHardinessLevelByOne();
         increaseMovementLevelByOne();
         increaseLivesLeftByOne();
@@ -167,8 +185,7 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
         increaseDefenseLevelByOne();
     }
 
-
-	public void increaseIntellectLevelByOne() {
+    public void increaseIntellectLevelByOne() {
         ++intellect_level_;
         ++max_mana_;
         ++current_mana_;
@@ -180,8 +197,9 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
         ++current_life_;
         super.incrementtArmor_rating_();
     }
-    public void increaseDefenseLevelByOne(){
-    	++defensive_rating_;
+
+    public void increaseDefenseLevelByOne() {
+        ++defensive_rating_;
     }
 
     /**
@@ -196,7 +214,7 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
         final int old_experience = quantity_of_experience_;
         quantity_of_experience_ += increase;
         final int old_div_100 = old_experience / NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL;
-        
+
         final int new_div_100 = quantity_of_experience_ / NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL;
         int num_level_ups_counter = (Math.abs(new_div_100 - old_div_100));
         final int num_level_ups = num_level_ups_counter;
@@ -244,6 +262,12 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
             System.err.println("You are not allowed to do negative damage.");
             System.exit(-1);
         }
+        // check for underflow
+        if (current_life_ - amount > current_life_) {
+            // underflow case
+            current_life_ = 0;
+            return -1;
+        }
         if (current_life_ - amount > 0) {
             current_life_ -= amount;
             return 0;
@@ -255,6 +279,7 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
 
     /**
      * Sets health to max if increase produces more than max health
+     *
      * @param amount
      * @return -1 if your health exceeded its max, 0 if you did not
      */
@@ -263,7 +288,12 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
             System.err.println("Warning! Current life increasing function cannot increase life by negative amount: " + amount);
             amount = 0;
         }
-        if (current_life_ + amount <= max_life_) {
+        // check for overflow
+        if (current_life_ + amount < current_life_) {
+            // overflow case
+            current_life_ = max_life_;
+            return -1;
+        } else if (current_life_ + amount <= max_life_) {
             current_life_ += amount;
             return 0;
         } else {
@@ -274,6 +304,7 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
 
     /**
      * Sets mana to zero if decrease produces less than max mana
+     *
      * @param amount
      * @return -1 if your mana became negative, 0 if it did not
      */
@@ -282,7 +313,12 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
             System.err.println("Warning! Current mana reducing function cannot reduce mana by negative amount: " + amount);
             amount = 0;
         }
-        if (current_mana_ - amount >= 0) {
+        // check for underflow
+        if (current_mana_ - amount > current_mana_) {
+            // underflow case
+            current_mana_ = 0;
+            return -1;
+        } else if (current_mana_ - amount >= 0) {
             current_mana_ -= amount;
             return 0;
         } else {
@@ -293,6 +329,7 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
 
     /**
      * Sets mana to maximum if increase produces more than max mana
+     *
      * @param amount
      * @return -1 if your mana exceeded its max, 0 if it did not
      */
@@ -302,12 +339,11 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
             amount = 0;
         }
         // check for overflow
-        if(current_mana_ + amount < current_mana_) {
-        	// overflow case
-        	current_mana_ = max_mana_;
-        	return -1;
-        }
-        else if (current_mana_ + amount <= max_mana_) {
+        if (current_mana_ + amount < current_mana_) {
+            // overflow case
+            current_mana_ = max_mana_;
+            return -1;
+        } else if (current_mana_ + amount <= max_mana_) {
             current_mana_ += amount;
             return 0;
         } else {

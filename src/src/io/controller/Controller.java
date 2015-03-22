@@ -16,7 +16,7 @@ import src.model.Map;
  *
  */
 public abstract class Controller implements QueueCommandInterface<Character>, Runnable {
-
+	public void regenerateCommandsBox(){}//Do nothing in super.
     private KeyRemapper remap_;
     private Viewport currentView_;
     private String userName_;

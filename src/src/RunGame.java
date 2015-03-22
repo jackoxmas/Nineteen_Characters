@@ -6,6 +6,8 @@ import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import src.Not_part_of_iteration_2_requirements.BONUS.MapEditor.MapAddable;
+import src.Not_part_of_iteration_2_requirements.BONUS.MapEditor.MapAddableFactory;
 import src.io.controller.Controller;
 import src.io.controller.GameController;
 import src.io.controller.MapEditorController;
@@ -93,12 +95,25 @@ public class RunGame {
 
     private static int startMapEditor() {
         initialize(); // Initialize any data we need to before loading
-        uc_ = new MapEditorController(map_);
+        coverMapInGrass(map_);
+        uc_ = new MapEditorController(map_); 
         (new Thread(uc_)).start();
         return 0;
     }
 
-    public static void loadGame(String file_path) {
+    private static void coverMapInGrass(Map map_2) {
+    	MapAddableFactory factory = new MapAddableFactory();
+		for(int x =0; x< map_2.width_;++x){
+			for(int y = 0; y < map_2.height_;++y){
+				MapAddable addable = factory.getAddable(AddableThingEnum.GRASS_TERRAIN);
+				addable.addToMap(map_2, x, y);
+				
+			}
+		}
+		
+	}
+
+	public static void loadGame(String file_path) {
 
     }
 
@@ -137,8 +152,39 @@ public class RunGame {
         Item teleport2 = new OneWayTeleportItem("tele2", 'T', 12, 12);
         map_.addItem(teleport2, 5, 6);
         map_.addItem(teleport1, 11, 12);
-        Item onehandedsword = new OneHandedSword("Excalibur", '|');
-        Item twohandedsword = new TwoHandedSword("Two_hander", '|');
+        
+        //Add The one handed swords
+        Item onehandedsword = new OneHandedSword("Excalibur", '†');
+        onehandedsword.getStatsPack().addOn(new DrawableThingStatsPack(50, 0));
+        Item SteelSword = new OneHandedSword("Steel Sword", '†');//Base sword, no need to boost stats. 
+        Item BlackSword = new OneHandedSword("Black Sword", '†');
+        BlackSword.getStatsPack().addOn(new DrawableThingStatsPack(3, 0));
+        
+        map_.addItem(SteelSword, 5, 5);
+        map_.addItem(BlackSword, 6, 5);
+        map_.addItem(onehandedsword, 7, 5);
+        //Two handed weapon.
+        Item twohandedsword = new TwoHandedSword("Two hander", '|');//Base sword, no need to raise stats. 
+        Item LightningSword = new TwoHandedSword("Lightning Sword", '⚡');
+        LightningSword.getStatsPack().addOn(new DrawableThingStatsPack(15, 0));//Heavy damage
+        Item BoatAnchor = new TwoHandedSword("Boat Anchor", '⚓');
+        BoatAnchor.getStatsPack().addOn(new DrawableThingStatsPack(20, 0));//Heavy Heavy damange
+        map_.addItem(twohandedsword, 25, 1);
+        map_.addItem(LightningSword, 25, 2);
+        map_.addItem(BoatAnchor, 25, 3);
+        
+        //UnArmed Weps.
+        Item spiked_gauntlet = new Shield("Spiked Gauntlet", '♕');
+        spiked_gauntlet.getStatsPack().addOn(new DrawableThingStatsPack(10, 0));
+        Item radiationEmittingGloves = new Shield("Radiation Gloves",'☣');
+        radiationEmittingGloves.getStatsPack().addOn(new DrawableThingStatsPack(20, 1));
+        Item atomicFists = new Shield("Atomic Fists",'⚛');
+        atomicFists.getStatsPack().addOn(new DrawableThingStatsPack(30, 2));
+        map_.addItem(spiked_gauntlet, 28, 1);
+        map_.addItem(radiationEmittingGloves, 28, 2);
+        map_.addItem(atomicFists, 28, 3);
+        
+        
         Item shield = new Shield("Shieldy", 'O');
         shield.getStatsPack().addOn(new DrawableThingStatsPack(0, 10));
         OneShotAreaEffectItem heal = new OneShotAreaEffectItem("healer", 'h', Effect.HEAL, 10);
@@ -162,22 +208,27 @@ public class RunGame {
         map_.addItem(kill, 9, 2);
         map_.addItem(level, 12, 2);
 
-        Villager villager = new Villager("Tom", 'V');
-        map_.addAsEntity(villager, 0, 5);
 
         //Add some traps
         Trap trap1 = new Trap("trap1", 'b', Effect.HURT, 2);
         map_.addItem(trap1, 1, 0);
 
-        //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
-        map_.addItem(twohandedsword, 25, 1);
         map_.addItem(shield, 10, 7);
-        map_.addItem(onehandedsword, 5, 5);
-        Bow bow = new Bow("Bow", 'B');
-        Staff staff = new Staff("Staff", 'S');
+        //Three Weapons : Ranged
+        
+        Bow bow = new Bow("Bow", 'B');//Base ranged, no need to change.
+        Bow ThrowStar = new Bow("Throwing Star", '✪');
+        ThrowStar.getStatsPack().addOn(new DrawableThingStatsPack(2, 0));
+        Bow Coffee_SquirtGun = new Bow("Coffee Squirt Gun",'☕');
+        Coffee_SquirtGun.getStatsPack().addOn(new DrawableThingStatsPack(1-Coffee_SquirtGun.getStatsPack().getOffensive_rating_(), 1));
+        map_.addItem(Coffee_SquirtGun, 34,17);
+        map_.addItem(ThrowStar, 33,17);      
+        map_.addItem(bow, 32, 17);
+        
+        Staff staff = new Staff("Staff", '⚚');
         bow.getStatsPack().incrementOffensive_rating_();
         staff.getStatsPack().incrementOffensive_rating_();
-        map_.addItem(bow, 28, 4);
+
         map_.addItem(staff, 20, 6);
 
         for (int y = 0; y < mapHeight_; ++y) {
@@ -196,9 +247,9 @@ public class RunGame {
             }
         }
 
-        Terrain river = new Terrain("blue_river", '~', true, false);
         for (int x = 0; x < mapWidth_; ++x) {
-            map_.addTerrain(river, x, 18);
+            Terrain river = new Terrain("blue_river", '~', true, false);
+        	map_.addTerrain(river, x, 18);
         }
         // this should be gray
         Terrain mountain = new Terrain("gray_mountain", '\u25B2', false, true);

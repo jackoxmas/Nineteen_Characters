@@ -22,6 +22,7 @@ public final class MapTile {
 
     /**
      * Only works if there in no entity there already.
+     *
      * @author John-Michael Reed
      * @param entity - entity to be added to the tile
      * @return error codes: -1 if an entity is already there.
@@ -39,14 +40,20 @@ public final class MapTile {
             return -1;
         }
     }
+
     /**
-     * Update anything that must be updated on a per turn basis
-     * ATM, that is only terrain.
+     * Update anything that must be updated on a per turn basis ATM, that is
+     * only terrain.
      */
-    public void takeTurn(){
-    	if(terrain_ != null){terrain_.takeTurn();}
-        if(entity_ != null){entity_.takeTurn();}
+    public void takeTurn() {
+        if (terrain_ != null) {
+            terrain_.takeTurn();
+        }
+        if (entity_ != null && entity_.getMapRelation() != null && entity_.hasLivesLeft()) {
+            entity_.takeTurn();
+        }
     }
+
     /**
      * Returns a reference to the terrain object used by this map tile
      * <p>
@@ -107,10 +114,10 @@ public final class MapTile {
      */
     public char getTopCharacter() {
         if (entity_ == null || !entity_.isVisible()) {
-        	if (hasItemRepresentation() == false) {
-            	if (terrain_ == null || !terrain_.isVisible()) {
+            if (hasItemRepresentation() == false) {
+                if (terrain_ == null || !terrain_.isVisible()) {
                     return '▩';
-            	}
+                }
                 return terrain_.getRepresentation();
             }
             char ret = 0;
@@ -129,15 +136,15 @@ public final class MapTile {
         }
         return entity_.getRepresentation();
     }
-    
+
     public Color getTopColor() {
         if (entity_ == null || !entity_.isVisible()) {
-        	if (hasItemRepresentation() == false) {
-        		if (terrain_ == null || !terrain_.isVisible()) {
+            if (hasItemRepresentation() == false) {
+                if (terrain_ == null || !terrain_.isVisible()) {
                     return Color.BLACK;
-        		}
+                }
                 return terrain_.getColor();
-        	}
+            }
             Color ret = null;
             for (int i = 0; i < items_.size(); ++i) {
                 if (items_.get(i).isVisible()) {
@@ -278,12 +285,7 @@ public final class MapTile {
      *
      * @param terrain - terrain to be added to the tile
      */
-    public int addTerrain(Terrain terrain) {
-        if (terrain != null) {
-            this.terrain_ = terrain;
-            return 0;
-        } else {
-            return -1;
-        }
+    public void addTerrain(Terrain terrain) {
+        this.terrain_ = terrain;
     }
 }

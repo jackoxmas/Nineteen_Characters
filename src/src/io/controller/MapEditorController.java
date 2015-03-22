@@ -38,7 +38,7 @@ public class MapEditorController extends Controller implements Runnable {
 		spawnables_.add(enumHandler.getAllAddables());
 		mappy_viewy_.setSpawnableList(spawnables_);
 		this.takeTurnandPrintTurn('5');
-		Display.getDisplay().setMessage("SWITCH TO THE INVENTORY TAB!!!");
+		Display.getDisplay().setMessage("SWITCH TO THE COMMANDS TAB!!!");
 		Display.getDisplay().setMessage("TO USE: Hit space to spawn something. Select what to spawn by " +
 				"clicking on it in the item box. Move around as usual. Hitting space with nothing selected spawns\n" +
 				"The last thing spawned.");
@@ -126,7 +126,11 @@ public class MapEditorController extends Controller implements Runnable {
 		if(addable == null){
 			addable = factory_.getAddable(spawnName);
 		}
-		if(addable == null){Display.getDisplay().setMessage("Invalid spawnable!"); return;}
+		if(addable == null){
+			Display.getDisplay().setMessage("Invalid spawnable!"); 
+			mappy_viewy_.setLastSpawned("INVALID");
+			return;
+			}
 		if(addable.addToMap(map_, x,y) == 0){
 			setLastSpawned(spawnName);
 		}

@@ -25,16 +25,38 @@ public class Monster extends Entity {
         options.add("Select a skill to use on me. " + HardCodedStrings.getAllSkills);
         return options;
     }
-    @Override
-    public void takeTurn(){
-    	if(Entity_to_follow_!=null){
-    		follow(Entity_to_follow_);
-    		--turns_to_follow_;
-    		attackIfNear(Entity_to_follow_);
-    		if(turns_to_follow_<0){Entity_to_follow_ = null;}
-    	}
-    	
+    int turns_to_follow_ = 0;
+    Entity Entity_to_follow_ = null;
+
+    /**
+     * Follow the given entity for X turns
+     *
+     * @param followee
+     * @param turns
+     * @return 0
+     */
+    private int setFollowing(Entity followee, int turns) {
+        turns_to_follow_ = turns;
+        Entity_to_follow_ = followee;
+        return 0;
+
     }
+
+    @Override
+    public void takeTurn() {
+        if (Entity_to_follow_ != null && Entity_to_follow_.getMapRelation() != null
+                && Entity_to_follow_.hasLivesLeft() && turns_to_follow_ > 0) {
+            //attack then follow.
+            attackIfNear(Entity_to_follow_);
+            follow(Entity_to_follow_);
+            --turns_to_follow_;
+            if (turns_to_follow_ < 0) {
+                Entity_to_follow_ = null;
+            }
+        }
+
+    }
+
     public ArrayList<String> getConversationStarterStrings() {
         ArrayList<String> options = new ArrayList<String>();
         return options;
@@ -55,9 +77,14 @@ public class Monster extends Entity {
             if (observation_level <= 1) {
                 options.add("Your observation level is too low to observe me");
             } else {
-                options.add("My health is: " + this.getStatsPack().getCurrent_life_());
-                options.add("My mana is: " + this.getStatsPack().getCurrent_mana_());
-                options.add("The number of respawns I have left is: " + this.getStatsPack().getLives_left_());
+                options.add("Name: " + this.getName());
+                options.add("Health: " + this.getStatsPack().getCurrent_life_());
+                options.add("Max health: " + this.getStatsPack().getMax_life_());
+                options.add("Mana is: " + this.getStatsPack().getCurrent_mana_());
+                options.add("Attack power: " + this.getStatsPack().getOffensive_rating_());
+                options.add("Defense: " + this.getStatsPack().getDefensive_rating_());
+                options.add("Armor: " + this.getStatsPack().getArmor_rating_());
+                options.add("Lives left: " + this.getStatsPack().getLives_left_());
             }
             return options;
         } else {
@@ -69,52 +96,48 @@ public class Monster extends Entity {
         ArrayList<String> options = new ArrayList<String>();
         return options;
     }
+
     /**
      * Follow the given entity, AKA, move a square towards it.
-     * 
+     *
      * @param followee
      * @return 0
      */
-    private int follow(Entity followee){
-    	 System.out.println("Attacker is " + followee.name_ + " Monster.receiveAttack");
-         final int zero_if_I_moved = getMapRelation().moveTowardDrawable(followee);
-         System.out.println("Zero if I moved in Monster.receiveAttack: " + zero_if_I_moved);
-         final double pythagorean_distance = getMapRelation().measureDistanceTowardDrawable(followee);
-         System.out.println("pythagorean_distance  in Monster.receiveAttack: " + pythagorean_distance);
-
-         
-         return 0;
+    private int follow(Entity followee) {
+        if (followee == null || followee.getMapRelation() == null || !followee.hasLivesLeft()) {
+            System.out.println("Folowee is gone");
+            // precondition violated
+            return -1;
+        }
+        System.out.println("Attacker is " + followee.name_ + " Monster.receiveAttack");
+        final int zero_if_I_moved = getMapRelation().moveTowardEntity(followee);
+        System.out.println("Zero if I moved in Monster.receiveAttack: " + zero_if_I_moved);
+        final double pythagorean_distance = getMapRelation().measureDistanceTowardEntity(followee);
+        System.out.println("pythagorean_distance  in Monster.receiveAttack: " + pythagorean_distance);
+        return 0;
     }
+
     /**
-     * Attempts to attack the given entity if they are near. 
+     * Attempts to attack the given entity if they are near.
+     *
      * @param followee
      * @return
      */
-    private boolean attackIfNear(Entity followee){
-        final double epsilon = .0001;
-    	final double pythagorean_distance = getMapRelation().measureDistanceTowardDrawable(followee);
-    	if (pythagorean_distance >= 0 - epsilon && pythagorean_distance < 2) {
-            this.sendAttack(followee);
-            return true;
-        } else {
-        	return false;
-            // error pythagorean distance is negative or attacker is too far away.
+    private boolean attackIfNear(Entity followee) {
+        if (followee != null && followee.getMapRelation() != null && followee.hasLivesLeft()) {
+            final double epsilon = .0001;
+            final double pythagorean_distance = getMapRelation().measureDistanceTowardEntity(followee);
+            if (pythagorean_distance >= 0 - epsilon && pythagorean_distance < 2) {
+                this.sendAttack(followee);
+                return true;
+            } else {
+                return false;
+                // error pythagorean distance is negative or attacker is too far away.
+            }
         }
+        return false;
     }
-    int turns_to_follow_ = 0;
-    Entity Entity_to_follow_ = null;
-    /**
-     * Follow the given entity for X turns
-     * @param followee
-     * @param turns
-     * @return 0
-     */
-    private int setFollowing(Entity followee, int turns){
-    	turns_to_follow_ = turns;
-    	Entity_to_follow_ = followee;
-    	return 0;
-    	
-    }
+
     /**
      * Monsters will move toward attacker and attack back is distance is less
      * than 2. Precondition: Monsters must have a MapRelation to attack back if
@@ -126,16 +149,16 @@ public class Monster extends Entity {
      */
     @Override
     public boolean receiveAttack(int damage, Entity attacker) {
-        if (this.getMapRelation() != null) {
-            System.out.println("Monster's map relation is not null in Monster.receiveAttack");
+        if (this != null && this.getMapRelation() != null && this.hasLivesLeft()) {
+            System.out.println("Monster's map relation is not null in Monster.receiveAttack and monster has lives left");
             // precondition met.
             boolean isAlive = super.receiveAttack(damage, attacker);
             if (isAlive) {
-                if (attacker != null) {
-                	setFollowing(attacker, 10);//Arbitary value for time to follow the thing.
-                	follow(attacker);
-                	attackIfNear(attacker);
-                } 
+                if (attacker != null && attacker.getMapRelation() != null && attacker.hasLivesLeft()) {
+                    setFollowing(attacker, 10);//Arbitary value for time to follow the thing.
+                    follow(attacker);
+                    attackIfNear(attacker);
+                }
             }
             return isAlive;
         } else {

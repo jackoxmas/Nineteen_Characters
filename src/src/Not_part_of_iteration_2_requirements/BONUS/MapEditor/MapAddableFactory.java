@@ -46,13 +46,13 @@ public class MapAddableFactory {
 		if(addable == null){return null;}
 		switch(addable){
 		case MOUNTAIN_TERRAIN:
-			Terrain mountain = new Terrain("mountain", '▨', true, false);
+			Terrain mountain = new Terrain("mountain", '\u25B2', false, true);
 			return new TerrainAdder(mountain);
 		case GRASS_TERRAIN:
 			Terrain grass = new Terrain("grass", '▨', false, false);
 			return new TerrainAdder(grass);
 		case WATER_TERRAIN:
-			Terrain water = new Terrain("water", '▨', false, true);
+			Terrain water = new Terrain("water", '~', true, false);
 			return new TerrainAdder(water);
 		case WATER_MOUNTAIN_TERRAIN:
 			Terrain water_mountain = new Terrain("water-mountain", '▨', true,true);
@@ -92,10 +92,6 @@ public class MapAddableFactory {
 			aveString_ = UUID.randomUUID().toString();//We use a unique name for each avatar.
 			Avatar knight_buddy = new Avatar(aveString_, '♘');
 			return new KnightAvatarAdder(knight_buddy);
-		case FLIGHT_ENTITY:
-			aveString_ = UUID.randomUUID().toString();//We use a unique name for each avatar.
-			Avatar flight_buddy = new Avatar(aveString_, '♕');
-			return new FlightAvatarAdder(flight_buddy);
 		case HURT_EFFECT_ITEM:
 			OneShotAreaEffectItem heal = new OneShotAreaEffectItem("healer", 'h', Effect.HEAL, 10);
 			return new ItemAdder(heal);
@@ -112,7 +108,7 @@ public class MapAddableFactory {
 			Item shield = new Shield("Shieldy",'O');
 			return new ItemAdder(shield);
 		case SWORD_ITEM:
-			Item onehandedsword = new OneHandedSword("Excalibur", '|');
+			Item onehandedsword = new OneHandedSword("Excalibur", '†');
 			return new ItemAdder(onehandedsword);
 		case TWO_HAND_SWORD_ITEM:
 			Item twohandedsword = new TwoHandedSword("Two_hander", '|');
@@ -121,7 +117,7 @@ public class MapAddableFactory {
 			Item bow = new Bow("Bow",'D');
 			return new ItemAdder(bow);
 		case STAFF_ITEM:
-			Item staff = new Staff("Staff",'i');
+			Item staff = new Staff("Staff",'⚚');
 			return new ItemAdder(staff);
 		case DOOR_KEY_ITEM:
 			ObstacleRemovingItem key = new ObstacleRemovingItem("Key", 'K');
@@ -142,9 +138,9 @@ public class MapAddableFactory {
 		case LEVELUP_TRAP:
 			Trap trapLevel = new Trap("trapLevel",'b',Effect.LEVEL,2);
 			return new ItemAdder(trapLevel);
-		case FLIGHT_POTION:
-			InvisibilitySerum flying_serum = new InvisibilitySerum("Invisibility Serum", 'I');
-			return new ItemAdder(flying_serum);
+		case INVISIBILITY_SERUM:
+			InvisibilitySerum invisibility_serum = new InvisibilitySerum("Invisibility Serum", 'I');
+			return new ItemAdder(invisibility_serum);
 		case KNIGHT_POTION:
 			KnightsSerum knight_serum = new KnightsSerum("Knight serum", 'N');
 			return new ItemAdder(knight_serum);

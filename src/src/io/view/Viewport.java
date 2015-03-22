@@ -29,7 +29,7 @@ public abstract class Viewport {
 	public abstract boolean getInput(char c);
 
 	public Viewport(){
-		height_ = 40;
+		height_ = 32;
 		width_ = 80;
 		view_contents_ = new char[width_][height_];
 		color_contents_ = new Color[width_][height_];

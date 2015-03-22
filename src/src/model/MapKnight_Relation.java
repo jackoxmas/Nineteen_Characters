@@ -1,5 +1,6 @@
 package src.model;
 
+import java.io.Serializable;
 import src.FacingDirection;
 import src.model.constructs.Entity;
 
@@ -35,7 +36,7 @@ public class MapKnight_Relation extends MapEntity_Relation {
                     .print("An impossible error occured in MapEntity_Relation.moveInDirection()");
             System.exit(-1); // Impossible
         }
-        return super.pushEntityInDirection(getEntity(), 2*x, 2*y);
+        return super.pushEntityInDirection(getEntity(), 3*x, 3*y);
   }
 
 }

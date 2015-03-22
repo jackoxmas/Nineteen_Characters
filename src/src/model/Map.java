@@ -129,7 +129,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         char[][] view = makeView(x, y, width, height);
         Color[][] colors = makeColors(x, y, width, height);
         return new IO_Bundle(null, null, null, null, view, colors, null, null, null, 0, 0, 0, 0, null, null, null, 0, true);
-        //Mapeditor has no game over condition, you are always alive. 
+        //Mapeditor has no game over condition, you are always alive.
     }
 
     public MapTile[][] getMapGrid() {
@@ -231,28 +231,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     }
 
     /**
-     * Adds an entity to the map and provides it with a MapFlying_Relation.
-     *
-     * @param e - Entity to be added
-     * @param x - x position of where you want to add entity
-     * @param y - y posiition of where you want to add entity
-     * @return -1 on fail, 0 on success
-     */
-    public int addAsFlying(Entity e, int x, int y) {
-        e.setMapRelation(new MapFlying_Relation(this, e, x, y));
-        System.out.println(e.name_);
-        int error_code = this.map_grid_[y][x].addEntity(e);
-        System.out.println(e.name_ + "2");
-        if (error_code == 0) {
-            this.entity_list_.put(e.name_, e);
-        } else {
-            e.setMapRelation(null);
-            System.err.println("Error in entity list");
-        }
-        return error_code;
-    }
-
-    /**
      * Adds an avatar to the map and provides it with a MapAvatar_Relation. Can
      * only be used on Avatars.
      *
@@ -285,21 +263,22 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
      * @param t - Terrain
      * @param x - x position for tile
      * @param y - y position for tile
-     * @return error code, 0 for success
+     * @return error code, 0 for success, -1 if terrain is null.
      */
     public int addTerrain(Terrain t, int x, int y) {
-        t.setMapRelation(new MapTerrain_Relation(this, t));
-        int error_code = this.map_grid_[y][x].addTerrain(t);
-        if (error_code == 0) {
+        if (t != null) {
+            t.setMapRelation(new MapTerrain_Relation(this, t));
+            this.map_grid_[y][x].addTerrain(t);
             t.getMapRelation().setMapTile(this.map_grid_[y][x]);
+            return 0;
         } else {
-            t.setMapRelation(null);
+            return -1;
         }
-        return error_code;
     }
 
     public void grusomelyKillTheMapThread() {
         my_internet_.interrupt();
+        my_internet_.interruptAllMyUserThreads();
     }
 
     /**
@@ -345,9 +324,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
 
                 makeMapTileTakeTurn(x, y);
             }
-        }
-        for (Entry<String, Entity> e : entity_list_.entrySet()) {
-            e.getValue().takeTurn();
         }
         return;
     }

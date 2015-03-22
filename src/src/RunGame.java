@@ -6,6 +6,8 @@ import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import src.Not_part_of_iteration_2_requirements.BONUS.MapEditor.MapAddable;
+import src.Not_part_of_iteration_2_requirements.BONUS.MapEditor.MapAddableFactory;
 import src.io.controller.Controller;
 import src.io.controller.GameController;
 import src.io.controller.MapEditorController;
@@ -93,12 +95,25 @@ public class RunGame {
 
     private static int startMapEditor() {
         initialize(); // Initialize any data we need to before loading
-        uc_ = new MapEditorController(map_);
+        coverMapInGrass(map_);
+        uc_ = new MapEditorController(map_); 
         (new Thread(uc_)).start();
         return 0;
     }
 
-    public static void loadGame(String file_path) {
+    private static void coverMapInGrass(Map map_2) {
+    	MapAddableFactory factory = new MapAddableFactory();
+		for(int x =0; x< map_2.width_;++x){
+			for(int y = 0; y < map_2.height_;++y){
+				MapAddable addable = factory.getAddable(AddableThingEnum.GRASS_TERRAIN);
+				addable.addToMap(map_2, x, y);
+				
+			}
+		}
+		
+	}
+
+	public static void loadGame(String file_path) {
 
     }
 
@@ -119,7 +134,6 @@ public class RunGame {
         Avatar buddy = new Avatar("buddy", '☺');
         // map_.addAsAvatar(buddy, 3, 0);
         map_.addAsKnight(buddy, 3, 0); // buddy can jump over entities!
-        map_.addAsFlying(buddy, 4, 0); // buddy can jump over entities!
 
         Villager villager1 = new Villager("villager1", '♙');
         villager1.getStatsPack().increaseQuantityOfExperienceBy(200);
@@ -143,7 +157,7 @@ public class RunGame {
         Item shield = new Shield("Shieldy", 'O');
         shield.getStatsPack().addOn(new DrawableThingStatsPack(0, 10));
         OneShotAreaEffectItem heal = new OneShotAreaEffectItem("healer", 'h', Effect.HEAL, 10);
-        OneShotAreaEffectItem hurt = new OneShotAreaEffectItem("hurter", 'u', Effect.HURT, 10);
+        OneShotAreaEffectItem hurt = new OneShotAreaEffectItem("hurter", 'u', Effect.HURT, 2);
         OneShotAreaEffectItem kill = new OneShotAreaEffectItem("killer", 'k', Effect.KILL, 10);
         OneShotAreaEffectItem level = new OneShotAreaEffectItem("leveler", 'l', Effect.LEVEL, 10);
 
@@ -163,11 +177,9 @@ public class RunGame {
         map_.addItem(kill, 9, 2);
         map_.addItem(level, 12, 2);
 
-        Villager villager = new Villager("Tom", 'V');
-        map_.addAsEntity(villager, 0, 5);
 
         //Add some traps
-        Trap trap1 = new Trap("trap1", 'b', Effect.HURT, 3);
+        Trap trap1 = new Trap("trap1", 'b', Effect.HURT, 2);
         map_.addItem(trap1, 1, 0);
 
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
@@ -197,9 +209,9 @@ public class RunGame {
             }
         }
 
-        Terrain river = new Terrain("blue_river", '~', true, false);
         for (int x = 0; x < mapWidth_; ++x) {
-            map_.addTerrain(river, x, 18);
+            Terrain river = new Terrain("blue_river", '~', true, false);
+        	map_.addTerrain(river, x, 18);
         }
         // this should be gray
         Terrain mountain = new Terrain("gray_mountain", '\u25B2', false, true);

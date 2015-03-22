@@ -33,7 +33,7 @@ abstract public class Entity extends DrawableThing {
     private SecondaryHandHoldable secondary_hand_ = null;
     private FacingDirection direction_ = FacingDirection.UP;
     private ArrayList<PickupableItem> inventory_;
-    private EntityStatsPack stats_pack_ = new EntityStatsPack(this);
+    private EntityStatsPack stats_pack_ = new EntityStatsPack();
     private int num_gold_coins_when_spawned_ = 10;
     private int num_gold_coins_possessed_ = num_gold_coins_when_spawned_;
 
@@ -873,6 +873,11 @@ abstract public class Entity extends DrawableThing {
     public int gainExperiencePoints(int amount) {
         int num_level_ups = stats_pack_.increaseQuantityOfExperienceBy(amount);
         num_skillpoints_ += num_level_ups;
+        for(int i = 0; i < num_level_ups; ++i) {
+            if(getOccupation() != null) {
+                getOccupation().changeStats(stats_pack_);
+            }
+        }
         return num_level_ups;
     }
 

@@ -92,14 +92,12 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
     public int getDefensive_rating_() {
         return defensive_rating_;
     }
-    final transient Entity statspack_owner_;
 
     /**
      * Constructor: sets values to 1.
      */
-    public EntityStatsPack(Entity owner) {
+    public EntityStatsPack() {
         super(1, 1);
-        statspack_owner_ = owner;
     }
 
     /**
@@ -133,7 +131,7 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
      * @param in : Stats pack to copy
      */
     private EntityStatsPack(EntityStatsPack in) {
-        /*super(in);
+        super(in);
         lives_left_ = in.getLives_left_(); // this can change without leveling up
         strength_level_ = in.getStrength_level_();
         agility_level_ = in.getAgility_level_();
@@ -148,8 +146,7 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
         moves_left_in_turn_ = in.getMoves_left_in_turn_();
         cached_current_level_ = in.getCached_current_level_();
         current_life_ = in.getMax_life_();
-        current_mana_ = in.getCurrent_mana_();*/
-        statspack_owner_ = null;
+        current_mana_ = in.getCurrent_mana_();
     }
 
     public void increaseCurrentLevelByOne() {
@@ -168,9 +165,6 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
         increaseStrengthLevelByOne();
         increaseAgilityLevelByOne();
         increaseIntellectLevelByOne();
-        if(statspack_owner_ != null && statspack_owner_.getOccupation() != null) {
-            statspack_owner_.getOccupation().changeStats(this);
-        }
     }
 
     public void decreaseLivesLeftByOne() {

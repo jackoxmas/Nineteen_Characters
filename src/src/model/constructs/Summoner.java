@@ -159,4 +159,15 @@ public final class Summoner extends Occupation {
     public void takeTurn(){
     	
     }
+
+	@Override
+	public Sneak switchToNextSubOccupation() {
+		//Test code to see if this properly switches occupations when TRIGGERED
+		return new Sneak(this);
+	}
+
+	@Override
+	public char getOccupationRepresentation() {
+		return '☃';
+	}
 }

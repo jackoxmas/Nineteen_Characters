@@ -29,7 +29,7 @@ public final class StatsView extends Viewport
      * Generates a new StatsView using the avatar_reference.
      */
     public StatsView(String _uName) {
-    	super(40, 80);
+    	super(60, 80);
     	userName_ = _uName;
     	view_contents_= new char[this.getWidth()][this.getHeight()];
 		template_ = getAsciiArtFromFile("ASCIIART/statsview.txt");

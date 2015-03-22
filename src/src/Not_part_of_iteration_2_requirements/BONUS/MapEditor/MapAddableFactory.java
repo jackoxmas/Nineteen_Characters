@@ -108,7 +108,7 @@ public class MapAddableFactory {
 			Item shield = new Shield("Shieldy",'O');
 			return new ItemAdder(shield);
 		case SWORD_ITEM:
-			Item onehandedsword = new OneHandedSword("Excalibur", '|');
+			Item onehandedsword = new OneHandedSword("Excalibur", '†');
 			return new ItemAdder(onehandedsword);
 		case TWO_HAND_SWORD_ITEM:
 			Item twohandedsword = new TwoHandedSword("Two_hander", '|');
@@ -117,7 +117,7 @@ public class MapAddableFactory {
 			Item bow = new Bow("Bow",'D');
 			return new ItemAdder(bow);
 		case STAFF_ITEM:
-			Item staff = new Staff("Staff",'i');
+			Item staff = new Staff("Staff",'⚚');
 			return new ItemAdder(staff);
 		case DOOR_KEY_ITEM:
 			ObstacleRemovingItem key = new ObstacleRemovingItem("Key", 'K');

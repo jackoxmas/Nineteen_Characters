@@ -324,13 +324,13 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        controls_inventory_and_equipment_jTabbedPane = new javax.swing.JTabbedPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        commands_jTextArea = new javax.swing.JTextArea();
-        inventory_text_area_jScrollPane = new javax.swing.JScrollPane();
-        inventory_jTextArea = new javax.swing.JTextArea();
+        equipment_and_inventory_jTabbedPane = new javax.swing.JTabbedPane();
         equip_text_area_jScrollPane = new javax.swing.JScrollPane();
         equipment_jTextArea = new javax.swing.JTextArea();
+        inventory_text_area_jScrollPane = new javax.swing.JScrollPane();
+        inventory_jTextArea = new javax.swing.JTextArea();
+        command_text_area_jScrollPane = new javax.swing.JScrollPane();
+        commands_jTextArea = new javax.swing.JTextArea();
         outgoing_text_jTextField = new javax.swing.JTextField();
         outgoing_chat_text_area_jScrollPane = new javax.swing.JScrollPane();
         incoming_text_jTextArea = new javax.swing.JTextArea();
@@ -349,27 +349,32 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        equipment_jTextArea.setEditable(false);
+        equipment_jTextArea.setColumns(20);
+        equipment_jTextArea.setRows(5);
+        equip_text_area_jScrollPane.setViewportView(equipment_jTextArea);
+
+        commands_jTextArea.setEditable(false);
         commands_jTextArea.setColumns(20);
         commands_jTextArea.setRows(5);
-        jScrollPane2.setViewportView(commands_jTextArea);
+        command_text_area_jScrollPane.setViewportView(commands_jTextArea);
+        commands_jTextArea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                command_jButtonMouseClicked(evt);
+            }
+        });
 
-        controls_inventory_and_equipment_jTabbedPane.addTab("Controls", jScrollPane2);
+        equipment_and_inventory_jTabbedPane.addTab("Equip", equip_text_area_jScrollPane);
+        equipment_and_inventory_jTabbedPane.addTab("Commands", command_text_area_jScrollPane);
 
         inventory_jTextArea.setEditable(false);
         inventory_jTextArea.setColumns(20);
         inventory_jTextArea.setRows(5);
         inventory_text_area_jScrollPane.setViewportView(inventory_jTextArea);
 
-        controls_inventory_and_equipment_jTabbedPane.addTab("Inventory", inventory_text_area_jScrollPane);
+        equipment_and_inventory_jTabbedPane.addTab("Inventory", inventory_text_area_jScrollPane);
 
-        equipment_jTextArea.setEditable(false);
-        equipment_jTextArea.setColumns(20);
-        equipment_jTextArea.setRows(5);
-        equip_text_area_jScrollPane.setViewportView(equipment_jTextArea);
-
-        controls_inventory_and_equipment_jTabbedPane.addTab("Equip.", equip_text_area_jScrollPane);
-
-        outgoing_text_jTextField.setText("Outgoing text.");
+        outgoing_text_jTextField.setText("");
         outgoing_text_jTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 outgoing_text_jTextFieldKeyPressed(evt);
@@ -379,7 +384,8 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         incoming_text_jTextArea.setEditable(false);
         incoming_text_jTextArea.setColumns(20);
         incoming_text_jTextArea.setRows(5);
-        incoming_text_jTextArea.setText("Incoming text.\n");
+        incoming_text_jTextArea.setText("Click on me when you want to reply to in-game chat options.\n\n"
+                + "Game Messages: " );
         incoming_text_jTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 incoming_text_jTextAreaKeyTyped(evt);
@@ -401,7 +407,7 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
             }
         });
 
-        bargain_barter_jButton.setText("Talk / Barter");
+        bargain_barter_jButton.setText("Bargain / Barter");
         bargain_barter_jButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bargain_barter_jButtonMouseClicked(evt);
@@ -411,95 +417,101 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         javax.swing.GroupLayout regular_skills_jPanelLayout = new javax.swing.GroupLayout(regular_skills_jPanel);
         regular_skills_jPanel.setLayout(regular_skills_jPanelLayout);
         regular_skills_jPanelLayout.setHorizontalGroup(
-            regular_skills_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(regular_skills_jPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(regular_skills_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bind_wounds_jButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(observe_jButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
-                    .addComponent(bargain_barter_jButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
-                .addContainerGap())
+                regular_skills_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(regular_skills_jPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(regular_skills_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(bind_wounds_jButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(observe_jButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                                .addComponent(bargain_barter_jButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
+                        .addContainerGap())
         );
         regular_skills_jPanelLayout.setVerticalGroup(
-            regular_skills_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(regular_skills_jPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(bind_wounds_jButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(bargain_barter_jButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(observe_jButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(54, Short.MAX_VALUE))
+                regular_skills_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(regular_skills_jPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(bind_wounds_jButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(bargain_barter_jButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(observe_jButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(54, Short.MAX_VALUE))
         );
 
         regular_and_special_skills_jTabbedPane.addTab("Regular", regular_skills_jPanel);
 
-        occupation_skill_2_jButton.setText("Special Skill 2");
+        occupation_skill_2_jButton.setText("Occupation Skill 2");
 
-        occupation_skill_1_jButton.setText("Special Skill 1");
+        occupation_skill_1_jButton.setText("Occupation Skill 1");
 
-        occupation_skill_3_jButton.setText("Special Skill 3");
+        occupation_skill_3_jButton.setText("Occupation Skill 3");
 
-        occupation_skill_4_jButton.setText("Special Skill 4");
+        occupation_skill_4_jButton.setText("Occupation Skill 4");
 
         javax.swing.GroupLayout special_skills_jPanelLayout = new javax.swing.GroupLayout(special_skills_jPanel);
         special_skills_jPanel.setLayout(special_skills_jPanelLayout);
         special_skills_jPanelLayout.setHorizontalGroup(
-            special_skills_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(special_skills_jPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(special_skills_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(occupation_skill_2_jButton, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
-                    .addComponent(occupation_skill_3_jButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(occupation_skill_4_jButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(occupation_skill_1_jButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                special_skills_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(special_skills_jPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(special_skills_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(occupation_skill_2_jButton, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                                .addComponent(occupation_skill_3_jButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(occupation_skill_4_jButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(occupation_skill_1_jButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
         );
         special_skills_jPanelLayout.setVerticalGroup(
-            special_skills_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(special_skills_jPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(occupation_skill_1_jButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(occupation_skill_2_jButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(occupation_skill_3_jButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(occupation_skill_4_jButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                special_skills_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(special_skills_jPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(occupation_skill_1_jButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(occupation_skill_2_jButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(occupation_skill_3_jButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(occupation_skill_4_jButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(12, Short.MAX_VALUE))
         );
 
         regular_and_special_skills_jTabbedPane.addTab("Special", special_skills_jPanel);
 
+        game_jTextPane.setEditable(false);
+        game_jTextPane.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                game_jTextPaneKeyTyped(evt);
+            }
+        });
         jScrollPane1.setViewportView(game_jTextPane);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(regular_and_special_skills_jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(outgoing_text_jTextField)
-                    .addComponent(outgoing_chat_text_area_jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 612, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(controls_inventory_and_equipment_jTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE))
-            .addComponent(jScrollPane1)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                        .addComponent(regular_and_special_skills_jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(outgoing_text_jTextField)
+                                .addComponent(outgoing_chat_text_area_jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(equipment_and_inventory_jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(regular_and_special_skills_jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(controls_inventory_and_equipment_jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(outgoing_chat_text_area_jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(outgoing_text_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(regular_and_special_skills_jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(equipment_and_inventory_jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(outgoing_chat_text_area_jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(outgoing_text_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))))
         );
 
         pack();
@@ -588,16 +600,16 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bargain_barter_jButton;
     private javax.swing.JButton bind_wounds_jButton;
-    private javax.swing.JTextArea commands_jTextArea;
-    private javax.swing.JTabbedPane controls_inventory_and_equipment_jTabbedPane;
     private javax.swing.JScrollPane equip_text_area_jScrollPane;
+    private javax.swing.JScrollPane command_text_area_jScrollPane;
+    private javax.swing.JTabbedPane equipment_and_inventory_jTabbedPane;
     private javax.swing.JTextArea equipment_jTextArea;
+    private javax.swing.JTextArea commands_jTextArea;
     private javax.swing.JTextPane game_jTextPane;
     private javax.swing.JTextArea incoming_text_jTextArea;
     private javax.swing.JTextArea inventory_jTextArea;
     private javax.swing.JScrollPane inventory_text_area_jScrollPane;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton observe_jButton;
     private javax.swing.JButton occupation_skill_1_jButton;
     private javax.swing.JButton occupation_skill_2_jButton;

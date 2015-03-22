@@ -36,6 +36,9 @@ public enum Key_Commands {
 	//The save class itself is named SAVE_GAME, so I'd going with that over save_map
 
 	//Any commands needed for map editing will go here
-	MAP_INSERT, MAP_CENTER
+	MAP_INSERT, MAP_CENTER,
+	
+	//Swap sub occupation
+	SWAP_SUB_OCCUPATION
 
 }

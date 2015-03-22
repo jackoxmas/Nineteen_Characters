@@ -89,9 +89,14 @@ public final class Avatar extends Entity {
         }
         return isAlive;
     }
+    
     @Override
     public void takeTurn() {
-        
+    	try{
+    		getOccupation().takeTurn();
+    	}catch(NullPointerException e){
+    		
+    	}
     }
 
     @Override

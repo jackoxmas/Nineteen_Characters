@@ -64,6 +64,9 @@ class GameRemapper extends KeyRemapper {
         bind('%', Key_Commands.USE_SKILL_2);
         bind('^', Key_Commands.USE_SKILL_3);
         bind('&', Key_Commands.USE_SKILL_4);
+        
+        //Occupation sub switching
+        bind('S',Key_Commands.SWAP_SUB_OCCUPATION);
     }
 		
 

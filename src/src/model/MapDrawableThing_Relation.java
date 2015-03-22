@@ -57,7 +57,7 @@ public class MapDrawableThing_Relation {
                 }
             }
         }
-        private int effectDecalDuration_ = 20;
+        private int effectDecalDuration_ = 2;
 
         /**
          * For damage coming from non-entities

@@ -23,8 +23,6 @@ abstract public class DrawableThing implements Serializable{
         return name_;
     }
 
-
-
     protected DrawableThing(String name, char representation) {
         name_ = name;
         single_character_representation_ = representation;
@@ -99,6 +97,13 @@ abstract public class DrawableThing implements Serializable{
     }
 
     /**
+     * This function gets the DrawableThing's character.
+     * It is necessary for saving terrain, as they may have their char represenation overridden by decals.
+     * @return
+     */
+    public char getDrawableCharacter() { return single_character_representation_; }
+
+    /**
      * Get character representation.
      *
      * @return Character being used to represent this Drawable Thing.
@@ -145,6 +150,4 @@ abstract public class DrawableThing implements Serializable{
     }
 
     public abstract int getID();
-
-
 }

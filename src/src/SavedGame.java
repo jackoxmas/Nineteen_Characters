@@ -20,6 +20,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import src.model.*;
 import src.model.constructs.*;
+import src.model.constructs.items.*;
 
 import org.w3c.dom.*;
 import src.model.constructs.Entity;
@@ -443,31 +444,43 @@ public class SavedGame {
 
                 MapTile[][] grid = map.getMapGrid();
 
-                // Terrain
                 Terrain terr = grid[j][i].getTerrain();
                 RunGame.dbgOut("Writing map tile [" + i + ", " + j + "]", 5);
                 if (terr == null) {
                     RunGame.errOut("xml_writeMap: null terrain @ [" + i + ", " + j + "]");
                     return 1;
                 }
-                xml_writeTerrain(doc, e_l, terr);
 
-                /*
+                // Terrain
+                Element e_terr = doc.createElement("terrain");
+                e_terr.setAttribute("id", Integer.toString(terr.getID()));
+                //xml_writeTerrain(doc, e_l, terr);
+                xml_writeDrawable(doc, e_terr, terr);
+                e_l.appendChild(e_terr);
+
+
                 // Entity
-                Entity ent = grid[i][j].getEntity();
+                Entity ent = grid[j][i].getEntity();
                 if (ent != null) {
-                    xml_writeEntity(doc, e_l, ent);
+                    Element e_ent = doc.createElement("entity");
+                    //e_ent.setAttribute("id", Integer.toString(ent.getID()));
+                    //xml_writeEntity(doc, e_ent, ent);
+                    xml_writeDrawable(doc, e_ent, ent);
+                    e_l.appendChild(e_ent);
                 }
 
                 // Item list
-                if (map.getMapGrid()[i][j].getItemList().size() != 0) {
+                Element te_item;
+                if (map.getMapGrid()[j][i].getItemList().size() != 0) {
                     Element e_itemlist = doc.createElement("item_list");
-                    for (Item item : grid[i][j].getItemList()) {
-                        xml_writeItem(doc, e_itemlist, item);
+                    for (Item item : grid[j][i].getItemList()) {
+                        te_item = doc.createElement("item");
+                        te_item.setAttribute("id", Integer.toString(item.getID()));
+                        xml_writeDrawable(doc, te_item, item);
+                        e_itemlist.appendChild(te_item);
                     }
                     e_l.appendChild(e_itemlist);
                 }
-                */
 
                 e_map_grid.appendChild(e_l);
             }
@@ -488,11 +501,10 @@ public class SavedGame {
      * @param entity The Entity object to write
      * @return The entity's DOM Element, or null - on failure.
      */
-    private static Element xml_writeEntity(Document doc, Element parent, Entity entity) {
-        Element e_entity = doc.createElement("entity");
+    private static void xml_writeEntity(Document doc, Element parent, Entity entity) {
 
         // Name
-        e_entity.setAttribute("name", entity.getName());
+        parent.setAttribute("name", entity.getName());
 
         /*
          if (this.avatar_list_.containsValue(entity)) {
@@ -516,14 +528,9 @@ public class SavedGame {
              tmp_eInvItem.appendChild(doc.createElement("b_equipped")); */
             //e_itemList.appendChild(tmp_eInvItem);
         }
-        e_entity.appendChild(e_itemList);
+        parent.appendChild(e_itemList);
 
-        xml_writeStatsDrawable(doc, e_entity, (DrawableThingStatsPack) entity.getStatsPack());
-        xml_writeEntityStatsPack(doc, e_entity, entity.getStatsPack());
-
-        parent.appendChild(e_entity);
-
-        return e_entity;
+        xml_writeStatsDrawable(doc, parent, entity.getStatsPack());
     }
 
     // TODO REMOVE
@@ -553,6 +560,15 @@ public class SavedGame {
         return e_item;
     }*/
 
+    private static void xml_writeGenericItem(Document doc, Element parent, Item item) {
+        if (item == null) {
+            RunGame.errOut("xml_writeGenericItem: null item argument");
+            return;
+        }
+
+
+    }
+
     private static void xml_writeStatsDrawable(Document doc, Element parent, DrawableThingStatsPack stats) {
         if (stats == null) {
             RunGame.errOut("xml_writeStatsDrawable: null statspack");
@@ -566,13 +582,6 @@ public class SavedGame {
             trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getArmor_rating_())));
             parent.appendChild(trans_eStat);
         }
-        // TODO FIX:
-        /*
-         if (stats.getDefensive_rating_() != 0) {
-         trans_eStat = doc.createElement("def_rating");
-         trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getDefensive_rating_())));
-         e_stats.appendChild(trans_eStat);
-         }*/
         if (stats.getOffensive_rating_() != 0) {
             trans_eStat = doc.createElement("off_rating");
             trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getOffensive_rating_())));
@@ -653,6 +662,11 @@ public class SavedGame {
             tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getCurrent_mana_())));
             parent.appendChild(tra_eStat);
         }
+        if (stats.getDefensive_rating_() != 0) {
+            tra_eStat = doc.createElement("defensive_rating");
+            tra_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getDefensive_rating_())));
+            parent.appendChild(tra_eStat);
+        }
     }
 
     private static void xml_writeTerrain(Document doc, Element parent, Terrain terr) {
@@ -660,7 +674,7 @@ public class SavedGame {
             RunGame.errOut("xml_writeTerrain: null Terrain name");
             return;
         }
-        parent.setAttribute("name", terr.getName());
+        //parent.setAttribute("name", terr.getName()); // TODO REMOVE
 
         // BOOLEANS:
         if (terr.isMountain()) {
@@ -678,44 +692,62 @@ public class SavedGame {
             parent.appendChild(e_decal);
         }
 
+        // TODO REMOVE
         // Terrain::Character
+        /*
         Element e_dChar = doc.createElement("terr_char");
         e_dChar.appendChild(doc.createTextNode(Character.toString(terr.getRepresentation())));
         parent.appendChild(e_dChar);
 
-        // TODO TERRAIN COLOR
         // Terrain::Color - only write if non-null
-        /*
-         if (terr.color_ != null) {
+         if (terr.getColor() != null) {
          Element e_color = doc.createElement("color");
-         e_color.appendChild(doc.createTextNode(terr.color_.name()));
-         e_Terrain.appendChild(e_color);
-         }*/
+         e_color.appendChild(doc.createTextNode(Integer.toString(terr.getColor().getRGB())));
+         parent.appendChild(e_color);
+         }
+         */
     }
 
-    private static Element xml_writeDrawable(Document doc, Element parent, DrawableThing dt) {
+    private static void xml_writeDrawable(Document doc, Element parent, DrawableThing dt) {
         if (dt == null) {
             RunGame.errOut("Invalid drawable thing reference");
-            return null;
+            return;
         }
 
-        Element e_dt = doc.createElement("drawable_thing");
+        Element te_data;
+        te_data = doc.createElement("name");
+        te_data.appendChild(doc.createTextNode(dt.getName()));
+        parent.appendChild(te_data);
 
-        e_dt.setAttribute("id", Integer.toString(dt.getID()));
+        if (dt.isVisible()) { parent.appendChild(doc.createElement("b_visible")); }
+
+        if (dt.getRepresentation() != '\u0000') {
+            te_data = doc.createElement("char");
+            te_data.appendChild(doc.createTextNode(Character.toString(dt.getDrawableCharacter())));
+            parent.appendChild(te_data);
+        }
+
+        if (dt.getColor() != null) {
+            te_data = doc.createElement("color");
+            te_data.appendChild(doc.createTextNode(Integer.toString(dt.getColor().getRGB())));
+            parent.appendChild(te_data);
+        }
+
+        xml_writeStatsDrawable(doc, parent, dt.getStatsPack());
 
         switch (dt.getID()) {
             case 0:
                 RunGame.errOut("Attempted to write invalid DrawableThing ID (0)");
                 break;
             case 1:
-                xml_writeTerrain(doc, e_dt, (Terrain)dt);
+                xml_writeTerrain(doc, parent, (Terrain)dt);
+                break;
+            case 2:
+                //xml_writeBow(doc, parent, (Bow)dt);
                 break;
             default:
                 RunGame.errOut("Attempted to write invalid DrawableThing ID (default)");
         };
-
-        parent.appendChild(e_dt);
-        return e_dt;
     }
     /**
      * MAGIC NUMBERS:

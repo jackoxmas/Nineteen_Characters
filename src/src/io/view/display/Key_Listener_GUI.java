@@ -382,7 +382,7 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         incoming_text_jTextArea.setEditable(false);
         incoming_text_jTextArea.setColumns(20);
         incoming_text_jTextArea.setRows(5);
-        incoming_text_jTextArea.setText("Click here to select chat reply options.");
+        incoming_text_jTextArea.setText("Click here to select chat-reply options.\nClick on the game window to send commands to it.\nClick on the commands on the right to execute them, or use the key bindings ->\n\n");
         incoming_text_jTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 incoming_text_jTextAreaKeyTyped(evt);

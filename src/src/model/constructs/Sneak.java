@@ -206,8 +206,7 @@ public final class Sneak extends Occupation {
     
     @Override
     public void takeTurn(){
-    	//
-    	System.out.println("cloak_timer: " + cloak_timer);
+    	
     	if(!getEntity().isVisible())
     		++cloak_timer;
     	if(cloak_timer > 5){

@@ -210,6 +210,16 @@ public class GameController extends Controller {
             return null;
         }
         final IO_Bundle to_return = super.getMessenger().sendCommandToMap(command, input);
+        if(to_return == null) {
+            System.out.println("To return is null!");
+            try {
+                Thread.sleep(100);
+            } 
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+            return sendCommandToMapWithText(command, input);
+        }
 
         if (to_return != null && to_return.strings_for_communication_ != null && 
                 !to_return.strings_for_communication_.isEmpty() && Key_Commands.GET_INTERACTION_OPTIONS.equals(command)) {
@@ -222,7 +232,7 @@ public class GameController extends Controller {
 
         // Make the buttons says the right skill names.
         if (to_return != null && to_return.occupation_ != null && command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
-                || command == Key_Commands.BECOME_SNEAK) {
+                || command == Key_Commands.BECOME_SNEAK || command == Key_Commands.SWAP_SUB_OCCUPATION) {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     Display.getDisplay().getSkillButton(1).

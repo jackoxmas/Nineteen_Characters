@@ -215,4 +215,15 @@ public final class Sneak extends Occupation {
     		getEntity().setViewable(true);
     	}
     }
+
+	@Override
+	public Sneak switchToNextSubOccupation() {
+		//A sneak has no sub occupations atm.
+		return this;
+	}
+
+	@Override
+	public char getOccupationRepresentation() {
+		return '☭';
+	}
 }

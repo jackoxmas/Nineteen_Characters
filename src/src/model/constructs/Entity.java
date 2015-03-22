@@ -989,6 +989,9 @@ abstract public class Entity extends DrawableThing {
             int money = this.num_gold_coins_possessed_;
             this.decrementNumGoldCoinsBy(money); // All money goes to my attacker.
             attacker.incrementNumGoldCoinsBy(money);
+            
+            // all my experience goes to my attacker.
+            attacker.gainExperiencePoints(this.getStatsPack().getQuantity_of_experience_());
         } else {
             System.out.println("reciever survived in in Entity.receiveAttack: ");
         }

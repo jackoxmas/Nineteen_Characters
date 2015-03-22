@@ -10,7 +10,10 @@ public class KnightsSerum extends PickupableItem {
     public KnightsSerum(String name, char representation) {
         super(name, representation);
     }
-    boolean activated = false;
+
+    private boolean activated = false;
+
+    public boolean getActivated() { return activated; }
 
     @Override
     public void use(Entity target) {

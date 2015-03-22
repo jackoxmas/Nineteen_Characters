@@ -41,6 +41,8 @@ public class TemporaryObstacleItem extends ObstacleItem {
         return options;
     }
 
+    public String getKeyName() { return checkKey().getName(); }
+
     /**
      * Returns a reference to the keyItem needed to open this door.
      *

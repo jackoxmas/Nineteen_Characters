@@ -62,6 +62,8 @@ abstract public class Entity extends DrawableThing {
         return num_gold_coins_possessed_;
     }
 
+
+
     protected void setNumGoldCoinsWhenSpawned(int amount) {
         num_gold_coins_when_spawned_ = amount;
     }

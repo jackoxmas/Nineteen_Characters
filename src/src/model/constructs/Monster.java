@@ -105,6 +105,16 @@ public class Monster extends Entity {
     }
     int turns_to_follow_ = 0;
     Entity Entity_to_follow_ = null;
+
+    public int getFollowTurns() { return turns_to_follow_; }
+
+    public String getFolloweeName() {
+        if (Entity_to_follow_ != null)
+            return Entity_to_follow_.getName();
+        else
+            return null;
+    }
+
     /**
      * Follow the given entity for X turns
      * @param followee

@@ -4,6 +4,7 @@
  */
 package src;
 
+import java.awt.*;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,11 +21,10 @@ import javax.xml.transform.stream.StreamResult;
 
 import src.model.*;
 import src.model.constructs.*;
-import src.model.constructs.items.*;
 
 import org.w3c.dom.*;
 import src.model.constructs.Entity;
-import src.model.constructs.items.Item;
+import src.model.constructs.items.*;
 
 /**
  * This class manages a saved game object. A saved game has a file path and 
@@ -41,7 +41,7 @@ public class SavedGame {
      * is modified. The version number 0 is reserved. This value has no 
      * relation to the Java native Serialization object ID.
      */
-    public static final long SAVE_DATA_VERSION = 4;
+    public static final long SAVE_DATA_VERSION = 5;
     public static final String SAVE_EXT = ".xml";
     public static final String KEY_EXT = ".key";
     public static final char SAVE_ITERATOR_FLAG = '_';
@@ -416,6 +416,25 @@ public class SavedGame {
         return mm;
     }
 
+    private static void xml_writeAOE_One(Document doc, Element parent, OneShotAreaEffectItem item) {
+        if (item == null) {
+            RunGame.errOut("xml_writeAOE_One: null item argument");
+            return;
+        }
+
+        if (item.hasBeenActivated()) { parent.appendChild(doc.createElement("b_activated")); }
+
+        if (item.getPower() != 0) {
+            Element e_pwr = doc.createElement("power");
+            e_pwr.appendChild(doc.createTextNode(Integer.toString(item.getPower())));
+            parent.appendChild(e_pwr);
+        }
+
+        Element e_effect = doc.createElement("effect");
+        e_effect.appendChild(doc.createTextNode(item.getEffect()));
+        parent.appendChild(e_effect);
+    }
+
     /**
      * Writes this map to the given XML Element in the given XML document
      *
@@ -503,90 +522,81 @@ public class SavedGame {
      */
     private static void xml_writeEntity(Document doc, Element parent, Entity entity) {
 
-        // Name
-        parent.setAttribute("name", entity.getName());
+        if (entity == null) {
+            RunGame.errOut("xml_writeEntity: null entity argument");
+            return;
+        }
 
-        /*
-         if (this.avatar_list_.containsValue(entity)) {
-         e_entity.appendChild(doc.createElement("b_avatar"));
-         }*/
+        xml_writeEntityStatsPack(doc, parent, entity.getStatsPack());
+
+        // Record primary and secondary (written in item-list step)
+        PrimaryHandHoldable eq_primary = entity.getPrimaryEquipped();
+        SecondaryHandHoldable eq_secondary = entity.getSecondaryEquipped();
+
+        // gold
+        Element e_data = doc.createElement("gold");
+        e_data.appendChild(doc.createTextNode(Integer.toString(entity.getNumGoldCoins())));
+        parent.appendChild(e_data);
+
+        // lives
+        if (entity.isAlive()) { parent.appendChild(doc.createElement("b_alive")); }
+
+        // skill points
+        e_data = doc.createElement("skill_points");
+        e_data.appendChild(doc.createTextNode(Integer.toString(entity.getNum_skillpoints_())));
+        parent.appendChild(e_data);
+
+        // bind wounds
+        e_data = doc.createElement("bind_wounds");
+        e_data.appendChild(doc.createTextNode(Integer.toString(entity.getBind_wounds_())));
+        parent.appendChild(e_data);
+
+        // observation
+        e_data = doc.createElement("observation");
+        e_data.appendChild(doc.createTextNode(Integer.toString(entity.getObservation_())));
+        parent.appendChild(e_data);
+
+        // bargain
+        e_data = doc.createElement("bargain");
+        e_data.appendChild(doc.createTextNode(Integer.toString(entity.getBargain_())));
+        parent.appendChild(e_data);
+
+        // occupation
+        // TODO IMPLEMENT THIS
+
         // Direction
         Element e_dir = doc.createElement("direction");
         e_dir.appendChild(doc.createTextNode(entity.getFacingDirection().toString()));
 
         // Item List
-        Element e_itemList = doc.createElement("item_list");
-        // write inventory items to xml
-        //Item equipped = entity.getEquipped(); //TODO FIX
-        //ArrayList<Item> tmp_inv = entity.getInventory();
-        Element tmp_eInvItem; // temp inventory item
-        for (int i = 0; i < entity.getInventory().size(); i++) {
-            //tmp_eInvItem = xml_writeItem(doc, e_itemList, tmp_inv.get(i));
+        Element te_item;
+        ArrayList<PickupableItem> inv = entity.getInventory();
+        for (PickupableItem i : inv) {
+            te_item = doc.createElement("item");
 
-            /*
-             if (tmp_inv.get(i) == equipped)
-             tmp_eInvItem.appendChild(doc.createElement("b_equipped")); */
-            //e_itemList.appendChild(tmp_eInvItem);
+            if (i == eq_primary) {
+                te_item.appendChild(doc.createElement("b_primary"));
+            }
+            if (i == eq_secondary) {
+                te_item.appendChild(doc.createElement("b_secondary"));
+            }
+
+            xml_writeDrawable(doc, te_item, i);
+            parent.appendChild(te_item);
         }
-        parent.appendChild(e_itemList);
-
-        xml_writeStatsDrawable(doc, parent, entity.getStatsPack());
     }
 
-    // TODO REMOVE
-    /**
-    private static Element xml_writeItem(Document doc, Element parent, Item item) {
-        Element e_item = doc.createElement("item");
-        e_item.setAttribute("id", item.getID())
-
-        // Name
-        //e_item.setAttribute("name", item.getName());
-        // Is One Shot
-        if (item.isOneShot()) {
-            e_item.appendChild(doc.createElement("b_one_shot"));
-        }
-        // Is Passable
-        if (item.isPassable()) {
-            e_item.appendChild(doc.createElement("b_passable"));
-        }
-        // Goes in Inventory
-        if (item.goesInInventory()) {
-            e_item.appendChild(doc.createElement("b_inventory-able"));
-        }
-
-        xml_writeStatsDrawable(doc, e_item, item.getStatsPack());
-
-        parent.appendChild(e_item);
-        return e_item;
-    }*/
-
-    private static void xml_writeGenericItem(Document doc, Element parent, Item item) {
+    private static void xml_writeItem(Document doc, Element parent, Item item) {
         if (item == null) {
-            RunGame.errOut("xml_writeGenericItem: null item argument");
+            RunGame.errOut("xml_writeItem: null item argument");
             return;
         }
 
+        if (item.goesInInventory()) { parent.appendChild(doc.createElement("b_inventoryItem")); }
 
-    }
+        if (item.isOneShot()) { parent.appendChild(doc.createElement("b_oneshot")); }
 
-    private static void xml_writeStatsDrawable(Document doc, Element parent, DrawableThingStatsPack stats) {
-        if (stats == null) {
-            RunGame.errOut("xml_writeStatsDrawable: null statspack");
-            return;
-        }
-
-        Element trans_eStat;
-
-        if (stats.getArmor_rating_() != 0) {
-            trans_eStat = doc.createElement("armor_rating");
-            trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getArmor_rating_())));
-            parent.appendChild(trans_eStat);
-        }
-        if (stats.getOffensive_rating_() != 0) {
-            trans_eStat = doc.createElement("off_rating");
-            trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getOffensive_rating_())));
-            parent.appendChild(trans_eStat);
-        }
+        if (item.isPassable()) { parent.appendChild(doc.createElement("b_passable")); }
     }
 
     private static void xml_writeEntityStatsPack(Document doc, Element parent, EntityStatsPack stats) {
@@ -669,6 +679,73 @@ public class SavedGame {
         }
     }
 
+    private static void xml_writeMonster(Document doc, Element parent, Monster monst) {
+        if (monst == null) {
+            RunGame.errOut("xml_writeMonster: null monster argument");
+            return;
+        }
+
+        Element e_turns = doc.createElement("turns");
+        e_turns.appendChild(doc.createTextNode(Integer.toString(monst.getFollowTurns())));
+        parent.appendChild(e_turns);
+
+        if (monst.getFolloweeName() != null) {
+            Element e_followee = doc.createElement("followee");
+            e_followee.appendChild(doc.createTextNode(monst.getFolloweeName()));
+            parent.appendChild(e_followee);
+        }
+    }
+
+    private static void xml_writeStatsDrawable(Document doc, Element parent, DrawableThingStatsPack stats) {
+        if (stats == null) {
+            RunGame.errOut("xml_writeStatsDrawable: null statspack");
+            return;
+        }
+
+        Element trans_eStat;
+
+        if (stats.getArmor_rating_() != 0) {
+            trans_eStat = doc.createElement("armor_rating");
+            trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getArmor_rating_())));
+            parent.appendChild(trans_eStat);
+        }
+        if (stats.getOffensive_rating_() != 0) {
+            trans_eStat = doc.createElement("off_rating");
+            trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getOffensive_rating_())));
+            parent.appendChild(trans_eStat);
+        }
+    }
+
+    private static void xml_writeTeleporter_OneWay(Document doc, Element parent, OneWayTeleportItem item) {
+        if (item == null) {
+            RunGame.errOut("xml_writeTeleporter_OneWay: null item argument");
+            return;
+        }
+
+        Element e_data = doc.createElement("dx");
+        e_data.appendChild(doc.createTextNode(Integer.toString(item.getDestX())));
+        parent.appendChild(e_data);
+
+        e_data = doc.createElement("dy");
+        e_data.appendChild(doc.createTextNode(Integer.toString(item.getDestY())));
+        parent.appendChild(e_data);
+    }
+
+    private static void xml_writeTempObstacle(Document doc, Element parent, TemporaryObstacleItem item) {
+        if (item == null) {
+            RunGame.errOut("xml_writeTempObstacle: null item argument");
+            return;
+        }
+
+        String s_key = item.getKeyName(); // get the name of the key
+        if (s_key == null || s_key.length() == 0) { s_key = "NULL"; } // if invalid key, write NULL
+
+        // write the name of the key to be rebuilt later
+        Element e_key = doc.createElement("key");
+        e_key.appendChild(doc.createTextNode(s_key));
+        parent.appendChild(e_key);
+    }
+
     private static void xml_writeTerrain(Document doc, Element parent, Terrain terr) {
         if (terr.getName() == null) {
             RunGame.errOut("xml_writeTerrain: null Terrain name");
@@ -743,7 +820,57 @@ public class SavedGame {
                 xml_writeTerrain(doc, parent, (Terrain)dt);
                 break;
             case 2:
-                //xml_writeBow(doc, parent, (Bow)dt);
+                xml_writeItem(doc, parent, (Item) dt);
+                break;
+            case 3:
+                xml_writeItem(doc, parent, (Item) dt);
+                break;
+            case 4:
+                xml_writeItem(doc, parent, (Item) dt);
+                if(((KnightsSerum)dt).getActivated()) { parent.appendChild(doc.createElement("b_activated")); }
+                break;
+            case 5:
+                xml_writeItem(doc, parent, (Item) dt);
+                break;
+            case 6:
+                xml_writeAOE_One(doc, parent, (OneShotAreaEffectItem)dt);
+                break;
+            case 7:
+                xml_writeItem(doc, parent, (Item)dt);
+                break;
+            case 8:
+                xml_writeItem(doc, parent, (Item) dt);
+                break;
+            case 9:
+                xml_writeItem(doc, parent, (Item)dt);
+                break;
+            case 10:
+                xml_writeTeleporter_OneWay(doc, parent, (OneWayTeleportItem)dt);
+                break;
+            case 11:
+                xml_writeAOE_One(doc, parent, (OneShotAreaEffectItem)dt);
+                break;
+            case 12:
+                xml_writeTempObstacle(doc, parent, (TemporaryObstacleItem)dt);
+                break;
+            case 13:
+                xml_writeItem(doc, parent, (Item)dt);
+                break;
+            case 14:
+                xml_writeItem(doc, parent, (Item)dt);
+                break;
+            case 15:
+                xml_writeEntity(doc, parent, (Entity)dt);
+                xml_writeMonster(doc, parent, (Monster) dt);
+                break;
+            case 16:
+                xml_writeEntity(doc, parent, (Entity)dt);
+                break;
+            case 17:
+                xml_writeEntity(doc, parent, (Entity)dt);
+                break;
+            case 18:
+                xml_writeEntity(doc, parent, (Entity)dt);
                 break;
             default:
                 RunGame.errOut("Attempted to write invalid DrawableThing ID (default)");

@@ -90,17 +90,18 @@ public class MapInternet extends Thread {
 
     private void getInputForMap() {
         try {
-            byte[] buf = new byte[256];
+            byte[] buf = new byte[1024];
 
             // receive request
-            DatagramPacket packet = new DatagramPacket(buf, buf.length);
+            DatagramPacket receivePacket = new DatagramPacket(buf, buf.length);
 
-            recieving_socket.receive(packet);
-            //System.out.println("Map received a packet");
-                //RunGame.dbgOut("The map recieved a packet in Map.GetMapInputFromUsers.run() from address: " + packet.getAddress().toString(), 6);
+            recieving_socket.receive(receivePacket);
+            String decoded_string_with_trailing_zeros = new String(receivePacket.getData(), 
+                    receivePacket.getOffset(), receivePacket.getLength(), "UTF-8");
+            //System.out.println("Map received a receivePacket");
+                //RunGame.dbgOut("The map recieved a receivePacket in Map.GetMapInputFromUsers.run() from address: " + receivePacket.getAddress().toString(), 6);
 
-            // "udp packet recieved in GetMapInputFromUsers
-            String decoded_string_with_trailing_zeros = new String(buf, "UTF-8");
+            // "udp receivePacket recieved in GetMapInputFromUsers
 
             String decoded_string = decoded_string_with_trailing_zeros.trim();
 
@@ -134,7 +135,7 @@ public class MapInternet extends Thread {
                 return;
             }
             if (!users.containsKey(unique_id)) {
-                Packet_Sender new_users_packet_sender = new Packet_Sender(unique_id, packet.getAddress());
+                Packet_Sender new_users_packet_sender = new Packet_Sender(unique_id, receivePacket.getAddress());
                 new_users_packet_sender.start();
                 users.put(unique_id, new_users_packet_sender);
             }
@@ -147,6 +148,8 @@ public class MapInternet extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
             RunGame.errOut("Connection is closed");
+            System.err.println("Connection is closed");
+            System.exit(-4);
         }
     }
 
@@ -201,7 +204,7 @@ public class MapInternet extends Thread {
                             to_recieve_command.hasLivesLeft()
                     );
                     sender.setBundleAvatarAndNotify(to_recieve_command, return_package);
-                    //System.out.println("Map sent back a packet with a view and stats");
+                    //System.out.println("Map sent back a receivePacket with a view and stats");
                     return;
                 } else {
                     char[][] view = null;

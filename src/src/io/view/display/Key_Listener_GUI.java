@@ -597,15 +597,13 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
 
     private void commands_jTextAreaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_commands_jTextAreaMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_commands_jTextAreaMouseClicked
-    private void command_jButtonMouseClicked(java.awt.event.MouseEvent evt) {
         if (evt.getClickCount() >= 2) {
             String selected = commands_jTextArea.getSelectedText();
             for (QueueCommandInterface<String> foo : command_area_double_clicked_) {
                 foo.enqueue(selected);
             }
         }
-    }
+    }//GEN-LAST:event_commands_jTextAreaMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bargain_barter_jButton;
     private javax.swing.JButton bind_wounds_jButton;

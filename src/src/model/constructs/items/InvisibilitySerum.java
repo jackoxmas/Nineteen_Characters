@@ -20,5 +20,8 @@ public class InvisibilitySerum extends PickupableItem {
         // target.getMapRelation().becomeFlyingRelation();
             target.setViewable(! target.isVisible());
     }
-
+        @Override
+    public void takeTurn() {
+        
+    }
 }

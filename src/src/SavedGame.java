@@ -402,18 +402,173 @@ public class SavedGame {
         return ret_file;
     }
 
-    //<editor-fold desc="XML WRITING" defaultstate="collapsed">
+    //<editor-fold desc="XML OPERATIONS" defaultstate="collapsed">
+
+    private static Node xml_getNodeByString(Node parent, String tagName) {
+        NodeList ns = parent.getChildNodes();
+
+        for (int i = 0; i < ns.getLength(); i++) {
+            if (ns.item(i).getNodeName().compareTo(tagName) == 0)
+                return ns.item(i);
+        }
+        return null;
+    }
+
+    private static OneShotAreaEffectItem xml_readAOE_One (Document doc, Element e_aoe) {
+        if (doc == null || e_aoe == null) {
+            RunGame.errOut("xml_readAOE_One: invalid (null) argument");
+            return null;
+        }
+
+        try {
+            // collect:
+            String d_name;
+            char d_representation = '\u0000';
+            Effect d_effect;
+            int d_power;
+
+            Node n_data = xml_getNodeByString(e_aoe, "name");
+            if (n_data == null) {
+                throw new Exception();
+            }
+            d_name = n_data.getTextContent();
+
+            n_data = xml_getNodeByString(e_aoe, "power");
+            if (n_data == null) {
+                throw new Exception();
+            }
+            d_power = Integer.parseInt(n_data.getTextContent());
+
+            n_data = xml_getNodeByString(e_aoe, "effect");
+            if (n_data == null) { throw new Exception(); }
+            d_effect = Effect.valueOf(n_data.getTextContent());
+            if (d_effect == null) { throw new Exception(); }
+
+            n_data = xml_getNodeByString(e_aoe, "char");
+            if (n_data != null) { d_representation = n_data.getTextContent().charAt(0); }
+
+            OneShotAreaEffectItem ret_item = new OneShotAreaEffectItem(d_name, d_representation, d_effect, d_power);
+
+            n_data = xml_getNodeByString(e_aoe, "b_invisible");
+            if (n_data != null) { ret_item.setViewable(false); }
+
+            return ret_item;
+
+        } catch (Exception e) {
+            RunGame.errOut("xml_readAOE_One: failed to parse item");
+            return null;
+        }
+    }
+
+    // DO NOT CALL THIS METHOD!
+    private static void xml_readDrawable(Document doc, Node n_draw, DrawableThing dt) throws Exception{
+        if (doc == null || n_draw == null || dt == null) {
+            RunGame.errOut("xml_readDrawable: invalid (null) argument");
+            throw new Exception();
+        }
+
+        String d_name;
+        char d_char = '\u0000';
+
+        Node n_data = xml_getNodeByString(n_draw, "name");
+        if (n_data == null ) { throw new Exception(); }
+        d_name = n_data.getTextContent();
+
+        n_data = xml_getNodeByString(n_draw, "char");
+        if (n_data != null) { d_char = n_data.getTextContent().charAt(0); }
+
+        n_data = xml_getNodeByString(n_draw, "b_invisible");
+        if (n_data != null) { dt.setViewable(false); }
+
+        return; // explicit
+    }
 
     private static src.model.Map xml_readMap(Document doc, Element e_map) {
+        if (doc == null || e_map == null) {
+            RunGame.errOut("xml_readMap: invalid (null) argument");
+            return null;
+        }
 
-        Element e_mapgrid = (Element) e_map.getElementsByTagName(SavedGame.XML_MAP_MAPGRID).item(0);
-        Integer map_x = Integer.parseInt(e_mapgrid.getAttributes().getNamedItem(SavedGame.XML_MAP_MAPGRID_WIDTH).getNodeValue());
-        Integer map_y = Integer.parseInt(e_mapgrid.getAttributes().getNamedItem(SavedGame.XML_MAP_MAPGRID_HEIGHT).getNodeValue());
-        RunGame.dbgOut("XML Parsed: map grid x = " + map_x, 4);
-        RunGame.dbgOut("XML Parsed: map grid y = " + map_y, 4);
+        try {
+            src.model.Map ret_map;
 
-        src.model.Map mm = new src.model.Map(map_x, map_y);
-        return mm;
+            Element e_mapgrid = (Element) e_map.getElementsByTagName(SavedGame.XML_MAP_MAPGRID).item(0);
+            Integer map_x = Integer.parseInt(e_mapgrid.getAttributes().getNamedItem(SavedGame.XML_MAP_MAPGRID_WIDTH).getNodeValue());
+            Integer map_y = Integer.parseInt(e_mapgrid.getAttributes().getNamedItem(SavedGame.XML_MAP_MAPGRID_HEIGHT).getNodeValue());
+            RunGame.dbgOut("XML Parsed: map grid x = " + map_x, 4);
+            RunGame.dbgOut("XML Parsed: map grid y = " + map_y, 4);
+
+            ret_map = new src.model.Map(map_x, map_y);
+
+            NodeList ns_tiles = e_mapgrid.getElementsByTagName("map_tile");
+            int x, y;
+            Node tn_tile, tn_data;
+            Terrain t_terr;
+            for (int i = 0; i < ns_tiles.getLength(); i++) {
+                tn_tile = ns_tiles.item(i);
+                x = Integer.parseInt(tn_tile.getAttributes().getNamedItem("x").getTextContent());
+                y = Integer.parseInt(tn_tile.getAttributes().getNamedItem("y").getTextContent());
+
+                // parse Terrain
+                tn_data = xml_getNodeByString(tn_tile, "terrain");
+                if (tn_data == null) { throw new Exception(); }
+                t_terr = xml_readTerrain(doc, tn_data);
+                if (t_terr == null) { throw new Exception(); }
+                ret_map.addTerrain(t_terr, x, y);
+            }
+
+            return ret_map;
+        } catch (Exception e) {
+            RunGame.errOut("xml_readMap: could not parse map");
+            return null;
+        }
+
+    }
+
+    private static Terrain xml_readTerrain(Document doc, Node n_terr) {
+
+        try {
+            Terrain ret_terr;
+
+            // collect:
+            String d_name;
+            char d_rep = '\u0000';
+            boolean d_water = false, d_mountain = false;
+            char d_decal = '\u0000';
+            Color d_color = null;
+
+            Node n_data = xml_getNodeByString(n_terr, "name");
+            if (n_data == null) { throw new Exception(); }
+            d_name = n_data.getTextContent();
+            if (d_name == null) { throw new Exception(); }
+
+            n_data = xml_getNodeByString(n_terr, "char");
+            if (n_data != null) { d_rep = n_data.getTextContent().charAt(0); }
+
+            n_data = xml_getNodeByString(n_terr, "b_water");
+            if (n_data != null) { d_water = true; }
+
+            n_data = xml_getNodeByString(n_terr, "b_mountain");
+            if (n_data != null) { d_mountain = true; }
+
+            n_data = xml_getNodeByString(n_terr, "decal");
+            if (n_data != null) { d_decal = n_data.getTextContent().charAt(0); }
+
+            n_data = xml_getNodeByString(n_terr, "color");
+            if (n_data != null) { d_color = Color.getColor("", Integer.parseInt(n_data.getTextContent())); }
+
+
+            ret_terr = new Terrain(d_name, d_rep, d_water, d_mountain, d_decal, d_color);
+
+            n_data = xml_getNodeByString(n_terr, "b_invisible");
+            if (n_data != null) { ret_terr.setViewable(false); }
+
+            return ret_terr;
+
+        } catch (Exception e) {
+            RunGame.errOut("xml_readTerrain: could not parse terrain");
+            return null;
+        }
     }
 
     private static void xml_writeAOE_One(Document doc, Element parent, OneShotAreaEffectItem item) {
@@ -422,7 +577,7 @@ public class SavedGame {
             return;
         }
 
-        if (item.hasBeenActivated()) { parent.appendChild(doc.createElement("b_activated")); }
+        if (item.hasBeenActivated()) { return; }
 
         if (item.getPower() != 0) {
             Element e_pwr = doc.createElement("power");
@@ -434,6 +589,8 @@ public class SavedGame {
         e_effect.appendChild(doc.createTextNode(item.getEffect()));
         parent.appendChild(e_effect);
     }
+
+
 
     /**
      * Writes this map to the given XML Element in the given XML document
@@ -453,15 +610,15 @@ public class SavedGame {
         e_map_grid.setAttribute(SavedGame.XML_MAP_MAPGRID_WIDTH, Integer.toString(map.getWidth()));
         e_map_grid.setAttribute(SavedGame.XML_MAP_MAPGRID_HEIGHT, Integer.toString(map.getHeight()));
         RunGame.dbgOut("Writing map grid of size: " + map.getWidth() + "x" + map.getHeight(), 4);
+        MapTile[][] grid = map.getMapGrid();
 
+        // iterate through map tiles
         Element e_l;
         for (int j = 0; j < map.getHeight(); j++) {
             for (int i = 0; i < map.getWidth(); i++) {
                 e_l = doc.createElement("map_tile");
                 e_l.setAttribute("x", Integer.toString(i));
                 e_l.setAttribute("y", Integer.toString(j));
-
-                MapTile[][] grid = map.getMapGrid();
 
                 Terrain terr = grid[j][i].getTerrain();
                 RunGame.dbgOut("Writing map tile [" + i + ", " + j + "]", 5);
@@ -537,9 +694,6 @@ public class SavedGame {
         Element e_data = doc.createElement("gold");
         e_data.appendChild(doc.createTextNode(Integer.toString(entity.getNumGoldCoins())));
         parent.appendChild(e_data);
-
-        // lives
-        if (entity.isAlive()) { parent.appendChild(doc.createElement("b_alive")); }
 
         // skill points
         e_data = doc.createElement("skill_points");
@@ -751,7 +905,6 @@ public class SavedGame {
             RunGame.errOut("xml_writeTerrain: null Terrain name");
             return;
         }
-        //parent.setAttribute("name", terr.getName()); // TODO REMOVE
 
         // BOOLEANS:
         if (terr.isMountain()) {
@@ -768,21 +921,6 @@ public class SavedGame {
             e_decal.appendChild(doc.createTextNode(Character.toString(terr.getDecal())));
             parent.appendChild(e_decal);
         }
-
-        // TODO REMOVE
-        // Terrain::Character
-        /*
-        Element e_dChar = doc.createElement("terr_char");
-        e_dChar.appendChild(doc.createTextNode(Character.toString(terr.getRepresentation())));
-        parent.appendChild(e_dChar);
-
-        // Terrain::Color - only write if non-null
-         if (terr.getColor() != null) {
-         Element e_color = doc.createElement("color");
-         e_color.appendChild(doc.createTextNode(Integer.toString(terr.getColor().getRGB())));
-         parent.appendChild(e_color);
-         }
-         */
     }
 
     private static void xml_writeDrawable(Document doc, Element parent, DrawableThing dt) {
@@ -796,14 +934,17 @@ public class SavedGame {
         te_data.appendChild(doc.createTextNode(dt.getName()));
         parent.appendChild(te_data);
 
-        if (dt.isVisible()) { parent.appendChild(doc.createElement("b_visible")); }
+        // PROP: b_invisible iff the object is invisible
+        if (!dt.isVisible()) { parent.appendChild(doc.createElement("b_invisible")); }
 
+        // PROP: drawable character iff not null-char
         if (dt.getRepresentation() != '\u0000') {
             te_data = doc.createElement("char");
             te_data.appendChild(doc.createTextNode(Character.toString(dt.getDrawableCharacter())));
             parent.appendChild(te_data);
         }
 
+        // PROP: drawable character color iff not null-color
         if (dt.getColor() != null) {
             te_data = doc.createElement("color");
             te_data.appendChild(doc.createTextNode(Integer.toString(dt.getColor().getRGB())));

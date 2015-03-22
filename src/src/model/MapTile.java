@@ -49,7 +49,7 @@ public final class MapTile {
         if (terrain_ != null) {
             terrain_.takeTurn();
         }
-        if (entity_ != null) {
+        if (entity_ != null && entity_.getMapRelation() != null && entity_.hasLivesLeft()) {
             entity_.takeTurn();
         }
     }

@@ -36,7 +36,7 @@ public final class Smasher extends Occupation {
     private ActiveWeapon current_weapon = ActiveWeapon.FISTS;
 
     @Override
-    public void change_stats(EntityStatsPack current_stats) {
+    public void changeStats(EntityStatsPack current_stats) {
         //for smasher
         current_stats.increaseStrengthLevelByOne();
     }
@@ -200,5 +200,10 @@ public final class Smasher extends Occupation {
     @Override
     public String toString() {
         return "Smasher";
+    }
+    
+    @Override
+    public void takeTurn(){
+    	
     }
 }

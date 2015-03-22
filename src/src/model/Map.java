@@ -418,12 +418,12 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             if (command != null) {
                 if (command == Key_Commands.STANDING_STILL) {
                     strings_for_IO_Bundle = null;
-                } else if (to_recieve_command.isAlive() == true) {
+                } else if (to_recieve_command.hasLivesLeft() == true) {
                     strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, text);
                 } else {
                     strings_for_IO_Bundle = null;
                 }
-                if (to_recieve_command.isAlive() == true) {
+                if (to_recieve_command.hasLivesLeft() == true) {
                     char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);
@@ -446,7 +446,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                             to_recieve_command.getSecondaryEquipped(),
                             strings_for_IO_Bundle,
                             to_recieve_command.getNumGoldCoins(),
-                            to_recieve_command.isAlive()
+                            to_recieve_command.hasLivesLeft()
                     );
                     return return_package;
                 } else {
@@ -468,7 +468,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                             null,
                             null,
                             -1,
-                            to_recieve_command.isAlive()
+                            to_recieve_command.hasLivesLeft()
                     );
                     return return_package;
                 }
@@ -482,7 +482,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                         to_recieve_command.getSecondaryEquipped(),
                         strings_for_IO_Bundle,
                         to_recieve_command.getNumGoldCoins(),
-                        to_recieve_command.isAlive()
+                        to_recieve_command.hasLivesLeft()
                 );
                 return return_package;
             } else {

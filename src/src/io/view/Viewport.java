@@ -38,6 +38,11 @@ public abstract class Viewport {
 		}
 
 	}
+	/**
+	 * Make a viewport of this size.
+	 * @param height
+	 * @param width
+	 */
 	public Viewport(int height,int width){
 		height_ = height;
 		width_ = width;

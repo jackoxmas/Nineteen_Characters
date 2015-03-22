@@ -43,7 +43,7 @@ abstract public class Entity extends DrawableThing {
      *
      * @return true if you have lives left, false if you don't.
      */
-    public boolean isAlive() {
+    public boolean hasLivesLeft() {
         return has_lives_left_;
     }
 
@@ -476,25 +476,25 @@ abstract public class Entity extends DrawableThing {
             case USE_SKILL_4:
                 this.getOccupation().performOccupationSkill(4);
                 break;
-            case SPEND_SKILLPOINT_ON_BIND:
+            case INCREMENT_BIND:
                 this.spendSkillpointOn(SkillEnum.BIND_WOUNDS);
                 break;
-            case SPEND_SKILLPOINT_ON_BARGAIN:
+            case INCREMENT_BARGAIN:
                 this.spendSkillpointOn(SkillEnum.BARGAIN);
                 break;
-            case SPEND_SKILLPOINT_ON_OBSERVE:
+            case INCREMENT_OBSERVE:
                 this.spendSkillpointOn(SkillEnum.OBSERVATION);
                 break;
-            case SPEND_SKILLPOINT_ON_SKILL_1:
+            case INCREMENT_SKILL_1:
                 this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_1);
                 break;
-            case SPEND_SKILLPOINT_ON_SKILL_2:
+            case INCREMENT_SKILL_2:
                 this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_2);
                 break;
-            case SPEND_SKILLPOINT_ON_SKILL_3:
+            case INCREMENT_SKILL_3:
                 this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_3);
                 break;
-            case SPEND_SKILLPOINT_ON_SKILL_4:
+            case INCREMENT_SKILL_4:
                 this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_4);
                 break;
             case GET_INTERACTION_OPTIONS:
@@ -513,7 +513,7 @@ abstract public class Entity extends DrawableThing {
                     return target.getConversationStarterStrings();
                 }
                 break;
-            case GET_CONVERSATION_CONTINUATION_OPTIONS:
+            case GET_CONVERSATION_OPTIONS:
                 if (target != null) {
                     sayStuffToMe(target.getConversationContinuationStrings(optional_text, this));
                     break;
@@ -843,7 +843,7 @@ abstract public class Entity extends DrawableThing {
      */
     public int sendAttack(Entity target_entity) {
         if (target_entity != null) {
-            target_entity.receiveAttack(3 + this.getStatsPack().getOffensive_rating_(), this);
+            target_entity.receiveAttack(this.getStatsPack().getOffensive_rating_(), this);
             return 0;
         } else {
             return -1;
@@ -875,6 +875,11 @@ abstract public class Entity extends DrawableThing {
     public int gainExperiencePoints(int amount) {
         int num_level_ups = stats_pack_.increaseQuantityOfExperienceBy(amount);
         num_skillpoints_ += num_level_ups;
+        for(int i = 0; i < num_level_ups; ++i) {
+            if(getOccupation() != null) {
+                getOccupation().changeStats(stats_pack_);
+            }
+        }
         return num_level_ups;
     }
 
@@ -974,18 +979,26 @@ abstract public class Entity extends DrawableThing {
      * @return true if I did not die on attack, false if I did die
      */
     public boolean receiveAttack(int damage, Entity attacker) {
-        int amount_of_damage = damage - (getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_())/4;
-        if (amount_of_damage < 0) {
-            amount_of_damage = 0;
+        final int receieved_damage_before_modifiers = damage;
+        int amount_of_damage_after_modifiers = damage - (getStatsPack().getDefensive_rating_() + getStatsPack().getArmor_rating_())/2;
+        // The least damage a valid attack can do is 1.
+        if(receieved_damage_before_modifiers > 0 && amount_of_damage_after_modifiers <=0) {
+            amount_of_damage_after_modifiers = 1;
         }
-        System.out.println("Amount of damage recieved in Entity.receiveAttack: " + amount_of_damage);
+        if (amount_of_damage_after_modifiers < 0) {
+            amount_of_damage_after_modifiers = 0;
+        }
+        System.out.println("Amount of damage recieved in Entity.receiveAttack: " + amount_of_damage_after_modifiers);
         // return -1 if your health ran out, 0 if you did not
-        getStatsPack().deductCurrentLifeBy(amount_of_damage);
+        getStatsPack().deductCurrentLifeBy(amount_of_damage_after_modifiers);
         if (stats_pack_.getCurrent_life_() <= 0 && attacker != null) {
             System.out.println("reciever died in in Entity.receiveAttack: ");
             int money = this.num_gold_coins_possessed_;
             this.decrementNumGoldCoinsBy(money); // All money goes to my attacker.
             attacker.incrementNumGoldCoinsBy(money);
+            
+            // all my experience goes to my attacker.
+            attacker.gainExperiencePoints(this.getStatsPack().getQuantity_of_experience_());
         } else {
             System.out.println("reciever survived in in Entity.receiveAttack: ");
         }

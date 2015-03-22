@@ -26,10 +26,18 @@ public class ChatBoxViewPort {
 		if(strings_for_communication == null){return;}
 		clear();
 		for(int i = 0; i != strings_for_communication.size(); ++i){
-			String temp = "Press " + String.valueOf(i) + ": ";
+                    String temp = "";
+                    if(i == 0) {
+                        temp = temp.concat("Click here to select a chat-reply option\n");
+                    } 
+                    temp = temp.concat("Press " + String.valueOf(i) + ": " );
+                    //if (i == strings_for_communication.size() - 1) {
+                    //    temp = temp.concat("\n^ After selecting an option, click the game window to resume ^");
+                    //}
 			view_content_strings_.add(strings_for_communication.get(i));
 			headings_.add(temp);
 		}
+                view_content_strings_.add("^ After selecting an option, click the game window to resume ^");
 		result_ = new ArrayList<String>(headings_.size());
 		addWhiteSpace(result_);
 		for(int i = 0;i!=headings_.size();++i){

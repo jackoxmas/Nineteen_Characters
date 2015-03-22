@@ -100,7 +100,11 @@ public abstract class Occupation implements Serializable {
 
     public abstract int unEquipEverything();
 
-    public abstract void change_stats(EntityStatsPack current_stats);
+    /**
+     * Used to level-up an entity's stats in an occupation specific way.
+     * @param current_stats 
+     */
+    public abstract void changeStats(EntityStatsPack current_stats);
 
     public abstract int incrementSkill(SkillEnum skill);
 
@@ -124,4 +128,6 @@ public abstract class Occupation implements Serializable {
         arrayList.add(Integer.toString(skill_4_level_).getBytes());
         return arrayList;
     }
+    
+    public abstract void takeTurn();
 }

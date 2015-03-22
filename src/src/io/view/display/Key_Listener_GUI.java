@@ -160,7 +160,6 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         initComponents();
         setFont();
         bargain_barter_jButton.setText("Talk / Bargain");
-        occupation_skill_1_jButton.setText("Reassign Me");
         occupation_skill_1_jButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
 
@@ -173,19 +172,16 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
                 occupation_skill_1_jButtonMouseClicked(evt);
             }
         });
-        occupation_skill_2_jButton.setText("Reassign Me");
         occupation_skill_2_jButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 occupation_skill_2_jButtonMouseClicked(evt);
             }
         });
-        occupation_skill_3_jButton.setText("Reassign Me");
         occupation_skill_3_jButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 occupation_skill_3_jButtonMouseClicked(evt);
             }
         });
-        occupation_skill_4_jButton.setText("Reassign Me");
         occupation_skill_4_jButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 occupation_skill_4_jButtonMouseClicked(evt);

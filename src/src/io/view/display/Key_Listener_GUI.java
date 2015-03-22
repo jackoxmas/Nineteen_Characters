@@ -348,6 +348,11 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         commands_jTextArea.setEditable(false);
         commands_jTextArea.setColumns(20);
         commands_jTextArea.setRows(5);
+        commands_jTextArea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                commands_jTextAreaMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(commands_jTextArea);
 
         equipment_and_inventory_jTabbedPane.addTab("Controls", jScrollPane2);
@@ -589,6 +594,10 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         }
     	//System.out.println("Was runB");
     }//GEN-LAST:event_game_jTextPaneKeyTyped
+
+    private void commands_jTextAreaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_commands_jTextAreaMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_commands_jTextAreaMouseClicked
     private void command_jButtonMouseClicked(java.awt.event.MouseEvent evt) {
         if (evt.getClickCount() >= 2) {
             String selected = commands_jTextArea.getSelectedText();

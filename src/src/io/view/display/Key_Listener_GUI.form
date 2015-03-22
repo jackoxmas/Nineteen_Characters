@@ -81,6 +81,9 @@
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="commands_jTextAreaMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

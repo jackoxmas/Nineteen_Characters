@@ -28,6 +28,11 @@ public class MapView extends Viewport {
 		render(bundle);//All that's needed for now.
 		populateEquipped(bundle);
 		populateItems(bundle);
+		if(bundle != null && bundle.getStatsPack()!= null){
+			String quickStatsString = "Life: " + bundle.getStatsPack().current_life_ +
+					", Mana : " + bundle.getStatsPack().current_mana_ +", Coins : " + bundle.num_coins_;
+			writeStringToContents(1, 0,quickStatsString );
+		}
 		
 	}
 	/*

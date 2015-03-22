@@ -12,6 +12,8 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
 
     public static final int NUMBER_OF_EXPERIENCE_POINT_PER_LEVEL = 100;
 
+    private static final int INITIAL_VALUE_FOR_LIFE_AND_MANA = 10;
+
 // Primary stats - SHOULD ALL BE PRIVATE!!!!!!!!!!!
     private int lives_left_ = 1; // this can change without leveling up
     private int strength_level_ = 1;
@@ -20,8 +22,8 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
     private int hardiness_level_ = 1;
     private int quantity_of_experience_ = 1;
     private int movement_level_ = 1;
-    private int max_life_ = 1;
-    private int max_mana_ = 1;
+    private int max_life_ = INITIAL_VALUE_FOR_LIFE_AND_MANA;
+    private int max_mana_ = INITIAL_VALUE_FOR_LIFE_AND_MANA;
     private int defensive_rating_ = 1;
 
     public int getMax_life_() {
@@ -40,8 +42,8 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
 
 // Modifiable Secondary Stats
 // These secondary stats can be modified without leveling up
-    public int current_life_ = 1;
-    public int current_mana_ = 1;
+    public int current_life_ = max_life_;
+    public int current_mana_ = max_mana_;
 
     public int getLives_left_() {
         return lives_left_;
@@ -99,7 +101,8 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
     }
 
     /**
-     * Resets the stat pack back to it's natural, pristine state.
+     * Resets the stat pack back to it's natural, pristine state. DO NOT USE
+     * MAGIC NUMBERS!!!!
      */
     public void reset() {
         super.reset();
@@ -110,9 +113,14 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
         hardiness_level_ = 1;
         quantity_of_experience_ = 1;
         movement_level_ = 1;
-        max_life_ = 1;
-        max_mana_ = 1;
+        max_life_ = INITIAL_VALUE_FOR_LIFE_AND_MANA;
+        max_mana_ = INITIAL_VALUE_FOR_LIFE_AND_MANA;
         defensive_rating_ = 1;
+        
+        moves_left_in_turn_ = 1;
+        cached_current_level_ = 1;
+        current_life_ = max_life_;
+        current_mana_ = max_mana_;
     }
 
     /**
@@ -122,28 +130,34 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
      */
     public EntityStatsPack(EntityStatsPack in) {
         super(in);
-        lives_left_ = in.lives_left_; // this can change without leveling up
-        strength_level_ = in.strength_level_;
-        agility_level_ = in.agility_level_;
-        intellect_level_ = in.intellect_level_;
-        hardiness_level_ = in.hardiness_level_;
-        quantity_of_experience_ = in.quantity_of_experience_;
-        movement_level_ = in.movement_level_;
-        max_life_ = in.max_life_;
-        max_mana_ = in.max_mana_;
+        lives_left_ = in.getLives_left_(); // this can change without leveling up
+        strength_level_ = in.getStrength_level_();
+        agility_level_ = in.getAgility_level_();
+        intellect_level_ = in.getIntellect_level_();
+        hardiness_level_ = in.getHardiness_level_();
+        quantity_of_experience_ = in.getQuantity_of_experience_();
+        movement_level_ = in.getMovement_level_();
+        max_life_ = in.getMax_life_();
+        max_mana_ = in.getMax_mana_();
         defensive_rating_ = in.defensive_rating_;
+        
+        moves_left_in_turn_ = in.getMoves_left_in_turn_();
+        cached_current_level_ = in.getCached_current_level_();
+        current_life_ = in.getMax_life_();
+        current_mana_ = in.getCurrent_mana_();
     }
 
     public void increaseCurrentLevelByOne() {
         ++cached_current_level_;
-        ++max_life_;
-        ++current_life_;
-        ++max_mana_;
-        ++current_mana_;
+        //++max_life_;
+        //++current_life_;
+        //++max_mana_;
+        //++current_mana_;
 
-        super.incrementOffensive_rating_();
+        //super.incrementOffensive_rating_();
+        //super.incrementtArmor_rating_();
 
-        increaseDefenseLevelByOne();
+        //increaseDefenseLevelByOne();
         increaseHardinessLevelByOne();
         increaseMovementLevelByOne();
         increaseLivesLeftByOne();

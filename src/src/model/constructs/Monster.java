@@ -28,9 +28,10 @@ public class Monster extends Entity {
     @Override
     public void takeTurn(){
     	if(Entity_to_follow_!=null){
+                //attack then follow.
+                attackIfNear(Entity_to_follow_);
     		follow(Entity_to_follow_);
     		--turns_to_follow_;
-    		attackIfNear(Entity_to_follow_);
     		if(turns_to_follow_<0){Entity_to_follow_ = null;}
     	}
     	
@@ -77,7 +78,7 @@ public class Monster extends Entity {
      */
     private int follow(Entity followee){
     	 System.out.println("Attacker is " + followee.name_ + " Monster.receiveAttack");
-         final int zero_if_I_moved = getMapRelation().moveTowardDrawable(followee);
+         final int zero_if_I_moved = getMapRelation().moveTowardEntity(followee);
          System.out.println("Zero if I moved in Monster.receiveAttack: " + zero_if_I_moved);
          final double pythagorean_distance = getMapRelation().measureDistanceTowardDrawable(followee);
          System.out.println("pythagorean_distance  in Monster.receiveAttack: " + pythagorean_distance);
@@ -126,12 +127,12 @@ public class Monster extends Entity {
      */
     @Override
     public boolean receiveAttack(int damage, Entity attacker) {
-        if (this.getMapRelation() != null) {
-            System.out.println("Monster's map relation is not null in Monster.receiveAttack");
+        if (this != null && this.getMapRelation() != null && this.hasLivesLeft()) {
+            System.out.println("Monster's map relation is not null in Monster.receiveAttack and monster has lives left");
             // precondition met.
             boolean isAlive = super.receiveAttack(damage, attacker);
             if (isAlive) {
-                if (attacker != null) {
+                if (attacker != null && attacker.getMapRelation() != null && attacker.hasLivesLeft()) {
                 	setFollowing(attacker, 10);//Arbitary value for time to follow the thing.
                 	follow(attacker);
                 	attackIfNear(attacker);

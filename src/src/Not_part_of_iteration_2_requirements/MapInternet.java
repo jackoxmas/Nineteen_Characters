@@ -166,7 +166,7 @@ public class MapInternet extends Thread {
             }
             if (command == Key_Commands.STANDING_STILL) {
                 strings_for_IO_Bundle = null;
-            } else if (to_recieve_command.isAlive() == true && command != null) {
+            } else if (to_recieve_command.hasLivesLeft() == true && command != null) {
                 strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, optional_text);
             } else {
                 strings_for_IO_Bundle = null;
@@ -179,7 +179,7 @@ public class MapInternet extends Thread {
 
             char[][] view = null;
             Color[][] colors = null;
-            if (to_recieve_command.isAlive() && command != null) {
+            if (to_recieve_command.hasLivesLeft() && command != null) {
 
                 if (!is_using_compression) {
                     view = my_owner_.makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
@@ -225,7 +225,7 @@ public class MapInternet extends Thread {
                     to_recieve_command.getSecondaryEquipped(),
                     strings_for_IO_Bundle,
                     to_recieve_command.getNumGoldCoins(),
-                    to_recieve_command.isAlive()
+                    to_recieve_command.hasLivesLeft()
             );
             sender.setBundleAvatarAndInterrupt(to_recieve_command, return_package);
             return;

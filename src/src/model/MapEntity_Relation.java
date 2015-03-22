@@ -104,7 +104,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      * success.
      */
     public double measureDistanceTowardDrawable(DrawableThing drawable) {
-        if (drawable.getMapRelation() == null) {
+        if (drawable == null || drawable.getMapRelation() == null) {
             return -1; // This thing cannot have its position ascertained without a map relation.
         }
         final int drawables_x = drawable.getMapRelation().getMyXCoordinate();
@@ -261,16 +261,16 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      * Moves entity_ [owner of this relation] towards a DrawableThing if it has
      * a valid map relation.
      *
-     * @param drawable - Thing that entity wants to move toward.
-     * @return -1 on failure [drawable has no map relation or path is blocked],
-     * 0 on success [move occured]
+     * @param entity - Thing that entity wants to move toward.
+     * @return -1 on failure [entity has no map relation or path is blocked],
+ 0 on success [move occured]
      */
-    public int moveTowardDrawable(DrawableThing drawable) {
-        if (drawable.getMapRelation() == null) {
+    public int moveTowardEntity(Entity entity) {
+        if (entity == null || entity.getMapRelation() == null || ! entity.hasLivesLeft()) {
             return -1; // This thing cannot have its position ascertained without a map relation.
         }
-        final int drawables_x = drawable.getMapRelation().getMyXCoordinate();
-        final int drawables_y = drawable.getMapRelation().getMyYCoordinate();
+        final int drawables_x = entity.getMapRelation().getMyXCoordinate();
+        final int drawables_y = entity.getMapRelation().getMyYCoordinate();
         final int my_x = this.getMyXCoordinate();
         final int my_y = this.getMyYCoordinate();
         final int delta_x = drawables_x - my_x;
@@ -305,7 +305,7 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      */
     public int pickUpItemInDirection(int x, int y) {
         int error_code = -1;
-        if (entity_.isAlive()) {
+        if (entity_.hasLivesLeft()) {
             Item itemToBePickedUp = super.getMap().removeTopItem(x
                     + getMyXCoordinate(), y + getMyYCoordinate());
             if (itemToBePickedUp != null) {

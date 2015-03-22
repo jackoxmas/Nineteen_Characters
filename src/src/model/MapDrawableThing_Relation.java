@@ -187,7 +187,7 @@ public class MapDrawableThing_Relation {
      * @author John-Michael Reed
      */
     public int pushEntityInDirection(Entity e, int delta_x, int delta_y) {
-        if (e == null) {
+        if (e == null || e.getMapRelation() == null || !e.hasLivesLeft()) {
             return -2;
         }
         int old_x = e.getMapRelation().getMyXCoordinate(); //Current directions say attempted

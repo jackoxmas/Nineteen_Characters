@@ -43,7 +43,7 @@ abstract public class Entity extends DrawableThing {
      *
      * @return true if you have lives left, false if you don't.
      */
-    public boolean isAlive() {
+    public boolean hasLivesLeft() {
         return has_lives_left_;
     }
 
@@ -972,7 +972,7 @@ abstract public class Entity extends DrawableThing {
      * @return true if I did not die on attack, false if I did die
      */
     public boolean receiveAttack(int damage, Entity attacker) {
-        int amount_of_damage = damage - (getStatsPack().getDefensive_rating_() - getStatsPack().getArmor_rating_())/4;
+        int amount_of_damage = damage - (getStatsPack().getDefensive_rating_() + getStatsPack().getArmor_rating_())/2;
         if (amount_of_damage < 0) {
             amount_of_damage = 0;
         }

@@ -841,7 +841,7 @@ abstract public class Entity extends DrawableThing {
      */
     public int sendAttack(Entity target_entity) {
         if (target_entity != null) {
-            target_entity.receiveAttack(3 + this.getStatsPack().getOffensive_rating_(), this);
+            target_entity.receiveAttack(this.getStatsPack().getOffensive_rating_(), this);
             return 0;
         } else {
             return -1;
@@ -972,13 +972,18 @@ abstract public class Entity extends DrawableThing {
      * @return true if I did not die on attack, false if I did die
      */
     public boolean receiveAttack(int damage, Entity attacker) {
-        int amount_of_damage = damage - (getStatsPack().getDefensive_rating_() + getStatsPack().getArmor_rating_())/2;
-        if (amount_of_damage < 0) {
-            amount_of_damage = 0;
+        final int receieved_damage_before_modifiers = damage;
+        int amount_of_damage_after_modifiers = damage - (getStatsPack().getDefensive_rating_() + getStatsPack().getArmor_rating_())/2;
+        // The least damage a valid attack can do is 1.
+        if(receieved_damage_before_modifiers > 0 && amount_of_damage_after_modifiers <=0) {
+            amount_of_damage_after_modifiers = 1;
         }
-        System.out.println("Amount of damage recieved in Entity.receiveAttack: " + amount_of_damage);
+        if (amount_of_damage_after_modifiers < 0) {
+            amount_of_damage_after_modifiers = 0;
+        }
+        System.out.println("Amount of damage recieved in Entity.receiveAttack: " + amount_of_damage_after_modifiers);
         // return -1 if your health ran out, 0 if you did not
-        getStatsPack().deductCurrentLifeBy(amount_of_damage);
+        getStatsPack().deductCurrentLifeBy(amount_of_damage_after_modifiers);
         if (stats_pack_.getCurrent_life_() <= 0 && attacker != null) {
             System.out.println("reciever died in in Entity.receiveAttack: ");
             int money = this.num_gold_coins_possessed_;

@@ -16,7 +16,7 @@ import src.model.constructs.Entity;
  *
  * @author JohnReedLOL
  */
-public abstract class Item extends DrawableThing implements Serializable{
+public abstract class Item extends DrawableThing implements Serializable {
 
     public Item(String name, char representation,
             boolean goes_in_inventory, boolean is_passable, boolean is_one_shot) {
@@ -33,7 +33,7 @@ public abstract class Item extends DrawableThing implements Serializable{
     public int setPassable(boolean is_passable) {
         is_passable_ = is_passable;
         return 0;
-    }	
+    }
 
     private boolean goes_in_inventory_;
 
@@ -128,6 +128,11 @@ public abstract class Item extends DrawableThing implements Serializable{
      * @param target - The item that this item will be used upon.
      */
     public void use(Item target) {
+
+    }
+
+    @Override
+    public void takeTurn() {
 
     }
 }

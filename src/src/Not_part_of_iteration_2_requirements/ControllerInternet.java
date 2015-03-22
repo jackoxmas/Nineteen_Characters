@@ -145,7 +145,7 @@ public final class ControllerInternet {
             // recieve IO_Bundle from map over UDP connection
             IO_Bundle to_recieve = getBundleFromBufferOfSize(40000);
             // Decompression the IO_Bundle if characters are compressed.
-            if (to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
+            if (to_recieve != null && to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
                 to_recieve.view_for_display_ = IO_Bundle.runLengthDecodeView(width, height,
                         to_recieve.compressed_characters_, to_recieve.character_frequencies_);
                 to_recieve.color_for_display_ = IO_Bundle.runLengthDecodeColor(width, height,

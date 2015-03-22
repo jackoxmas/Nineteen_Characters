@@ -139,6 +139,7 @@ public class MapInternet extends Thread {
             }
             if (!Key_Commands.DO_ABSOLUTELY_NOTHING.equals(command)) {
                 my_owner_.makeTakeTurns();
+                // entities dies and is removed from the map here
             }
             Packet_Sender sender = users.get(unique_id);
 
@@ -147,6 +148,7 @@ public class MapInternet extends Thread {
             if (my_owner_.hasEntity(username)) {
                 to_recieve_command = my_owner_.getEntityByName(username);
             } else {
+                System.out.println("Entity to command is no longer in the entity list.");
                 to_recieve_command = null;
             }
             sendToClient(to_recieve_command, command, width_from_center, height_from_center, optional_text, sender);
@@ -230,8 +232,29 @@ public class MapInternet extends Thread {
             sender.setBundleAvatarAndInterrupt(to_recieve_command, return_package);
             return;
         }
-        // Silently ignore it if the avatar name is wrong.
-
+        // Return the null command
+        //sender.setBundleAvatarAndInterrupt(to_recieve_command, null);
+        //return;
+        IO_Bundle return_package = new IO_Bundle(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    // Don't for get left and right hand items
+                    null, null,
+                    0,0,
+                    0,0,
+                    null,
+                    null,
+                    null,
+                    0,
+                    false
+            );
+            sender.setBundleAvatarAndInterrupt(to_recieve_command, return_package);
+            return;
     }
 
     private class Packet_Sender extends Thread {

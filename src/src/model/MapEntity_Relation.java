@@ -98,17 +98,17 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
      * Gets positive distance between entity_ [owner of this relation] and a
      * DrawableThing if that DrawableThing has a valid map relation.
      *
-     * @param drawable - Drawable that my entity_ wants to measure its distance
+     * @param entity - Drawable that my entity_ wants to measure its distance
      * from.
-     * @return -1 on failure [drawable has no map relation], 0 or greater on
-     * success.
+     * @return -1 on failure [entity has no map relation], 0 or greater on
+ success.
      */
-    public double measureDistanceTowardDrawable(DrawableThing drawable) {
-        if (drawable == null || drawable.getMapRelation() == null) {
+    public double measureDistanceTowardEntity(Entity entity) {
+        if (entity == null || entity.getMapRelation() == null || !entity.hasLivesLeft()) {
             return -1; // This thing cannot have its position ascertained without a map relation.
         }
-        final int drawables_x = drawable.getMapRelation().getMyXCoordinate();
-        final int drawables_y = drawable.getMapRelation().getMyYCoordinate();
+        final int drawables_x = entity.getMapRelation().getMyXCoordinate();
+        final int drawables_y = entity.getMapRelation().getMyYCoordinate();
         final int my_x = this.getMyXCoordinate();
         final int my_y = this.getMyYCoordinate();
         final double x_distance = Math.abs(drawables_x - my_x);

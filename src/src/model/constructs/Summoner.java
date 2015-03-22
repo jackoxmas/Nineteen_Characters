@@ -154,4 +154,9 @@ public final class Summoner extends Occupation {
     public String toString() {
         return "Summoner";
     }
+    
+    @Override
+    public void takeTurn(){
+    	
+    }
 }

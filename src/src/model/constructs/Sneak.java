@@ -6,8 +6,8 @@
 package src.model.constructs;
 
 import java.util.Random;
-import src.Effect;
 
+import src.Effect;
 import src.SkillEnum;
 import src.io.view.display.Display;
 import src.model.constructs.items.Bow;
@@ -30,6 +30,8 @@ public final class Sneak extends Occupation {
 
     private Bow bow_ = null;
 
+    private int cloak_timer = 0; //Timer for cloak skill.
+    
     @Override
     public void changeStats(EntityStatsPack current_stats) {
         // for sneak
@@ -179,6 +181,7 @@ public final class Sneak extends Occupation {
                         numOfTraps + " traps near you, " + numOfTrapsDetected + " removed.");
             } else if (number == 3) {
                 // become invisible [or visible]
+            	cloak_timer = 0;
                 boolean is_visible = getEntity().isVisible();
                 getEntity().setViewable(!is_visible);
             } else if (number == 4) {
@@ -199,5 +202,17 @@ public final class Sneak extends Occupation {
     @Override
     public String toString() {
         return "Sneak";
+    }
+    
+    @Override
+    public void takeTurn(){
+    	//
+    	System.out.println("cloak_timer: " + cloak_timer);
+    	if(!getEntity().isVisible())
+    		++cloak_timer;
+    	if(cloak_timer > 5){
+    		cloak_timer = 0;
+    		getEntity().setViewable(true);
+    	}
     }
 }

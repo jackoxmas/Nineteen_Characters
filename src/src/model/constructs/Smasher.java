@@ -201,4 +201,9 @@ public final class Smasher extends Occupation {
     public String toString() {
         return "Smasher";
     }
+    
+    @Override
+    public void takeTurn(){
+    	
+    }
 }

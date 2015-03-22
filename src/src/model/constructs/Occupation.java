@@ -128,4 +128,6 @@ public abstract class Occupation implements Serializable {
         arrayList.add(Integer.toString(skill_4_level_).getBytes());
         return arrayList;
     }
+    
+    public abstract void takeTurn();
 }

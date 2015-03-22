@@ -179,8 +179,11 @@ public class RunGame {
 
 
         //Add some traps
-        Trap trap1 = new Trap("trap1", 'b', Effect.HURT, 2);
+        Trap trap1 = new Trap("trap1", 'b', Effect.HURT, 5);
         map_.addItem(trap1, 1, 0);
+        
+        Trap trap2 = new Trap("trap2", 'b', Effect.HURT, 5);
+        map_.addItem(trap2, 2, 0);
 
         //seven.getStatsPack().offensive_rating_ = 17; //Can no longer do this.
         map_.addItem(twohandedsword, 25, 1);

@@ -44,7 +44,7 @@ public class SummonerRookie extends Summoner {
         final int cost = 1;
         System.out.println("Starting skill 2: DEBUG");
         int has_run_out_of_mana = getEntity().getStatsPack().deductCurrentManaBy(cost);
-        Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection();
+        Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection(10);
         if (has_run_out_of_mana == 0) {
             if (number == 1) {
                 // enchantment, target hurts itself [damage caster on fail]
@@ -54,10 +54,7 @@ public class SummonerRookie extends Summoner {
                     super.getEntity().receiveAttack(getSkill_1_(), null); // hurt myself by skill1
                     Display.getDisplay().setMessage(HardCodedStrings.hurtYourself);
                 } else {
-            		System.out.println("I did this thing");
-            		System.out.println(target);
                     if (target != null) {
-                		System.out.println("I did this thing 2");
                         target.receiveAttack(target.getStatsPack().getOffensive_rating_(), super.getEntity());
                         Display.getDisplay().setMessage("You casted " + getSkillNameFromNumber(1) + ".");
                     } else {

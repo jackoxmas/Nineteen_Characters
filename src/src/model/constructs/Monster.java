@@ -193,14 +193,11 @@ public class Monster extends Entity {
     @Override
     public boolean receiveAttack(int damage, Entity attacker) {
         if (this != null && this.getMapRelation() != null && this.hasLivesLeft()) {
-    		System.out.println("THIS SHOULD APPEAR !!!!!!!!!!!!!!!!!!!! 1");
             System.out.println("Monster's map relation is not null in Monster.receiveAttack and monster has lives left");
             // precondition met.
             boolean isAlive = super.receiveAttack(damage, attacker);
             if (isAlive) {
-        		System.out.println("THIS SHOULD APPEAR !!!!!!!!!!!!!!!!!!!! 2");
                 if (attacker != null && attacker.getMapRelation() != null && attacker.hasLivesLeft()) {
-            		System.out.println("THIS SHOULD APPEAR !!!!!!!!!!!!!!!!!!!! 3");
                     setFollowing(attacker, 6);//Arbitrary value for time to follow the thing.
                     follow(attacker);
                     attackIfNear(attacker);

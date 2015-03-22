@@ -537,6 +537,128 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         }
         return null;
     }
+    
+
+    /**
+     * Gets the Entity you are facing
+     *
+     * @author John-Michael Reed
+     * @return null if no entity is there.
+     */
+    public Entity getEntityInFacingDirection(int range) {
+        MapTile target_tile = null;
+        int x = this.getMyXCoordinate();
+        int y = this.getMyYCoordinate();
+        FacingDirection f = entity_.getFacingDirection();
+        switch (f) {
+            case UP:
+            	for (int i = 0; i < range; i++) {
+            		y++;
+	                target_tile = super.getMap().getTile(x, y);
+	                if (target_tile != null) {
+	                    Entity entity = target_tile.getEntity();
+	                    if (entity != null) {
+	                    	return entity;
+	                    }
+	                }
+            	}
+                break;
+            case DOWN:
+            	for (int i = 0; i < range; i++) {
+            		y--;
+	                target_tile = super.getMap().getTile(x, y);
+	                if (target_tile != null) {
+	                    Entity entity = target_tile.getEntity();
+	                    if (entity != null) {
+	                    	return entity;
+	                    }
+                    }
+                }
+                break;
+            case RIGHT:
+            	for (int i = 0; i < range; i++) {
+            		x++;
+	                target_tile = super.getMap().getTile(x, y);
+	                if (target_tile != null) {
+	                    Entity entity = target_tile.getEntity();
+	                    if (entity != null) {
+	                    	return entity;
+	                    }
+                    }
+                }
+                break;
+            case LEFT:
+            	for (int i = 0; i < range; i++) {
+            		x--;
+	                target_tile = super.getMap().getTile(x, y);
+	                if (target_tile != null) {
+	                    Entity entity = target_tile.getEntity();
+	                    if (entity != null) {
+	                    	return entity;
+	                    }
+                    }
+                }
+                break;
+            case UP_RIGHT:
+            	for (int i = 0; i < range; i++) {
+            		x++;
+            		y++;
+	                target_tile = super.getMap().getTile(x, y);
+	                if (target_tile != null) {
+	                    Entity entity = target_tile.getEntity();
+	                    if (entity != null) {
+	                    	return entity;
+	                    }
+	                }
+	            }
+                break;
+            case UP_LEFT:
+            	for (int i = 0; i < range; i++) {
+            		x--;
+            		y++;
+	                target_tile = super.getMap().getTile(x, y);
+	                if (target_tile != null) {
+	                    Entity entity = target_tile.getEntity();
+	                    if (entity != null) {
+	                    	return entity;
+	                    }
+                    }
+                }
+                break;
+            case DOWN_RIGHT:
+            	for (int i = 0; i < range; i++) {
+            		x++;
+            		y--;
+	                target_tile = super.getMap().getTile(x, y);
+	                if (target_tile != null) {
+	                    Entity entity = target_tile.getEntity();
+	                    if (entity != null) {
+	                    	return entity;
+	                    }
+                    }
+                }
+                break;
+            case DOWN_LEFT:
+            	for (int i = 0; i < range; i++) {
+            		x--;
+            		y--;
+	                target_tile = super.getMap().getTile(x, y);
+	                if (target_tile != null) {
+	                    Entity entity = target_tile.getEntity();
+	                    if (entity != null) {
+	                    	return entity;
+	                    }
+                    }
+                }
+                break;
+            default:
+                System.err
+                        .println("Impossible error in getEntityInFacingDirection");
+                System.exit(-44);
+                break;
+        }
+        return null;
+    }
 
     /**
      * Gets the Item you are facing

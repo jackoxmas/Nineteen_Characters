@@ -236,8 +236,8 @@ public class RunGame {
         (new Thread(uc_)).start();
     }
 
-    public static void saveGameToDisk(String foo) {
-        SavedGame.saveGame(foo, map_); // save game to file "foo"
+    public static void saveGameToDisk(String filepath) {
+        SavedGame.saveGame(filepath, map_); // save game to file "foo"
     }
 
     // </editor-fold>

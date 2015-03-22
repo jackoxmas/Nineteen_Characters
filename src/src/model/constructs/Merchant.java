@@ -19,6 +19,9 @@ import src.model.constructs.items.Staff;
  */
 public class Merchant extends Villager {
 
+    @Override
+    public int getID() { return 18; }
+
     public Merchant(String name, char representation) {
         super(name, representation);
     }

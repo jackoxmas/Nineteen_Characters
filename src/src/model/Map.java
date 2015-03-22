@@ -34,8 +34,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     //<editor-fold desc="Non-static fields" defaultstate="collapsed">
     // The map has a clock
     private int time_measured_in_turns;
-    // MAP MUST BE SQUARE []
-    //TODO:if Map has to be square, why have two different variables that will always be equivalent?
     public int height_;
     public int width_;
 
@@ -341,17 +339,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         return view;
     }
 
-    /**
-     * Makes a rectangular view with y coordinates in first [] of 2D array
-     *
-     * @param x_center
-     * @param y_center
-     * @param width_from_center - how much offset from the left side and the
-     * right side the view has
-     * @param height_from_center- how much horizontal offset from the center
-     * point the view has
-     * @return
-     */
     public void makeTakeTurns() {
         for (int y = 0; y < height_; ++y) {
             for (int x = 0; x < width_; ++x) {

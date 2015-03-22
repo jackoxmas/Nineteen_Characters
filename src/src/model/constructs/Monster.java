@@ -15,6 +15,8 @@ import src.HardCodedStrings;
  */
 public class Monster extends Entity {
 
+    public int getID() { return 15; }
+
     public Monster(String name, char representation) {
         super(name, representation);
     }

@@ -50,7 +50,6 @@ public class SavedGame {
     private static final String XML_ROOT = "save_game";
     private static final String XML_SAVEVERSION = "version";
     private static final String XML_MAP = "map";
-    private static final String XML_USERNAME = "username";
     private static final String XML_KEYMAP = "keymap";
     private static final String XML_KEY = "key";
     private static final String XML_ROOT_CONTROLLER = "remap";
@@ -105,7 +104,7 @@ public class SavedGame {
                 RunGame.errOut("XML WARN: save file contains more than [" + ns_result.getLength() + "] map nodes. Loading the first one.");
             }
 
-            src.model.Map mm = src.model.Map.xml_readMap(load, (Element)ns_result.item(0));
+            src.model.Map mm = xml_readMap(load, (Element) ns_result.item(0));
 
             if (mm == null) {
                 RunGame.errOut("XML ERR: map load has failed.");
@@ -404,7 +403,7 @@ public class SavedGame {
 
     //<editor-fold desc="XML WRITING" defaultstate="collapsed">
 
-    private static Map xml_readMap(Document doc, Element e_map) {
+    private static src.model.Map xml_readMap(Document doc, Element e_map) {
 
         Element e_mapgrid = (Element) e_map.getElementsByTagName(SavedGame.XML_MAP_MAPGRID).item(0);
         Integer map_x = Integer.parseInt(e_mapgrid.getAttributes().getNamedItem(SavedGame.XML_MAP_MAPGRID_WIDTH).getNodeValue());
@@ -412,7 +411,7 @@ public class SavedGame {
         RunGame.dbgOut("XML Parsed: map grid x = " + map_x, 4);
         RunGame.dbgOut("XML Parsed: map grid y = " + map_y, 4);
 
-        Map mm = new Map(map_x, map_y);
+        src.model.Map mm = new src.model.Map(map_x, map_y);
         return mm;
     }
 
@@ -433,6 +432,7 @@ public class SavedGame {
         Element e_map_grid = doc.createElement(SavedGame.XML_MAP_MAPGRID);
         e_map_grid.setAttribute(SavedGame.XML_MAP_MAPGRID_WIDTH, Integer.toString(map.getWidth()));
         e_map_grid.setAttribute(SavedGame.XML_MAP_MAPGRID_HEIGHT, Integer.toString(map.getHeight()));
+        RunGame.dbgOut("Writing map grid of size: " + map.getWidth() + "x" + map.getHeight(), 4);
 
         Element e_l;
         for (int j = 0; j < map.getHeight(); j++) {
@@ -442,8 +442,10 @@ public class SavedGame {
                 e_l.setAttribute("y", Integer.toString(j));
 
                 MapTile[][] grid = map.getMapGrid();
+
                 // Terrain
-                Terrain terr = grid[i][j].getTerrain();
+                Terrain terr = grid[j][i].getTerrain();
+                RunGame.dbgOut("Writing map tile [" + i + ", " + j + "]", 5);
                 if (terr == null) {
                     RunGame.errOut("xml_writeMap: null terrain @ [" + i + ", " + j + "]");
                     return 1;
@@ -517,21 +519,15 @@ public class SavedGame {
         e_entity.appendChild(e_itemList);
 
         xml_writeStatsDrawable(doc, e_entity, (DrawableThingStatsPack) entity.getStatsPack());
-        xml_writeStatsEntity(doc, e_entity, entity.getStatsPack());
+        xml_writeEntityStatsPack(doc, e_entity, entity.getStatsPack());
 
         parent.appendChild(e_entity);
 
         return e_entity;
     }
 
+    // TODO REMOVE
     /**
-     * Writes an Item to a DOM document
-     *
-     * @param doc The DOM Document to write to
-     * @param parent The parent Element to insert the item in
-     * @param item The Item to write
-     * @return The item's DOM Element, or null - if there was an error
-     */
     private static Element xml_writeItem(Document doc, Element parent, Item item) {
         Element e_item = doc.createElement("item");
         e_item.setAttribute("id", item.getID())
@@ -555,20 +551,20 @@ public class SavedGame {
 
         parent.appendChild(e_item);
         return e_item;
-    }
+    }*/
 
     private static void xml_writeStatsDrawable(Document doc, Element parent, DrawableThingStatsPack stats) {
         if (stats == null) {
             RunGame.errOut("xml_writeStatsDrawable: null statspack");
+            return;
         }
 
-        Element e_stats = doc.createElement("stats_drawable");
         Element trans_eStat;
 
         if (stats.getArmor_rating_() != 0) {
             trans_eStat = doc.createElement("armor_rating");
             trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getArmor_rating_())));
-            e_stats.appendChild(trans_eStat);
+            parent.appendChild(trans_eStat);
         }
         // TODO FIX:
         /*
@@ -580,11 +576,8 @@ public class SavedGame {
         if (stats.getOffensive_rating_() != 0) {
             trans_eStat = doc.createElement("off_rating");
             trans_eStat.appendChild(doc.createTextNode(Integer.toString(stats.getOffensive_rating_())));
-            e_stats.appendChild(trans_eStat);
+            parent.appendChild(trans_eStat);
         }
-
-        parent.appendChild(e_stats);
-        return e_stats;
     }
 
     private static void xml_writeEntityStatsPack(Document doc, Element parent, EntityStatsPack stats) {
@@ -741,6 +734,10 @@ public class SavedGame {
      * 12   Temporary Obstacle Item
      * 13   Obstacle Removing Item
      * 14   Permanent Obstacle Item
+     * 15   Monster
+     * 16   Avatar
+     * 17   Villager
+     * 18   Merchant
      */
 
     //</editor-fold>

@@ -49,7 +49,7 @@ public class HardCodedStrings {
 			"Note that attempting to control a non existent entity results in game over"+System.lineSeparator()+
 			fontsizeHelp;
 	public final static String rebindHelp = 
-			"Format is : /rebind CONTROL char" + System.lineSeparator() +
+			"Format is : /rebind CONTROL_NAME key" + System.lineSeparator() +
 			"Example : /rebind MOVE_UP u" + System.lineSeparator()+
 			"For commands available for rebinding, type /commands , or type /help for help.";
 	public final static String saveHelp = "Type in /save '[filename]'. The file will then be saved to disk.";

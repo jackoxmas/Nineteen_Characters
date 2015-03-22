@@ -6,6 +6,8 @@ import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import src.Not_part_of_iteration_2_requirements.BONUS.MapEditor.MapAddable;
+import src.Not_part_of_iteration_2_requirements.BONUS.MapEditor.MapAddableFactory;
 import src.io.controller.Controller;
 import src.io.controller.GameController;
 import src.io.controller.MapEditorController;
@@ -93,12 +95,25 @@ public class RunGame {
 
     private static int startMapEditor() {
         initialize(); // Initialize any data we need to before loading
-        uc_ = new MapEditorController(map_);
+        coverMapInGrass(map_);
+        uc_ = new MapEditorController(map_); 
         (new Thread(uc_)).start();
         return 0;
     }
 
-    public static void loadGame(String file_path) {
+    private static void coverMapInGrass(Map map_2) {
+    	MapAddableFactory factory = new MapAddableFactory();
+		for(int x =0; x< map_2.width_;++x){
+			for(int y = 0; y < map_2.height_;++y){
+				MapAddable addable = factory.getAddable(AddableThingEnum.GRASS_TERRAIN);
+				addable.addToMap(map_2, x, y);
+				
+			}
+		}
+		
+	}
+
+	public static void loadGame(String file_path) {
 
     }
 

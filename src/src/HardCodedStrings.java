@@ -74,4 +74,8 @@ public class HardCodedStrings {
 	public final static String setControlSuccess = "Succesfully set control!";
 	public final static String setControl_error = "Error, didn't give who to control!";
 
+	
+	// For skills
+	public final static String hurtYourself = "You hurt yourself instead!";
+	public final static String failed = "You failed to cast ";
 }

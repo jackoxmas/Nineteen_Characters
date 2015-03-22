@@ -222,7 +222,7 @@ public class GameController extends Controller {
 
         // Make the buttons says the right skill names.
         if (to_return != null && to_return.occupation_ != null && command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
-                || command == Key_Commands.BECOME_SNEAK) {
+                || command == Key_Commands.BECOME_SNEAK || command == Key_Commands.SWAP_SUB_OCCUPATION) {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     Display.getDisplay().getSkillButton(1).

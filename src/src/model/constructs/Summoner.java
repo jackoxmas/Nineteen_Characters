@@ -161,9 +161,9 @@ public final class Summoner extends Occupation {
     }
 
 	@Override
-	public Sneak switchToNextSubOccupation() {
-		//Test code to see if this properly switches occupations when TRIGGERED
-		return new Sneak(this);
+	public Summoner switchToNextSubOccupation() {
+		//Ovverride this and make it abstract when we make summoner abstract!
+		return (this);
 	}
 
 	@Override

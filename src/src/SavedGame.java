@@ -63,7 +63,11 @@ public class SavedGame {
 
     public static src.model.Map loadGame(String filepath) {//UserController controller) {
         try {
-            File saveFile = null; // TODO: VALIDATE THIS
+            File saveFile = validateFile(filepath, SAVE_EXT);
+            if (!saveFile.exists()) {
+                RunGame.errOut("LOAD ERROR: File does not exist\nString was: " + filepath);
+                return null;
+            }
 
             // Initialize DOM document
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -92,9 +96,6 @@ public class SavedGame {
                 // TODO: uncomment line below
                 //return null;
             }
-
-            // TODO: load user controller
-            ns_result = root.getElementsByTagName(XML_KEYMAP);
 
             // Load map
             ns_result = root.getElementsByTagName(XML_MAP);

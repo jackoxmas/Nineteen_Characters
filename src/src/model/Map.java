@@ -28,8 +28,6 @@ import src.model.constructs.items.Item;
 public class Map implements MapMapEditor_Interface, MapUser_Interface {
 
     //<editor-fold desc="Static fields" defaultstate="collapsed">
-    public static final int MAX_NUMBER_OF_WORLDS = 1;
-    private static int number_of_worlds_generated_ = 0;
     //</editor-fold>
     //<editor-fold desc="Non-static fields" defaultstate="collapsed">
     // The map has a clock
@@ -69,8 +67,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
      * @param y - Height of Map
      */
     public Map(int x, int y) {
-        if (number_of_worlds_generated_ < MAX_NUMBER_OF_WORLDS) {
-            ++number_of_worlds_generated_;
 
             height_ = y;
             width_ = x;
@@ -95,15 +91,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
             }
 
             my_internet_.start();
-        } else {
-            System.err.println("Number of world allowed: "
-                    + MAX_NUMBER_OF_WORLDS);
-            System.err.println("Number of worlds already in existence: "
-                    + number_of_worlds_generated_);
-            System.err.println("Please don't make more than "
-                    + MAX_NUMBER_OF_WORLDS + " worlds.");
-            System.exit(-4);
-        }
     }
 
     //</editor-fold>
@@ -621,7 +608,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
      */
     @Override
     public int loadGame(String foo) {
-        //RunGame.loadGame(foo); //TODO FIX
+        RunGame.loadGame(foo);
         return 0;
     }
         //</editor-fold>

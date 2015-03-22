@@ -6,8 +6,8 @@
 package src.model.constructs;
 
 import java.util.Random;
-import src.Effect;
 
+import src.Effect;
 import src.SkillEnum;
 import src.io.view.display.Display;
 import src.model.constructs.items.Bow;
@@ -30,6 +30,8 @@ public final class Sneak extends Occupation {
 
     private Bow bow_ = null;
 
+    private int cloak_timer = 0; //Timer for cloak skill.
+    
     @Override
     public void changeStats(EntityStatsPack current_stats) {
         // for sneak
@@ -170,7 +172,8 @@ public final class Sneak extends Occupation {
                                 ++numOfTrapsDetected;
                                 System.out.println("Trap detected on: " + i
                                         + ", " + j + ".");
-                                trap.removeMyselfFromMap();
+                                trap.onWalkOver();
+                                //trap.removeMyselfFromMap();
                             }
                         }
                     }
@@ -179,6 +182,7 @@ public final class Sneak extends Occupation {
                         numOfTraps + " traps near you, " + numOfTrapsDetected + " removed.");
             } else if (number == 3) {
                 // become invisible [or visible]
+            	cloak_timer = 0;
                 boolean is_visible = getEntity().isVisible();
                 getEntity().setViewable(!is_visible);
             } else if (number == 4) {
@@ -191,7 +195,7 @@ public final class Sneak extends Occupation {
                         effectAreaWithinLine(getSkill_2_() + 100, getSkill_2_(), Effect.HURT);
             }
         } else {
-            System.out.println("Sneak out of mana");
+            Display.getDisplay().setMessage("You are out of mana");
         }
         return 0;
     }
@@ -200,4 +204,26 @@ public final class Sneak extends Occupation {
     public String toString() {
         return "Sneak";
     }
+    
+    @Override
+    public void takeTurn(){
+    	
+    	if(!getEntity().isVisible())
+    		++cloak_timer;
+    	if(cloak_timer > 5){
+    		cloak_timer = 0;
+    		getEntity().setViewable(true);
+    	}
+    }
+
+	@Override
+	public Sneak switchToNextSubOccupation() {
+		//A sneak has no sub occupations atm.
+		return this;
+	}
+
+	@Override
+	public char getOccupationRepresentation() {
+		return '☭';
+	}
 }

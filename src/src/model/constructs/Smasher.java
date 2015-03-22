@@ -20,7 +20,6 @@ public final class Smasher extends Occupation {
     public Smasher(Entity e) {
         super(e);
     }
-
     public Smasher(Occupation o) {
         super(o);
     }
@@ -201,4 +200,19 @@ public final class Smasher extends Occupation {
     public String toString() {
         return "Smasher";
     }
+    
+    @Override
+    public void takeTurn(){
+    	
+    }
+
+	@Override
+	public Smasher switchToNextSubOccupation() {
+		//A smasher has no sub occupations atm.
+		return this;
+	}
+	@Override
+	public char getOccupationRepresentation() {
+		return '⚔';
+	}
 }

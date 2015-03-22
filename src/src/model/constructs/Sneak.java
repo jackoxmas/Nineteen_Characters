@@ -172,7 +172,8 @@ public final class Sneak extends Occupation {
                                 ++numOfTrapsDetected;
                                 System.out.println("Trap detected on: " + i
                                         + ", " + j + ".");
-                                trap.removeMyselfFromMap();
+                                trap.onWalkOver();
+                                //trap.removeMyselfFromMap();
                             }
                         }
                     }
@@ -194,7 +195,7 @@ public final class Sneak extends Occupation {
                         effectAreaWithinLine(getSkill_2_() + 100, getSkill_2_(), Effect.HURT);
             }
         } else {
-            System.out.println("Sneak out of mana");
+            Display.getDisplay().setMessage("You are out of mana");
         }
         return 0;
     }

@@ -129,7 +129,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         char[][] view = makeView(x, y, width, height);
         Color[][] colors = makeColors(x, y, width, height);
         return new IO_Bundle(null, null, null, null, view, colors, null, null, null, 0, 0, 0, 0, null, null, null, 0, true);
-        //Mapeditor has no game over condition, you are always alive. 
+        //Mapeditor has no game over condition, you are always alive.
     }
 
     public MapTile[][] getMapGrid() {
@@ -259,17 +259,17 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
      * @param t - Terrain
      * @param x - x position for tile
      * @param y - y position for tile
-     * @return error code, 0 for success
+     * @return error code, 0 for success, -1 if terrain is null.
      */
     public int addTerrain(Terrain t, int x, int y) {
-        t.setMapRelation(new MapTerrain_Relation(this, t));
-        int error_code = this.map_grid_[y][x].addTerrain(t);
-        if (error_code == 0) {
+        if (t != null) {
+            t.setMapRelation(new MapTerrain_Relation(this, t));
+            this.map_grid_[y][x].addTerrain(t);
             t.getMapRelation().setMapTile(this.map_grid_[y][x]);
+            return 0;
         } else {
-            t.setMapRelation(null);
+            return -1;
         }
-        return error_code;
     }
 
     public void grusomelyKillTheMapThread() {

@@ -6,13 +6,13 @@ import src.Effect;
 import src.HardCodedStrings;
 import src.io.view.display.Display;
 
-public class SummonerRookie extends Summoner {
+public class SummonerUltimate extends Summoner {
 
-    public SummonerRookie(Entity e) {
+    public SummonerUltimate(Entity e) {
         super(e);
     }
 
-    public SummonerRookie(Occupation o) {
+    public SummonerUltimate(Occupation o) {
         super(o);
     }
 	
@@ -21,11 +21,11 @@ public class SummonerRookie extends Summoner {
         super.getSkillNameFromNumber(skill_number); // checks input
         switch (skill_number) {
             case 1:
-                return "Confuse";
+                return "Fear";
             case 2:
-                return "Heal";
+                return "Tank";
             case 3:
-                return "Burn";
+                return "Explode";
             case 4:
                 return "Staff";
             default:
@@ -41,37 +41,38 @@ public class SummonerRookie extends Summoner {
             System.err.println("Error in Summoner.performOccupationSkill()");
             System.exit(-109);
         }
-        final int cost = 1;
+        final int cost = 5;
         System.out.println("Starting skill 2: DEBUG");
         int has_run_out_of_mana = getEntity().getStatsPack().deductCurrentManaBy(cost);
         Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection();
         if (has_run_out_of_mana == 0) {
             if (number == 1) {
-                // enchantment, target hurts itself [damage caster on fail]
+                // enchantment, puts target to sleep (stops them from chasing until more damage is taken)
                 Random randomGenerator = new Random();
                 double failed = randomGenerator.nextDouble();
-                if (failed + getSkill_1_()*.1 < .5) {
-                    super.getEntity().receiveAttack(getSkill_1_(), null); // hurt myself by skill1
-                    Display.getDisplay().setMessage(HardCodedStrings.hurtYourself);
-                } else {
-            		System.out.println("I did this thing");
-            		System.out.println(target);
+                if (failed + getSkill_1_()*.1 > .6) {
                     if (target != null) {
-                		System.out.println("I did this thing 2");
-                        target.receiveAttack(target.getStatsPack().getOffensive_rating_(), super.getEntity());
-                        Display.getDisplay().setMessage("You casted " + getSkillNameFromNumber(1) + ".");
+                    	((Monster)target).causeFear(super.getEntity(), 3 + getSkill_1_());
                     } else {
                         // get your mana back
                         getEntity().getStatsPack().increaseCurrentManaBy(cost);
                     }
+                } else {
+                	target.receiveAttack(0, super.getEntity());
+                    Display.getDisplay().setMessage(HardCodedStrings.failed + getSkillNameFromNumber(1) + ".");
                 }
             } else if (number == 2) {
                 // boon - magic that heals
                 Random randomGenerator = new Random();
                 double failed = randomGenerator.nextDouble();
-                if (failed + getSkill_2_()*.1 > .3) {
-                	super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(2 + getSkill_2_(), 4 + getSkill_2_() * 2, Effect.HEAL);
-                    Display.getDisplay().setMessage("You casted " + getSkillNameFromNumber(2) + ".");
+                if (failed + getSkill_2_()*.1 > .4) {
+                	EntityStatsPack boon_stats = new EntityStatsPack();
+                	for (int i = 0; i < 4 + getSkill_2_()*2; i++)
+                		boon_stats.increaseDefenseLevelByOne();
+                	for (int i = 0; i < 4 + getSkill_2_()*2; i++)
+                		boon_stats.increaseStrengthLevelByOne();
+                	boon_stats_ = boon_stats;
+                	boon_timer_ = 2 + getSkill_2_();
                 } else {
                     Display.getDisplay().setMessage(HardCodedStrings.failed + getSkillNameFromNumber(2) + ".");
                 }
@@ -80,8 +81,8 @@ public class SummonerRookie extends Summoner {
                 System.out.println("About to call Bane");
                 Random randomGenerator = new Random();
                 double failed = randomGenerator.nextDouble();
-                if (failed + getSkill_3_()*.1 > .3) {
-                	super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinArc(getSkill_3_() + 3, 2 + 2 * getSkill_3_(), Effect.HURT);
+                if (failed + getSkill_3_()*.1 > .6) {
+                	super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_3_() + 4, 6 + 6 * getSkill_3_(), Effect.HURT);
                 } else {
                     Display.getDisplay().setMessage(HardCodedStrings.failed + getSkillNameFromNumber(3) + ".");
                 }
@@ -107,7 +108,7 @@ public class SummonerRookie extends Summoner {
 
 	@Override
 	public Summoner switchToNextSubOccupation() {
-		return new SummonerChampion(this);
+		return new SummonerRookie(this);
 	}
 	
 }

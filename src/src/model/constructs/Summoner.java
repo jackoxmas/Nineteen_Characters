@@ -18,6 +18,9 @@ import src.model.constructs.items.TwoHandedWeapon;
  */
 public abstract class Summoner extends Occupation {
 
+	protected int boon_timer_ = 0; //Timer for temporary boon skill.
+    protected EntityStatsPack boon_stats_ = null;
+    
     public Summoner(Entity e) {
         super(e);
     }
@@ -90,14 +93,18 @@ public abstract class Summoner extends Occupation {
     
     @Override
     public void takeTurn(){
-    	
+    	if (boon_stats_ != null) {
+	    	if (boon_timer_ > 0) {
+	    		boon_timer_--;
+	    	} else {
+	    		super.getEntity().getStatsPack().reduceBy(boon_stats_);
+	    		boon_stats_ = null;
+	    	}
+    	}
     }
 
 	@Override
-	public Summoner switchToNextSubOccupation() {
-		//Ovverride this and make it abstract when we make summoner abstract!
-		return (this);
-	}
+	public abstract Summoner switchToNextSubOccupation();
 
 	@Override
 	public char getOccupationRepresentation() {

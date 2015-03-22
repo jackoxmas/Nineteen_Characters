@@ -973,9 +973,9 @@ abstract public class Entity extends DrawableThing {
     public int becomeSummoner() {
         this.unEquipEverything(); // You cannot change classes if you hold weapons of another class
         if (occupation_ != null) {
-            occupation_ = new Summoner(this.occupation_);
+            occupation_ = new SummonerRookie(this.occupation_);
         } else {
-            occupation_ = new Summoner(this);
+            occupation_ = new SummonerRookie(this);
         }
         return 0;
     }

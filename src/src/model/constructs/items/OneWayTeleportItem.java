@@ -12,6 +12,8 @@ import src.model.constructs.Entity;
  * @author JohnReedLOL
  */
 public class OneWayTeleportItem extends Item {
+
+    public int getID() { return 10; }
     
     int x_destination_;
     int y_destination_;

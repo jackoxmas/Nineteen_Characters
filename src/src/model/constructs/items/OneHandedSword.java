@@ -15,6 +15,8 @@ import src.model.constructs.DrawableThingStatsPack;
  */
 public class OneHandedSword extends OneHandedWeapon implements Serializable {
 
+    public int getID() { return 9; }
+
     public OneHandedSword(String name, char representation) {
         super(name, representation);
         this.getStatsPack().addOn(new DrawableThingStatsPack(5,5));

@@ -16,6 +16,8 @@ import src.model.constructs.Entity;
  */
 public class TemporaryObstacleItem extends ObstacleItem {
 
+    public int getID() { return 12; }
+
     private final ObstacleRemovingItem keyItem_;
 
     public TemporaryObstacleItem(String name, char representation, ObstacleRemovingItem keyItem) {

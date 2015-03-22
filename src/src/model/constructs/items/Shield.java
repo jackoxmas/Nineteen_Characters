@@ -16,6 +16,8 @@ import src.model.constructs.Entity;
  */
 public class Shield extends EquipableItem implements SecondaryHandHoldable, Serializable {
 
+    public int getID() { return 8; }
+
     public Shield(String name, char representation) {
         super(name, representation);
     }

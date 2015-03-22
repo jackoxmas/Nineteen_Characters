@@ -59,53 +59,7 @@ public class SavedGame {
     public static final String XML_MAP_MAPGRID_HEIGHT = "height";
     public static final String XML_MAP_TIME = "time";
 
-    /**
-     * Searches the given directory (or current dir, if the param is null) for the current files and returns a string
-     * that will be unique to the files in that directory.
-     * @param directory The directory to search for files in or NULL - to search the current directory
-     * @param extension The file extension to filter for
-     * @return A unique file name for the given directory or NULL, if an invalid directory was given
-     */
-    private static String autoGen (String directory, String extension) {
-        if (directory == null || directory.length() == 0)
-            directory = System.getProperty("user.dir"); // ask the JVM for the current dir
-
-        RunGame.dbgOut("New file requested for dir: " + directory, 3);
-        File dir = new File(directory);
-        if (!dir.isDirectory() || !dir.exists()) {
-            RunGame.errOut("Requested directory path is invalid or does not exist");
-            return null;
-        }
-
-        String date = SAVE_DATE_FORMAT.format(new Date()); // get the current date string
-
-        // Search the current directory for existing files and keep an iterator to append the file name with a unique
-        // ID for this day.
-        int iterator = 1;
-        try {
-            File[] files = dir.listFiles();
-            String buf_string;
-
-            int buf_iter;
-            for (File f : files) { // Search files in directory
-                if (f.getName().endsWith(extension)) {
-                    buf_string = f.getName(); // temporarily store the filename
-                    if(!buf_string.startsWith(date))
-                        continue; // if the file isn't from this date, ignore it
-                    buf_string = buf_string.substring(buf_string.lastIndexOf('_') + 1, buf_string.lastIndexOf(".")); // otherwise, get the ID
-                    buf_iter = Integer.parseInt(buf_string);
-                    if (buf_iter >= iterator) iterator = buf_iter + 1; // ensure that the iterator is always ahead by 1
-                }
-            }
-        } catch (Exception e) {
-            RunGame.errOut(e, true);
-        }
-        // iterator is now the correct unique ID
-        // ready to construct path
-        String ff = date + SAVE_ITERATOR_FLAG + iterator + extension;
-        RunGame.dbgOut("Returning autogen: " + ff, 4);
-        return ff;
-    }
+    //<editor-fold desc="PUBLIC METHODS" defaultstate="collapsed">
 
     public static src.model.Map loadGame(String filepath) {//UserController controller) {
         try {
@@ -331,6 +285,58 @@ public class SavedGame {
         return 0; // Return FAILURE
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="PRIVATE METHODS" defaultstate="collapsed">
+
+    /**
+     * Searches the given directory (or current dir, if the param is null) for the current files and returns a string
+     * that will be unique to the files in that directory.
+     * @param directory The directory to search for files in or NULL - to search the current directory
+     * @param extension The file extension to filter for
+     * @return A unique file name for the given directory or NULL, if an invalid directory was given
+     */
+    private static String autoGen (String directory, String extension) {
+        if (directory == null || directory.length() == 0)
+            directory = System.getProperty("user.dir"); // ask the JVM for the current dir
+
+        RunGame.dbgOut("New file requested for dir: " + directory, 3);
+        File dir = new File(directory);
+        if (!dir.isDirectory() || !dir.exists()) {
+            RunGame.errOut("Requested directory path is invalid or does not exist");
+            return null;
+        }
+
+        String date = SAVE_DATE_FORMAT.format(new Date()); // get the current date string
+
+        // Search the current directory for existing files and keep an iterator to append the file name with a unique
+        // ID for this day.
+        int iterator = 1;
+        try {
+            File[] files = dir.listFiles();
+            String buf_string;
+
+            int buf_iter;
+            for (File f : files) { // Search files in directory
+                if (f.getName().endsWith(extension)) {
+                    buf_string = f.getName(); // temporarily store the filename
+                    if(!buf_string.startsWith(date))
+                        continue; // if the file isn't from this date, ignore it
+                    buf_string = buf_string.substring(buf_string.lastIndexOf('_') + 1, buf_string.lastIndexOf(".")); // otherwise, get the ID
+                    buf_iter = Integer.parseInt(buf_string);
+                    if (buf_iter >= iterator) iterator = buf_iter + 1; // ensure that the iterator is always ahead by 1
+                }
+            }
+        } catch (Exception e) {
+            RunGame.errOut(e, true);
+        }
+        // iterator is now the correct unique ID
+        // ready to construct path
+        String ff = date + SAVE_ITERATOR_FLAG + iterator + extension;
+        RunGame.dbgOut("Returning autogen: " + ff, 4);
+        return ff;
+    }
+
     private static boolean validateDataVersion(Element root) {
         // Validate save data version
         NodeList ns_result = root.getElementsByTagName("version"); // ns_result used for node search results
@@ -396,7 +402,9 @@ public class SavedGame {
         return ret_file;
     }
 
-    public static Map xml_readMap(Document doc, Element e_map) {
+    //<editor-fold desc="XML WRITING" defaultstate="collapsed">
+
+    private static Map xml_readMap(Document doc, Element e_map) {
 
         Element e_mapgrid = (Element) e_map.getElementsByTagName(SavedGame.XML_MAP_MAPGRID).item(0);
         Integer map_x = Integer.parseInt(e_mapgrid.getAttributes().getNamedItem(SavedGame.XML_MAP_MAPGRID_WIDTH).getNodeValue());
@@ -416,7 +424,7 @@ public class SavedGame {
      * @return 0 = success
      * @author Alex Stewart
      */
-    public static int xml_writeMap(Document doc, Element e_map, src.model.Map map) {
+    private static int xml_writeMap(Document doc, Element e_map, src.model.Map map) {
         // MAP::TIME)
         Element e_time = doc.createElement(SavedGame.XML_MAP_TIME);
         e_map.appendChild(doc.createTextNode(Integer.toString(map.getTime())));
@@ -718,7 +726,23 @@ public class SavedGame {
     }
     /**
      * MAGIC NUMBERS:
-     * 0     Reserved
-     *
+     * 0    Reserved
+     * 1    Terrain
+     * 2    Bow
+     * 3    Invisibility Serum
+     * 4    Knights Serum
+     * 5    Two Handed Sword
+     * 6    Trap
+     * 7    Staff
+     * 8    Shield
+     * 9    One Handed Sword
+     * 10   One Way Teleport Item
+     * 11   One Shot Area Effect Item
+     * 12   Temporary Obstacle Item
+     * 13   Obstacle Removing Item
+     * 14   Permanent Obstacle Item
      */
+
+    //</editor-fold>
+    //</editor-fold>
 }

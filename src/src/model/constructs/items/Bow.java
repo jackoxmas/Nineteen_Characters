@@ -12,6 +12,8 @@ import java.io.Serializable;
  * @author JohnReedLOL
  */
 public class Bow extends TwoHandedWeapon implements Serializable {
+    public int getID() { return 2; }
+
     public Bow(String name, char representation) {
         super(name, representation);
     }

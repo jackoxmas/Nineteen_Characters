@@ -14,6 +14,8 @@ import src.Effect;
  */
 public class OneShotAreaEffectItem extends Item {
 
+    public int getID() { return 11; }
+
     private Effect effect_;
 
     private boolean hasBeenActivated = false;

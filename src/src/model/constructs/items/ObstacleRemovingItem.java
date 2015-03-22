@@ -11,6 +11,8 @@ package src.model.constructs.items;
  */
 public class ObstacleRemovingItem extends PickupableItem {
 
+    public int getID() { return 13; }
+
     public ObstacleRemovingItem(String name, char representation) {
         super(name, representation);
     }

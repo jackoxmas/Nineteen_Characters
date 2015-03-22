@@ -15,6 +15,8 @@ import src.model.constructs.DrawableThingStatsPack;
  */
 public class TwoHandedSword extends TwoHandedWeapon implements PrimaryHandHoldable, SecondaryHandHoldable, Serializable {
 
+    public int getID() { return 5; }
+
     public TwoHandedSword(String name, char representation) {
         super(name, representation);
         this.getStatsPack().addOn(new DrawableThingStatsPack(10,5));

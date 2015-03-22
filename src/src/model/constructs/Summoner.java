@@ -159,4 +159,15 @@ public final class Summoner extends Occupation {
     public void takeTurn(){
     	
     }
+
+	@Override
+	public Summoner switchToNextSubOccupation() {
+		//Ovverride this and make it abstract when we make summoner abstract!
+		return (this);
+	}
+
+	@Override
+	public char getOccupationRepresentation() {
+		return '☃';
+	}
 }

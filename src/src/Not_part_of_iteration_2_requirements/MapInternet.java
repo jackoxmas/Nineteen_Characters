@@ -96,6 +96,7 @@ public class MapInternet extends Thread {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
 
             recieving_socket.receive(packet);
+            //System.out.println("Map received a packet");
                 //RunGame.dbgOut("The map recieved a packet in Map.GetMapInputFromUsers.run() from address: " + packet.getAddress().toString(), 6);
 
             // "udp packet recieved in GetMapInputFromUsers
@@ -142,119 +143,119 @@ public class MapInternet extends Thread {
                 // entities dies and is removed from the map here
             }
             Packet_Sender sender = users.get(unique_id);
-
-            // start the actual function
-            Entity to_recieve_command;
-            if (my_owner_.hasEntity(username)) {
-                to_recieve_command = my_owner_.getEntityByName(username);
-            } else {
-                System.out.println("Entity to command is no longer in the entity list.");
-                to_recieve_command = null;
-            }
-            sendToClient(to_recieve_command, command, width_from_center, height_from_center, optional_text, sender);
+            sendToClient(username, command, width_from_center, height_from_center, optional_text, sender);
         } catch (IOException e) {
             e.printStackTrace();
             RunGame.errOut("Connection is closed");
         }
     }
 
-    private void sendToClient(Entity to_recieve_command, Key_Commands command,
-            int width_from_center, int height_from_center, String optional_text, Packet_Sender sender) {
+    private void sendToClient(String username, Key_Commands command,
+            int width_from_center, int height_from_center, String text, Packet_Sender sender) {
+        Entity to_recieve_command = null;
+        if (my_owner_.getEntityList().containsKey(username)) {
+            to_recieve_command = my_owner_.getEntityList().get(username);
+        } else {
+            to_recieve_command = null;
+            System.err.println("The avatar of entity you are trying to reach does not exist.");
+        }
         ArrayList<String> strings_for_IO_Bundle = null;
         if (to_recieve_command != null) {
             if (to_recieve_command.getMapRelation() == null) {
-                RunGame.errOut(to_recieve_command.name_ + " has a null relation with this map. ");
+                System.err.println(to_recieve_command.name_ + " has a null relation with this map. ");
+                IO_Bundle to_return = null;
+                sender.setBundleAvatarAndNotify(to_recieve_command, to_return);
                 return;
             }
-            if (command == Key_Commands.STANDING_STILL) {
-                strings_for_IO_Bundle = null;
-            } else if (to_recieve_command.hasLivesLeft() == true && command != null) {
-                strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, optional_text);
-            } else {
-                strings_for_IO_Bundle = null;
-            }
-            ArrayList<Character> compressed_characters = null;
-            ArrayList<Short> character_frequencies = null;
-
-            ArrayList<Color> compressed_colors = null;
-            ArrayList<Short> color_frequencies = null;
-
-            char[][] view = null;
-            Color[][] colors = null;
-            if (to_recieve_command.hasLivesLeft() && command != null) {
-
-                if (!is_using_compression) {
-                    view = my_owner_.makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
-                            to_recieve_command.getMapRelation().getMyYCoordinate(), width_from_center, height_from_center);
-
-                    colors = my_owner_.makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
+            if (command != null) {
+                if (command == Key_Commands.STANDING_STILL) {
+                    strings_for_IO_Bundle = null;
+                } else if (to_recieve_command.hasLivesLeft() == true) {
+                    strings_for_IO_Bundle = to_recieve_command.acceptKeyCommand(command, text);
+                } else {
+                    strings_for_IO_Bundle = null;
+                }
+                if (to_recieve_command.hasLivesLeft() == true) {
+                    char[][] view = my_owner_.makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);
-                } else {
-                    compressed_characters = new ArrayList<>();
-                    character_frequencies = new ArrayList<>();
-                    compressed_colors = new ArrayList<>();
-                    color_frequencies = new ArrayList<>();
-                    my_owner_.runLengthEncodeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                    Color[][] colors = my_owner_.makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
-                            width_from_center, height_from_center, compressed_colors, color_frequencies);
-
-                    // compressed_characters and character_frequencies are pass by referance outputs
-                    my_owner_.runLengthEncodeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
-                            to_recieve_command.getMapRelation().getMyYCoordinate(),
-                            width_from_center, height_from_center, compressed_characters, character_frequencies);
-
-                    if (compressed_characters == null || character_frequencies == null || compressed_characters.isEmpty()) {
-                        RunGame.errOut("Bad - compression produced no encodings");
-                        System.exit(-4);
+                            width_from_center, height_from_center);
+                    if (!Key_Commands.DO_ABSOLUTELY_NOTHING.equals(command)) {
+                        my_owner_.makeTakeTurns();//Make all the maptiles take a turn.
                     }
+                    IO_Bundle return_package = new IO_Bundle(
+                            null, null, null, null,
+                            view,
+                            colors,
+                            to_recieve_command.getInventory(),
+                            // Don't for get left and right hand items
+                            to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
+                            to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
+                            to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
+                            to_recieve_command.getPrimaryEquipped(),
+                            to_recieve_command.getSecondaryEquipped(),
+                            strings_for_IO_Bundle,
+                            to_recieve_command.getNumGoldCoins(),
+                            to_recieve_command.hasLivesLeft()
+                    );
+                    sender.setBundleAvatarAndNotify(to_recieve_command, return_package);
+                    //System.out.println("Map sent back a packet with a view and stats");
+                    return;
+                } else {
+                    char[][] view = null;
+                    Color[][] colors = null;
+                    IO_Bundle return_package = new IO_Bundle(
+                            null, null, null, null,
+                            view,
+                            colors,
+                            null,
+                            // Don't for get left and right hand items
+                            null,
+                            null,
+                            -1,
+                            -1,
+                            -1,
+                            -1,
+                            null,
+                            null,
+                            null,
+                            -1,
+                            to_recieve_command.hasLivesLeft()
+                    );
+                    sender.setBundleAvatarAndNotify(to_recieve_command, return_package);
+                    System.out.println("Map sent back a packet with just an indication of game over.");
+                    return;
                 }
+            } else if (command == null) {
+                IO_Bundle return_package = new IO_Bundle(null, null, null, null, null, null, to_recieve_command.getInventory(),
+                        // Don't for get left and right hand items
+                        to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
+                        to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
+                        to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
+                        to_recieve_command.getPrimaryEquipped(),
+                        to_recieve_command.getSecondaryEquipped(),
+                        strings_for_IO_Bundle,
+                        to_recieve_command.getNumGoldCoins(),
+                        to_recieve_command.hasLivesLeft()
+                );
+                sender.setBundleAvatarAndNotify(to_recieve_command, return_package);
+                System.out.println("Map sent back a packet with just the stats");
+                return;
+            } else {
+                System.err.println("avatar + " + username + " is invalid. \n"
+                        + "Please check username and make sure he is on the map.");
+                sender.setBundleAvatarAndNotify(to_recieve_command, null);
+                System.out.println("Map sent back a null packet");
+                return;
             }
-
-            IO_Bundle return_package = new IO_Bundle(
-                    compressed_characters,
-                    character_frequencies,
-                    compressed_colors,
-                    color_frequencies,
-                    view,
-                    colors,
-                    to_recieve_command.getInventory(),
-                    // Don't for get left and right hand items
-                    to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
-                    to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
-                    to_recieve_command.getBargain_(), to_recieve_command.getObservation_(),
-                    to_recieve_command.getPrimaryEquipped(),
-                    to_recieve_command.getSecondaryEquipped(),
-                    strings_for_IO_Bundle,
-                    to_recieve_command.getNumGoldCoins(),
-                    to_recieve_command.hasLivesLeft()
-            );
-            sender.setBundleAvatarAndInterrupt(to_recieve_command, return_package);
+        } else {
+            System.out.println(username + " cannot be found on this map.");
+            sender.setBundleAvatarAndNotify(to_recieve_command, null);
+            System.out.println("Map sent back a null packet");
             return;
         }
-        // Return the null command
-        //sender.setBundleAvatarAndInterrupt(to_recieve_command, null);
-        //return;
-        IO_Bundle return_package = new IO_Bundle(
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    // Don't for get left and right hand items
-                    null, null,
-                    0,0,
-                    0,0,
-                    null,
-                    null,
-                    null,
-                    0,
-                    false
-            );
-            sender.setBundleAvatarAndInterrupt(to_recieve_command, return_package);
-            return;
     }
 
     private class Packet_Sender extends Thread {
@@ -265,6 +266,7 @@ public class MapInternet extends Thread {
         private IO_Bundle bundle_to_send_ = null;
         private byte[] my_bytes_ = null;
         private Entity last_controlled = null;
+        volatile boolean is_notified = false;
 
         public Entity seeLastControlled() {
             return last_controlled;
@@ -285,10 +287,10 @@ public class MapInternet extends Thread {
         }
 
         //private volatile boolean is_notified = false;
-        public synchronized void setBundleAvatarAndInterrupt(Entity e, IO_Bundle to_set) {
+        public synchronized void setBundleAvatarAndNotify(Entity e, IO_Bundle to_set) {
             bundle_to_send_ = to_set;
             last_controlled = e;
-            //is_notified = true;
+            is_notified = true;
             this.notify();
         }
 
@@ -306,12 +308,17 @@ public class MapInternet extends Thread {
             }
             while (!isInterrupted()) {
                 try {
+                    if(! is_notified) {
                     wait();
+                    } else {
+                        // keep going
+                    }
+                    is_notified = false;
                 } catch (InterruptedException e) {
-                    //is_notified = false;
+                    return;
                 }
                 byte[] to_send = ControllerInternet.bundleToBytes(bundle_to_send_);
-                if (frame_number % 32 == 0) {
+                if (frame_number % 256 == 0) {
                     if (is_using_compression) {
                         System.out.print("With compression, ");
                     } else {

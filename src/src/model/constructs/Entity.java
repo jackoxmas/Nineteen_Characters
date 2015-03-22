@@ -438,16 +438,28 @@ abstract public class Entity extends DrawableThing {
                 mar.dropItem();
                 break;
             case BECOME_SMASHER: // switch to Smasher
-                this.setRepresentation('⚔');
                 this.becomeSmasher();
+                if(occupation_!=null){
+                	this.setRepresentation(occupation_.getOccupationRepresentation());
+                }
                 break;
+            case SWAP_SUB_OCCUPATION://Switch to next in the sub occupations
+            	this.swapSubClass();
+                if(occupation_!=null){
+                	this.setRepresentation(occupation_.getOccupationRepresentation());
+                }
+            	break;
             case BECOME_SUMMONER: // switch to Summoner
-                this.setRepresentation('☃');
                 this.becomeSummoner();
+                if(occupation_!=null){
+                	this.setRepresentation(occupation_.getOccupationRepresentation());
+                }
                 break;
             case BECOME_SNEAK: // switch to Sneaker
-                this.setRepresentation('☭');
                 this.becomeSneak();
+                if(occupation_!=null){
+                	this.setRepresentation(occupation_.getOccupationRepresentation());
+                }
                 break;
             case BIND_WOUNDS:
                 this.bindWounds();
@@ -940,6 +952,21 @@ abstract public class Entity extends DrawableThing {
             occupation_ = new Smasher(this);
         }
         return 0;
+    }
+    /**
+     * Set the entity occupation to it's next sub occupation. Does not reset stats, nor unequip items!!
+     * If occupation is null then does nothing
+     * Returns -1 if failed to switch due to null occupation, else returns 0.
+     * @return -1 or 0
+     * 
+     */
+    public int swapSubClass(){
+    	if(occupation_!=null){
+    		occupation_ = occupation_.switchToNextSubOccupation();
+    		return 0;
+    	}
+    	return -1;
+    	
     }
 
     /**

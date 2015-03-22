@@ -172,7 +172,8 @@ public final class Sneak extends Occupation {
                                 ++numOfTrapsDetected;
                                 System.out.println("Trap detected on: " + i
                                         + ", " + j + ".");
-                                trap.removeMyselfFromMap();
+                                trap.onWalkOver();
+                                //trap.removeMyselfFromMap();
                             }
                         }
                     }
@@ -194,7 +195,7 @@ public final class Sneak extends Occupation {
                         effectAreaWithinLine(getSkill_2_() + 100, getSkill_2_(), Effect.HURT);
             }
         } else {
-            System.out.println("Sneak out of mana");
+            Display.getDisplay().setMessage("You are out of mana");
         }
         return 0;
     }
@@ -206,8 +207,7 @@ public final class Sneak extends Occupation {
     
     @Override
     public void takeTurn(){
-    	//
-    	System.out.println("cloak_timer: " + cloak_timer);
+    	
     	if(!getEntity().isVisible())
     		++cloak_timer;
     	if(cloak_timer > 5){
@@ -215,4 +215,15 @@ public final class Sneak extends Occupation {
     		getEntity().setViewable(true);
     	}
     }
+
+	@Override
+	public Sneak switchToNextSubOccupation() {
+		//A sneak has no sub occupations atm.
+		return this;
+	}
+
+	@Override
+	public char getOccupationRepresentation() {
+		return '☭';
+	}
 }

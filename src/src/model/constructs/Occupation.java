@@ -19,7 +19,11 @@ import src.model.constructs.items.TwoHandedWeapon;
  * @author JohnReedLOL
  */
 public abstract class Occupation implements Serializable {
-
+	/**
+	 * The character that represents this occupation.
+	 * @return
+	 */
+	public abstract char getOccupationRepresentation();
     private final transient Entity occupation_holder_;
 
     protected Entity getEntity() {
@@ -41,7 +45,13 @@ public abstract class Occupation implements Serializable {
         skill_3_level_ = old.getSkill_3_();
         skill_4_level_ = old.getSkill_4_();
     }
-
+    /**
+     * Switch to the next sub occupation.
+     * For summoner, does moves to novice, champion, ultimate
+     * The other occupations do not have subclasses atm. 
+     * @return
+     */
+    public abstract Occupation switchToNextSubOccupation();
     //private int[] skills_levels_ = {1, 1, 1, 1};
     private int skill_1_level_ = 1;
     private int skill_2_level_ = 1;

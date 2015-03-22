@@ -96,7 +96,7 @@ public class MapInternet extends Thread {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
 
             recieving_socket.receive(packet);
-            System.out.println("Map received a packet");
+            //System.out.println("Map received a packet");
                 //RunGame.dbgOut("The map recieved a packet in Map.GetMapInputFromUsers.run() from address: " + packet.getAddress().toString(), 6);
 
             // "udp packet recieved in GetMapInputFromUsers
@@ -201,10 +201,7 @@ public class MapInternet extends Thread {
                             to_recieve_command.hasLivesLeft()
                     );
                     sender.setBundleAvatarAndNotify(to_recieve_command, return_package);
-                    System.out.println("Map sent back a packet with a view and stats");
-                    if(sender.isAlive() ) {
-                        System.out.println("Sender is alive");
-                    }
+                    //System.out.println("Map sent back a packet with a view and stats");
                     return;
                 } else {
                     char[][] view = null;

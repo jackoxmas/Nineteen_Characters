@@ -162,8 +162,6 @@ public class RunGame {
         map_.addItem(kill, 9, 2);
         map_.addItem(level, 12, 2);
 
-        Villager villager = new Villager("Tom", 'V');
-        map_.addAsEntity(villager, 0, 5);
 
         //Add some traps
         Trap trap1 = new Trap("trap1", 'b', Effect.HURT, 2);

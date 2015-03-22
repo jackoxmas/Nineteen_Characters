@@ -373,6 +373,7 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
 
         equipment_and_inventory_jTabbedPane.addTab("Equip.", equip_text_area_jScrollPane);
 
+        outgoing_text_jTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         outgoing_text_jTextField.setText("Type commands here.");
         outgoing_text_jTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -382,8 +383,9 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
 
         incoming_text_jTextArea.setEditable(false);
         incoming_text_jTextArea.setColumns(20);
+        incoming_text_jTextArea.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         incoming_text_jTextArea.setRows(5);
-        incoming_text_jTextArea.setText("Click here to select chat-reply options.\nClick on the game window to send commands to it.\nClick on the commands on the right to execute them, or use the key bindings ->\n\n");
+        incoming_text_jTextArea.setText("Click on the commands on the right to execute them.\nEnter \"/help\" below for a list of chatbox commands.\n\n");
         incoming_text_jTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 incoming_text_jTextAreaKeyTyped(evt);
@@ -499,10 +501,10 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
                 .addComponent(regular_and_special_skills_jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(outgoing_chat_text_area_jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 633, Short.MAX_VALUE)
-                    .addComponent(outgoing_text_jTextField))
+                    .addComponent(outgoing_text_jTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
+                    .addComponent(outgoing_chat_text_area_jScrollPane))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(equipment_and_inventory_jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(equipment_and_inventory_jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(

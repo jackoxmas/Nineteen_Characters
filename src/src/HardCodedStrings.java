@@ -26,27 +26,23 @@ public class HardCodedStrings {
 	public final static String trade = "[ Trade ]"; // actually puts the item into your inventory
 
 	//String from the command mini module
-	public final static String fontsizeHelp = "Format /fontsize [number] "+System.lineSeparator()+
-			"Sets the fontsize in the main game screen, chatboxes, and list areas to the given number";
+	public final static String fontsizeHelp = "/fontsize [number] sets the fontsize in the main game screen,"+System.lineSeparator()+
+			"chatboxes, and list areas to the given number";
 	public final static String command_error = "Invalid Command";
-	public final static String help = "Type /controls to list all controls" +System.lineSeparator()+
-			"Type /save filename to save" + System.lineSeparator() +
-			"TYpe /save-controls filename to save the current control layout" + System.lineSeparator()+
-			"Note that both save games will save with a date format if no filename is given" + System.lineSeparator()+
-			"Type /rebind command char to rebind a key" + System.lineSeparator()+
-			"Type /load filename to load a file" + System.lineSeparator()+
-			"Type /load-controls filename to load the current controls" + System.lineSeparator()+
-			"Type /help for this dialog"+System.lineSeparator()+
-			"Type /pwd to print the directory the game will look in" + System.lineSeparator()+
-			"Double click a command in the command box to use it!" + System.lineSeparator()+
-			"Type /bindings to see the key bindings"+
-			"Type in /set-control [entityname] to switch to controlling entitiy." +
-                        "Type in /set-ip [ip-address] to switch to controlling a different ip." +
-                        "Type in /set-compression [on/off] to switch to enable or disable frame compression." +
-			System.lineSeparator() +
-			"If no such entity exists, you will be controlling nothing."+
-			System.lineSeparator()+
-			"Note that attempting to control a non existent entity results in game over"+System.lineSeparator()+
+	public final static String help = "/controls - lists all controls" +System.lineSeparator()+
+			"/save filename  - saves game to a file named filename" + System.lineSeparator() +
+			"/save-controls filename - saves the current control layout" + System.lineSeparator()+
+			"^ Save game commands will use a date/time if no filename is given" + System.lineSeparator()+
+			"/rebind COMMAND_NAME key - rebinds a key to that command" + System.lineSeparator()+
+			"/load filename - loads a file" + System.lineSeparator()+
+			"/load-controls filename - loads the current controls" + System.lineSeparator()+
+			"/pwd - prints the directory that this game will look in" + System.lineSeparator()+
+			"/bindings - display the current key bindings"+System.lineSeparator()+
+			"/set-control entityname - allows you to control another entitiy." +System.lineSeparator()+
+                        "^ If entityname doesn't exist, you will be controlling nothing."+System.lineSeparator()+
+			"^ Setting control to a non existent entity ends the game"+System.lineSeparator()+
+                        "/set-ip ip-address - switches to a different ip address." +System.lineSeparator()+
+                        "/set-compression on/off - enables or disables frame compression." +System.lineSeparator()+
 			fontsizeHelp;
 	public final static String rebindHelp = 
 			"Format is : /rebind CONTROL_NAME key" + System.lineSeparator() +

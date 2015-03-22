@@ -41,7 +41,7 @@ class GameRemapper extends KeyRemapper {
         bind('p', Key_Commands.PICK_UP_ITEM);
         bind('D', Key_Commands.DROP_LAST_ITEM);
         bind('A', Key_Commands.ATTACK);
-        bind('R', Key_Commands.SPEND_SKILLPOINT_ON_BARGAIN);
+        bind('R', Key_Commands.INCREMENT_BARGAIN);
         bind('E', Key_Commands.EQUIP_LAST_ITEM);
         bind('U', Key_Commands.UNEQUIP_EVERYTHING);
         bind('i', Key_Commands.TOGGLE_VIEW);
@@ -49,13 +49,13 @@ class GameRemapper extends KeyRemapper {
         bind('u', Key_Commands.USE_LAST_ITEM);
         bind('T', Key_Commands.GET_INTERACTION_OPTIONS);
         //Spend skillpoints
-        bind('r', Key_Commands.SPEND_SKILLPOINT_ON_BIND);
-        bind('t', Key_Commands.SPEND_SKILLPOINT_ON_BARGAIN);
-        bind('y', Key_Commands.SPEND_SKILLPOINT_ON_OBSERVE);
-        bind('f', Key_Commands.SPEND_SKILLPOINT_ON_SKILL_1);
-        bind('g', Key_Commands.SPEND_SKILLPOINT_ON_SKILL_2);
-        bind('h', Key_Commands.SPEND_SKILLPOINT_ON_SKILL_3);
-        bind('v', Key_Commands.SPEND_SKILLPOINT_ON_SKILL_4);
+        bind('r', Key_Commands.INCREMENT_BIND);
+        bind('t', Key_Commands.INCREMENT_BARGAIN);
+        bind('y', Key_Commands.INCREMENT_OBSERVE);
+        bind('f', Key_Commands.INCREMENT_SKILL_1);
+        bind('g', Key_Commands.INCREMENT_SKILL_2);
+        bind('h', Key_Commands.INCREMENT_SKILL_3);
+        bind('v', Key_Commands.INCREMENT_SKILL_4);
         //Use special abilities
         bind('!', Key_Commands.BIND_WOUNDS);
         bind('@', Key_Commands.BARGAIN_AND_BARTER);

@@ -103,6 +103,7 @@
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
+                <Property name="focusable" type="boolean" value="false"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -126,6 +127,7 @@
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
+                <Property name="focusable" type="boolean" value="false"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -205,6 +207,7 @@
             <Component class="javax.swing.JButton" name="bind_wounds_jButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Bind Wounds"/>
+                <Property name="focusable" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bind_wounds_jButtonMouseClicked"/>
@@ -213,6 +216,7 @@
             <Component class="javax.swing.JButton" name="observe_jButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Observe"/>
+                <Property name="focusable" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="observe_jButtonMouseClicked"/>
@@ -221,6 +225,7 @@
             <Component class="javax.swing.JButton" name="bargain_barter_jButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Talk / Barter"/>
+                <Property name="focusable" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bargain_barter_jButtonMouseClicked"/>
@@ -272,21 +277,25 @@
             <Component class="javax.swing.JButton" name="occupation_skill_2_jButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Special Skill 2"/>
+                <Property name="focusable" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="occupation_skill_1_jButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Special Skill 1"/>
+                <Property name="focusable" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="occupation_skill_3_jButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Special Skill 3"/>
+                <Property name="focusable" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="occupation_skill_4_jButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Special Skill 4"/>
+                <Property name="focusable" type="boolean" value="false"/>
               </Properties>
             </Component>
           </SubComponents>

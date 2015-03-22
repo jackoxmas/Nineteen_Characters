@@ -62,7 +62,7 @@ public class GameController extends Controller {
         }
 
         private Void sendTextCommandAndUpdate(String foo) {
-            Key_Commands command = Key_Commands.GET_CONVERSATION_CONTINUATION_OPTIONS;
+            Key_Commands command = Key_Commands.GET_CONVERSATION_OPTIONS;
             if (foo.contains(HardCodedStrings.attack)) {
                 command = Key_Commands.ATTACK;
                 updateDisplay(sendCommandToMapWithText(command, ""));
@@ -134,19 +134,22 @@ public class GameController extends Controller {
         }
 
     }
-    private String getListOfCommands(){
-    	StringBuilder commands = new StringBuilder();
-    	for(Entry<Character, Key_Commands> i : this.getRemap().entrySet()){
-    		commands.append(i.getValue().toString() + "  :  " + i.getKey() + System.lineSeparator());
-    	}
-    	
-    	return commands.toString();
+
+    private String getListOfCommands() {
+        StringBuilder commands = new StringBuilder();
+        for (Entry<Character, Key_Commands> i : this.getRemap().entrySet()) {
+            commands.append(i.getValue().toString() + "  :  " + i.getKey() + System.lineSeparator());
+        }
+
+        return commands.toString();
 
     }
+
     @Override
-    public void regenerateCommandsBox(){
-	   Display.getDisplay().setCommandList(getListOfCommands());
+    public void regenerateCommandsBox() {
+        Display.getDisplay().setCommandList(getListOfCommands());
     }
+
     public void GameController_Constructor_Helper(MapUser_Interface mui, String uName) {
         MapUserAble_ = mui;
         Display.getDisplay().setCommandList(getListOfCommands());
@@ -203,17 +206,20 @@ public class GameController extends Controller {
         } else {
             //System.out.println("GameController is not running on the Swing Dispatch Thread input sendCommandToMapWithText [Good]");
         }
-        if (Key_Commands.GET_INTERACTION_OPTIONS.equals(command)) {
+        if (command == null) {
+            return null;
+        }
+        final IO_Bundle to_return = super.getMessenger().sendCommandToMap(command, input);
+
+        if (to_return != null && to_return.strings_for_communication_ != null && 
+                !to_return.strings_for_communication_.isEmpty() && Key_Commands.GET_INTERACTION_OPTIONS.equals(command)) {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     Display.getDisplay().requestOutBoxFocus();
                 }
             });
         }
-        if (command == null) {
-            return null;
-        }
-        final IO_Bundle to_return = super.getMessenger().sendCommandToMap(command, input);
+
         // Make the buttons says the right skill names.
         if (to_return != null && to_return.occupation_ != null && command == Key_Commands.BECOME_SMASHER || command == Key_Commands.BECOME_SUMMONER
                 || command == Key_Commands.BECOME_SNEAK) {
@@ -230,8 +236,8 @@ public class GameController extends Controller {
                 }
             });
         }
-        // Auto focus on chatbox
-
+        // Auto focus on chatbox - confusing to people who bump into entities on accident
+        /*
         if ((to_return != null && to_return.strings_for_communication_ != null && !to_return.strings_for_communication_.isEmpty())
                 && (command == Key_Commands.MOVE_DOWN || command == Key_Commands.MOVE_DOWNLEFT
                 || command == Key_Commands.MOVE_DOWNRIGHT || command == Key_Commands.MOVE_LEFT
@@ -243,7 +249,7 @@ public class GameController extends Controller {
                     Display.getDisplay().requestOutBoxFocus();
                 }
             });
-        }
+        }*/
         return to_return;
     }
 

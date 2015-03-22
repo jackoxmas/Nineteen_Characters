@@ -474,25 +474,25 @@ abstract public class Entity extends DrawableThing {
             case USE_SKILL_4:
                 this.getOccupation().performOccupationSkill(4);
                 break;
-            case SPEND_SKILLPOINT_ON_BIND:
+            case INCREMENT_BIND:
                 this.spendSkillpointOn(SkillEnum.BIND_WOUNDS);
                 break;
-            case SPEND_SKILLPOINT_ON_BARGAIN:
+            case INCREMENT_BARGAIN:
                 this.spendSkillpointOn(SkillEnum.BARGAIN);
                 break;
-            case SPEND_SKILLPOINT_ON_OBSERVE:
+            case INCREMENT_OBSERVE:
                 this.spendSkillpointOn(SkillEnum.OBSERVATION);
                 break;
-            case SPEND_SKILLPOINT_ON_SKILL_1:
+            case INCREMENT_SKILL_1:
                 this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_1);
                 break;
-            case SPEND_SKILLPOINT_ON_SKILL_2:
+            case INCREMENT_SKILL_2:
                 this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_2);
                 break;
-            case SPEND_SKILLPOINT_ON_SKILL_3:
+            case INCREMENT_SKILL_3:
                 this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_3);
                 break;
-            case SPEND_SKILLPOINT_ON_SKILL_4:
+            case INCREMENT_SKILL_4:
                 this.spendSkillpointOn(SkillEnum.OCCUPATION_SKILL_4);
                 break;
             case GET_INTERACTION_OPTIONS:
@@ -511,7 +511,7 @@ abstract public class Entity extends DrawableThing {
                     return target.getConversationStarterStrings();
                 }
                 break;
-            case GET_CONVERSATION_CONTINUATION_OPTIONS:
+            case GET_CONVERSATION_OPTIONS:
                 if (target != null) {
                     sayStuffToMe(target.getConversationContinuationStrings(optional_text, this));
                     break;

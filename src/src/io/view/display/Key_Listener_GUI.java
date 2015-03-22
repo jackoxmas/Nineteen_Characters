@@ -359,6 +359,7 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         inventory_jTextArea.setEditable(false);
         inventory_jTextArea.setColumns(20);
         inventory_jTextArea.setRows(5);
+        inventory_jTextArea.setFocusable(false);
         inventory_text_area_jScrollPane.setViewportView(inventory_jTextArea);
 
         equipment_and_inventory_jTabbedPane.addTab("Inventory", inventory_text_area_jScrollPane);
@@ -366,6 +367,7 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         equipment_jTextArea.setEditable(false);
         equipment_jTextArea.setColumns(20);
         equipment_jTextArea.setRows(5);
+        equipment_jTextArea.setFocusable(false);
         equip_text_area_jScrollPane.setViewportView(equipment_jTextArea);
 
         equipment_and_inventory_jTabbedPane.addTab("Equip.", equip_text_area_jScrollPane);
@@ -389,6 +391,7 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         outgoing_chat_text_area_jScrollPane.setViewportView(incoming_text_jTextArea);
 
         bind_wounds_jButton.setText("Bind Wounds");
+        bind_wounds_jButton.setFocusable(false);
         bind_wounds_jButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bind_wounds_jButtonMouseClicked(evt);
@@ -396,6 +399,7 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         });
 
         observe_jButton.setText("Observe");
+        observe_jButton.setFocusable(false);
         observe_jButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 observe_jButtonMouseClicked(evt);
@@ -403,6 +407,7 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         });
 
         bargain_barter_jButton.setText("Talk / Barter");
+        bargain_barter_jButton.setFocusable(false);
         bargain_barter_jButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bargain_barter_jButtonMouseClicked(evt);
@@ -436,12 +441,16 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
         regular_and_special_skills_jTabbedPane.addTab("Regular", regular_skills_jPanel);
 
         occupation_skill_2_jButton.setText("Special Skill 2");
+        occupation_skill_2_jButton.setFocusable(false);
 
         occupation_skill_1_jButton.setText("Special Skill 1");
+        occupation_skill_1_jButton.setFocusable(false);
 
         occupation_skill_3_jButton.setText("Special Skill 3");
+        occupation_skill_3_jButton.setFocusable(false);
 
         occupation_skill_4_jButton.setText("Special Skill 4");
+        occupation_skill_4_jButton.setFocusable(false);
 
         javax.swing.GroupLayout special_skills_jPanelLayout = new javax.swing.GroupLayout(special_skills_jPanel);
         special_skills_jPanel.setLayout(special_skills_jPanelLayout);
@@ -571,8 +580,7 @@ class Key_Listener_GUI extends javax.swing.JFrame implements WindowListener {
     }//GEN-LAST:event_bind_wounds_jButtonMouseClicked
 
     private void bargain_barter_jButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bargain_barter_jButtonMouseClicked
-        sendKeyCommand(Key_Commands.BARGAIN_AND_BARTER);
-        incoming_text_jTextArea.requestFocusInWindow();
+        sendKeyCommand(Key_Commands.GET_INTERACTION_OPTIONS);
     }//GEN-LAST:event_bargain_barter_jButtonMouseClicked
 
     private void observe_jButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_observe_jButtonMouseClicked

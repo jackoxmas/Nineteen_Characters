@@ -545,7 +545,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         for (int y = y_center - height_from_center; y <= y_center + height_from_center; ++y) {
             int x_index = 0;
             for (int x = x_center - width_from_center; x <= x_center + width_from_center; ++x) {
-                colors[y_index][x_index] = this.getColorRepresentation(x, y);
+                colors[y_index][x_index] = new Color(this.getColorRepresentation(x, y).getRGB());
                 ++x_index;
             }
             ++y_index;

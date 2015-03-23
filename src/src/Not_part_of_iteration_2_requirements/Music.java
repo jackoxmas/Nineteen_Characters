@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 /**
  * Plays music for school project
  *
- * @author John
+ * @author John-Michael Reed
  */
 public class Music extends Application implements Runnable {
 
@@ -26,21 +26,73 @@ public class Music extends Application implements Runnable {
     public void run() {
         Application.launch();
     }
-    
+
     public void playAttackSound() {
         final URL punch_resource = getClass().getResource(punch_filename);
-            if (punch_resource == null) {
-                System.out.println("Could not find " + punch_filename);
-                return;
+        if (punch_resource == null) {
+            System.out.println("Could not find " + punch_filename);
+            return;
+        }
+        AudioClip sound = new AudioClip(punch_resource.toString());
+        Runnable soundPlay2 = new Runnable() {
+            @Override
+            public void run() {
+                sound.play();
             }
-            AudioClip sound = new AudioClip(punch_resource.toString());
-            Runnable soundPlay2 = new Runnable() {
-                @Override
-                public void run() {
-                    sound.play();
-                }
-            };
-            soundPool.execute(soundPlay2);
+        };
+        soundPool.execute(soundPlay2);
+    }
+
+    private final String binding_filename = "/Binding_Sound.mp3";
+    private final String talking_filename = "/Greeting.mp3";
+    private final String spell_filename = "/Spell_Sound.mp3";
+
+    public void playBindSound() {
+        final URL bind_resource = getClass().getResource(binding_filename);
+        if (bind_resource == null) {
+            System.out.println("Could not find " + binding_filename);
+            return;
+        }
+        AudioClip sound = new AudioClip(bind_resource.toString());
+        Runnable soundPlay2 = new Runnable() {
+            @Override
+            public void run() {
+                sound.play();
+            }
+        };
+        soundPool.execute(soundPlay2);
+    }
+
+    public void playSpellSound() {
+        final URL resource = getClass().getResource(spell_filename);
+        if (resource == null) {
+            System.out.println("Could not find " + spell_filename);
+            return;
+        }
+        AudioClip sound = new AudioClip(resource.toString());
+        Runnable soundPlay2 = new Runnable() {
+            @Override
+            public void run() {
+                sound.play();
+            }
+        };
+        soundPool.execute(soundPlay2);
+    }
+
+    public void playTalkingSound() {
+        final URL resource = getClass().getResource(talking_filename);
+        if (resource == null) {
+            System.out.println("Could not find " + talking_filename);
+            return;
+        }
+        AudioClip sound = new AudioClip(resource.toString());
+        Runnable soundPlay2 = new Runnable() {
+            @Override
+            public void run() {
+                sound.play();
+            }
+        };
+        soundPool.execute(soundPlay2);
     }
 
     @Override

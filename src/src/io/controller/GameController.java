@@ -242,9 +242,19 @@ public class GameController extends Controller {
         }
         // Sound effects!!!!
         if (command == Key_Commands.ATTACK) {
-            System.out.println("Yet to tell Music to notify");
             music.playAttackSound();
-            System.out.println("Finished telling music to notify");
+        } else if (command == Key_Commands.BIND_WOUNDS) {
+            music.playBindSound();
+        } else if(command == Key_Commands.GET_INTERACTION_OPTIONS) {
+            music.playTalkingSound();
+        } else if (command == Key_Commands.USE_SKILL_1) {
+            music.playSpellSound();
+        } else if (command == Key_Commands.USE_SKILL_2) {
+            music.playSpellSound();
+        } else if (command == Key_Commands.USE_SKILL_3) {
+            music.playSpellSound();
+        } else if (command == Key_Commands.USE_SKILL_4) {
+            music.playSpellSound();
         }
 
         if (to_return != null && to_return.strings_for_communication_ != null

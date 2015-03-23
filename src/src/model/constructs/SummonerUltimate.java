@@ -120,10 +120,10 @@ public class SummonerUltimate extends Summoner {
             // Staff attack
             Random randomGenerator = new Random();
             double failed = randomGenerator.nextDouble();
-            if (failed + getSkill_4_() * .1 > .6) {
+            if (failed + getSkill_4_()*.1 > .4) {
                 if (staff_ != null && target != null) {
-                    super.getEntity().sendAttack(target);
-                    target.receiveAttack(getSkill_4_() * 2, null);
+                	target.receiveAttack(getSkill_4_() * 2, super.getEntity());
+                    Display.getDisplay().setMessage("You whacked it with your staff.");
                 }
             } else {
                 Display.getDisplay().setMessage(HardCodedStrings.failed + getSkillNameFromNumber(4) + ".");

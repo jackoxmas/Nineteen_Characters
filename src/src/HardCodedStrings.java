@@ -12,7 +12,7 @@ package src;
 public class HardCodedStrings {
 	public final static String getChatOptions = "[ Greet ]"; // lists all greetings
 	public final static String getReplyOptions = "[ Continue ]"; // lists all replies
-	public final static String attack = "[ Attack ]"; // causes the entity to engage in combat with you
+	public final static String attack = "Hit the attack key to [ Attack ]"; // causes the entity to engage in combat with you
 	public final static String getAllSkills = "[ Skill ]";
 	public final static String bind = "[ Bind ]"; // uses your bind ability
 	public final static String barter = "[ Barter ]"; // lists items and prices

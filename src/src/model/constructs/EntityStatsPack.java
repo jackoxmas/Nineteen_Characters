@@ -395,5 +395,19 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
 
         return arrayList;
     }
+    
+    public void addOn(final EntityStatsPack other) {
+        strength_level_ += other.getStrength_level_();
+        agility_level_ += other.getAgility_level_();
+        intellect_level_ += other.getIntellect_level_();
+        hardiness_level_ += other.getHardiness_level_();
+    }
+
+    public void reduceBy(final EntityStatsPack other) {
+        strength_level_ -= other.getStrength_level_();
+        agility_level_ -= other.getAgility_level_();
+        intellect_level_ -= other.getIntellect_level_();
+        hardiness_level_ -= other.getHardiness_level_();
+    }
 
 }

@@ -60,6 +60,18 @@ public final class Smasher extends Occupation {
         }
     }
 
+    public ActiveWeapon getActiveWeapon() { return current_weapon; }
+
+    public void setActiveWeapon(ActiveWeapon value) { current_weapon = value; }
+
+    public OneHandedSword getSwordOne() { return one_handed_sword_; }
+
+    public TwoHandedSword getSwordTwo() { return two_handed_sword_; }
+
+    public OneHandedWeapon getWeaponOne () { return bullshit_weapon_one_; }
+
+    public TwoHandedWeapon getWeaponTwo() { return bullshit_weapon_two_; }
+
     @Override
     public int unEquipEverything() {
         two_handed_sword_ = null;

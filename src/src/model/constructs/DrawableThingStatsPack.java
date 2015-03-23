@@ -22,6 +22,11 @@ public class DrawableThingStatsPack implements Serializable {
         offensive_rating_ = 0;
     }
 
+    public void setNew (DrawableThingStatsPack newPack) {
+        armor_rating_ = newPack.getArmor_rating_();
+        offensive_rating_ = newPack.getOffensive_rating_();
+    }
+
     public int getOffensive_rating_() {
         return offensive_rating_;
     }

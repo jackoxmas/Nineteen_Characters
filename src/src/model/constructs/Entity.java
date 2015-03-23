@@ -148,12 +148,16 @@ abstract public class Entity extends DrawableThing {
         return num_skillpoints_;
     }
 
+    public void setSkillPoints(int newPoints) { num_skillpoints_ = newPoints; }
+
     // Non-occupation specific skills
     private int bind_wounds_ = 1;
 
     public int getBind_wounds_() {
         return bind_wounds_;
     }
+
+    public void setBind_wounds_(int value) { if (value > 0) bind_wounds_ = value; }
 
     public int bindWounds() {
         this.getMapRelation().areaEffectFunctor.effectAreaWithinRadius(1, getBind_wounds_() + 1, Effect.HEAL);
@@ -166,11 +170,15 @@ abstract public class Entity extends DrawableThing {
         return bargain_;
     }
 
+    public void setBargain_(int value) { if (value > 0) bargain_ = value; }
+
     private int observation_ = 1;
 
     public int getObservation_() {
         return observation_;
     }
+
+    public void setObservation_(int value) { if (value > 0) observation_ = value; }
 
     /**
      * Gets information based on observation level. If the entity is facing up,

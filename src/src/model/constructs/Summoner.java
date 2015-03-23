@@ -50,6 +50,10 @@ public abstract class Summoner extends Occupation {
 
     public int getBoonTimer() { return boon_timer_; }
 
+    public void setBoonTimer(int value) { if (value >= 0) boon_timer_ = value; }
+
+    public Staff getStaff() { return staff_; }
+
     @Override
     public int unEquipEverything() {
         staff_ = null;

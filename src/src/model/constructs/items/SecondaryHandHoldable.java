@@ -17,5 +17,6 @@ public interface SecondaryHandHoldable extends Serializable {
 	 DrawableThingStatsPack getStatsPack();
 
 	String getName();
-    
+
+    public int getID();
 }

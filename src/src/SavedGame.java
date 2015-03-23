@@ -39,7 +39,7 @@ public class SavedGame {
      * is modified. The version number 0 is reserved. This value has no 
      * relation to the Java native Serialization object ID.
      */
-    public static final long SAVE_DATA_VERSION = 10;
+    public static final long SAVE_DATA_VERSION = 18;
     public static final String SAVE_EXT = ".xml";
     public static final String KEY_EXT = ".key";
     public static final char SAVE_ITERATOR_FLAG = '_';
@@ -56,6 +56,8 @@ public class SavedGame {
     public static final String XML_MAP_MAPGRID_WIDTH = "width";
     public static final String XML_MAP_MAPGRID_HEIGHT = "height";
     public static final String XML_MAP_TIME = "time";
+
+    private static HashMap<TemporaryObstacleItem, String> keyLinks_ = new HashMap<>();
 
     //<editor-fold desc="PUBLIC METHODS" defaultstate="collapsed">
 
@@ -503,19 +505,18 @@ public class SavedGame {
         int d_armor = 0, d_off = 0;
 
         Node n_data = xml_getNodeByString(n_draw, "armor_rating");
-        d_armor = Integer.parseInt(n_data.getTextContent());
+        if (n_data != null) { d_armor = Integer.parseInt(n_data.getTextContent()); }
+
 
         n_data = xml_getNodeByString(n_draw, "off_rating");
-        d_off = Integer.parseInt(n_data.getTextContent());
+        if (n_data != null) { d_off = Integer.parseInt(n_data.getTextContent()); }
 
         return new DrawableThingStatsPack(d_off, d_armor);
     }
 
-    private static Entity xml_readEntity(Document doc, Node n_entity, HashMap<TemporaryObstacleItem, String> keyLinks) {
+    private static Entity xml_readEntity(Document doc, Node n_entity) {
         try {
             Entity ret_entity;
-
-            // TODO GET STATSPACK
 
             // Collect:
             String d_name;
@@ -532,8 +533,8 @@ public class SavedGame {
             int oid = Integer.parseInt(n_entity.getAttributes().getNamedItem("id").getTextContent());
             switch(oid) {
                 case 15: // monster
-                    // TODO FINISH
-                    ret_entity = new Villager(d_name, d_rep); // TODO REMOVE
+                    ret_entity = new Monster(d_name, d_rep);
+                    xml_readMonster(doc, n_entity, (Monster)ret_entity);
                     break;
                 case 16: // avatar
                     ret_entity = new Avatar(d_name, d_rep);
@@ -548,6 +549,9 @@ public class SavedGame {
                     throw new Exception();
             }
 
+            EntityStatsPack esp = xml_readEntityStatsPack(doc, n_entity);
+            ret_entity.getStatsPack().setNew(esp);
+
             n_data = xml_getNodeByString(n_entity, "gold");
             if (n_data == null) { throw new Exception(); }
             int diff = Integer.parseInt(n_data.getTextContent());
@@ -556,7 +560,46 @@ public class SavedGame {
 
             n_data = xml_getNodeByString(n_entity, "skill_points");
             if (n_data == null) { throw new Exception(); }
+            ret_entity.setSkillPoints(Integer.parseInt(n_data.getTextContent()));
 
+            n_data = xml_getNodeByString(n_entity, "bind_wounds");
+            if (n_data == null) { throw new Exception(); }
+            ret_entity.setBind_wounds_(Integer.parseInt(n_data.getTextContent()));
+
+            n_data = xml_getNodeByString(n_entity, "bargain");
+            if (n_data == null) { throw new Exception(); }
+            ret_entity.setBargain_(Integer.parseInt(n_data.getTextContent()));
+
+            n_data = xml_getNodeByString(n_entity, "observation");
+            if (n_data == null) { throw new Exception(); }
+            ret_entity.setObservation_(Integer.parseInt(n_data.getTextContent()));
+
+            n_data = xml_getNodeByString(n_entity, "direction");
+            if (n_data == null) { throw new Exception(); }
+            ret_entity.setFacingDirection(FacingDirection.valueOf(n_data.getTextContent()));
+
+            LinkedList<Node> inv = xml_getAllNodesByString(n_entity, "item");
+            Item t_item;
+            Node n_prim, n_second;
+            for (Node item : inv) {
+                t_item = xml_readItem(doc, item);
+                n_prim = xml_getNodeByString(item, "b_primary");
+                n_second = xml_getNodeByString(item, "b_secondary");
+
+                if (n_prim != null)
+                    ret_entity.setPrimaryEquipped((PrimaryHandHoldable) t_item);
+                if (n_second != null)
+                    ret_entity.setSecondaryEquipped((SecondaryHandHoldable) t_item);
+
+                if (n_prim == null && n_second == null)
+                    ret_entity.addItemToInventory((PickupableItem)t_item);
+            }
+
+            // now apply the occupation
+            Node n_occ = xml_getNodeByString(n_entity, "occupation");
+            if (n_occ != null) {
+                xml_readOccupation(doc, n_occ, ret_entity);
+            }
 
             return ret_entity;
         } catch (Exception e) {
@@ -566,16 +609,123 @@ public class SavedGame {
         }
     }
 
-    private static EntityStatsPack xml_readEntityStatsPack (Document doc, Node n_entity) throws Exception {
+    private static EntityStatsPack xml_readEntityStatsPack (Document doc, Node n_pack) throws Exception {
         EntityStatsPack ret_pack = new EntityStatsPack();
+
+        int i_data = 0;
+        int diff;
+        Node n_data = xml_getNodeByString(n_pack, "lives");
+        if (n_data != null) { i_data = Integer.parseInt(n_data.getTextContent()); }
+        ret_pack.setLives(i_data);
+
+        i_data = 0;
+        n_data = xml_getNodeByString(n_pack, "strength");
+        if (n_data != null) {
+            i_data = Integer.parseInt(n_data.getTextContent());
+        }
+        for(int i = 1; i < i_data; i++) { ret_pack.increaseStrengthLevelByOne(); }
+
+        i_data = 0;
+        n_data = xml_getNodeByString(n_pack, "agility");
+        if (n_data != null) {
+            i_data = Integer.parseInt(n_data.getTextContent());
+        }
+        for(int i = 1; i < i_data; i++) { ret_pack.increaseAgilityLevelByOne(); }
+
+        i_data = 0;
+        n_data = xml_getNodeByString(n_pack, "intellect");
+        if (n_data != null) {
+            i_data = Integer.parseInt(n_data.getTextContent());
+        }
+        for(int i = 1; i < i_data; i++) { ret_pack.increaseIntellectLevelByOne(); }
+
+        i_data = 0;
+        n_data = xml_getNodeByString(n_pack, "hardness");
+        if (n_data != null) {
+            i_data = Integer.parseInt(n_data.getTextContent());
+        }
+        for(int i = 1; i < i_data; i++) { ret_pack.increaseHardinessLevelByOne(); }
+
+        i_data = 0;
+        n_data = xml_getNodeByString(n_pack, "XP");
+        if (n_data != null) {
+            i_data = Integer.parseInt(n_data.getTextContent());
+        }
+        diff = i_data - 1;
+        ret_pack.increaseQuantityOfExperienceBy(diff);
+
+        i_data = 0;
+        n_data = xml_getNodeByString(n_pack, "movement");
+        if (n_data != null) {
+            i_data = Integer.parseInt(n_data.getTextContent());
+        }
+        for(int i = 1; i < i_data; i++) { ret_pack.increaseMovementLevelByOne(); }
+
+        i_data = 0;
+        n_data = xml_getNodeByString(n_pack, "moves_remaining");
+        if (n_data != null) {
+            i_data = Integer.parseInt(n_data.getTextContent());
+        }
+        if (i_data == 0) { ret_pack.decreaseMovesLeftByOne(); }
+
+        i_data = 0;
+        n_data = xml_getNodeByString(n_pack, "life");
+        if (n_data != null) {
+            i_data = Integer.parseInt(n_data.getTextContent());
+        }
+        diff = i_data - ret_pack.getCurrent_life_();
+        if (diff > 0)
+            ret_pack.increaseCurrentLifeBy(diff);
+        else if (diff < 0)
+            ret_pack.deductCurrentLifeBy(-diff);
+
+        i_data = 0;
+        n_data = xml_getNodeByString(n_pack, "mana");
+        if (n_data != null) {
+            i_data = Integer.parseInt(n_data.getTextContent());
+        }
+        diff = i_data - ret_pack.getCurrent_mana_();
+        if (diff > 0)
+            ret_pack.increaseCurrentManaBy(diff);
+        else if (diff < 0)
+            ret_pack.deductCurrentManaBy(-diff);
+
+        n_data = xml_getNodeByString(n_pack, "armor_rating");
+        if (n_data != null) {
+            i_data = Integer.parseInt(n_data.getTextContent());
+        }
+        for(int i = 1; i < i_data; i++) { ret_pack.incrementtArmor_rating_(); }
+
+
+        n_data = xml_getNodeByString(n_pack, "off_rating");
+        if (n_data != null) {
+            i_data = Integer.parseInt(n_data.getTextContent());
+        }
+        for(int i = 1; i < i_data; i++) { ret_pack.incrementOffensive_rating_(); }
+
+        i_data = 0;
+        n_data = xml_getNodeByString(n_pack, "defensive_rating");
+        if (n_data != null) {
+            i_data = Integer.parseInt(n_data.getTextContent());
+        }
+        for(int i = 1; i < i_data; i++) { ret_pack.increaseDefenseLevelByOne(); }
+
+        RunGame.dbgOut("Life: " + ret_pack.getCurrent_life_(), 4);
+        RunGame.dbgOut("Mana: " + ret_pack.getCurrent_mana_(), 4);
+        RunGame.dbgOut("XP: " + ret_pack.getQuantity_of_experience_(), 4);
+        RunGame.dbgOut("STR: " + ret_pack.getStrength_level_(), 4);
+        RunGame.dbgOut("DEX: " + ret_pack.getAgility_level_(), 4);
+        RunGame.dbgOut("INT: " + ret_pack.getIntellect_level_(), 4);
+        RunGame.dbgOut("CON: " + ret_pack.getHardiness_level_(), 4);
+
         return ret_pack;
     }
 
-    private static Item xml_readItem(Document doc, Node n_item, HashMap<TemporaryObstacleItem, String> keyLinks) {
+    private static Item xml_readItem(Document doc, Node n_item) {
         try {
             Item ret_item;
 
-            if (keyLinks == null) { keyLinks = new HashMap<>(); }
+            if (keyLinks_ == null) { keyLinks_ = new HashMap<>(); }
 
             String d_name;
             char d_rep = '\u0000';
@@ -636,7 +786,7 @@ public class SavedGame {
                     ret_item = xml_readTempObstacle(doc, n_item);
                     n_data = xml_getNodeByString(n_item, "key");
                     if (n_data == null) { throw new Exception(); }
-                    keyLinks.put((TemporaryObstacleItem)ret_item, n_data.getTextContent());
+                    keyLinks_.put((TemporaryObstacleItem)ret_item, n_data.getTextContent());
                     break;
                 case 13: // Obstacle removing item
                     ret_item = new ObstacleRemovingItem(d_name, d_rep);
@@ -660,10 +810,12 @@ public class SavedGame {
             n_data = xml_getNodeByString(n_item, "b_invisible");
             if (n_data != null) { ret_item.setViewable(false); }
 
+            RunGame.dbgOut("xml_readItem: item parse = " + ret_item.getName() + ".");
             return ret_item;
 
         } catch (Exception e) {
-            RunGame.errOut("xml_readItem: could not parse terrain");
+            RunGame.errOut("xml_readItem: could not parse");
+            RunGame.errOut(e, true);
             return null;
         }
     }
@@ -673,6 +825,8 @@ public class SavedGame {
             RunGame.errOut("xml_readMap: invalid (null) argument");
             return null;
         }
+
+        keyLinks_ = new HashMap<>();
 
         try {
             src.model.Map ret_map;
@@ -706,26 +860,154 @@ public class SavedGame {
                 // parse entities
                 tn_data = xml_getNodeByString(tn_tile, "entity");
                 if (tn_data != null) {
-                    Entity ent = xml_readEntity(doc, tn_data, keyLinks);
-                    ret_map.addAsEntity(ent, x, y);
+                    Entity ent = xml_readEntity(doc, tn_data);
+
+                    int oid = Integer.parseInt(tn_data.getAttributes().getNamedItem("id").getTextContent());
+                    switch (oid) {
+                        case 15: // monster
+                            ret_map.addAsEntity(ent, x, y);
+                            break;
+                        case 16: // avatar
+                            ret_map.addAsAvatar((Avatar)ent, x, y);
+                            break;
+                        case 17: // villager
+                            ret_map.addAsEntity(ent, x, y);
+                            break;
+                        case 18: // merchant
+                            ret_map.addAsEntity(ent, x, y);
+                            break;
+                        default:
+                            throw new Exception();
+                    }
                 }
 
                 // parse items
-                LinkedList<Node> items = xml_getAllNodesByString(tn_tile, "item");
+                Node n_itemList = xml_getNodeByString(tn_tile, "item_list");
+                if (n_itemList == null) { continue; }
+
+                LinkedList<Node> items = xml_getAllNodesByString(n_itemList, "item");
                 Item t_item;
+                RunGame.dbgOut("Tile [" + x + ", " + y + "] has found " + items.size() + " items.", 5);
                 for (Node item : items) {
-                    t_item = xml_readItem(doc, item, keyLinks);
-                    if (t_item != null)
+                    t_item = xml_readItem(doc, item);
+                    if (t_item != null) {
                         ret_map.addItem(t_item, x, y);
+                        RunGame.dbgOut("Added item: " + t_item.getName() + " to map.", 4);
+                    }
                 }
             }
 
+            // relink stuff
+            for (int i = 0; i < ns_tiles.getLength(); i++)
+
+            keyLinks_ = new HashMap<>();
             return ret_map;
         } catch (Exception e) {
             RunGame.errOut("xml_readMap: could not parse map");
             return null;
         }
 
+    }
+
+    private static void xml_readMonster(Document doc, Node n_monst, Monster out_monst) throws Exception {
+        if (out_monst == null) { throw new Exception("Monster is invalid"); }
+
+
+    }
+
+    private static void xml_readOccupation(Document doc, Node n_occ, Entity ent) throws Exception {
+
+
+
+        int id = Integer.parseInt(n_occ.getAttributes().getNamedItem("id").getTextContent());
+
+        Node n_data;
+        Occupation newOcc = null;
+
+        n_data = xml_getNodeByString(n_occ, "sk1");
+        if (n_data == null) { throw new Exception(); }
+        int sk1 = Integer.parseInt(n_data.getTextContent());
+
+        n_data = xml_getNodeByString(n_occ, "sk2");
+        if (n_data == null) { throw new Exception(); }
+        int sk2 = Integer.parseInt(n_data.getTextContent());
+
+        n_data = xml_getNodeByString(n_occ, "sk3");
+        if (n_data == null) { throw new Exception(); }
+        int sk3 = Integer.parseInt(n_data.getTextContent());
+
+        n_data = xml_getNodeByString(n_occ, "sk4");
+        if (n_data == null) { throw new Exception(); }
+        int sk4 = Integer.parseInt(n_data.getTextContent());
+
+
+        switch(id) {
+            case 22: // smasher
+                newOcc = new Smasher(ent);
+
+                n_data = xml_getNodeByString(n_occ, "one_hw");
+                if(n_data != null) {
+                    ((Smasher)newOcc).equipOneHandWeapon((OneHandedWeapon)xml_readItem(doc, n_data));
+                }
+
+                n_data = xml_getNodeByString(n_occ, "two_hw");
+                if(n_data != null) {
+                    ((Smasher)newOcc).equipOneHandWeapon((OneHandedWeapon)xml_readItem(doc, n_data));
+                }
+
+                n_data = xml_getNodeByString(n_occ, "one_hs");
+                if(n_data != null) {
+                    ((Smasher)newOcc).equipOneHandWeapon((OneHandedWeapon)xml_readItem(doc, n_data));
+                }
+
+                n_data = xml_getNodeByString(n_occ, "two_hs");
+                if(n_data != null) {
+                    ((Smasher)newOcc).equipOneHandWeapon((OneHandedWeapon)xml_readItem(doc, n_data));
+                }
+
+                n_data = xml_getNodeByString(n_occ, "active");
+                Smasher.ActiveWeapon act = Smasher.ActiveWeapon.valueOf(n_data.getTextContent());
+                ((Smasher)newOcc).setActiveWeapon(act);
+                break;
+            case 23: // sneak
+                newOcc = new Sneak(ent);
+
+                n_data = xml_getNodeByString(n_occ, "cloak_timer");
+                if (n_data == null) { throw new Exception(); }
+                ((Sneak)newOcc).setCloakTimer(Integer.parseInt(n_data.getTextContent()));
+
+                n_data = xml_getNodeByString(n_occ, "bow");
+                if (n_data != null) {
+                    ((Sneak)newOcc).equipTwoHandWeapon((Bow)xml_readItem(doc, n_data));
+                }
+                break;
+            case 24: // summoner - novice
+                newOcc = new SummonerRookie(ent);
+            case 25: // summoner - champion
+                if (newOcc == null)
+                    newOcc = new SummonerChampion(ent);
+            case 26: // summoner - ultimate
+                if (newOcc == null)
+                    newOcc = new SummonerUltimate(ent);
+
+                n_data = xml_getNodeByString(n_occ, "boon_timer");
+                ((Summoner)newOcc).setBoonTimer(Integer.parseInt(n_data.getTextContent()));
+
+                n_data = xml_getNodeByString(n_occ, "staff");
+                if (n_data != null) {
+                    ((Summoner)newOcc).equipOneHandWeapon((Staff)xml_readItem(doc, n_data));
+                }
+                break;
+            default:
+                throw new Exception("Invalid occupation id'");
+        }
+
+        for (int i = 1; i < sk1; i++) { newOcc.incrementSkill_1_(); }
+        for (int i = 1; i < sk2; i++) { newOcc.incrementSkill_2_(); }
+        for (int i = 1; i < sk3; i++) { newOcc.incrementSkill_3_(); }
+        for (int i = 1; i < sk4; i++) { newOcc.incrementSkill_4_(); }
+
+        ent.setOccupation(newOcc);
     }
 
     private static OneWayTeleportItem xml_readTeleport_OneWay(Document doc, Node n_tele) throws Exception {
@@ -966,27 +1248,36 @@ public class SavedGame {
         e_data.appendChild(doc.createTextNode(Integer.toString(entity.getBargain_())));
         parent.appendChild(e_data);
 
-        // occupation
-        // TODO IMPLEMENT THIS
-
         // Direction
         Element e_dir = doc.createElement("direction");
         e_dir.appendChild(doc.createTextNode(entity.getFacingDirection().toString()));
+        parent.appendChild(e_dir);
 
         // Item List
         Element te_item;
         ArrayList<PickupableItem> inv = entity.getInventory();
         for (PickupableItem i : inv) {
             te_item = doc.createElement("item");
-
-            if (i == eq_primary) {
-                te_item.appendChild(doc.createElement("b_primary"));
-            }
-            if (i == eq_secondary) {
-                te_item.appendChild(doc.createElement("b_secondary"));
-            }
+            te_item.setAttribute("id", Integer.toString(i.getID()));
 
             xml_writeDrawable(doc, te_item, i);
+            parent.appendChild(te_item);
+        }
+        // primary and secondary equipment
+
+        if (eq_primary != null) {
+            te_item = doc.createElement("item");
+            te_item.setAttribute("id", Integer.toString(entity.getPrimaryEquipped().getID()));
+            xml_writeDrawable(doc, te_item, (DrawableThing) entity.getPrimaryEquipped());
+            te_item.appendChild(doc.createElement("b_primary"));
+            parent.appendChild(te_item);
+        }
+
+        if (eq_secondary != null && eq_primary != eq_secondary) {
+            te_item = doc.createElement("item");
+            te_item.setAttribute("id", Integer.toString(entity.getSecondaryEquipped().getID()));
+            xml_writeDrawable(doc, te_item, (DrawableThing)entity.getSecondaryEquipped());
+            te_item.appendChild(doc.createElement("b_secondary"));
             parent.appendChild(te_item);
         }
 
@@ -1100,14 +1391,29 @@ public class SavedGame {
             return;
         }
 
-        Element e_turns = doc.createElement("turns");
+        if (monst.isRunning()) {
+            Element e_running = doc.createElement("b_running");
+            parent.appendChild(e_running);
+        }
+
+        Element e_turns = doc.createElement("turns_follow");
         e_turns.appendChild(doc.createTextNode(Integer.toString(monst.getFollowTurns())));
+        parent.appendChild(e_turns);
+
+        e_turns = doc.createElement("turns_run");
+        e_turns.appendChild(doc.createTextNode(Integer.toString(monst.getRunTurns())));
         parent.appendChild(e_turns);
 
         if (monst.getFolloweeName() != null) {
             Element e_followee = doc.createElement("followee");
             e_followee.appendChild(doc.createTextNode(monst.getFolloweeName()));
             parent.appendChild(e_followee);
+        }
+
+        if (monst.getAvoidName() != null) {
+            Element e_avoid = doc.createElement("avoid");
+            e_avoid.appendChild(doc.createTextNode(monst.getAvoidName()));
+            parent.appendChild(e_avoid);
         }
     }
 
@@ -1142,18 +1448,61 @@ public class SavedGame {
 
         switch(id) {
             case 22: // smasher
+                e_data = doc.createElement("active");
+                e_data.appendChild(doc.createTextNode(((Smasher)occ).getActiveWeapon().name()));
+                parent.appendChild(e_data);
+
+                if (((Smasher)occ).getWeaponOne() != null) {
+                    e_data = doc.createElement("one_hw");
+                    e_data.setAttribute("id", Integer.toString(((Smasher) occ).getWeaponOne().getID()));
+                    xml_writeItem(doc, e_data, ((Smasher) occ).getWeaponOne());
+                    parent.appendChild(e_data);
+                }
+
+                if (((Smasher)occ).getWeaponTwo() != null) {
+                    e_data = doc.createElement("two_hw");
+                    e_data.setAttribute("id", Integer.toString(((Smasher)occ).getWeaponTwo().getID()));
+                    xml_writeItem(doc, e_data, ((Smasher) occ).getWeaponTwo());
+                    parent.appendChild(e_data);
+                }
+
+                if (((Smasher)occ).getSwordOne() != null) {
+                    e_data = doc.createElement("one_hs");
+                    e_data.setAttribute("id", Integer.toString(((Smasher)occ).getSwordOne().getID()));
+                    xml_writeItem(doc, e_data, ((Smasher) occ).getSwordTwo());
+                    parent.appendChild(e_data);
+                }
+
+                if (((Smasher)occ).getSwordTwo() != null) {
+                    e_data = doc.createElement("two_hs");
+                    e_data.setAttribute("id", Integer.toString(((Smasher)occ).getSwordTwo().getID()));
+                    xml_writeItem(doc, e_data, ((Smasher) occ).getSwordTwo());
+                    parent.appendChild(e_data);
+                }
                 break;
             case 23: // sneak
                 e_data = doc.createElement("cloak_timer");
                 e_data.appendChild(doc.createTextNode(Integer.toString(((Sneak)occ).getCloakTimer())));
                 parent.appendChild(e_data);
+
+                if (((Sneak)occ).getBow() != null) {
+                    e_data = doc.createElement("bow");
+                    xml_writeItem(doc, e_data, ((Sneak) occ).getBow());
+                    parent.appendChild(e_data);
+                }
                 break;
             case 24: // summoner - novice
             case 25: // summoner - champion
             case 26: // summoner - ultimate
                 e_data = doc.createElement("boon_timer");
-                e_data.appendChild(doc.createTextNode(Integer.toString(((Summoner)occ).getBoonTimer())));
+                e_data.appendChild(doc.createTextNode(Integer.toString(((Summoner) occ).getBoonTimer())));
                 parent.appendChild(e_data);
+
+                if (((Summoner)occ).getStaff() != null) {
+                    e_data = doc.createElement("staff");
+                    xml_writeItem(doc, e_data, ((Summoner) occ).getStaff());
+                    parent.appendChild(e_data);
+                }
                 break;
         }
     }

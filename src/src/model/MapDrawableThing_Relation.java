@@ -68,17 +68,20 @@ public class MapDrawableThing_Relation {
         	if (radius == 1) {
         		for (int i = 0; i < 3; i++)
         			for (int j = 0; j < 3; j++)
-        				repeat(getMyXCoordinate(), getMyYCoordinate(), strength, effect);
+        				if (!(j == 1 && i == 1))
+        					repeat(getMyXCoordinate()-1+i, getMyYCoordinate()-1+j, strength, effect);
         	}
         	if (radius > 1) {
                 final int left_edge = getMyXCoordinate() - radius;
                 final int right_edge = getMyXCoordinate() + radius;
                 final int top = getMyYCoordinate() + radius;
                 final int bottom = getMyYCoordinate() - radius;
-                repeat(top-1, left_edge+1, strength, effect);
-                repeat(bottom+1, left_edge+1, strength, effect);
-                repeat(top-1, right_edge-1, strength, effect);
-                repeat(bottom+1, right_edge-1, strength, effect);
+                if (radius != 2) {
+                	repeat(left_edge+1, top-1, strength, effect);
+                	repeat(left_edge+1, bottom+1, strength, effect);
+                	repeat(right_edge-1, top-1, strength, effect);
+                	repeat(right_edge-1, bottom+1, strength, effect);
+                }
         		for (int i = top; i >= bottom; i--) {
         			for (int j = left_edge; j <= right_edge; j++) {
         				if (i == top || j == left_edge || i == bottom || j == right_edge) {

@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fbc16cae-2312-42a3-a657-0f99998ac22f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/constructs/Occupation.java" afterPath="$PROJECT_DIR$/../src/src/model/constructs/Occupation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/SavedGame.java" afterPath="$PROJECT_DIR$/../src/src/SavedGame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/constructs/Smasher.java" afterPath="$PROJECT_DIR$/../src/src/model/constructs/Smasher.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/constructs/Sneak.java" afterPath="$PROJECT_DIR$/../src/src/model/constructs/Sneak.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/constructs/Summoner.java" afterPath="$PROJECT_DIR$/../src/src/model/constructs/Summoner.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/constructs/SummonerChampion.java" afterPath="$PROJECT_DIR$/../src/src/model/constructs/SummonerChampion.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/constructs/SummonerRookie.java" afterPath="$PROJECT_DIR$/../src/src/model/constructs/SummonerRookie.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/constructs/SummonerUltimate.java" afterPath="$PROJECT_DIR$/../src/src/model/constructs/SummonerUltimate.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/RunGame.java" afterPath="$PROJECT_DIR$/../src/src/RunGame.java" />
     </list>
     <ignored path="IDEA_Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,11 +27,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="SavedGame.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SavedGame.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/src/SavedGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.34710744" vertical-offset="0" max-vertical-offset="3900">
-              <caret line="45" column="44" selection-start-line="45" selection-start-column="44" selection-end-line="45" selection-end-column="44" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1710" max-vertical-offset="3900">
+              <caret line="1107" column="63" selection-start-line="1107" selection-start-column="63" selection-end-line="1107" selection-end-column="63" />
               <folding>
                 <element signature="docComment;class#SavedGame#0" expanded="false" />
                 <element signature="docComment;field#SAVE_DATA_VERSION#0;class#SavedGame#0" expanded="false" />
@@ -48,7 +40,6 @@
                 <element signature="method#saveGame#0;class#SavedGame#0" expanded="false" />
                 <element signature="docComment;method#saveKeymap#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#saveKeymap#0;class#SavedGame#0" expanded="false" />
-                <element signature="e#11871#11934#0" expanded="true" />
                 <element signature="docComment;method#autoGen#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#autoGen#0;class#SavedGame#0" expanded="false" />
                 <element signature="e#12995#13104#0" expanded="false" />
@@ -56,7 +47,6 @@
                 <element signature="method#validateDataVersion#0;class#SavedGame#0" expanded="false" />
                 <element signature="docComment;method#validateFile#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#validateFile#0;class#SavedGame#0" expanded="false" />
-                <element signature="e#17425#17487#0" expanded="true" />
                 <element signature="method#xml_getAllNodesByString#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_getNodeByString#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_readAOE_One#0;class#SavedGame#0" expanded="false" />
@@ -164,6 +154,48 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="RunGame.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../src/src/RunGame.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.5296128" vertical-offset="0" max-vertical-offset="1995">
+              <caret line="69" column="19" selection-start-line="69" selection-start-column="19" selection-end-line="69" selection-end-column="19" />
+              <folding>
+                <element signature="docComment;class#RunGame#0" expanded="false" />
+                <element signature="method#grusomelyKillTheMap#0;class#RunGame#0" expanded="false" />
+                <element signature="method#grusomelyKillTheController#0;class#RunGame#0" expanded="false" />
+                <element signature="method#closeGame#0;class#RunGame#0" expanded="false" />
+                <element signature="method#main#0;class#RunGame#0" expanded="false" />
+                <element signature="method#startNewGame#0;class#RunGame#0" expanded="false" />
+                <element signature="e#3939#3946#0" expanded="false" />
+                <element signature="method#startMapEditor#0;class#RunGame#0" expanded="false" />
+                <element signature="method#coverMapInGrass#0;class#RunGame#0" expanded="false" />
+                <element signature="method#loadGame#0;class#RunGame#0" expanded="false" />
+                <element signature="n#!!doc;n#exitGame#0;n#RunGame#0" expanded="true" />
+                <element signature="method#exitGame#0;class#RunGame#0" expanded="false" />
+                <element signature="method#initialize#0;class#RunGame#0" expanded="false" />
+                <element signature="method#populateMap#0;class#RunGame#0" expanded="false" />
+                <element signature="method#startGame#0;class#RunGame#0" expanded="false" />
+                <element signature="method#saveGameToDisk#0;class#RunGame#0" expanded="false" />
+                <element signature="e#13345#13403#0" expanded="true" />
+                <element signature="docComment;class#ProgramOpts#0;class#RunGame#0" expanded="false" />
+                <element signature="class#ProgramOpts#0;class#RunGame#0" expanded="false" />
+                <element signature="docComment;method#dbgOut#0;class#RunGame#0" expanded="false" />
+                <element signature="method#dbgOut#0;class#RunGame#0" expanded="false" />
+                <element signature="docComment;method#dbgOut#1;class#RunGame#0" expanded="false" />
+                <element signature="method#dbgOut#1;class#RunGame#0" expanded="false" />
+                <element signature="docComment;method#errOut#0;class#RunGame#0" expanded="false" />
+                <element signature="docComment;method#errOut#1;class#RunGame#0" expanded="false" />
+                <element signature="method#errOut#1;class#RunGame#0" expanded="false" />
+                <element signature="docComment;method#errOut#2;class#RunGame#0" expanded="false" />
+                <element signature="method#errOut#2;class#RunGame#0" expanded="false" />
+                <element signature="docComment;method#handleArgs#0;class#RunGame#0" expanded="false" />
+                <element signature="docComment;method#parseArgs#0;class#RunGame#0" expanded="false" />
+                <element signature="method#parseArgs#0;class#RunGame#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="SummonerChampion.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/SummonerChampion.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -179,16 +211,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="982" max-vertical-offset="1860">
               <caret line="89" column="45" selection-start-line="89" selection-start-column="45" selection-end-line="89" selection-end-column="45" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Terrain.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/Terrain.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="795" max-vertical-offset="2940">
-              <caret line="62" column="4" selection-start-line="62" selection-start-column="4" selection-end-line="62" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -251,7 +273,6 @@
         <option value="$PROJECT_DIR$/../src/src/model/constructs/Monster.java" />
         <option value="$PROJECT_DIR$/../src/src/model/constructs/items/KnightsSerum.java" />
         <option value="$PROJECT_DIR$/../src/src/model/constructs/items/TemporaryObstacleItem.java" />
-        <option value="$PROJECT_DIR$/../src/src/RunGame.java" />
         <option value="$PROJECT_DIR$/../src/src/model/constructs/items/SpreadingLineAreaEffectItem.java" />
         <option value="$PROJECT_DIR$/../src/src/model/constructs/items/SpreadingCircleAreaEffectItem.java" />
         <option value="$PROJECT_DIR$/../src/src/model/constructs/items/SpreadingConeAreaEffectItem.java" />
@@ -263,6 +284,7 @@
         <option value="$PROJECT_DIR$/../src/src/model/constructs/Sneak.java" />
         <option value="$PROJECT_DIR$/../src/src/model/constructs/Summoner.java" />
         <option value="$PROJECT_DIR$/../src/src/SavedGame.java" />
+        <option value="$PROJECT_DIR$/../src/src/RunGame.java" />
       </list>
     </option>
   </component>
@@ -769,19 +791,19 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1025" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30165747" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30165747" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30607736" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.1637931" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="103" y="728" width="282" height="281" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.1637931" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="103" y="728" width="282" height="281" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3276923" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30269608" sideWeight="0.49834254" order="4" side_tool="false" content_ui="combo" />
@@ -1167,27 +1189,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/RunGame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1635">
-          <caret line="114" column="34" selection-start-line="114" selection-start-column="34" selection-end-line="114" selection-end-column="34" />
-          <folding>
-            <element signature="docComment;class#RunGame#0" expanded="false" />
-            <element signature="class#ProgramOpts#0;class#RunGame#0" expanded="false" />
-            <element signature="method#dbgOut#0;class#RunGame#0" expanded="false" />
-            <element signature="docComment;method#dbgOut#1;class#RunGame#0" expanded="false" />
-            <element signature="method#dbgOut#1;class#RunGame#0" expanded="false" />
-            <element signature="docComment;method#errOut#0;class#RunGame#0" expanded="false" />
-            <element signature="docComment;method#errOut#1;class#RunGame#0" expanded="false" />
-            <element signature="docComment;method#errOut#2;class#RunGame#0" expanded="false" />
-            <element signature="method#errOut#2;class#RunGame#0" expanded="false" />
-            <element signature="docComment;method#handleArgs#0;class#RunGame#0" expanded="false" />
-            <element signature="docComment;method#parseArgs#0;class#RunGame#0" expanded="false" />
-            <element signature="method#parseArgs#0;class#RunGame#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/EntityStatsPack.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="822" max-vertical-offset="5505">
@@ -1340,8 +1341,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/SavedGame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34710744" vertical-offset="0" max-vertical-offset="3900">
-          <caret line="45" column="44" selection-start-line="45" selection-start-column="44" selection-end-line="45" selection-end-column="44" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1710" max-vertical-offset="3900">
+          <caret line="1107" column="63" selection-start-line="1107" selection-start-column="63" selection-end-line="1107" selection-end-column="63" />
           <folding>
             <element signature="docComment;class#SavedGame#0" expanded="false" />
             <element signature="docComment;field#SAVE_DATA_VERSION#0;class#SavedGame#0" expanded="false" />
@@ -1350,7 +1351,6 @@
             <element signature="method#saveGame#0;class#SavedGame#0" expanded="false" />
             <element signature="docComment;method#saveKeymap#0;class#SavedGame#0" expanded="false" />
             <element signature="method#saveKeymap#0;class#SavedGame#0" expanded="false" />
-            <element signature="e#11871#11934#0" expanded="true" />
             <element signature="docComment;method#autoGen#0;class#SavedGame#0" expanded="false" />
             <element signature="method#autoGen#0;class#SavedGame#0" expanded="false" />
             <element signature="e#12995#13104#0" expanded="false" />
@@ -1358,7 +1358,6 @@
             <element signature="method#validateDataVersion#0;class#SavedGame#0" expanded="false" />
             <element signature="docComment;method#validateFile#0;class#SavedGame#0" expanded="false" />
             <element signature="method#validateFile#0;class#SavedGame#0" expanded="false" />
-            <element signature="e#17425#17487#0" expanded="true" />
             <element signature="method#xml_getAllNodesByString#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_getNodeByString#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_readAOE_One#0;class#SavedGame#0" expanded="false" />
@@ -1384,6 +1383,46 @@
             <element signature="method#xml_writeTempObstacle#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_writeTerrain#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_writeDrawable#0;class#SavedGame#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/RunGame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5296128" vertical-offset="0" max-vertical-offset="1995">
+          <caret line="69" column="19" selection-start-line="69" selection-start-column="19" selection-end-line="69" selection-end-column="19" />
+          <folding>
+            <element signature="docComment;class#RunGame#0" expanded="false" />
+            <element signature="method#grusomelyKillTheMap#0;class#RunGame#0" expanded="false" />
+            <element signature="method#grusomelyKillTheController#0;class#RunGame#0" expanded="false" />
+            <element signature="method#closeGame#0;class#RunGame#0" expanded="false" />
+            <element signature="method#main#0;class#RunGame#0" expanded="false" />
+            <element signature="method#startNewGame#0;class#RunGame#0" expanded="false" />
+            <element signature="e#3939#3946#0" expanded="false" />
+            <element signature="method#startMapEditor#0;class#RunGame#0" expanded="false" />
+            <element signature="method#coverMapInGrass#0;class#RunGame#0" expanded="false" />
+            <element signature="method#loadGame#0;class#RunGame#0" expanded="false" />
+            <element signature="n#!!doc;n#exitGame#0;n#RunGame#0" expanded="true" />
+            <element signature="method#exitGame#0;class#RunGame#0" expanded="false" />
+            <element signature="method#initialize#0;class#RunGame#0" expanded="false" />
+            <element signature="method#populateMap#0;class#RunGame#0" expanded="false" />
+            <element signature="method#startGame#0;class#RunGame#0" expanded="false" />
+            <element signature="method#saveGameToDisk#0;class#RunGame#0" expanded="false" />
+            <element signature="e#13345#13403#0" expanded="true" />
+            <element signature="docComment;class#ProgramOpts#0;class#RunGame#0" expanded="false" />
+            <element signature="class#ProgramOpts#0;class#RunGame#0" expanded="false" />
+            <element signature="docComment;method#dbgOut#0;class#RunGame#0" expanded="false" />
+            <element signature="method#dbgOut#0;class#RunGame#0" expanded="false" />
+            <element signature="docComment;method#dbgOut#1;class#RunGame#0" expanded="false" />
+            <element signature="method#dbgOut#1;class#RunGame#0" expanded="false" />
+            <element signature="docComment;method#errOut#0;class#RunGame#0" expanded="false" />
+            <element signature="docComment;method#errOut#1;class#RunGame#0" expanded="false" />
+            <element signature="method#errOut#1;class#RunGame#0" expanded="false" />
+            <element signature="docComment;method#errOut#2;class#RunGame#0" expanded="false" />
+            <element signature="method#errOut#2;class#RunGame#0" expanded="false" />
+            <element signature="docComment;method#handleArgs#0;class#RunGame#0" expanded="false" />
+            <element signature="docComment;method#parseArgs#0;class#RunGame#0" expanded="false" />
+            <element signature="method#parseArgs#0;class#RunGame#0" expanded="false" />
           </folding>
         </state>
       </provider>

@@ -781,6 +781,12 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
             return -2;
         }
     }
+    
+    public void addItem(Item item, int x, int y) {
+    	super.getMap().addItem(item, x, y);
+    }
+    
+    
     //</editor-fold> 
     //<editor-fold desc="Area Effect" defaultstate="collapsed">
     /**

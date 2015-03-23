@@ -89,12 +89,12 @@ public class Map extends Thread implements MapMapEditor_Interface, MapUser_Inter
             System.exit(-6);
             return;
         }
-        my_internet_.start();
     }
 
     @Override
     public void run() {
         try {
+            my_internet_.start();
             Thread.sleep(Long.MAX_VALUE);
         } catch (InterruptedException e) {
             System.err.println("This error is supposed to appear on closing:");

@@ -1,17 +1,11 @@
 package src;
 
+import src.Not_part_of_iteration_2_requirements.Music;
 import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import java.net.URL;
-
-import javafx.application.Application;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
 
 import src.Not_part_of_iteration_2_requirements.BONUS.MapEditor.MapAddable;
 import src.Not_part_of_iteration_2_requirements.BONUS.MapEditor.MapAddableFactory;
@@ -123,7 +117,6 @@ public class RunGame {
         }
 
         startGame();
-        
         musicThread.start();
     }
 

@@ -184,7 +184,7 @@ public final class ControllerInternet {
             } catch (IOException ioe) {
                 System.err.println("Failed to receieve data in getBundleFromBufferOfSize");
                 ioe.printStackTrace();
-                RunGame.grusomelyKillTheMapAndTheController();
+                RunGame.closeGame();
                 System.exit(-4);
             }
             try {
@@ -194,7 +194,7 @@ public final class ControllerInternet {
                 System.err.println("The map is too big to fit in the internet buffer.");
                 // if the buffer is too small.
                 //buffer_size = buffer_size * 2;
-                RunGame.grusomelyKillTheMapAndTheController();
+                RunGame.closeGame();
                 System.exit(-4);
             }
         }

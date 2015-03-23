@@ -52,28 +52,30 @@ public class RunGame {
     private static int mapWidth_ = 35;
     private static boolean map_editor_mode_ = false;
     private static StringBuilder newUserName_ = new StringBuilder();
+    
+    public static void setNewMap(Map map) {
+        map_ = map;
+    }
 
-    /*
-     public static boolean getUseTCP() {
-     return RunGame.use_TCP;
-     }
-
-     public static void setUseTCP(boolean b) {
-     use_TCP = b;
-     }*/
-    public static void grusomelyKillTheMapAndTheController() {
+        public static void grusomelyKillTheMap() {
         if (RunGame.map_ != null) {
             map_.grusomelyKillTheMapThread();
             System.out.println("Killed the map thread");
         } else {
             System.out.println("The map thread is null");
         }
+    }
+            public static void grusomelyKillTheController() {
         if (RunGame.uc_ != null) {
             uc_.grusomelyKillTheControllerThread();
             System.out.println("Killed the controller thread");
         } else {
             System.out.println("The controller thread is null");
         }
+    }
+    public static void closeGame() {
+        grusomelyKillTheMap();
+        closeGame();
     }
 
     public static String getAvatarName() {

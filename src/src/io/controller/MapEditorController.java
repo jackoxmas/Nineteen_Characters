@@ -32,6 +32,7 @@ public class MapEditorController extends Controller implements Runnable {
 	public MapEditorController(Map map) {
 		super(map, new MapEditorView(),new MapEditRemapper(), "Temporary Name Map User");
 		super.setView(mappy_viewy_);
+		super.setNetworkIPTo("off");
 		map_ = super.getMap();
 
 

@@ -6,6 +6,8 @@ import src.Effect;
 import src.FacingDirection;
 
 public class SpreadingConeAreaEffectItem extends Item {
+
+    public int getID() { return 21; }
 	
 	int current_size_ = 0;
 	int max_size_;

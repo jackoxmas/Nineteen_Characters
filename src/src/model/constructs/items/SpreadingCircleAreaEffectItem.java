@@ -6,6 +6,8 @@ import src.Effect;
 import src.FacingDirection;
 
 public class SpreadingCircleAreaEffectItem extends Item {
+
+    public int getID() { return 20; }
 	
 	int current_size_ = 0;
 	int max_size_;

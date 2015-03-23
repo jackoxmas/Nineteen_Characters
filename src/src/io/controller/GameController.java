@@ -237,22 +237,34 @@ public class GameController extends Controller {
         } else if (command == Key_Commands.USE_SKILL_4) {
             music.playSpellSound();
         }
-                if (to_return.inventory_ != null) {
-            int size = to_return.inventory_.size();
-            if (size > 0) {
-                // ignore it
-                if (size > last_inventory_size) {
-                    music.playPickupItemSound();
-                } else if (size < last_inventory_size) {
-                    music.playDropItemSound();
+        // makes a cash register sound if your money goes down.
+
+        if (last_num_coins > 0) {
+            if (to_return.num_coins_ < last_num_coins) {
+                // don't make the cash register sound if you lose a life
+                if (to_return.stats_for_display_ != null && to_return.stats_for_display_.getLives_left_() >= last_lives_left) {
+                    music.playBuyingSound();
                 }
             }
-            last_inventory_size = size;
         }
-        if(to_return.stats_for_display_ != null ) {
+        last_num_coins = to_return.num_coins_;
+
+        if (to_return.inventory_ != null) {
+            if (last_inventory_size >= 0) {
+                if (to_return.inventory_.size() < last_inventory_size) {
+                    music.playDropItemSound();
+                } else if (to_return.inventory_.size() > last_inventory_size) {
+                    music.playPickupItemSound();
+                }
+            }
+            last_inventory_size = to_return.inventory_.size();
+        }
+
+        last_num_coins = to_return.num_coins_;
+        if (to_return.stats_for_display_ != null) {
             int lives = to_return.stats_for_display_.getLives_left_();
-            if(last_lives_left > 0) {
-                if(lives < last_lives_left) {
+            if (last_lives_left > 0) {
+                if (lives < last_lives_left) {
                     music.playDyingSound();
                 }
             }
@@ -261,6 +273,7 @@ public class GameController extends Controller {
     }
     private int last_inventory_size = -10;
     private int last_lives_left = -10;
+    private int last_num_coins = -10;
 
     private IO_Bundle sendCommandToMapWithText(Key_Commands command, String input) {
         if (SwingUtilities.isEventDispatchThread()) {

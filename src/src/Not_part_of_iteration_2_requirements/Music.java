@@ -28,19 +28,12 @@ public class Music extends Application implements Runnable {
     }
 
     public void playAttackSound() {
-        final URL punch_resource = getClass().getResource(punch_filename);
-        if (punch_resource == null) {
+        final URL resource = getClass().getResource(punch_filename);
+        if (resource == null) {
             System.out.println("Could not find " + punch_filename);
             return;
         }
-        AudioClip sound = new AudioClip(punch_resource.toString());
-        Runnable soundPlay2 = new Runnable() {
-            @Override
-            public void run() {
-                sound.play();
-            }
-        };
-        soundPool.execute(soundPlay2);
+        playAudio(resource);
     }
 
     private final String binding_filename = "/Binding_Sound.mp3";
@@ -48,19 +41,12 @@ public class Music extends Application implements Runnable {
     private final String spell_filename = "/Spell_Sound.mp3";
 
     public void playBindSound() {
-        final URL bind_resource = getClass().getResource(binding_filename);
-        if (bind_resource == null) {
+        final URL resource = getClass().getResource(binding_filename);
+        if (resource == null) {
             System.out.println("Could not find " + binding_filename);
             return;
         }
-        AudioClip sound = new AudioClip(bind_resource.toString());
-        Runnable soundPlay2 = new Runnable() {
-            @Override
-            public void run() {
-                sound.play();
-            }
-        };
-        soundPool.execute(soundPlay2);
+        playAudio(resource);
     }
 
     public void playSpellSound() {
@@ -69,14 +55,7 @@ public class Music extends Application implements Runnable {
             System.out.println("Could not find " + spell_filename);
             return;
         }
-        AudioClip sound = new AudioClip(resource.toString());
-        Runnable soundPlay2 = new Runnable() {
-            @Override
-            public void run() {
-                sound.play();
-            }
-        };
-        soundPool.execute(soundPlay2);
+        playAudio(resource);
     }
 
     public void playTalkingSound() {
@@ -85,14 +64,7 @@ public class Music extends Application implements Runnable {
             System.out.println("Could not find " + talking_filename);
             return;
         }
-        AudioClip sound = new AudioClip(resource.toString());
-        Runnable soundPlay2 = new Runnable() {
-            @Override
-            public void run() {
-                sound.play();
-            }
-        };
-        soundPool.execute(soundPlay2);
+        playAudio(resource);
     }
 
     private final String drop_filename = "/Drop_Item.mp3";
@@ -103,14 +75,7 @@ public class Music extends Application implements Runnable {
             System.out.println("Could not find " + drop_filename);
             return;
         }
-        AudioClip sound = new AudioClip(resource.toString());
-        Runnable soundPlay2 = new Runnable() {
-            @Override
-            public void run() {
-                sound.play();
-            }
-        };
-        soundPool.execute(soundPlay2);
+        playAudio(resource);
     }
 
     private final String pickup_filename = "/Pickup_Item.mp3";
@@ -121,14 +86,7 @@ public class Music extends Application implements Runnable {
             System.out.println("Could not find " + pickup_filename);
             return;
         }
-        AudioClip sound = new AudioClip(resource.toString());
-        Runnable soundPlay2 = new Runnable() {
-            @Override
-            public void run() {
-                sound.play();
-            }
-        };
-        soundPool.execute(soundPlay2);
+        playAudio(resource);
     }
 
     private final String dying_filename = "/Dying.mp3";
@@ -139,6 +97,20 @@ public class Music extends Application implements Runnable {
             System.out.println("Could not find " + dying_filename);
             return;
         }
+        playAudio(resource);
+    }
+
+    private final String cash_register_filename = "/Cash_Register.mp3";
+
+    public void playBuyingSound() {
+        final URL resource = getClass().getResource(cash_register_filename);
+        if (resource == null) {
+            System.out.println("Could not find " + cash_register_filename);
+            return;
+        }
+        playAudio(resource);
+    }
+    private void playAudio(URL resource) {
         AudioClip sound = new AudioClip(resource.toString());
         Runnable soundPlay2 = new Runnable() {
             @Override

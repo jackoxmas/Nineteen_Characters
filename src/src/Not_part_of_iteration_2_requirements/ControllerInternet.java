@@ -145,18 +145,6 @@ public final class ControllerInternet {
             // recieve IO_Bundle from map over UDP connection
             IO_Bundle to_recieve = getBundleFromBufferOfSize(60000);
             // Decompression the IO_Bundle if characters are compressed.
-            
-            if (to_recieve != null && to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
-                to_recieve.view_for_display_ = IO_Bundle.runLengthDecodeView(width, height,
-                        to_recieve.compressed_characters_, to_recieve.character_frequencies_);
-                /* More efficient to make it convert directly to colors*/
-                System.out.println("This branch of code is in need of maintainance");
-                System.exit(-16);
-                //to_recieve.color_for_display_ = IO_Bundle.runLengthDecodeColor(width, height,
-                  //      to_recieve.compressed_colors_, to_recieve.color_frequencies_);
-            } else {
-                // No Decompression
-            }
             return to_recieve;
             //}
 

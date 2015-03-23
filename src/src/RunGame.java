@@ -149,10 +149,10 @@ public class RunGame {
         villager1.getStatsPack().increaseQuantityOfExperienceBy(200);
         map_.addAsEntity(villager1, 3, 13);
         
-        SpreadingConeAreaEffectItem item1 = new SpreadingConeAreaEffectItem(4, FacingDirection.UP_LEFT);
+        SpreadingConeAreaEffectItem item1 = new SpreadingConeAreaEffectItem(4, Effect.HURT, FacingDirection.UP_LEFT);
         map_.addItem(item1, 10, 10);
 
-        SpreadingConeAreaEffectItem item2 = new SpreadingConeAreaEffectItem(4, FacingDirection.DOWN_RIGHT);
+        SpreadingConeAreaEffectItem item2 = new SpreadingConeAreaEffectItem(4, Effect.HURT, FacingDirection.DOWN_RIGHT);
         map_.addItem(item2, 10, 10);
         
        /* Monster strong = new Monster("monster1", '♟');

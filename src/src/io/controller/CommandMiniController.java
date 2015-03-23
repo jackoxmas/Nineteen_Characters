@@ -103,7 +103,7 @@ class CommandMiniController {
 						return "Successfully connected to ip address: " + foo;
 					} else {
 						cont_.tellNotToUseNetwork();
-						return "Something went wrong. Cannot connect to the ip address provided.";
+						return "The Internet is now OFF.";
 					}
 				} else {
 					return "The " + setIP + " command requires one word other than \"" + setIP + "\"" +

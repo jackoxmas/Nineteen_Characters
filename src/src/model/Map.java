@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -118,7 +119,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     @Override
     public IO_Bundle getMapAt(int x, int y, int width, int height) {
         char[][] view = makeView(x, y, width, height);
-        Color[][] colors = makeColors(x, y, width, height);
+        int[][] colors = makeColors(x, y, width, height);
         return new IO_Bundle(null, null, null, null, view, colors, null, null, null, 0, 0, 0, 0, null, null, null, 0, true);
         //Mapeditor has no game over condition, you are always alive.
     }
@@ -419,7 +420,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     char[][] view = makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);
-                    Color[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                    int[][] colors = makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);
                     if (!Key_Commands.DO_ABSOLUTELY_NOTHING.equals(command)) {
@@ -443,7 +444,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                     return return_package;
                 } else {
                     char[][] view = null;
-                    Color[][] colors = null;
+                    int[][] colors = null;
                     IO_Bundle return_package = new IO_Bundle(
                             null, null, null, null,
                             view,
@@ -518,13 +519,22 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         }
     }
 
-    public Color[][] makeColors(int x_center, int y_center, int width_from_center, int height_from_center) {
-        Color[][] colors = new Color[1 + 2 * height_from_center][1 + 2 * width_from_center];
+    /**
+     * Returns RGB color valued ints instead of Java objects to conserve network bandwidth
+     * @param x_center
+     * @param y_center
+     * @param width_from_center
+     * @param height_from_center
+     * @return 
+     */
+    public int[][] makeColors(int x_center, int y_center, int width_from_center, int height_from_center) {
+        int[][] colors = new int[1 + 2 * height_from_center][1 + 2 * width_from_center];
         int y_index = 0;
         for (int y = y_center - height_from_center; y <= y_center + height_from_center; ++y) {
             int x_index = 0;
             for (int x = x_center - width_from_center; x <= x_center + width_from_center; ++x) {
-                colors[y_index][x_index] = this.getColorRepresentation(x, y);
+                //colors[y_index][x_index] = new Color(this.getColorRepresentation(x, y).getRGB());
+                colors[y_index][x_index] = this.getColorRepresentation(x, y).getRGB();
                 ++x_index;
             }
             ++y_index;

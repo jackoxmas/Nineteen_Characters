@@ -5,6 +5,7 @@
  */
 package src.model.constructs;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import src.HardCodedStrings;
@@ -124,4 +125,6 @@ public final class Avatar extends Entity {
 
         return s;
     }
+    @Override
+    public Color getColor(){return Color.RED;}
 }

@@ -16,8 +16,11 @@ import src.model.constructs.items.TwoHandedWeapon;
 /**
  * Summoner Occupation, intellect +1.
  */
-public final class Summoner extends Occupation {
+public abstract class Summoner extends Occupation {
 
+	protected int boon_timer_ = 0; //Timer for temporary boon skill.
+    protected EntityStatsPack boon_stats_ = null;
+    
     public Summoner(Entity e) {
         super(e);
     }
@@ -25,7 +28,8 @@ public final class Summoner extends Occupation {
     public Summoner(Occupation o) {
         super(o);
     }
-    private Staff staff_ = null;
+    
+    protected Staff staff_ = null;
 
     @Override
     public void changeStats(EntityStatsPack current_stats) {
@@ -83,88 +87,24 @@ public final class Summoner extends Occupation {
     }
 
     @Override
-    public String getSkillNameFromNumber(int skill_number) {
-        super.getSkillNameFromNumber(skill_number); // checks input
-        switch (skill_number) {
-            case 1:
-                return "Confuse";
-            case 2:
-                return "Boon";
-            case 3:
-                return "Bane";
-            case 4:
-                return "Staff";
-            default:
-                System.err.println("Error in Summoner");
-                System.exit(-54);
-                return "";
-        }
-    }
-
-    @Override
-    public int performOccupationSkill(int number) {
-        if (number <= 0 || number > 4) {
-            System.err.println("Error in Summoner.performOccupationSkill()");
-            System.exit(-109);
-        }
-        final int cost = 1;
-        System.out.println("Starting skill 2: DEBUG");
-        int has_run_out_of_mana = getEntity().getStatsPack().deductCurrentManaBy(cost);
-        Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection();
-        if (has_run_out_of_mana == 0) {
-            if (number == 1) {
-                // influencing another's behavior [Confusion spell]
-                Random randomGenerator = new Random();
-                Boolean isConfused = randomGenerator.nextBoolean();
-                if (isConfused) {
-                    super.getEntity().receiveAttack(getSkill_1_(), null); // hurt myself by skill1
-                } else {
-                    if (target != null) {
-                        target.receiveAttack(getSkill_1_() * 2, null); // hurt enemy double [no attack-back]
-                    } else {
-                        // get your mana back
-                        getEntity().getStatsPack().increaseCurrentManaBy(cost);
-                    }
-                }
-            } else if (number == 2) {
-                // boon - magic that heals
-                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinLine(getSkill_2_() + 6, getSkill_2_(), Effect.HURT);
-                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_2_() + 1, getSkill_2_(), Effect.HEAL);
-            } else if (number == 3) {
-                // bane - magic that does damage or harm.
-                System.out.println("About to call Bane");
-                super.getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinArc(getSkill_3_() + 8, 2 * getSkill_3_(), Effect.HURT);
-                System.out.println("Finished calling Bane");
-            } else if (number == 4) {
-                // Staff attack
-                if (staff_ != null && target != null) {
-                        target.receiveAttack(getSkill_4_(), null); // hurt enemy [no attack-back]
-                } else {
-                    // get your mana back
-                    getEntity().getStatsPack().increaseCurrentManaBy(cost);
-                }
-            }
-        } else {
-            System.out.println("Out of mana");
-        }
-        return 0;
-    }
-
-    @Override
     public String toString() {
         return "Summoner";
     }
     
     @Override
     public void takeTurn(){
-    	
+    	if (boon_stats_ != null) {
+	    	if (boon_timer_ > 0) {
+	    		boon_timer_--;
+	    	} else {
+	    		super.getEntity().getStatsPack().reduceBy(boon_stats_);
+	    		boon_stats_ = null;
+	    	}
+    	}
     }
 
 	@Override
-	public Summoner switchToNextSubOccupation() {
-		//Ovverride this and make it abstract when we make summoner abstract!
-		return (this);
-	}
+	public abstract Summoner switchToNextSubOccupation();
 
 	@Override
 	public char getOccupationRepresentation() {

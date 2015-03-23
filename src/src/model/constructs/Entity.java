@@ -152,7 +152,7 @@ abstract public class Entity extends DrawableThing {
     }
 
     public int bindWounds() {
-        this.getMapRelation().areaEffectFunctor.effectAreaWithinRadius(1, getBind_wounds_()+1, Effect.HEAL);
+        this.getMapRelation().areaEffectFunctor.effectAreaWithinRadius(1, getBind_wounds_() + 1, Effect.HEAL);
         return 0;
     }
 
@@ -439,26 +439,26 @@ abstract public class Entity extends DrawableThing {
                 break;
             case BECOME_SMASHER: // switch to Smasher
                 this.becomeSmasher();
-                if(occupation_!=null){
-                	this.setRepresentation(occupation_.getOccupationRepresentation());
+                if (occupation_ != null) {
+                    this.setRepresentation(occupation_.getOccupationRepresentation());
                 }
                 break;
             case SWAP_SUB_OCCUPATION://Switch to next in the sub occupations
-            	this.swapSubClass();
-                if(occupation_!=null){
-                	this.setRepresentation(occupation_.getOccupationRepresentation());
+                this.swapSubClass();
+                if (occupation_ != null) {
+                    this.setRepresentation(occupation_.getOccupationRepresentation());
                 }
-            	break;
+                break;
             case BECOME_SUMMONER: // switch to Summoner
                 this.becomeSummoner();
-                if(occupation_!=null){
-                	this.setRepresentation(occupation_.getOccupationRepresentation());
+                if (occupation_ != null) {
+                    this.setRepresentation(occupation_.getOccupationRepresentation());
                 }
                 break;
             case BECOME_SNEAK: // switch to Sneaker
                 this.becomeSneak();
-                if(occupation_!=null){
-                	this.setRepresentation(occupation_.getOccupationRepresentation());
+                if (occupation_ != null) {
+                    this.setRepresentation(occupation_.getOccupationRepresentation());
                 }
                 break;
             case BIND_WOUNDS:
@@ -475,18 +475,24 @@ abstract public class Entity extends DrawableThing {
                 this.observe();
                 break;
             case USE_SKILL_1:
-                this.getOccupation().performOccupationSkill(1);
+                if (this.getOccupation() != null) {
+                    this.getOccupation().performOccupationSkill(1);
+                }
                 break;
             case USE_SKILL_2:
-                System.out.println("Performing Skill 2");
-                this.getOccupation().performOccupationSkill(2);
-                System.out.println("Already performed Skill 2");
+                if (this.getOccupation() != null) {
+                    this.getOccupation().performOccupationSkill(2);
+                }
                 break;
             case USE_SKILL_3:
-                this.getOccupation().performOccupationSkill(3);
+                if (this.getOccupation() != null) {
+                    this.getOccupation().performOccupationSkill(3);
+                }
                 break;
             case USE_SKILL_4:
-                this.getOccupation().performOccupationSkill(4);
+                if (this.getOccupation() != null) {
+                    this.getOccupation().performOccupationSkill(4);
+                }
                 break;
             case INCREMENT_BIND:
                 this.spendSkillpointOn(SkillEnum.BIND_WOUNDS);
@@ -887,8 +893,8 @@ abstract public class Entity extends DrawableThing {
     public int gainExperiencePoints(int amount) {
         int num_level_ups = stats_pack_.increaseQuantityOfExperienceBy(amount);
         num_skillpoints_ += num_level_ups;
-        for(int i = 0; i < num_level_ups; ++i) {
-            if(getOccupation() != null) {
+        for (int i = 0; i < num_level_ups; ++i) {
+            if (getOccupation() != null) {
                 getOccupation().changeStats(stats_pack_);
             }
         }
@@ -953,20 +959,22 @@ abstract public class Entity extends DrawableThing {
         }
         return 0;
     }
+
     /**
-     * Set the entity occupation to it's next sub occupation. Does not reset stats, nor unequip items!!
-     * If occupation is null then does nothing
+     * Set the entity occupation to it's next sub occupation. Does not reset
+     * stats, nor unequip items!! If occupation is null then does nothing
      * Returns -1 if failed to switch due to null occupation, else returns 0.
+     *
      * @return -1 or 0
-     * 
+     *
      */
-    public int swapSubClass(){
-    	if(occupation_!=null){
-    		occupation_ = occupation_.switchToNextSubOccupation();
-    		return 0;
-    	}
-    	return -1;
-    	
+    public int swapSubClass() {
+        if (occupation_ != null) {
+            occupation_ = occupation_.switchToNextSubOccupation();
+            return 0;
+        }
+        return -1;
+
     }
 
     /**
@@ -975,9 +983,9 @@ abstract public class Entity extends DrawableThing {
     public int becomeSummoner() {
         this.unEquipEverything(); // You cannot change classes if you hold weapons of another class
         if (occupation_ != null) {
-            occupation_ = new Summoner(this.occupation_);
+            occupation_ = new SummonerRookie(this.occupation_);
         } else {
-            occupation_ = new Summoner(this);
+            occupation_ = new SummonerRookie(this);
         }
         return 0;
     }
@@ -1007,9 +1015,9 @@ abstract public class Entity extends DrawableThing {
      */
     public boolean receiveAttack(int damage, Entity attacker) {
         final int receieved_damage_before_modifiers = damage;
-        int amount_of_damage_after_modifiers = damage - (getStatsPack().getDefensive_rating_() + getStatsPack().getArmor_rating_())/2;
+        int amount_of_damage_after_modifiers = damage - (getStatsPack().getDefensive_rating_() + getStatsPack().getArmor_rating_()) / 2;
         // The least damage a valid attack can do is 1.
-        if(receieved_damage_before_modifiers > 0 && amount_of_damage_after_modifiers <=0) {
+        if (receieved_damage_before_modifiers > 0 && amount_of_damage_after_modifiers <= 0) {
             amount_of_damage_after_modifiers = 1;
         }
         if (amount_of_damage_after_modifiers < 0) {
@@ -1023,7 +1031,7 @@ abstract public class Entity extends DrawableThing {
             int money = this.num_gold_coins_possessed_;
             this.decrementNumGoldCoinsBy(money); // All money goes to my attacker.
             attacker.incrementNumGoldCoinsBy(money);
-            
+
             // all my experience goes to my attacker.
             attacker.gainExperiencePoints(this.getStatsPack().getQuantity_of_experience_());
         } else {
@@ -1048,7 +1056,7 @@ abstract public class Entity extends DrawableThing {
     }
 
     public String toString() {
-        String s = "Entity name: " + name_;
+        String s = "Entity name(" + getStatsPack().getLives_left_() + "): " + name_;
 
         /*if (!(equipped_item_ == null)) {
          s += "\n equppied item: " + equipped_item_.name_;
@@ -1068,8 +1076,11 @@ abstract public class Entity extends DrawableThing {
         } else {
             s += "Not null";
         }
+        try {
+            s += "\n associated with map:" + map_relationship_.isAssociatedWithMap();
+        } catch (NullPointerException e) {
 
-        s += "\n associated with map:" + map_relationship_.isAssociatedWithMap();
+        }
 
         return s;
     }

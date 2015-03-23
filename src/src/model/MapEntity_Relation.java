@@ -293,6 +293,35 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
         }
         return this.moveInDirection(amount_to_move_in_x_direction, amount_to_move_in_y_direction);
     }
+    
+    public int moveAwayFromEntity(Entity entity) {
+        if (entity == null || entity.getMapRelation() == null || ! entity.hasLivesLeft()) {
+            return -1; // This thing cannot have its position ascertained without a map relation.
+        }
+        final int drawables_x = entity.getMapRelation().getMyXCoordinate();
+        final int drawables_y = entity.getMapRelation().getMyYCoordinate();
+        final int my_x = this.getMyXCoordinate();
+        final int my_y = this.getMyYCoordinate();
+        final int delta_x = drawables_x - my_x;
+        final int delta_y = drawables_y - my_y;
+        final int amount_to_move_in_x_direction;
+        if (delta_x > 0) {
+            amount_to_move_in_x_direction = -1;
+        } else if ((delta_x < 0)) {
+            amount_to_move_in_x_direction = 1;
+        } else {
+            amount_to_move_in_x_direction = 0;
+        }
+        final int amount_to_move_in_y_direction;
+        if (delta_y > 0) {
+            amount_to_move_in_y_direction = -1;
+        } else if ((delta_y < 0)) {
+            amount_to_move_in_y_direction = 1;
+        } else {
+            amount_to_move_in_y_direction = 0;
+        }
+        return this.moveInDirection(amount_to_move_in_x_direction, amount_to_move_in_y_direction);
+    }
 
     /**
      * An item underneath you can be picked up using the parameters 0,0. 0 if
@@ -498,6 +527,128 @@ public class MapEntity_Relation extends MapDrawableThing_Relation {
                 target_tile = super.getMap().getTile(x - 1, y - 1);
                 if (target_tile != null) {
                     return target_tile.getEntity();
+                }
+                break;
+            default:
+                System.err
+                        .println("Impossible error in getEntityInFacingDirection");
+                System.exit(-44);
+                break;
+        }
+        return null;
+    }
+    
+
+    /**
+     * Gets the Entity you are facing
+     *
+     * @author John-Michael Reed
+     * @return null if no entity is there.
+     */
+    public Entity getEntityInFacingDirection(int range) {
+        MapTile target_tile = null;
+        int x = this.getMyXCoordinate();
+        int y = this.getMyYCoordinate();
+        FacingDirection f = entity_.getFacingDirection();
+        switch (f) {
+            case UP:
+            	for (int i = 0; i < range; i++) {
+            		y++;
+	                target_tile = super.getMap().getTile(x, y);
+	                if (target_tile != null) {
+	                    Entity entity = target_tile.getEntity();
+	                    if (entity != null) {
+	                    	return entity;
+	                    }
+	                }
+            	}
+                break;
+            case DOWN:
+            	for (int i = 0; i < range; i++) {
+            		y--;
+	                target_tile = super.getMap().getTile(x, y);
+	                if (target_tile != null) {
+	                    Entity entity = target_tile.getEntity();
+	                    if (entity != null) {
+	                    	return entity;
+	                    }
+                    }
+                }
+                break;
+            case RIGHT:
+            	for (int i = 0; i < range; i++) {
+            		x++;
+	                target_tile = super.getMap().getTile(x, y);
+	                if (target_tile != null) {
+	                    Entity entity = target_tile.getEntity();
+	                    if (entity != null) {
+	                    	return entity;
+	                    }
+                    }
+                }
+                break;
+            case LEFT:
+            	for (int i = 0; i < range; i++) {
+            		x--;
+	                target_tile = super.getMap().getTile(x, y);
+	                if (target_tile != null) {
+	                    Entity entity = target_tile.getEntity();
+	                    if (entity != null) {
+	                    	return entity;
+	                    }
+                    }
+                }
+                break;
+            case UP_RIGHT:
+            	for (int i = 0; i < range; i++) {
+            		x++;
+            		y++;
+	                target_tile = super.getMap().getTile(x, y);
+	                if (target_tile != null) {
+	                    Entity entity = target_tile.getEntity();
+	                    if (entity != null) {
+	                    	return entity;
+	                    }
+	                }
+	            }
+                break;
+            case UP_LEFT:
+            	for (int i = 0; i < range; i++) {
+            		x--;
+            		y++;
+	                target_tile = super.getMap().getTile(x, y);
+	                if (target_tile != null) {
+	                    Entity entity = target_tile.getEntity();
+	                    if (entity != null) {
+	                    	return entity;
+	                    }
+                    }
+                }
+                break;
+            case DOWN_RIGHT:
+            	for (int i = 0; i < range; i++) {
+            		x++;
+            		y--;
+	                target_tile = super.getMap().getTile(x, y);
+	                if (target_tile != null) {
+	                    Entity entity = target_tile.getEntity();
+	                    if (entity != null) {
+	                    	return entity;
+	                    }
+                    }
+                }
+                break;
+            case DOWN_LEFT:
+            	for (int i = 0; i < range; i++) {
+            		x--;
+            		y--;
+	                target_tile = super.getMap().getTile(x, y);
+	                if (target_tile != null) {
+	                    Entity entity = target_tile.getEntity();
+	                    if (entity != null) {
+	                    	return entity;
+	                    }
+                    }
                 }
                 break;
             default:

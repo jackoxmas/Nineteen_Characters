@@ -27,8 +27,11 @@ public class Monster extends Entity {
         options.add("Select a skill to use on me. " + HardCodedStrings.getAllSkills);
         return options;
     }
+    boolean is_running_ = false;
+    int turns_to_run_ = 0;
     int turns_to_follow_ = 0;
     Entity Entity_to_follow_ = null;
+    Entity Entity_to_avoid_ = null;
 
     public int getFollowTurns() { return turns_to_follow_; }
 
@@ -55,14 +58,25 @@ public class Monster extends Entity {
 
     @Override
     public void takeTurn() {
-        if (Entity_to_follow_ != null && Entity_to_follow_.getMapRelation() != null
-                && Entity_to_follow_.hasLivesLeft() && turns_to_follow_ > 0) {
-            //attack then follow.
-            attackIfNear(Entity_to_follow_);
-            follow(Entity_to_follow_);
-            --turns_to_follow_;
-            if (turns_to_follow_ < 0) {
-                Entity_to_follow_ = null;
+    	if (!is_running_) {
+	        if (Entity_to_follow_ != null && Entity_to_follow_.getMapRelation() != null
+	                && Entity_to_follow_.hasLivesLeft() && turns_to_follow_ > 0) {
+	    		System.out.println("THIS SHOULD APPEAR !!!!!!!!!!!!!!!!!!!!!");
+	            //attack then follow.
+	            attackIfNear(Entity_to_follow_);
+	            follow(Entity_to_follow_);
+	            --turns_to_follow_;
+	            if (turns_to_follow_ == 0) {
+	                stopFollowing();
+	            }
+	        }
+    	}
+    	else if (Entity_to_avoid_ != null && Entity_to_avoid_.getMapRelation() != null
+                && Entity_to_avoid_.hasLivesLeft() && turns_to_run_ > 0) {
+            run(Entity_to_avoid_);
+            --turns_to_run_;
+            if (turns_to_follow_ == 0) {
+                stopAvoiding();
             }
         }
 
@@ -127,6 +141,35 @@ public class Monster extends Entity {
         System.out.println("pythagorean_distance  in Monster.receiveAttack: " + pythagorean_distance);
         return 0;
     }
+    
+    /**
+     * Follow the given entity, AKA, move a square towards it.
+     *
+     * @param followee
+     * @return 0
+     */
+    private int run(Entity avoidee) {
+        if (avoidee == null || avoidee.getMapRelation() == null || !avoidee.hasLivesLeft()) {
+            System.out.println("Avoidee is gone");
+            // precondition violated
+            return -1;
+        }
+        System.out.println("Avoidee is " + avoidee.name_ + " Monster.receiveAttack");
+        final int zero_if_I_moved = getMapRelation().moveAwayFromEntity(avoidee);
+        return 0;
+    }
+    
+    public int stopFollowing() {
+    	turns_to_follow_ = 0;
+        Entity_to_follow_ = null;
+        return 0;
+    }
+    
+    public int stopAvoiding() {
+    	turns_to_run_ = 0;
+        Entity_to_avoid_ = null;
+        return 0;
+    }
 
     /**
      * Attempts to attack the given entity if they are near.
@@ -166,7 +209,7 @@ public class Monster extends Entity {
             boolean isAlive = super.receiveAttack(damage, attacker);
             if (isAlive) {
                 if (attacker != null && attacker.getMapRelation() != null && attacker.hasLivesLeft()) {
-                    setFollowing(attacker, 10);//Arbitary value for time to follow the thing.
+                    setFollowing(attacker, 6);//Arbitrary value for time to follow the thing.
                     follow(attacker);
                     attackIfNear(attacker);
                 }
@@ -179,4 +222,22 @@ public class Monster extends Entity {
             return super.receiveAttack(damage, attacker);
         }
     }
+
+	public void causeFear(Entity avoidee, int turns) {
+		turns_to_run_ = turns;
+		Entity_to_avoid_ = avoidee;
+	}
+
+    /**
+     * Monsters don't respawn.
+     */
+    @Override
+    public void commitSuicide() {
+        int health_left = getStatsPack().getCurrent_life_();
+        getStatsPack().deductCurrentLifeBy(health_left);
+        getStatsPack().decreaseLivesLeftByOne();
+        gameOver();
+        
+    }
+
 }

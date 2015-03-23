@@ -74,7 +74,7 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
             //System.out.println("Entetered sleep loop");
             try {
                 //if(!controllerThread_.interrupted()){//If we are interuppted, don't bother sleeping again.
-                Thread.sleep(50L);
+                Thread.sleep(100L);
                 process();
                 //}
             } catch (InterruptedException e) {

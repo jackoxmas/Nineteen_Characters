@@ -117,6 +117,18 @@ public class Villager extends Entity {
         }
     }
 
+    /**
+     * Villagers don't respawn.
+     */
+    @Override
+    public void commitSuicide() {
+        int health_left = getStatsPack().getCurrent_life_();
+        getStatsPack().deductCurrentLifeBy(health_left);
+        getStatsPack().decreaseLivesLeftByOne();
+        gameOver();
+        
+    }
+
     @Override
     public void takeTurn() {
 

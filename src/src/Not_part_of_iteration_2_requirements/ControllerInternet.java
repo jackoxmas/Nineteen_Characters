@@ -22,6 +22,7 @@ import src.io.controller.GameController;
 
 import src.model.Map;
 import src.Not_part_of_iteration_2_requirements.MapInternet;
+import src.RunGame;
 
 /**
  * Used for sending and receiving data from a Controller [not part of Iteration
@@ -142,14 +143,17 @@ public final class ControllerInternet {
                 System.exit(-23);
             }
             // recieve IO_Bundle from map over UDP connection
-            IO_Bundle to_recieve = getBundleFromBufferOfSize(80000);
+            IO_Bundle to_recieve = getBundleFromBufferOfSize(60000);
             // Decompression the IO_Bundle if characters are compressed.
             
             if (to_recieve != null && to_recieve.view_for_display_ == null && to_recieve.compressed_characters_ != null) {
                 to_recieve.view_for_display_ = IO_Bundle.runLengthDecodeView(width, height,
                         to_recieve.compressed_characters_, to_recieve.character_frequencies_);
-                to_recieve.color_for_display_ = IO_Bundle.runLengthDecodeColor(width, height,
-                        to_recieve.compressed_colors_, to_recieve.color_frequencies_);
+                /* More efficient to make it convert directly to colors*/
+                System.out.println("This branch of code is in need of maintainance");
+                System.exit(-16);
+                //to_recieve.color_for_display_ = IO_Bundle.runLengthDecodeColor(width, height,
+                  //      to_recieve.compressed_colors_, to_recieve.color_frequencies_);
             } else {
                 // No Decompression
             }
@@ -163,6 +167,11 @@ public final class ControllerInternet {
         }
     }
 
+    /**
+     * Kills the program if the buffer is not big enough [testing]
+     * @param buffer_size
+     * @return 
+     */
     private IO_Bundle getBundleFromBufferOfSize(int buffer_size) {
         boolean is_too_small = true;
         IO_Bundle to_return = null;
@@ -173,7 +182,10 @@ public final class ControllerInternet {
             try {
                 udp_socket_for_incoming_signals.receive(recvPacket);
             } catch (IOException ioe) {
+                System.err.println("Failed to receieve data in getBundleFromBufferOfSize");
                 ioe.printStackTrace();
+                RunGame.grusomelyKillTheMapAndTheController();
+                System.exit(-4);
             }
             try {
                 to_return = ControllerInternet.bytesToBundle(recieved);
@@ -181,7 +193,9 @@ public final class ControllerInternet {
             } catch (IOException eof) {
                 System.err.println("The map is too big to fit in the internet buffer.");
                 // if the buffer is too small.
-                buffer_size = buffer_size * 2;
+                //buffer_size = buffer_size * 2;
+                RunGame.grusomelyKillTheMapAndTheController();
+                System.exit(-4);
             }
         }
         return to_return;

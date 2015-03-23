@@ -45,15 +45,17 @@ public class MapDrawableThing_Relation {
             int bottom = getMyYCoordinate() - radius;
             for (int i = top; i >= bottom; --i) {
                 for (int j = left_edge; j <= right_edge; ++j) {
-
-                    int reduction = 0;
-                    if (effect == Effect.HEAL || effect == Effect.HURT) {
-                        int damage_reduction_x = Math.abs(getMyXCoordinate() - j);
-                        int damage_reduction_y = Math.abs(getMyYCoordinate() - i);
-                        reduction = damage_reduction_x + damage_reduction_y;
-                    }
-
-                    repeat(j, i, strength - reduction, effect);
+                	if (!(i == top && j == left_edge || i == top && j == right_edge ||
+                			i == bottom && j == left_edge || i == 0 && j == right_edge)) {
+	                    int reduction = 0;
+	                    if (effect == Effect.HEAL || effect == Effect.HURT) {
+	                        int damage_reduction_x = Math.abs(getMyXCoordinate() - j);
+	                        int damage_reduction_y = Math.abs(getMyYCoordinate() - i);
+	                        reduction = damage_reduction_x + damage_reduction_y;
+	                    }
+	
+	                    repeat(j, i, strength - reduction, effect);
+                	}
                 }
             }
         }

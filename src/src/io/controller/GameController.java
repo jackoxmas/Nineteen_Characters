@@ -255,6 +255,8 @@ public class GameController extends Controller {
             music.playSpellSound();
         } else if (command == Key_Commands.USE_SKILL_4) {
             music.playSpellSound();
+        } else if(command == Key_Commands.DROP_LAST_ITEM) {
+            music.playDropItemSound();
         }
 
         if (to_return != null && to_return.strings_for_communication_ != null

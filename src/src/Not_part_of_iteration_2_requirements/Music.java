@@ -95,6 +95,24 @@ public class Music extends Application implements Runnable {
         soundPool.execute(soundPlay2);
     }
 
+    private final String drop_filename = "/Drop_Item.mp3";
+
+    public void playDropItemSound() {
+        final URL resource = getClass().getResource(drop_filename);
+        if (resource == null) {
+            System.out.println("Could not find " + drop_filename);
+            return;
+        }
+        AudioClip sound = new AudioClip(resource.toString());
+        Runnable soundPlay2 = new Runnable() {
+            @Override
+            public void run() {
+                sound.play();
+            }
+        };
+        soundPool.execute(soundPlay2);
+    }
+
     @Override
     public synchronized void start(Stage primaryStage) {
         try {

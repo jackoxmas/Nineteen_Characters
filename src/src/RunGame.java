@@ -159,9 +159,6 @@ public class RunGame {
         villager1.getStatsPack().increaseQuantityOfExperienceBy(200);
         map_.addAsEntity(villager1, 3, 13);
         
-        SpreadingLineAreaEffectItem item2 = new SpreadingLineAreaEffectItem(16, Effect.HURT, FacingDirection.DOWN_RIGHT);
-        map_.addItem(item2, 10, 10);
-        
         Monster strong = new Monster("monster1", '♟');
         strong.getStatsPack().increaseQuantityOfExperienceBy(400);
         strong.getStatsPack().increaseDefenseLevelByOne();

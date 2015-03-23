@@ -8,10 +8,12 @@ package src.model.constructs;
 import java.util.Random;
 
 import src.Effect;
+import src.FacingDirection;
 import src.SkillEnum;
 import src.io.view.display.Display;
 import src.model.constructs.items.Bow;
 import src.model.constructs.items.OneHandedWeapon;
+import src.model.constructs.items.SpreadingLineAreaEffectItem;
 import src.model.constructs.items.Trap;
 import src.model.constructs.items.TwoHandedWeapon;
 
@@ -193,10 +195,11 @@ public final class Sneak extends Occupation {
                 // Bow attack
                 Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection();
                 if (bow_ != null && target != null) {
-                    target.receiveAttack(getSkill_4_(), null); // hurt enemy [no attack-back]
+                    target.receiveAttack(0, null); // hurt enemy [no attack-back]
                 }
-                super.getEntity().getMapRelation().areaEffectFunctor.
-                        effectAreaWithinLine(getSkill_2_() + 100, getSkill_2_(), Effect.HURT);
+
+                SpreadingLineAreaEffectItem arrow = new SpreadingLineAreaEffectItem(12 + getSkill_4_()*4, 2 + getSkill_4_()*2, Effect.HURT, super.getEntity().getFacingDirection());
+                super.getEntity().getMapRelation().addItem(arrow, getEntity().getMapRelation().getMyXCoordinate(), getEntity().getMapRelation().getMyYCoordinate());
             }
         } else {
             Display.getDisplay().setMessage("You are out of mana");

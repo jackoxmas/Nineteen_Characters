@@ -28,7 +28,7 @@ public class IO_Bundle implements Serializable {
             PrimaryHandHoldable pri, SecondaryHandHoldable sec,
             ArrayList<String> sfc, int num_coins, boolean is_alive
     ) {
-        observation_string_ = new String(observation_string);
+        observation_string_ = new String(observation_string).trim();
         view_for_display_ = v;
         color_for_display_ = c;
         if (i != null) {

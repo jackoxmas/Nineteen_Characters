@@ -179,6 +179,7 @@ public final class ControllerInternet {
                 to_return = ControllerInternet.bytesToBundle(recieved);
                 is_too_small = false;
             } catch (IOException eof) {
+                eof.printStackTrace();
                 System.err.println("The map is too big to fit in the internet buffer.");
                 // if the buffer is too small.
                 //buffer_size = buffer_size * 2;

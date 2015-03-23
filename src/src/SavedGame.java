@@ -376,6 +376,8 @@ public class SavedGame {
      */
     private static File validateFile(String filepath, String fileExt) {
         RunGame.dbgOut("FUNC: validateFile()", 3);
+        RunGame.dbgOut("validateFile(): arg0 = " + filepath + "; arg1 = " + fileExt, 4);
+
         File ret_file;
         // if the filepath is null or 0-length, autogenerate the file in the current dir
         if (filepath == null || filepath.length() == 0) {
@@ -397,7 +399,7 @@ public class SavedGame {
             ret_file = new File(ret_file.getAbsolutePath() + fileExt);
 
         // Check that the file can be read and written to
-        if (!ret_file.canRead() || !ret_file.canWrite())
+        if (ret_file.exists() && (!ret_file.canRead() || !ret_file.canWrite()))
             return null;
 
         RunGame.dbgOut("Validate File: returning found file: " + ret_file.getPath(), 4);

@@ -178,7 +178,7 @@ public class Monster extends Entity {
      * @return
      */
     private boolean attackIfNear(Entity followee) {
-        if (followee != null && Entity_to_avoid_ != null && followee.getMapRelation() != null && followee.hasLivesLeft()) {
+        if (followee != null && followee.getMapRelation() != null && followee.hasLivesLeft()) {
             final double epsilon = .0001;
             final double pythagorean_distance = getMapRelation().measureDistanceTowardEntity(followee);
             if (pythagorean_distance >= 0 - epsilon && pythagorean_distance < 2) {

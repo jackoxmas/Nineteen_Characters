@@ -150,33 +150,28 @@ public class SavedGame {
                 throw new Exception("Invalid data version");
 
             // Load the user controller
-            NodeList ns_result = root.getElementsByTagName(XML_KEYMAP);
+            Node n_keymap = xml_getNodeByString(root, XML_KEYMAP);
+            LinkedList<Node> bindings = xml_getAllNodesByString(n_keymap, "remap");
+
             int numkeys = 0;
-            Node tmp_nRemap, tmp_nKey;
-            Character tmp_char;
-            Key_Commands tmp_cmd;
+            Node d_data;
+            Character t_key;
+            Key_Commands t_cmd;
+            RunGame.dbgOut("Found " + bindings.size() + " entries.");
+            for (Node b : bindings) {
+                d_data = b.getAttributes().getNamedItem("key");
+                if (d_data == null) { throw new Exception("Malformed key @ " + numkeys); }
+                t_key = d_data.getTextContent().charAt(0);
 
-            for (; numkeys < ns_result.getLength(); numkeys++) {
-                tmp_nRemap = ns_result.item(numkeys);
-                tmp_nKey = tmp_nRemap.getAttributes().getNamedItem(XML_KEY);
-                if (tmp_nKey == null
-                        || tmp_nKey.getNodeValue().length() != 1
-                        || tmp_nKey.getTextContent() == null
-                        || tmp_nKey.getTextContent().length() == 0) {
-                    RunGame.errOut("Malformed key remapping @ index = " + numkeys);
-                    continue;
-                }
 
-                tmp_char = tmp_nKey.getNodeValue().charAt(0);
-                tmp_cmd = Key_Commands.valueOf(tmp_nKey.getTextContent());
-                if (tmp_cmd == null) {
-                    RunGame.errOut("Malformed key remapping, invalid cmd @ index = " + numkeys);
-                    continue;
-                }
+                t_cmd = Key_Commands.valueOf(b.getTextContent());
+                if (t_cmd == null) { throw new Exception("Malformed key @ " + numkeys); }
 
-                ret_kMap.put(tmp_char, tmp_cmd);
-                RunGame.dbgOut("Loaded mapping: " + tmp_char + " -> " + tmp_cmd.name(), 5);
+                ret_kMap.put(t_key, t_cmd);
+                RunGame.dbgOut("Loaded mapping: " + t_key + " -> " + t_cmd.name(), 5);
+                numkeys++;
             }
+
             RunGame.dbgOut("Processed " + numkeys + " key remaps.", 3);
 
             return ret_kMap;

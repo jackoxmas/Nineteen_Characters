@@ -65,6 +65,7 @@ public class RunGame {
             System.err.println("This interrupted exception should never ever happen");
             System.exit(77);
         }
+        map_ = map;
         map_.start();
         map_ = map;
     }
@@ -487,7 +488,7 @@ public class RunGame {
                 RunGame.errOut("MAIN: Could not load map from: " + args[pOpts_.lsg_path]);
             } else {
                 RunGame.dbgOut("Game loaded from arguments", 3);
-                map_ = tmp_map; // otherwise, apply the loaded map
+                setNewMap(tmp_map); // otherwise, apply the loaded map
             }
         }
         if (pOpts_.editor_flag) {

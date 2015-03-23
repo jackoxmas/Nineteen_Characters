@@ -1,5 +1,6 @@
 package src.model.constructs;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import src.Effect;
@@ -9,7 +10,7 @@ import src.io.view.display.Display;
 import src.model.constructs.items.SpreadingCircleAreaEffectItem;
 import src.model.constructs.items.SpreadingLineAreaEffectItem;
 
-public class SummonerUltimate extends Summoner {
+public class SummonerUltimate extends Summoner implements Serializable {
 
     public int getID() { return 26; }
 

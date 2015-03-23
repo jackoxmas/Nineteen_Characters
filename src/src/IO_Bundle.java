@@ -24,7 +24,7 @@ public class IO_Bundle implements Serializable {
 
     public IO_Bundle(ArrayList<Character> unchanged_characters, ArrayList<Short> character_frequencies,
             ArrayList<Color> compressed_colors, ArrayList<Short> color_frequencies,
-            char[][] v, Color[][] c, ArrayList<PickupableItem> i,
+            char[][] v, int[][] c, ArrayList<PickupableItem> i,
             EntityStatsPack s, Occupation o, int n, int bi, int ba, int ob,
             PrimaryHandHoldable pri, SecondaryHandHoldable sec,
             ArrayList<String> sfc, int num_coins, boolean is_alive
@@ -54,6 +54,7 @@ public class IO_Bundle implements Serializable {
         color_for_display_ = c;
         if (i != null) {
             inventory_ = new ArrayList<PickupableItem>(i);
+            inventory_.trimToSize();
         } else {
             inventory_ = null;
         }
@@ -197,7 +198,7 @@ public class IO_Bundle implements Serializable {
     public Color[] compressed_colors_;
     public final short[] color_frequencies_;
     public char[][] view_for_display_;
-    public Color[][] color_for_display_;
+    public int[][] color_for_display_;
     public final PrimaryHandHoldable primary_;
     public final SecondaryHandHoldable second_;
     public final ArrayList<PickupableItem> inventory_;

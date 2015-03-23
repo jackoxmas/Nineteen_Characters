@@ -182,7 +182,7 @@ public class MapInternet extends Thread {
                     char[][] view = my_owner_.makeView(to_recieve_command.getMapRelation().getMyXCoordinate(),
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);
-                    Color[][] colors = my_owner_.makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
+                    int[][] colors = my_owner_.makeColors(to_recieve_command.getMapRelation().getMyXCoordinate(),
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);
                     if (!Key_Commands.DO_ABSOLUTELY_NOTHING.equals(command)) {
@@ -208,7 +208,7 @@ public class MapInternet extends Thread {
                     return;
                 } else {
                     char[][] view = null;
-                    Color[][] colors = null;
+                    int[][] colors = null;
                     IO_Bundle return_package = new IO_Bundle(
                             null, null, null, null,
                             view,
@@ -322,11 +322,11 @@ public class MapInternet extends Thread {
                 }
                 byte[] to_send = ControllerInternet.bundleToBytes(bundle_to_send_);
                 if (frame_number % 256 == 0) {
-                    if (is_using_compression) {
-                        System.out.print("With compression, ");
-                    } else {
+                    //if (is_using_compression) {
+                    //    System.out.print("With compression, ");
+                    //} else {
                         System.out.print("Without compression, ");
-                    }
+                    //}
                     System.out.println("number of bytes sent = " + to_send.length);
                 }
                 ++frame_number;

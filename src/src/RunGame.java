@@ -99,16 +99,18 @@ public class RunGame {
     }
 
     public static void main(String[] args) {
-        parseArgs(args); // Parse command line arguments
-        handleArgs(args);
-        if (map_editor_mode_) {
-            startMapEditor();
-        }
+    	parseArgs(args); // Parse command line arguments
+    	handleArgs(args);
+    	if(!pOpts_.lsg_flag){
+    		if (map_editor_mode_) {
+    			startMapEditor();
+    		}
 
-        if (map_ == null) {
-            initialize();
-            populateMap();
-        }
+    	if (map_ == null) {
+    		initialize();
+    		populateMap();
+    	}
+    }
 
         startGame();
     }
@@ -495,7 +497,6 @@ public class RunGame {
             map_editor_mode_ = true;
         }
     }
-
     /**
      * Parses an array of String objects for program options and sets their
      * appropriate values in {@link ProgramOpts}.

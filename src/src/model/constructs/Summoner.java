@@ -9,6 +9,7 @@ import java.util.Random;
 
 import src.Effect;
 import src.SkillEnum;
+import src.io.view.display.Display;
 import src.model.constructs.items.OneHandedWeapon;
 import src.model.constructs.items.Staff;
 import src.model.constructs.items.TwoHandedWeapon;
@@ -114,9 +115,10 @@ public abstract class Summoner extends Occupation {
     		if (boon_timer_ > 0) {
     			boon_timer_--;
     		} else {
-    			deActivateBoon();
+    			//deActivateBoon();
    				super.getEntity().getStatsPack().reduceBy(boon_stats_);
    				boon_stats_ = null;
+   				Display.getDisplay().setMessage("Tank has ended.");
    			}
     	}
     	

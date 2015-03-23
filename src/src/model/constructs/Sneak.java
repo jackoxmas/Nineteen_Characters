@@ -201,13 +201,17 @@ public final class Sneak extends Occupation {
                 getEntity().setViewable(!is_visible);
             } else if (number == 4) {
                 // Bow attack
-                Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection();
-                if (bow_ != null && target != null) {
-                    target.receiveAttack(0, super.getEntity()); // hurt enemy [no attack-back]
+                Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection(20);
+                if (bow_ != null) {
+                	if (target != null) {
+	                    target.receiveAttack(1, super.getEntity()); // hurt enemy [no attack-back]
+                	}
+                    SpreadingLineAreaEffectItem arrow = new SpreadingLineAreaEffectItem(12 + getSkill_4_()*4, 6 + getSkill_4_()*2, Effect.HURT, super.getEntity().getFacingDirection());
+                	super.getEntity().getMapRelation().addItem(arrow, getEntity().getMapRelation().getMyXCoordinate(), getEntity().getMapRelation().getMyYCoordinate());
+                } else {
+                    getEntity().getStatsPack().increaseCurrentManaBy(cost);
+                    Display.getDisplay().setMessage("You have no bow.");
                 }
-
-                SpreadingLineAreaEffectItem arrow = new SpreadingLineAreaEffectItem(12 + getSkill_4_()*4, 2 + getSkill_4_()*2, Effect.HURT, super.getEntity().getFacingDirection());
-                super.getEntity().getMapRelation().addItem(arrow, getEntity().getMapRelation().getMyXCoordinate(), getEntity().getMapRelation().getMyYCoordinate());
             }
         } else {
             Display.getDisplay().setMessage("You are out of mana");

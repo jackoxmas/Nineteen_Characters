@@ -23,6 +23,9 @@ public final class Smasher extends Occupation {
     public Smasher(Occupation o) {
         super(o);
     }
+    public Smasher getACopyOfMyself() {
+        return new Smasher(this);
+    }
     private TwoHandedSword two_handed_sword_ = null;
     private OneHandedSword one_handed_sword_ = null;
     private OneHandedWeapon bullshit_weapon_one_ = null;
@@ -152,7 +155,7 @@ public final class Smasher extends Occupation {
                     if (target != null) {
                         target.receiveAttack(getSkill_1_(), null); // hurt enemy [no attack-back]
                     }
-                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinLine(getSkill_1_()+1, getSkill_1_(), Effect.HURT);
+                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinLine(3*getSkill_1_()+3, getSkill_1_(), Effect.HURT);
                 } else {
                     System.out.println("Out of mana in Smasher1");
                 }
@@ -166,7 +169,7 @@ public final class Smasher extends Occupation {
                     if (target != null) {
                         target.receiveAttack(getSkill_2_(), null); // hurt enemy [no attack-back]
                     }
-                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinArc(getSkill_2_(), getSkill_2_(), Effect.HURT);
+                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinArc(2*getSkill_2_()+1, getSkill_2_(), Effect.HURT);
                 } else {
                     System.out.println("Out of mana in Smasher2");
                 }
@@ -181,8 +184,9 @@ public final class Smasher extends Occupation {
                     if (target != null) {
                         target.receiveAttack(getSkill_3_(), null); // hurt enemy [no attack-back]
                     }
-                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(0, getSkill_3_(), Effect.HEAL);
-                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_3_(), 1, Effect.LEVEL);
+                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(1, getSkill_3_(), Effect.HEAL);
+                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(getSkill_3_()+1, 1, Effect.LEVEL);
+                    getEntity().getMapRelation().areaEffectFunctor.effectAreaWithinRadius(1, getSkill_3_(), Effect.HEAL);
                 } else {
                     System.out.println("Out of mana in Smasher3");
                 }

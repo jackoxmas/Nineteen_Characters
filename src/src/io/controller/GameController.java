@@ -221,6 +221,26 @@ public class GameController extends Controller {
 
     }
 
+    private void handleSoundEffect(Key_Commands command) {
+        if (command == Key_Commands.ATTACK) {
+            music.playAttackSound();
+        } else if (command == Key_Commands.BIND_WOUNDS) {
+            music.playBindSound();
+        } else if(command == Key_Commands.GET_INTERACTION_OPTIONS) {
+            music.playTalkingSound();
+        } else if (command == Key_Commands.USE_SKILL_1) {
+            music.playSpellSound();
+        } else if (command == Key_Commands.USE_SKILL_2) {
+            music.playSpellSound();
+        } else if (command == Key_Commands.USE_SKILL_3) {
+            music.playSpellSound();
+        } else if (command == Key_Commands.USE_SKILL_4) {
+            music.playSpellSound();
+        } else if(command == Key_Commands.DROP_LAST_ITEM) {
+            music.playDropItemSound();
+        } 
+    }
+    
     private IO_Bundle sendCommandToMapWithText(Key_Commands command, String input) {
         if (SwingUtilities.isEventDispatchThread()) {
             //System.err.println("GameController is running on the Swing Dispatch Thread input sendCommandToMapWithText [Bad]");
@@ -241,23 +261,7 @@ public class GameController extends Controller {
             return sendCommandToMapWithText(command, input);
         }
         // Sound effects!!!!
-        if (command == Key_Commands.ATTACK) {
-            music.playAttackSound();
-        } else if (command == Key_Commands.BIND_WOUNDS) {
-            music.playBindSound();
-        } else if(command == Key_Commands.GET_INTERACTION_OPTIONS) {
-            music.playTalkingSound();
-        } else if (command == Key_Commands.USE_SKILL_1) {
-            music.playSpellSound();
-        } else if (command == Key_Commands.USE_SKILL_2) {
-            music.playSpellSound();
-        } else if (command == Key_Commands.USE_SKILL_3) {
-            music.playSpellSound();
-        } else if (command == Key_Commands.USE_SKILL_4) {
-            music.playSpellSound();
-        } else if(command == Key_Commands.DROP_LAST_ITEM) {
-            music.playDropItemSound();
-        }
+        this.handleSoundEffect(command);
 
         if (to_return != null && to_return.strings_for_communication_ != null
                 && !to_return.strings_for_communication_.isEmpty() && Key_Commands.GET_INTERACTION_OPTIONS.equals(command)) {

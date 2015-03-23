@@ -93,6 +93,8 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
         return defensive_rating_;
     }
 
+    public void setLives(int newLives) { if (newLives >= 0) lives_left_ = newLives; }
+
     /**
      * Constructor: sets values to 1.
      */

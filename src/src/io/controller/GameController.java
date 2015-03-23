@@ -7,6 +7,7 @@ package src.io.controller;
 
 import java.net.DatagramPacket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -137,8 +138,13 @@ public class GameController extends Controller {
 
     private String getListOfCommands() {
         StringBuilder commands = new StringBuilder();
+        ArrayList<String> commandsList = new ArrayList<String>(this.getRemap().entrySet().size());
         for (Entry<Character, Key_Commands> i : this.getRemap().entrySet()) {
-            commands.append(i.getValue().toString() + "  :  " + i.getKey() + System.lineSeparator());
+            commandsList.add(i.getValue().toString() + "  :  " + i.getKey() + System.lineSeparator());
+        }
+        Collections.sort(commandsList);
+        for(String i : commandsList){
+        	commands.append(i);
         }
 
         return commands.toString();

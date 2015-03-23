@@ -5,10 +5,17 @@ import src.model.constructs.Entity;
 
 public class KnightsSerum extends PickupableItem {
 
+    public int getID() { return 4; }
+
     public KnightsSerum(String name, char representation) {
         super(name, representation);
     }
-    boolean activated = false;
+
+    private boolean activated = false;
+
+    public boolean getActivated() { return activated; }
+
+    public void setActivated(boolean value) { activated = value; }
 
     @Override
     public void use(Entity target) {

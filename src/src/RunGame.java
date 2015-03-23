@@ -51,6 +51,7 @@ public class RunGame {
     private static int mapHeight_ = 20;
     private static int mapWidth_ = 35;
     private static boolean map_editor_mode_ = false;
+    private static StringBuilder newUserName_ = new StringBuilder();
 
     /*
      public static boolean getUseTCP() {
@@ -82,11 +83,14 @@ public class RunGame {
     public static void main(String[] args) {
         parseArgs(args); // Parse command line arguments
         handleArgs(args);
-        if (!map_editor_mode_) {
-            startNewGame();
-        } else {
-            startMapEditor();
+        if (map_editor_mode_) { startMapEditor(); }
+
+        if (map_ == null) {
+            initialize();
+            populateMap();
         }
+
+        startGame();
     }
 
     private static int startNewGame() {
@@ -113,19 +117,24 @@ public class RunGame {
     }
 
     private static void coverMapInGrass(Map map_2) {
-        MapAddableFactory factory = new MapAddableFactory();
-        for (int x = 0; x < map_2.width_; ++x) {
-            for (int y = 0; y < map_2.height_; ++y) {
-                MapAddable addable = factory.getAddable(AddableThingEnum.GRASS_TERRAIN);
-                addable.addToMap(map_2, x, y);
+    	MapAddableFactory factory = new MapAddableFactory();
+		for(int x =0; x< map_2.width_;++x){
+			for(int y = 0; y < map_2.height_;++y){
+				MapAddable addable = factory.getAddable(AddableThingEnum.GRASS_TERRAIN);
+				addable.addToMap(map_2, x, y);
+				
+			}
+		}
+	}
 
-            }
-        }
-
-    }
-
-    public static void loadGame(String file_path) {
-
+	public static void loadGame(String file_path) {
+        /*
+        Map newMap = SavedGame.loadGame(file_path);
+        if (newMap == null) {
+            RunGame.errOut("Failed to load the map from: " + file_path);
+            return;
+        }*/
+        //map_ = newMap;
     }
 
     // <editor-fold desc="GAME METHODS" defaultstate="collapsed">
@@ -297,12 +306,21 @@ public class RunGame {
     }
 
     private static void startGame() {
+        if (map_ == null) {
+            RunGame.errOut("startGame(): invalid (null) map");
+            return;
+        }
+        /*
+        if (avatar_ == null) {
+            RunGame.errOut("startGame(): invalid (null) avatar");
+            return;
+        }*/
         uc_ = new GameController(map_, avatar_name);
         (new Thread(uc_)).start();
     }
 
-    public static void saveGameToDisk(String foo) {
-        SavedGame.saveGame(foo, map_); // save game to file "foo"
+    public static void saveGameToDisk(String filepath) {
+        SavedGame.saveGame(filepath, map_, uc_.getUserName()); // save game to file "foo"
     }
 
     // </editor-fold>
@@ -446,11 +464,12 @@ public class RunGame {
             dbgOut("ARGS: debug mode enabled at level: " + pOpts_.dbg_level, 2);
         }
         if (pOpts_.lsg_flag) {
-            Map tmp_map = SavedGame.loadGame(args[pOpts_.lsg_path]); // attempt to load the saved game
+            Map tmp_map = SavedGame.loadGame(args[pOpts_.lsg_path], newUserName_); // attempt to load the saved game
             if (tmp_map == null) // if the load has failed, log that
             {
                 RunGame.errOut("MAIN: Could not load map from: " + args[pOpts_.lsg_path]);
             } else {
+                RunGame.dbgOut("Game loaded from arguments", 3);
                 map_ = tmp_map; // otherwise, apply the loaded map
             }
         }
@@ -487,7 +506,6 @@ public class RunGame {
             for (String m : pOpts_.lsg_match) {
                 if (m.equals(args[a]) && (args.length > a + 1)) {
                     pOpts_.lsg_path = a + 1;
-                    // TODO: add line to load saveGame_
                     pOpts_.lsg_flag = true;
                     break;
                 }

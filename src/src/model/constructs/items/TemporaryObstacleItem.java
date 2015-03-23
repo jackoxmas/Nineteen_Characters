@@ -16,7 +16,9 @@ import src.model.constructs.Entity;
  */
 public class TemporaryObstacleItem extends ObstacleItem {
 
-    private final ObstacleRemovingItem keyItem_;
+    public int getID() { return 12; }
+
+    private ObstacleRemovingItem keyItem_;
 
     public TemporaryObstacleItem(String name, char representation, ObstacleRemovingItem keyItem) {
         super(name, representation);
@@ -37,6 +39,12 @@ public class TemporaryObstacleItem extends ObstacleItem {
             this.use(who_is_talking_to_me);
         }
         return options;
+    }
+
+    public String getKeyName() { return checkKey().getName(); }
+
+    public void setKey(ObstacleRemovingItem newKey) {
+        keyItem_ = newKey;
     }
 
     /**

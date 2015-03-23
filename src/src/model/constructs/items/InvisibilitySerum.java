@@ -4,6 +4,8 @@ import src.model.constructs.Entity;
 
 public class InvisibilitySerum extends PickupableItem {
 
+    public int getID() { return 3; }
+
     public InvisibilitySerum(String name, char representation) {
         super(name, representation);
     }

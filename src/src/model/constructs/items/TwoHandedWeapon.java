@@ -13,7 +13,7 @@ import src.model.constructs.Entity;
  *
  * @author JohnReedLOL
  */
-public class TwoHandedWeapon extends Weapon implements PrimaryHandHoldable, SecondaryHandHoldable, Serializable {
+public abstract class TwoHandedWeapon extends Weapon implements PrimaryHandHoldable, SecondaryHandHoldable, Serializable {
 
     public TwoHandedWeapon(String name, char representation) {
         super(name, representation);

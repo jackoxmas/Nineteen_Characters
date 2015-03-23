@@ -3,6 +3,8 @@ package src.model.constructs.items;
 import src.Effect;
 
 public class Trap extends OneShotAreaEffectItem {
+    public int getID() { return 6; }
+
 	/**
 	 * 
 	 * @param name

@@ -206,7 +206,7 @@ class CommandMiniController {
 			return HardCodedStrings.loadHelp;
 		}
 		cont_.loadGame(foo[1]);
-		return "Loaded " + foo;
+		return "Loaded " + foo[1];
 	}
 
 	private String processLoadControls(String[] words) {

@@ -6,6 +6,8 @@ import src.Effect;
 import src.FacingDirection;
 
 public class SpreadingLineAreaEffectItem extends Item {
+
+    public int getID() { return 19; }
 	
 	int current_size_ = 0;
 	int max_size_;

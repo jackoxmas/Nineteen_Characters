@@ -15,6 +15,8 @@ import src.HardCodedStrings;
  */
 public class Villager extends Entity {
 
+    public int getID() { return 17; }
+
     public Villager(String name, char representation) {
         super(name, representation);
     }

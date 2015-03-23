@@ -13,7 +13,7 @@ import src.model.constructs.Entity;
  *
  * @author JohnReedLOL
  */
-public class OneHandedWeapon extends Weapon implements PrimaryHandHoldable, Serializable {
+public abstract class OneHandedWeapon extends Weapon implements PrimaryHandHoldable, Serializable {
 
     public OneHandedWeapon(String name, char representation) {
         super(name, representation);

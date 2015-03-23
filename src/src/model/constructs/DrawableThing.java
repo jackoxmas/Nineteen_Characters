@@ -3,6 +3,7 @@ package src.model.constructs;
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import src.model.MapDrawableThing_Relation;
 
@@ -96,6 +97,13 @@ abstract public class DrawableThing implements Serializable{
     }
 
     /**
+     * This function gets the DrawableThing's character.
+     * It is necessary for saving terrain, as they may have their char represenation overridden by decals.
+     * @return
+     */
+    public char getDrawableCharacter() { return single_character_representation_; }
+
+    /**
      * Get character representation.
      *
      * @return Character being used to represent this Drawable Thing.
@@ -140,4 +148,6 @@ abstract public class DrawableThing implements Serializable{
         silence.add(" [ End Conversation]");
         return silence;
     }
+
+    public abstract int getID();
 }

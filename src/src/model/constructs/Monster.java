@@ -15,6 +15,8 @@ import src.HardCodedStrings;
  */
 public class Monster extends Entity {
 
+    public int getID() { return 15; }
+
     public Monster(String name, char representation) {
         super(name, representation);
     }
@@ -30,6 +32,15 @@ public class Monster extends Entity {
     int turns_to_follow_ = 0;
     Entity Entity_to_follow_ = null;
     Entity Entity_to_avoid_ = null;
+
+    public int getFollowTurns() { return turns_to_follow_; }
+
+    public String getFolloweeName() {
+        if (Entity_to_follow_ != null)
+            return Entity_to_follow_.getName();
+        else
+            return null;
+    }
 
     /**
      * Follow the given entity for X turns

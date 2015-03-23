@@ -11,6 +11,8 @@ package src.model.constructs.items;
  */
 public class PermanentObstacleItem extends ObstacleItem {
 
+    public int getID() { return 14; }
+
     public PermanentObstacleItem(String name, char representation) {
         super(name, representation);
     }

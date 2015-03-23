@@ -17,6 +17,8 @@ import src.HardCodedStrings;
  */
 public final class Avatar extends Entity {
 
+    public int getID() { return 16; }
+
     public Avatar(String name, char representation) {
         super(name, representation);
         setNumGoldCoinsWhenSpawned(0); // Avatars re-spawn with no cold coins.

@@ -15,6 +15,7 @@ import src.model.MapTerrain_Relation;
  */
 public class Terrain extends DrawableThing {
 
+    public int getID() { return 1; }
 
     void activate() {
 

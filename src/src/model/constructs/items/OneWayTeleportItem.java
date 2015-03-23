@@ -12,9 +12,15 @@ import src.model.constructs.Entity;
  * @author JohnReedLOL
  */
 public class OneWayTeleportItem extends Item {
+
+    public int getID() { return 10; }
     
     int x_destination_;
     int y_destination_;
+
+    public int getDestX() { return x_destination_; }
+
+    public int getDestY() { return y_destination_; }
 
     public OneWayTeleportItem(String name, char representation, int x_destination, int y_destination) {
         super(name, representation, false, true, false);

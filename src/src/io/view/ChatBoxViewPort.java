@@ -16,13 +16,21 @@ public class ChatBoxViewPort {
 	public ChatBoxViewPort() {
 	}
         
+        // tells you whether or not your game is already over
+        boolean did_game_over = false;
+        
 	public void renderToDisplay(ArrayList<String> strings_for_communication, boolean is_alive){
             //System.out.println("Calling ChatBoxViewPort.renderToDisplay(ArrayList<String> strings_for_communication, boolean is_alive)");
 		result_.clear();
-		if(is_alive == false){
+		if(is_alive == false && did_game_over == false){
                     result_.add("GAME OVER YOU ARE DEAD"); 
+                    did_game_over = true;
                     return;
-                }//If null we are dead, so simply say that and do nothing else
+                } else if (is_alive == false && did_game_over == true) {
+                    return;
+                }
+                did_game_over = false; // prevents repetition of "GAME OVER" messages
+                //If null we are dead, so simply say that and do nothing else
 		if(strings_for_communication == null){return;}
 		clear();
 		for(int i = 0; i != strings_for_communication.size(); ++i){

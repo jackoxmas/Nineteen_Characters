@@ -58,11 +58,7 @@ public class IO_Bundle implements Serializable {
         } else {
             inventory_ = null;
         }
-        if (s != null) {
-            stats_for_display_ = new src.model.constructs.EntityStatsPack(s);
-        } else {
-            stats_for_display_ = null;
-        }
+        stats_for_display_ = s;
         if (o != null) {
             occupation_ = o.getACopyOfMyself();
         } else {

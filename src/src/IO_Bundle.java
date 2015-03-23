@@ -58,7 +58,11 @@ public class IO_Bundle implements Serializable {
         } else {
             inventory_ = null;
         }
-        stats_for_display_ = s;
+        if (s != null) {
+            stats_for_display_ = s.makeCopyOfMyself();
+        } else {
+            stats_for_display_ = null;
+        }
         if (o != null) {
             occupation_ = o.getACopyOfMyself();
         } else {

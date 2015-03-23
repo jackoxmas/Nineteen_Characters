@@ -50,7 +50,6 @@ public class Monster extends Entity {
     	if (!is_running_) {
 	        if (Entity_to_follow_ != null && Entity_to_follow_.getMapRelation() != null
 	                && Entity_to_follow_.hasLivesLeft() && turns_to_follow_ > 0) {
-	    		System.out.println("THIS SHOULD APPEAR !!!!!!!!!!!!!!!!!!!!!");
 	            //attack then follow.
 	            attackIfNear(Entity_to_follow_);
 	            follow(Entity_to_follow_);
@@ -64,7 +63,7 @@ public class Monster extends Entity {
                 && Entity_to_avoid_.hasLivesLeft() && turns_to_run_ > 0) {
             run(Entity_to_avoid_);
             --turns_to_run_;
-            if (turns_to_follow_ == 0) {
+            if (turns_to_run_ == 0) {
                 stopAvoiding();
             }
         }
@@ -157,6 +156,7 @@ public class Monster extends Entity {
     public int stopAvoiding() {
     	turns_to_run_ = 0;
         Entity_to_avoid_ = null;
+        is_running_ = false;
         return 0;
     }
 
@@ -167,7 +167,7 @@ public class Monster extends Entity {
      * @return
      */
     private boolean attackIfNear(Entity followee) {
-        if (followee != null && followee.getMapRelation() != null && followee.hasLivesLeft()) {
+        if (followee != null && Entity_to_avoid_ != null && followee.getMapRelation() != null && followee.hasLivesLeft()) {
             final double epsilon = .0001;
             final double pythagorean_distance = getMapRelation().measureDistanceTowardEntity(followee);
             if (pythagorean_distance >= 0 - epsilon && pythagorean_distance < 2) {
@@ -213,6 +213,7 @@ public class Monster extends Entity {
     }
 
 	public void causeFear(Entity avoidee, int turns) {
+		is_running_ = true;
 		turns_to_run_ = turns;
 		Entity_to_avoid_ = avoidee;
 	}

@@ -25,12 +25,14 @@ public class SpreadingConeAreaEffectItem extends Item {
     public void takeTurn() {
 		wait_turn_ = !wait_turn_;
 		if (wait_turn_) {
-			for (int i = 0; i < 2; i++)
+			for (int i = 0; i < 2; i++) {
 				this.getMapRelation().areaEffectFunctor.effectArc(current_size_, 1, effect_, direction_);
 				++current_size_;
 				if(current_size_ > max_size_) {
 					this.getMapRelation().removeMyselfFromTheMapCompletely();
+					break;
 				}
+			}
 		}
     }
 }

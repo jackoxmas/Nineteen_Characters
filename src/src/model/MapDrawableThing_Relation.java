@@ -62,8 +62,9 @@ public class MapDrawableThing_Relation {
         }
         
         public void effectPerimeter(int radius, int strength, Effect effect) {
-        	if (radius == 0)
-        		repeat(getMyXCoordinate(), getMyYCoordinate(), strength, effect);
+        	if (effect != Effect.HURT)
+	        	if (radius == 0)
+	        		repeat(getMyXCoordinate(), getMyYCoordinate(), strength, effect);
         	if (radius == 1) {
         		for (int i = 0; i < 3; i++)
         			for (int j = 0; j < 3; j++)
@@ -143,37 +144,39 @@ public class MapDrawableThing_Relation {
             }
             final int x_start = getMyXCoordinate();
             final int y_start = getMyYCoordinate();
+        	int new_strength;
             switch (direction) {
             	case UP:
-            		repeat(x_start, y_start+distance, strength - distance*strength/10, effect);
+            		new_strength = strength * (1 - distance/10);
+            		repeat(x_start, y_start+distance, (new_strength >= 0) ? new_strength : 0, effect);
             		break;
             	case DOWN:
-            		for (int i = 1; i < distance*2; i++)
-            			repeat(x_start-distance+i, y_start-distance, strength - distance/2, effect);
+            		new_strength = strength * (1 - distance/10);
+            		repeat(x_start, y_start-distance, (new_strength >= 0) ? new_strength : 0, effect);
             		break;
             	case LEFT:
-            		for (int i = 1; i < distance*2; i++)
-            			repeat(x_start-distance, y_start-distance+i, strength - distance/2, effect);
+            		new_strength = strength * (1 - distance/10);
+            		repeat(x_start-distance, y_start, (new_strength >= 0) ? new_strength : 0, effect);
             		break;
             	case RIGHT:
-            		for (int i = 1; i < distance*2; i++)
-            			repeat(x_start+distance, y_start-distance+i, strength - distance/2, effect);
+            		new_strength = strength * (1 - distance/10);
+            		repeat(x_start+distance, y_start, (new_strength >= 0) ? new_strength : 0, effect);
             		break;
             	case UP_LEFT:
-            		for (int i = 0; i < distance; i++)
-            			repeat(x_start-distance+i, y_start+1+i, strength - distance/2, effect);
+            		new_strength = strength * (1 - distance/10);
+            		repeat(x_start-distance, y_start+distance, (new_strength >= 0) ? new_strength : 0, effect);
             		break;
             	case UP_RIGHT:
-            		for (int i = 0; i < distance; i++)
-            			repeat(x_start+1+i, y_start+distance-i, strength - distance/2, effect);
+            		new_strength = strength * (1 - distance/10);
+            		repeat(x_start+distance, y_start+distance, (new_strength >= 0) ? new_strength : 0, effect);
             		break;
             	case DOWN_LEFT:
-            		for (int i = 0; i < distance; i++)
-            			repeat(x_start-distance+i, y_start-1-i, strength - distance/2, effect);
+            		new_strength = strength * (1 - distance/10);
+            		repeat(x_start-distance, y_start-distance, (new_strength >= 0) ? new_strength : 0, effect);
             		break;
             	case DOWN_RIGHT:
-            		for (int i = 0; i < distance; i++)
-            			repeat(x_start+1+i, y_start-distance+i, strength - distance/2, effect);
+            		new_strength = strength * (1 - distance/10);
+            		repeat(x_start+distance, y_start-distance, (new_strength >= 0) ? new_strength : 0, effect);
             		break;
             }
         }

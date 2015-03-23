@@ -45,7 +45,7 @@ public class SummonerUltimate extends Summoner {
             System.err.println("Error in Summoner.performOccupationSkill()");
             System.exit(-109);
         }
-        final int cost = 5;
+        final int cost = 3;
         System.out.println("Starting skill 2: DEBUG");
         int has_run_out_of_mana = getEntity().getStatsPack().deductCurrentManaBy(cost);
         Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection(5+getEntity().getStatsPack().getIntellect_level_());
@@ -56,7 +56,7 @@ public class SummonerUltimate extends Summoner {
                 double failed = randomGenerator.nextDouble();
                 if (failed + getSkill_1_() * .1 > .6) {
                     if (target != null) {
-                        ((Monster) target).causeFear(super.getEntity(), 3 + getSkill_1_());
+                        ((Monster) target).causeFear(super.getEntity(), (3 + getSkill_1_())*2);
                         Display.getDisplay().setMessage("Succesfully casted Fear!");
                     } else {
                         // get your mana back

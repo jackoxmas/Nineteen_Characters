@@ -45,7 +45,7 @@ public class SummonerChampion extends Summoner {
             System.err.println("Error in Summoner.performOccupationSkill()");
             System.exit(-109);
         }
-        final int cost = 3;
+        final int cost = 2;
         System.out.println("Starting skill 2: DEBUG");
         int has_run_out_of_mana = getEntity().getStatsPack().deductCurrentManaBy(cost);
         Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection(5+getEntity().getStatsPack().getIntellect_level_());

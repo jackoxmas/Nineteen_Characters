@@ -11,6 +11,8 @@ import src.model.constructs.items.SpreadingLineAreaEffectItem;
 
 public class SummonerUltimate extends Summoner {
 
+    public int getID() { return 26; }
+
     public SummonerUltimate(Entity e) {
         super(e);
     }

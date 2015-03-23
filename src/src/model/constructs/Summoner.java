@@ -47,6 +47,8 @@ public abstract class Summoner extends Occupation {
         }
     }
 
+    public int getBoonTimer() { return boon_timer_; }
+
     @Override
     public int unEquipEverything() {
         staff_ = null;

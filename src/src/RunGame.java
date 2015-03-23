@@ -53,14 +53,26 @@ public class RunGame {
     private static boolean map_editor_mode_ = false;
     private static StringBuilder newUserName_ = new StringBuilder();
 
+    /**
+     * Takes in a new [not yet started] map thread. Kills the old one and replaces it.
+     * @param map new replacement map
+     */
     public static void setNewMap(Map map) {
         grusomelyKillTheMap();
+        try{
+            Thread.sleep(10);
+        } catch(InterruptedException e) {
+            System.err.println("This interrupted exception should never ever happen");
+            System.exit(77);
+        }
+        map_.start();
         map_ = map;
     }
 
     public static void grusomelyKillTheMap() {
         if (RunGame.map_ != null) {
-            map_.grusomelyKillTheMapThread();
+            //map_.grusomelyKillTheMapThread();
+            map_.interrupt();
             System.out.println("Killed the map thread");
         } else {
             System.out.println("The map thread is null");
@@ -151,6 +163,7 @@ public class RunGame {
 
     private static void initialize() {
         map_ = new Map(mapWidth_, mapHeight_);
+        map_.start();
     }
 
     private static void populateMap() {

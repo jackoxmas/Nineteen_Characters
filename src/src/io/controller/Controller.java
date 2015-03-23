@@ -192,12 +192,17 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
      * @param foo
      */
     public abstract void loadGame(String foo);
-
-    public void loadKeys(String filepath) {
+/**
+ * -1 if null hashmap received
+ * @param filepath
+ * @return
+ */
+    public int loadKeys(String filepath) {
         HashMap<Character, Key_Commands> newmap = SavedGame.loadKeymap(filepath);
         if (newmap != null) {
             remap_.setMap(newmap);
-        }
+            return 0;
+        }else{return -1;}
     }
 
     /**

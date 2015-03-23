@@ -39,7 +39,7 @@ public class SavedGame {
      * is modified. The version number 0 is reserved. This value has no 
      * relation to the Java native Serialization object ID.
      */
-    public static final long SAVE_DATA_VERSION = 9;
+    public static final long SAVE_DATA_VERSION = 10;
     public static final String SAVE_EXT = ".xml";
     public static final String KEY_EXT = ".key";
     public static final char SAVE_ITERATOR_FLAG = '_';
@@ -644,6 +644,12 @@ public class SavedGame {
                 case 14: // Permanent Item
                     ret_item = new PermanentObstacleItem(d_name, d_rep);
                     break;
+                case 19: // AOE ITEM (NOT SAVED)
+                    return null;
+                case 20: // AOE ITEM (NOT SAVED)
+                    return null;
+                case 21: // AOE ITEM (NOT SAVED)
+                    return null;
                 default:
                     RunGame.errOut("Invalid item id found");
                     throw new Exception();
@@ -983,6 +989,16 @@ public class SavedGame {
             xml_writeDrawable(doc, te_item, i);
             parent.appendChild(te_item);
         }
+
+        // Occupation
+        if (entity.getOccupation() == null) {
+            RunGame.dbgOut("xml_writeEntity: entity has no occupation", 4);
+            return;
+        }
+
+        Element e_occ = doc.createElement("occupation");
+        xml_writeOccupation(doc, e_occ, entity.getOccupation());
+        parent.appendChild(e_occ);
     }
 
     private static void xml_writeItem(Document doc, Element parent, Item item) {
@@ -1092,6 +1108,53 @@ public class SavedGame {
             Element e_followee = doc.createElement("followee");
             e_followee.appendChild(doc.createTextNode(monst.getFolloweeName()));
             parent.appendChild(e_followee);
+        }
+    }
+
+    private static void xml_writeOccupation(Document doc, Element parent, Occupation occ) {
+        if (occ == null) {
+            RunGame.errOut("xml_writeOccupation: null occupation argument");
+            return;
+        }
+
+        int id = occ.getID();
+        parent.setAttribute("id", Integer.toString(id));
+
+        Element e_data = doc.createElement("char");
+        e_data.appendChild(doc.createTextNode(Character.toString(occ.getOccupationRepresentation())));
+        parent.appendChild(e_data);
+
+        e_data = doc.createElement("sk1");
+        e_data.appendChild(doc.createTextNode(Integer.toString(occ.getSkill_1_())));
+        parent.appendChild(e_data);
+
+        e_data = doc.createElement("sk2");
+        e_data.appendChild(doc.createTextNode(Integer.toString(occ.getSkill_2_())));
+        parent.appendChild(e_data);
+
+        e_data = doc.createElement("sk3");
+        e_data.appendChild(doc.createTextNode(Integer.toString(occ.getSkill_3_())));
+        parent.appendChild(e_data);
+
+        e_data = doc.createElement("sk4");
+        e_data.appendChild(doc.createTextNode(Integer.toString(occ.getSkill_4_())));
+        parent.appendChild(e_data);
+
+        switch(id) {
+            case 22: // smasher
+                break;
+            case 23: // sneak
+                e_data = doc.createElement("cloak_timer");
+                e_data.appendChild(doc.createTextNode(Integer.toString(((Sneak)occ).getCloakTimer())));
+                parent.appendChild(e_data);
+                break;
+            case 24: // summoner - novice
+            case 25: // summoner - champion
+            case 26: // summoner - ultimate
+                e_data = doc.createElement("boon_timer");
+                e_data.appendChild(doc.createTextNode(Integer.toString(((Summoner)occ).getBoonTimer())));
+                parent.appendChild(e_data);
+                break;
         }
     }
 
@@ -1258,6 +1321,12 @@ public class SavedGame {
             case 18:
                 xml_writeEntity(doc, parent, (Entity)dt);
                 break;
+            case 19:
+                break;
+            case 20:
+                break;
+            case 21:
+                break;
             default:
                 RunGame.errOut("Attempted to write invalid DrawableThing ID (default)");
         };
@@ -1283,6 +1352,14 @@ public class SavedGame {
      * 16   Avatar
      * 17   Villager
      * 18   Merchant
+     * 19   Spreading Line Area Effect Item
+     * 20   Spreading Circle Area Effect Item
+     * 21   Spreading Cone Area Effect Item
+     * 22   Occ: Smasher
+     * 23   Occ: Sneak
+     * 24   Occ: Summoner - Novice
+     * 25   Occ: Summoner - Champion
+     * 26   Occ: Summoner - Ultimate
      */
 
     //</editor-fold>

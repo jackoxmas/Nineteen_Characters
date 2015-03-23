@@ -213,8 +213,9 @@ class CommandMiniController {
 		RunGame.dbgOut("FUNC: processLoadControls()", 3);
 
 		if (words.length >= 2) {
-			cont_.loadKeys(words[1]);
-			return "Load Controls: " + words[1];
+			if(cont_.loadKeys(words[1])==0){
+				return "Load Controls: " + words[1];
+			}else{return "Failed to load";}
 		} else {
 			return "You must specify a key file to load.";
 		}

@@ -11,6 +11,8 @@ import src.model.constructs.items.SpreadingLineAreaEffectItem;
 
 public class SummonerChampion extends Summoner {
 
+    public int getID() { return 25; }
+
     public SummonerChampion(Entity e) {
         super(e);
     }

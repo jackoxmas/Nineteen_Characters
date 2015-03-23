@@ -22,6 +22,8 @@ import src.model.constructs.items.TwoHandedWeapon;
  */
 public final class Sneak extends Occupation {
 
+    public int getID() { return 23; }
+
     public Sneak(Entity e) {
         super(e);
     }
@@ -44,6 +46,8 @@ public final class Sneak extends Occupation {
         current_stats.increaseAgilityLevelByOne();
 
     }
+
+    public int getCloakTimer() { return cloak_timer; }
 
     @Override
     public int equipOneHandWeapon(OneHandedWeapon weapon) {

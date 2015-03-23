@@ -19,6 +19,9 @@ import src.model.constructs.items.TwoHandedWeapon;
  * @author JohnReedLOL
  */
 public abstract class Occupation implements Serializable {
+
+    public abstract int getID();
+
 	/**
 	 * The character that represents this occupation.
 	 * @return

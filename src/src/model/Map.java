@@ -26,7 +26,7 @@ import src.model.constructs.items.Item;
  *
  * @author John-Michael Reed
  */
-public class Map implements MapMapEditor_Interface, MapUser_Interface {
+public class Map extends Thread implements MapMapEditor_Interface, MapUser_Interface {
 
     //<editor-fold desc="Static fields" defaultstate="collapsed">
     //</editor-fold>
@@ -69,29 +69,39 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
      */
     public Map(int x, int y) {
 
-            height_ = y;
-            width_ = x;
+        height_ = y;
+        width_ = x;
 
-            map_grid_ = new MapTile[height_][width_];
-            for (int i = 0; i < height_; ++i) {
-                for (int j = 0; j < width_; ++j) {
-                    map_grid_[i][j] = new MapTile(j, i); //switch rows and columns
-                }
+        map_grid_ = new MapTile[height_][width_];
+        for (int i = 0; i < height_; ++i) {
+            for (int j = 0; j < width_; ++j) {
+                map_grid_[i][j] = new MapTile(j, i); //switch rows and columns
             }
-            entity_list_ = new LinkedHashMap<String, Entity>();
-            items_list_ = new LinkedList<Item>();
-            time_measured_in_turns = 0;
+        }
+        entity_list_ = new LinkedHashMap<String, Entity>();
+        items_list_ = new LinkedList<Item>();
+        time_measured_in_turns = 0;
+        try {
+            my_internet_ = new MapInternet(this);
+        } catch (Exception e) {
+            // No clue what causes this
+            e.printStackTrace();
+            System.exit(-6);
+            return;
+        }
+        my_internet_.start();
+    }
 
-            try {
-                my_internet_ = new MapInternet(this);
-            } catch (Exception e) {
-                // No clue what causes this
-                e.printStackTrace();
-                System.exit(-6);
-                return;
-            }
-
-            my_internet_.start();
+    @Override
+    public void run() {
+        try {
+            Thread.sleep(Long.MAX_VALUE);
+        } catch (InterruptedException e) {
+            System.err.println("This error is supposed to appear on closing:");
+            e.printStackTrace();
+            this.grusomelyKillTheMapThread();
+            return;
+        }
     }
 
     //</editor-fold>
@@ -106,12 +116,14 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         return this.entity_list_.get(name);
     }
 
-    public int getHeight() { return height_; }
+    public int getHeight() {
+        return height_;
+    }
 
     public LinkedList<Item> getItemsList() {
         return items_list_;
     }
-    
+
     public LinkedHashMap<String, Entity> getEntityList() {
         return this.entity_list_;
     }
@@ -159,9 +171,13 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         }
     }
 
-    public int getTime() { return time_measured_in_turns; }
+    public int getTime() {
+        return time_measured_in_turns;
+    }
 
-    public int getWidth() { return width_; }
+    public int getWidth() {
+        return width_;
+    }
 
     public Color getColorRepresentation(int x, int y) {
         MapTile tile_at_x_y = this.getTile(x, y);
@@ -271,6 +287,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     public void grusomelyKillTheMapThread() {
         my_internet_.interrupt();
         my_internet_.interruptAllMyUserThreads();
+        my_internet_.stop();
     }
 
     /**
@@ -393,7 +410,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     public IO_Bundle sendCommandToMapWithOptionalText(String username, Key_Commands command, int width_from_center, int height_from_center, String text) {
         //System.out.println("Calling Map.sendCommandToMapWithOptionalText - No internet being used");
         // Avatar to_recieve_command = this.avatar_list_.get(username);
-        
+
         Entity to_recieve_command;
         if (this.entity_list_.containsKey(username)) {
             to_recieve_command = this.entity_list_.get(username);
@@ -423,7 +440,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);
                     if (!Key_Commands.DO_ABSOLUTELY_NOTHING.equals(command)) {
-                    	System.out.println(items_list_);
+                        System.out.println(items_list_);
                         makeTakeTurns();//Make all the maptiles take a turn.
                     }
                     IO_Bundle return_package = new IO_Bundle(
@@ -520,12 +537,14 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     }
 
     /**
-     * Returns RGB color valued ints instead of Java objects to conserve network bandwidth
+     * Returns RGB color valued ints instead of Java objects to conserve network
+     * bandwidth
+     *
      * @param x_center
      * @param y_center
      * @param width_from_center
      * @param height_from_center
-     * @return 
+     * @return
      */
     public int[][] makeColors(int x_center, int y_center, int width_from_center, int height_from_center) {
         int[][] colors = new int[1 + 2 * height_from_center][1 + 2 * width_from_center];
@@ -602,15 +621,15 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
         items_list_.remove(item);
         return item;
     }
-    
+
     public Item removeExactItem(Item item) {
-    	int x_position = item.getMapRelation().getMyXCoordinate();
-    	int y_position = item.getMapRelation().getMyYCoordinate();
-    	
+        int x_position = item.getMapRelation().getMyXCoordinate();
+        int y_position = item.getMapRelation().getMyYCoordinate();
+
         int error_code = this.map_grid_[y_position][x_position].removeSpecificItem(item);
-        if(error_code != 0) {
-        	System.err.println("Item not found in Map.removeExactItem");
-        	System.exit(-6);
+        if (error_code != 0) {
+            System.err.println("Item not found in Map.removeExactItem");
+            System.exit(-6);
         }
         items_list_.remove(item);
         return item;

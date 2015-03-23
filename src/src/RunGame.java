@@ -53,8 +53,6 @@ public class RunGame {
     private static int mapWidth_ = 35;
     private static boolean map_editor_mode_ = false;
     private static StringBuilder newUserName_ = new StringBuilder();
-    private static final Music music = new Music();
-    private static final Thread musicThread = new Thread(music);
 
     /**
      * Takes in a new [not yet started] map thread. Kills the old one and
@@ -117,7 +115,6 @@ public class RunGame {
         }
 
         startGame();
-        musicThread.start();
     }
 
     private static int startNewGame() {

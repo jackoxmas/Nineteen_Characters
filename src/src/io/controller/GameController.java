@@ -6,6 +6,7 @@
 package src.io.controller;
 
 import java.net.DatagramPacket;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -15,11 +16,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.SwingUtilities;
 
 import java.util.Queue;
+import javafx.application.Application;
+import javafx.scene.media.AudioClip;
+import javafx.stage.Stage;
 
 import src.HardCodedStrings;
 import src.IO_Bundle;
 import src.Not_part_of_iteration_2_requirements.ControllerInternet;
 import src.Key_Commands;
+import src.Not_part_of_iteration_2_requirements.Music;
 import src.QueueCommandInterface;
 import src.RunGame;
 import src.enumHandler;
@@ -41,6 +46,15 @@ public class GameController extends Controller {
 
     //Queue of the strings from clicking on the command box inthe gui.
     private ConcurrentLinkedQueue<String> stringQueue_ = new ConcurrentLinkedQueue<String>();
+
+    private final Music music = new Music();
+    private final Thread musicThread = new Thread(music);
+
+    @Override()
+    public void run() {
+        musicThread.start();
+        super.run();
+    }
 
     private final class ChatBoxMiniController implements QueueCommandInterface<String> {
 
@@ -143,8 +157,8 @@ public class GameController extends Controller {
             commandsList.add(i.getValue().toString() + "  :  " + i.getKey() + System.lineSeparator());
         }
         Collections.sort(commandsList);
-        for(String i : commandsList){
-        	commands.append(i);
+        for (String i : commandsList) {
+            commands.append(i);
         }
 
         return commands.toString();
@@ -177,6 +191,7 @@ public class GameController extends Controller {
 
     public GameController(Map map, String uName, GameRemapper remap) {
         super(map, new AvatarCreationView(), remap, uName);
+        Application.launch(); // launches the sound effects application
         GameController_Constructor_Helper(super.getMap(), uName);
     }
 
@@ -216,19 +231,24 @@ public class GameController extends Controller {
             return null;
         }
         final IO_Bundle to_return = super.getMessenger().sendCommandToMap(command, input);
-        if(to_return == null) {
+        if (to_return == null) {
             System.out.println("To return is null!");
             try {
                 Thread.sleep(100);
-            } 
-            catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return sendCommandToMapWithText(command, input);
         }
+        // Sound effects!!!!
+        if (command == Key_Commands.ATTACK) {
+            System.out.println("Yet to tell Music to notify");
+            music.playAttackSound();
+            System.out.println("Finished telling music to notify");
+        }
 
-        if (to_return != null && to_return.strings_for_communication_ != null && 
-                !to_return.strings_for_communication_.isEmpty() && Key_Commands.GET_INTERACTION_OPTIONS.equals(command)) {
+        if (to_return != null && to_return.strings_for_communication_ != null
+                && !to_return.strings_for_communication_.isEmpty() && Key_Commands.GET_INTERACTION_OPTIONS.equals(command)) {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     Display.getDisplay().requestOutBoxFocus();
@@ -254,18 +274,18 @@ public class GameController extends Controller {
         }
         // Auto focus on chatbox - confusing to people who bump into entities on accident
         /*
-        if ((to_return != null && to_return.strings_for_communication_ != null && !to_return.strings_for_communication_.isEmpty())
-                && (command == Key_Commands.MOVE_DOWN || command == Key_Commands.MOVE_DOWNLEFT
-                || command == Key_Commands.MOVE_DOWNRIGHT || command == Key_Commands.MOVE_LEFT
-                || command == Key_Commands.MOVE_RIGHT || command == Key_Commands.MOVE_UP
-                || command == Key_Commands.MOVE_UPLEFT || command == Key_Commands.MOVE_UPRIGHT
-                || command == Key_Commands.GET_INTERACTION_OPTIONS)) {
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    Display.getDisplay().requestOutBoxFocus();
-                }
-            });
-        }*/
+         if ((to_return != null && to_return.strings_for_communication_ != null && !to_return.strings_for_communication_.isEmpty())
+         && (command == Key_Commands.MOVE_DOWN || command == Key_Commands.MOVE_DOWNLEFT
+         || command == Key_Commands.MOVE_DOWNRIGHT || command == Key_Commands.MOVE_LEFT
+         || command == Key_Commands.MOVE_RIGHT || command == Key_Commands.MOVE_UP
+         || command == Key_Commands.MOVE_UPLEFT || command == Key_Commands.MOVE_UPRIGHT
+         || command == Key_Commands.GET_INTERACTION_OPTIONS)) {
+         java.awt.EventQueue.invokeLater(new Runnable() {
+         public void run() {
+         Display.getDisplay().requestOutBoxFocus();
+         }
+         });
+         }*/
         return to_return;
     }
 

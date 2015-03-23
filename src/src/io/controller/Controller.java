@@ -9,6 +9,11 @@ import src.io.view.Viewport;
 import src.io.view.display.Display;
 import src.model.Map;
 
+import java.net.URL;
+import javafx.application.Application;
+import javafx.scene.media.AudioClip;
+import javafx.stage.Stage;
+
 /**
  * Abstract controller class
  *
@@ -16,7 +21,9 @@ import src.model.Map;
  *
  */
 public abstract class Controller implements QueueCommandInterface<Character>, Runnable {
-	public void regenerateCommandsBox(){}//Do nothing in super.
+
+    public void regenerateCommandsBox() {
+    }//Do nothing in super.
     private KeyRemapper remap_;
     private Viewport currentView_;
     private String userName_;
@@ -192,17 +199,21 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
      * @param foo
      */
     public abstract void loadGame(String foo);
-/**
- * -1 if null hashmap received
- * @param filepath
- * @return
- */
+
+    /**
+     * -1 if null hashmap received
+     *
+     * @param filepath
+     * @return
+     */
     public int loadKeys(String filepath) {
         HashMap<Character, Key_Commands> newmap = SavedGame.loadKeymap(filepath);
         if (newmap != null) {
             remap_.setMap(newmap);
             return 0;
-        }else{return -1;}
+        } else {
+            return -1;
+        }
     }
 
     /**
@@ -251,7 +262,7 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
     }
 
     /**
-     * 
+     *
      * @param ip
      * @return -1 if ip is invalid, 0 if ip is valid.
      */
@@ -259,11 +270,11 @@ public abstract class Controller implements QueueCommandInterface<Character>, Ru
         int error_code = internet.makeConnectionUsingIP_Address(ip);
         return error_code;
     }
-    
+
     public boolean isUsingInternet() {
-        if(message_deliverer_ == sendCommandViaNetwork_Functor_) {
+        if (message_deliverer_ == sendCommandViaNetwork_Functor_) {
             return true;
-        } else if(message_deliverer_ == sendCommandViaLocalReferance_Functor_) {
+        } else if (message_deliverer_ == sendCommandViaLocalReferance_Functor_) {
             return false;
         } else {
             System.err.println("Impossible error in Controller.is_using_internet()");

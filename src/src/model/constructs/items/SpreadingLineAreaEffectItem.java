@@ -9,12 +9,12 @@ public class SpreadingLineAreaEffectItem extends Item {
 
     public int getID() { return 19; }
 	
-	int current_size_ = 0;
+	int current_size_ = 1;
 	int max_size_;
 	int strength_;
 	FacingDirection direction_ = null;
 	Effect effect_;
-	boolean wait_turn_;
+	boolean wait_turn_ = false;
 	
     public SpreadingLineAreaEffectItem(int max_size, int strength, Effect effect, FacingDirection direction) {
     	super(UUID.randomUUID().toString(), '?', false, true, false);

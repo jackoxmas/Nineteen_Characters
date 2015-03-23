@@ -195,7 +195,7 @@ public final class Sneak extends Occupation {
                 // Bow attack
                 Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection();
                 if (bow_ != null && target != null) {
-                    target.receiveAttack(0, null); // hurt enemy [no attack-back]
+                    target.receiveAttack(0, super.getEntity()); // hurt enemy [no attack-back]
                 }
 
                 SpreadingLineAreaEffectItem arrow = new SpreadingLineAreaEffectItem(12 + getSkill_4_()*4, 2 + getSkill_4_()*2, Effect.HURT, super.getEntity().getFacingDirection());

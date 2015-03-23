@@ -125,6 +125,26 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
         current_mana_ = max_mana_;
     }
 
+    public void setNew(EntityStatsPack newPack) {
+        super.setNew((DrawableThingStatsPack)newPack);
+
+        lives_left_ = newPack.getLives_left_();
+        strength_level_ = newPack.getStrength_level_();
+        agility_level_ = newPack.getAgility_level_();
+        intellect_level_ = newPack.getIntellect_level_();
+        hardiness_level_ = newPack.getHardiness_level_();
+        quantity_of_experience_ = newPack.getQuantity_of_experience_();
+        movement_level_ = newPack.getMovement_level_();
+        max_life_ = newPack.getMax_life_();
+        max_mana_ = newPack.getMax_mana_();
+        defensive_rating_ = newPack.getDefensive_rating_();
+
+        moves_left_in_turn_ = newPack.getMoves_left_in_turn_();
+        cached_current_level_ = newPack.getCached_current_level_();
+        current_life_ = newPack.getCurrent_life_();
+        current_mana_ = newPack.getCurrent_mana_();
+    }
+
     /**
      * Copy constructor substitute
      */

@@ -47,7 +47,11 @@ public final class Sneak extends Occupation {
 
     }
 
+    public Bow getBow() { return bow_; }
+
     public int getCloakTimer() { return cloak_timer; }
+
+    public void setCloakTimer(int value) { if (value >= 0) cloak_timer = value; }
 
     @Override
     public int equipOneHandWeapon(OneHandedWeapon weapon) {

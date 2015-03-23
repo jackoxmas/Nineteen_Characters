@@ -48,6 +48,7 @@ public class RunGame {
     private static int mapHeight_ = 20;
     private static int mapWidth_ = 35;
     private static boolean map_editor_mode_ = false;
+    private static StringBuilder newUserName_ = new StringBuilder();
 
     /*
      public static boolean getUseTCP() {
@@ -124,11 +125,12 @@ public class RunGame {
 	}
 
 	public static void loadGame(String file_path) {
+        /*
         Map newMap = SavedGame.loadGame(file_path);
         if (newMap == null) {
             RunGame.errOut("Failed to load the map from: " + file_path);
             return;
-        }
+        }*/
         //map_ = newMap;
     }
 
@@ -302,17 +304,17 @@ public class RunGame {
             RunGame.errOut("startGame(): invalid (null) map");
             return;
         }
+        /*
         if (avatar_ == null) {
             RunGame.errOut("startGame(): invalid (null) avatar");
             return;
-        }
-
+        }*/
         uc_ = new GameController(map_, avatar_name);
         (new Thread(uc_)).start();
     }
 
     public static void saveGameToDisk(String filepath) {
-        SavedGame.saveGame(filepath, map_); // save game to file "foo"
+        SavedGame.saveGame(filepath, map_, uc_.getUserName()); // save game to file "foo"
     }
 
     // </editor-fold>
@@ -456,7 +458,7 @@ public class RunGame {
             dbgOut("ARGS: debug mode enabled at level: " + pOpts_.dbg_level, 2);
         }
         if (pOpts_.lsg_flag) {
-            Map tmp_map = SavedGame.loadGame(args[pOpts_.lsg_path]); // attempt to load the saved game
+            Map tmp_map = SavedGame.loadGame(args[pOpts_.lsg_path], newUserName_); // attempt to load the saved game
             if (tmp_map == null) // if the load has failed, log that
             {
                 RunGame.errOut("MAIN: Could not load map from: " + args[pOpts_.lsg_path]);

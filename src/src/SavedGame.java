@@ -7,9 +7,7 @@ package src;
 import java.awt.*;
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -41,7 +39,7 @@ public class SavedGame {
      * is modified. The version number 0 is reserved. This value has no 
      * relation to the Java native Serialization object ID.
      */
-    public static final long SAVE_DATA_VERSION = 5;
+    public static final long SAVE_DATA_VERSION = 9;
     public static final String SAVE_EXT = ".xml";
     public static final String KEY_EXT = ".key";
     public static final char SAVE_ITERATOR_FLAG = '_';
@@ -61,8 +59,13 @@ public class SavedGame {
 
     //<editor-fold desc="PUBLIC METHODS" defaultstate="collapsed">
 
-    public static src.model.Map loadGame(String filepath) {//UserController controller) {
+    public static src.model.Map loadGame(String filepath, StringBuilder out_pc) {//UserController controller) {
         try {
+            if (out_pc == null) {
+                RunGame.errOut("Invalid (null) PC passed to load game.");
+                throw new Exception();
+            }
+
             File saveFile = validateFile(filepath, SAVE_EXT);
             if (!saveFile.exists()) {
                 RunGame.errOut("LOAD ERROR: File does not exist\nString was: " + filepath);
@@ -93,8 +96,7 @@ public class SavedGame {
             RunGame.dbgOut("XML DBG: Checking save versions. Expecting [" + SAVE_DATA_VERSION + "], got: [" + v + "].", 3);
             if (SAVE_DATA_VERSION != v) {
                 RunGame.errOut("XML ERR: save data version mismatch. Save game cannot be loaded.");
-                // TODO: uncomment line below
-                //return null;
+                return null;
             }
 
             // Load map
@@ -106,6 +108,7 @@ public class SavedGame {
                 RunGame.errOut("XML WARN: save file contains more than [" + ns_result.getLength() + "] map nodes. Loading the first one.");
             }
 
+            out_pc.append(xml_getNodeByString(ns_result.item(0), "pc").getTextContent());
             src.model.Map mm = xml_readMap(load, (Element) ns_result.item(0));
 
             if (mm == null) {
@@ -122,7 +125,7 @@ public class SavedGame {
     }
 
     public static HashMap<Character, Key_Commands> loadKeymap(String filepath) {
-        try {
+        try{
             File loadFile = validateFile(filepath, KEY_EXT);
             if (loadFile == null)
                 throw new Exception("Could not load file");
@@ -183,7 +186,7 @@ public class SavedGame {
         }
     }
 
-    public static int saveGame(String filepath, src.model.Map map) {
+    public static int saveGame(String filepath, src.model.Map map, String pc) {
         try {
             File saveFile = validateFile(filepath, SAVE_EXT);
             if (saveFile == null)
@@ -207,6 +210,9 @@ public class SavedGame {
             // MAP
             Element e_map = save.createElement(XML_MAP);
 
+            Element e_pc = save.createElement("pc");
+            e_pc.appendChild(save.createTextNode(pc));
+            e_map.appendChild(e_pc);
             xml_writeMap(save, e_map, map);
 
             root.appendChild(e_map);
@@ -262,7 +268,7 @@ public class SavedGame {
 
             Element eKeymap = save.createElement(XML_KEYMAP);
             Element tmp_eKey;
-            for (Map.Entry<Character, Key_Commands> e : remap.entrySet()) {
+            for (java.util.Map.Entry<Character, Key_Commands> e : remap.entrySet()) {
                 tmp_eKey = save.createElement(XML_ROOT_CONTROLLER);
                 tmp_eKey.setAttribute(XML_KEY, e.getKey().toString());
                 tmp_eKey.appendChild(save.createTextNode(e.getValue().name()));
@@ -405,6 +411,17 @@ public class SavedGame {
 
     //<editor-fold desc="XML OPERATIONS" defaultstate="collapsed">
 
+    private static LinkedList<Node> xml_getAllNodesByString(Node parent, String tagName) {
+        NodeList ns = parent.getChildNodes();
+        LinkedList<Node> ret_list = new LinkedList<Node>();
+
+        for (int i = 0; i < ns.getLength(); i++) {
+            if (ns.item(i).getNodeName().compareTo(tagName) == 0)
+                ret_list.push(ns.item(i));
+        }
+        return ret_list;
+    }
+
     private static Node xml_getNodeByString(Node parent, String tagName) {
         NodeList ns = parent.getChildNodes();
 
@@ -415,8 +432,8 @@ public class SavedGame {
         return null;
     }
 
-    private static OneShotAreaEffectItem xml_readAOE_One (Document doc, Element e_aoe) {
-        if (doc == null || e_aoe == null) {
+    private static OneShotAreaEffectItem xml_readAOE_One (Document doc, Node n_aoe) {
+        if (doc == null || n_aoe == null) {
             RunGame.errOut("xml_readAOE_One: invalid (null) argument");
             return null;
         }
@@ -428,29 +445,29 @@ public class SavedGame {
             Effect d_effect;
             int d_power;
 
-            Node n_data = xml_getNodeByString(e_aoe, "name");
+            Node n_data = xml_getNodeByString(n_aoe, "name");
             if (n_data == null) {
                 throw new Exception();
             }
             d_name = n_data.getTextContent();
 
-            n_data = xml_getNodeByString(e_aoe, "power");
+            n_data = xml_getNodeByString(n_aoe, "power");
             if (n_data == null) {
                 throw new Exception();
             }
             d_power = Integer.parseInt(n_data.getTextContent());
 
-            n_data = xml_getNodeByString(e_aoe, "effect");
+            n_data = xml_getNodeByString(n_aoe, "effect");
             if (n_data == null) { throw new Exception(); }
             d_effect = Effect.valueOf(n_data.getTextContent());
             if (d_effect == null) { throw new Exception(); }
 
-            n_data = xml_getNodeByString(e_aoe, "char");
+            n_data = xml_getNodeByString(n_aoe, "char");
             if (n_data != null) { d_representation = n_data.getTextContent().charAt(0); }
 
             OneShotAreaEffectItem ret_item = new OneShotAreaEffectItem(d_name, d_representation, d_effect, d_power);
 
-            n_data = xml_getNodeByString(e_aoe, "b_invisible");
+            n_data = xml_getNodeByString(n_aoe, "b_invisible");
             if (n_data != null) { ret_item.setViewable(false); }
 
             return ret_item;
@@ -484,6 +501,170 @@ public class SavedGame {
         return; // explicit
     }
 
+    private static DrawableThingStatsPack xml_readDrawableStats (Document doc, Node n_draw) throws Exception {
+
+        int d_armor = 0, d_off = 0;
+
+        Node n_data = xml_getNodeByString(n_draw, "armor_rating");
+        d_armor = Integer.parseInt(n_data.getTextContent());
+
+        n_data = xml_getNodeByString(n_draw, "off_rating");
+        d_off = Integer.parseInt(n_data.getTextContent());
+
+        return new DrawableThingStatsPack(d_off, d_armor);
+    }
+
+    private static Entity xml_readEntity(Document doc, Node n_entity, HashMap<TemporaryObstacleItem, String> keyLinks) {
+        try {
+            Entity ret_entity;
+
+            // TODO GET STATSPACK
+
+            // Collect:
+            String d_name;
+            char d_rep = '\u0000';
+
+            Node n_data = xml_getNodeByString(n_entity, "name");
+            if (n_data == null) { throw new Exception(); }
+            d_name = n_data.getTextContent();
+            if (d_name == null) { throw new Exception(); }
+
+            n_data = xml_getNodeByString(n_entity, "char");
+            if (n_data != null) { d_rep = n_data.getTextContent().charAt(0); }
+
+            int oid = Integer.parseInt(n_entity.getAttributes().getNamedItem("id").getTextContent());
+            switch(oid) {
+                case 15: // monster
+                    // TODO FINISH
+                    ret_entity = new Villager(d_name, d_rep); // TODO REMOVE
+                    break;
+                case 16: // avatar
+                    ret_entity = new Avatar(d_name, d_rep);
+                    break;
+                case 17: // villager
+                    ret_entity = new Villager(d_name, d_rep);
+                    break;
+                case 18: // merchant
+                    ret_entity = new Merchant(d_name, d_rep);
+                    break;
+                default:
+                    throw new Exception();
+            }
+
+            n_data = xml_getNodeByString(n_entity, "gold");
+            if (n_data == null) { throw new Exception(); }
+            int diff = Integer.parseInt(n_data.getTextContent());
+            diff = diff - ret_entity.getNumGoldCoins();
+            ret_entity.incrementNumGoldCoinsBy(diff);
+
+            n_data = xml_getNodeByString(n_entity, "skill_points");
+            if (n_data == null) { throw new Exception(); }
+
+
+            return ret_entity;
+        } catch (Exception e) {
+            RunGame.errOut(e, true);
+            RunGame.errOut("xml_readEntity: could not parse entity");
+            return null;
+        }
+    }
+
+    private static EntityStatsPack xml_readEntityStatsPack (Document doc, Node n_entity) throws Exception {
+        EntityStatsPack ret_pack = new EntityStatsPack();
+        return ret_pack;
+    }
+
+    private static Item xml_readItem(Document doc, Node n_item, HashMap<TemporaryObstacleItem, String> keyLinks) {
+        try {
+            Item ret_item;
+
+            if (keyLinks == null) { keyLinks = new HashMap<>(); }
+
+            String d_name;
+            char d_rep = '\u0000';
+            boolean d_oneshot = false, d_inventory = false, d_passable = false;
+            Color d_color = null;
+
+            Node n_data = xml_getNodeByString(n_item, "name");
+            if (n_data == null) { throw new Exception(); }
+            d_name = n_data.getTextContent();
+            if (d_name == null) { throw new Exception(); }
+
+            n_data = xml_getNodeByString(n_item, "char");
+            if (n_data != null) { d_rep = n_data.getTextContent().charAt(0); }
+
+            n_data = xml_getNodeByString(n_item, "color");
+            if (n_data != null) { d_color = Color.getColor("", Integer.parseInt(n_data.getTextContent())); }
+
+            int oid = Integer.parseInt(n_item.getAttributes().getNamedItem("id").getTextContent());
+            switch (oid) {
+                case 2: // bow
+                    ret_item = new Bow(d_name, d_rep);
+                    break;
+                case 3: // invis. serum
+                    ret_item = new InvisibilitySerum(d_name, d_rep);
+                    break;
+                case 4: // Kngihts serum
+                    ret_item = new KnightsSerum(d_name, d_rep);
+                    n_data = xml_getNodeByString(n_item, "b_activated");
+                    if (n_data != null) { ((KnightsSerum)ret_item).setActivated(true); }
+                    else
+                        ((KnightsSerum)ret_item).setActivated(false);
+                    break;
+                case 5: // Two handed sword
+                    ret_item = new TwoHandedSword(d_name, d_rep);
+                    break;
+                case 6: // trap
+                    ret_item = xml_readAOE_One(doc, n_item);
+                    if (ret_item == null)
+                        throw new Exception();
+                    break;
+                case 7: // staff
+                    ret_item = new Staff(d_name, d_rep);
+                    break;
+                case 8: // shield
+                    ret_item = new Shield(d_name, d_rep);
+                    break;
+                case 9: // one handed sword
+                    ret_item = new OneHandedSword(d_name, d_rep);
+                    break;
+                case 10: // 1way teleport
+                    ret_item = xml_readTeleport_OneWay(doc, n_item);
+                    break;
+                case 11: // 1s AOE item
+                    ret_item = xml_readAOE_One(doc, n_item);
+                    if (ret_item == null) { throw new Exception(); }
+                    break;
+                case 12: // temp obstacle item
+                    ret_item = xml_readTempObstacle(doc, n_item);
+                    n_data = xml_getNodeByString(n_item, "key");
+                    if (n_data == null) { throw new Exception(); }
+                    keyLinks.put((TemporaryObstacleItem)ret_item, n_data.getTextContent());
+                    break;
+                case 13: // Obstacle removing item
+                    ret_item = new ObstacleRemovingItem(d_name, d_rep);
+                    break;
+                case 14: // Permanent Item
+                    ret_item = new PermanentObstacleItem(d_name, d_rep);
+                    break;
+                default:
+                    RunGame.errOut("Invalid item id found");
+                    throw new Exception();
+            }
+
+            ret_item.getStatsPack().addOn(xml_readDrawableStats(doc, n_item));
+
+            n_data = xml_getNodeByString(n_item, "b_invisible");
+            if (n_data != null) { ret_item.setViewable(false); }
+
+            return ret_item;
+
+        } catch (Exception e) {
+            RunGame.errOut("xml_readItem: could not parse terrain");
+            return null;
+        }
+    }
+
     private static src.model.Map xml_readMap(Document doc, Element e_map) {
         if (doc == null || e_map == null) {
             RunGame.errOut("xml_readMap: invalid (null) argument");
@@ -501,6 +682,8 @@ public class SavedGame {
 
             ret_map = new src.model.Map(map_x, map_y);
 
+            HashMap<TemporaryObstacleItem, String> keyLinks = new HashMap<>();
+
             NodeList ns_tiles = e_mapgrid.getElementsByTagName("map_tile");
             int x, y;
             Node tn_tile, tn_data;
@@ -516,6 +699,22 @@ public class SavedGame {
                 t_terr = xml_readTerrain(doc, tn_data);
                 if (t_terr == null) { throw new Exception(); }
                 ret_map.addTerrain(t_terr, x, y);
+
+                // parse entities
+                tn_data = xml_getNodeByString(tn_tile, "entity");
+                if (tn_data != null) {
+                    Entity ent = xml_readEntity(doc, tn_data, keyLinks);
+                    ret_map.addAsEntity(ent, x, y);
+                }
+
+                // parse items
+                LinkedList<Node> items = xml_getAllNodesByString(tn_tile, "item");
+                Item t_item;
+                for (Node item : items) {
+                    t_item = xml_readItem(doc, item, keyLinks);
+                    if (t_item != null)
+                        ret_map.addItem(t_item, x, y);
+                }
             }
 
             return ret_map;
@@ -524,6 +723,56 @@ public class SavedGame {
             return null;
         }
 
+    }
+
+    private static OneWayTeleportItem xml_readTeleport_OneWay(Document doc, Node n_tele) throws Exception {
+        OneWayTeleportItem ret_tele;
+
+        // Collect:
+        String d_name;
+        char d_rep = '\u0000';
+        int dx, dy;
+
+        Node n_data = xml_getNodeByString(n_tele, "name");
+        if (n_data == null) { throw new Exception(); }
+        d_name = n_data.getTextContent();
+
+        n_data = xml_getNodeByString(n_tele, "char");
+        if (n_data != null) { d_rep = n_data.getTextContent().charAt(0); }
+
+        n_data = xml_getNodeByString(n_tele, "dx");
+        if (n_data == null) { throw new Exception(); }
+        dx = Integer.parseInt(n_data.getTextContent());
+
+        n_data = xml_getNodeByString(n_tele, "dy");
+        if (n_data == null) { throw new Exception(); }
+        dy = Integer.parseInt(n_data.getTextContent());
+
+        ret_tele = new OneWayTeleportItem(d_name, d_rep, dx, dy);
+
+        n_data = xml_getNodeByString(n_tele, "b_invisible");
+        if (n_data != null) { ret_tele.setViewable(false); }
+
+        return ret_tele;
+    }
+
+    private static TemporaryObstacleItem xml_readTempObstacle (Document doc, Node n_obst) throws Exception {
+        TemporaryObstacleItem ret_obst;
+
+        // collect:
+        String d_name;
+        char d_rep = '\u0000';
+
+        Node n_data = xml_getNodeByString(n_obst, "name");
+        if (n_data == null) { throw new Exception(); }
+        d_name = n_data.getTextContent();
+
+        n_data = xml_getNodeByString(n_obst, "char");
+        if (n_data != null) { d_rep = n_data.getTextContent().charAt(0); }
+
+        ret_obst = new TemporaryObstacleItem(d_name, d_rep, null);
+
+        return ret_obst;
     }
 
     private static Terrain xml_readTerrain(Document doc, Node n_terr) {
@@ -591,8 +840,6 @@ public class SavedGame {
         parent.appendChild(e_effect);
     }
 
-
-
     /**
      * Writes this map to the given XML Element in the given XML document
      *
@@ -604,7 +851,8 @@ public class SavedGame {
     private static int xml_writeMap(Document doc, Element e_map, src.model.Map map) {
         // MAP::TIME)
         Element e_time = doc.createElement(SavedGame.XML_MAP_TIME);
-        e_map.appendChild(doc.createTextNode(Integer.toString(map.getTime())));
+        e_time.appendChild(doc.createTextNode(Integer.toString(map.getTime())));
+        e_map.appendChild(e_time);
 
         // MAP::MAP_GRID
         Element e_map_grid = doc.createElement(SavedGame.XML_MAP_MAPGRID);
@@ -640,7 +888,7 @@ public class SavedGame {
                 Entity ent = grid[j][i].getEntity();
                 if (ent != null) {
                     Element e_ent = doc.createElement("entity");
-                    //e_ent.setAttribute("id", Integer.toString(ent.getID()));
+                    e_ent.setAttribute("id", Integer.toString(ent.getID()));
                     //xml_writeEntity(doc, e_ent, ent);
                     xml_writeDrawable(doc, e_ent, ent);
                     e_l.appendChild(e_ent);
@@ -664,7 +912,6 @@ public class SavedGame {
         }
 
         // MAP - APPEND
-        e_map.appendChild(e_time);
         e_map.appendChild(e_map_grid);
 
         return 0; // Return success

@@ -18,7 +18,7 @@ public class TemporaryObstacleItem extends ObstacleItem {
 
     public int getID() { return 12; }
 
-    private final ObstacleRemovingItem keyItem_;
+    private ObstacleRemovingItem keyItem_;
 
     public TemporaryObstacleItem(String name, char representation, ObstacleRemovingItem keyItem) {
         super(name, representation);
@@ -42,6 +42,10 @@ public class TemporaryObstacleItem extends ObstacleItem {
     }
 
     public String getKeyName() { return checkKey().getName(); }
+
+    public void setKey(ObstacleRemovingItem newKey) {
+        keyItem_ = newKey;
+    }
 
     /**
      * Returns a reference to the keyItem needed to open this door.

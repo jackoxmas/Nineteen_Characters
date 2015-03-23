@@ -15,6 +15,8 @@ public class KnightsSerum extends PickupableItem {
 
     public boolean getActivated() { return activated; }
 
+    public void setActivated(boolean value) { activated = value; }
+
     @Override
     public void use(Entity target) {
         if (!activated) {

@@ -93,16 +93,29 @@ public abstract class Summoner extends Occupation {
         return "Summoner";
     }
     
+    
+    private boolean boonActivated = false;
+    public void deActivateBoon(){
+    	boonActivated = false;
+    }
+    public void activateBoon(){
+    	boonActivated = true;
+    }
+    public boolean isBoonActivated(){
+    	return boonActivated;
+    }
     @Override
     public void takeTurn(){
     	if (boon_stats_ != null) {
-	    	if (boon_timer_ > 0) {
-	    		boon_timer_--;
-	    	} else {
-	    		super.getEntity().getStatsPack().reduceBy(boon_stats_);
-	    		boon_stats_ = null;
-	    	}
+    		if (boon_timer_ > 0) {
+    			boon_timer_--;
+    		} else {
+    			deActivateBoon();
+   				super.getEntity().getStatsPack().reduceBy(boon_stats_);
+   				boon_stats_ = null;
+   			}
     	}
+    	
     }
 
 	@Override

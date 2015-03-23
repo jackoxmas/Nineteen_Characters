@@ -126,26 +126,27 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
     }
 
     /**
-     *
-     * @param in : Stats pack to copy
+     * Copy constructor substitute
      */
-    public EntityStatsPack(EntityStatsPack in) {
-        super(in);
-        lives_left_ = in.getLives_left_(); // this can change without leveling up
-        strength_level_ = in.getStrength_level_();
-        agility_level_ = in.getAgility_level_();
-        intellect_level_ = in.getIntellect_level_();
-        hardiness_level_ = in.getHardiness_level_();
-        quantity_of_experience_ = in.getQuantity_of_experience_();
-        movement_level_ = in.getMovement_level_();
-        max_life_ = in.getMax_life_();
-        max_mana_ = in.getMax_mana_();
-        defensive_rating_ = in.defensive_rating_;
-
-        moves_left_in_turn_ = in.getMoves_left_in_turn_();
-        cached_current_level_ = in.getCached_current_level_();
-        current_life_ = in.getMax_life_();
-        current_mana_ = in.getCurrent_mana_();
+    public EntityStatsPack makeCopyOfMyself() {
+        EntityStatsPack copy = new EntityStatsPack();
+        copy.setOffensive_rating_(this.getOffensive_rating_());
+        copy.setArmor_rating_(this.getArmor_rating_());
+        copy.lives_left_ = this.lives_left_;
+        copy.strength_level_ = this.strength_level_;
+        copy.agility_level_ = this.agility_level_;
+        copy.intellect_level_ = this.intellect_level_;
+        copy.hardiness_level_ = this.hardiness_level_;
+        copy.quantity_of_experience_ = this.quantity_of_experience_;
+        copy.movement_level_ = this.movement_level_;
+        copy.max_life_ = this.max_life_;
+        copy.max_mana_ = this.max_mana_;
+        copy.defensive_rating_ = this.defensive_rating_;
+        copy.moves_left_in_turn_ = this.moves_left_in_turn_;
+        copy.cached_current_level_ = this.cached_current_level_;
+        copy.current_life_ = this.current_life_;
+        copy.current_mana_ = this.current_mana_;
+        return copy;
     }
 
     public void increaseCurrentLevelByOne() {
@@ -395,6 +396,20 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
         arrayList.add(Integer.toString(current_mana_).getBytes());
 
         return arrayList;
+    }
+    
+    public void addOn(final EntityStatsPack other) {
+        strength_level_ += other.getStrength_level_();
+        agility_level_ += other.getAgility_level_();
+        intellect_level_ += other.getIntellect_level_();
+        hardiness_level_ += other.getHardiness_level_();
+    }
+
+    public void reduceBy(final EntityStatsPack other) {
+        strength_level_ -= other.getStrength_level_();
+        agility_level_ -= other.getAgility_level_();
+        intellect_level_ -= other.getIntellect_level_();
+        hardiness_level_ -= other.getHardiness_level_();
     }
 
 }

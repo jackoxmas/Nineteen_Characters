@@ -32,12 +32,12 @@ public class Trap extends OneShotAreaEffectItem {
 
 		activate();
 
-		// System.out.println("Item: " + this.toString() +
-		// " is being walked on.");
+		//System.out.println("Item: " + this.toString() +
+		 //" is being walked on. HasBeenActivated = " + this.hasBeenActivated());
 		if (this.isOneShot() && !this.goesInInventory()) {
 			this.getMapRelation().getMapTile().removeTopItem();
 		}
-		this.getMapRelation().areaEffectFunctor.effectAreaWithinRadius(0,
+		this.getMapRelation().areaEffectFunctor.effectAreaWithinRadius(1,
 				getPower(), Effect.HURT);
 	}
 }

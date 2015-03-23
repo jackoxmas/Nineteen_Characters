@@ -1,5 +1,6 @@
 package src;
 
+import src.Not_part_of_iteration_2_requirements.Music;
 import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -54,14 +55,16 @@ public class RunGame {
     private static StringBuilder newUserName_ = new StringBuilder();
 
     /**
-     * Takes in a new [not yet started] map thread. Kills the old one and replaces it.
+     * Takes in a new [not yet started] map thread. Kills the old one and
+     * replaces it.
+     *
      * @param map new replacement map
      */
     public static void setNewMap(Map map) {
         grusomelyKillTheMap();
-        try{
+        try {
             Thread.sleep(10);
-        } catch(InterruptedException e) {
+        } catch (InterruptedException e) {
             System.err.println("This interrupted exception should never ever happen");
             System.exit(77);
         }
@@ -99,7 +102,7 @@ public class RunGame {
     }
 
     public static void main(String[] args) {
-    	parseArgs(args); // Parse command line arguments
+        parseArgs(args); // Parse command line arguments
     	handleArgs(args);
     	if(!pOpts_.lsg_flag){
     		if (map_editor_mode_) {
@@ -111,7 +114,6 @@ public class RunGame {
     		populateMap();
     	}
     }
-
         startGame();
     }
 
@@ -172,7 +174,7 @@ public class RunGame {
     private static void populateMap() {
         avatar_ = new Avatar(avatar_name, '☃');
         // map_.addAsAvatar(avatar_, 0, 0);
-        map_.addAsAvatar(avatar_, mapWidth_/2 - 1, mapHeight_/2 - 1);
+        map_.addAsAvatar(avatar_, mapWidth_ / 2 - 1, mapHeight_ / 2 - 1);
 
         Avatar buddy = new Avatar("buddy", '☺');
         // map_.addAsAvatar(buddy, 3, 0);

@@ -37,15 +37,6 @@ public class MapInternet extends Thread {
     //private final TCP_Connection_Maker connection_initiator = new TCP_Connection_Maker();
     private final Map my_owner_;
     private int frame_number = 0;
-    private boolean is_using_compression = true;
-
-    public void enableFrameCompression() {
-        is_using_compression = true;
-    }
-
-    public void disableFrameCompression() {
-        is_using_compression = false;
-    }
     //</editor-fold>
     //<editor-fold desc="Constructors" defaultstate="collapsed">
 
@@ -97,13 +88,12 @@ public class MapInternet extends Thread {
             DatagramPacket receivePacket = new DatagramPacket(buf, buf.length);
 
             recieving_socket.receive(receivePacket);
-            String decoded_string_with_trailing_zeros = new String(receivePacket.getData(), 
+            String decoded_string_with_trailing_zeros = new String(receivePacket.getData(),
                     receivePacket.getOffset(), receivePacket.getLength(), "UTF-8");
             //System.out.println("Map received a receivePacket");
-                //RunGame.dbgOut("The map recieved a receivePacket in Map.GetMapInputFromUsers.run() from address: " + receivePacket.getAddress().toString(), 6);
+            //RunGame.dbgOut("The map recieved a receivePacket in Map.GetMapInputFromUsers.run() from address: " + receivePacket.getAddress().toString(), 6);
 
             // "udp receivePacket recieved in GetMapInputFromUsers
-
             String decoded_string = decoded_string_with_trailing_zeros.trim();
 
             String[] splitArray;
@@ -153,6 +143,27 @@ public class MapInternet extends Thread {
             System.exit(-4);
         }
     }
+    private IO_Bundle make_dead_packet() {
+        IO_Bundle return_package = new IO_Bundle(
+                            "",
+                            null,
+                            null,
+                            null,
+                            // Don't for get left and right hand items
+                            null,
+                            null,
+                            -1,
+                            -1,
+                            -1,
+                            -1,
+                            null,
+                            null,
+                            null,
+                            -1,
+                            false
+                    );
+        return return_package;
+    }
 
     private void sendToClient(String username, Key_Commands command,
             int width_from_center, int height_from_center, String text, Packet_Sender sender) {
@@ -162,6 +173,9 @@ public class MapInternet extends Thread {
         } else {
             to_recieve_command = null;
             System.err.println("The avatar of entity you are trying to reach does not exist.");
+            IO_Bundle return_package = make_dead_packet();
+            sender.setBundleAvatarAndNotify(to_recieve_command, return_package);
+            return;
         }
         ArrayList<String> strings_for_IO_Bundle = null;
         if (to_recieve_command != null) {
@@ -190,7 +204,7 @@ public class MapInternet extends Thread {
                         my_owner_.makeTakeTurns();//Make all the maptiles take a turn.
                     }
                     IO_Bundle return_package = new IO_Bundle(
-                            null, null, null, null,
+                            to_recieve_command.getObservationString(),
                             view,
                             colors,
                             to_recieve_command.getInventory(),
@@ -210,30 +224,14 @@ public class MapInternet extends Thread {
                 } else {
                     char[][] view = null;
                     int[][] colors = null;
-                    IO_Bundle return_package = new IO_Bundle(
-                            null, null, null, null,
-                            view,
-                            colors,
-                            null,
-                            // Don't for get left and right hand items
-                            null,
-                            null,
-                            -1,
-                            -1,
-                            -1,
-                            -1,
-                            null,
-                            null,
-                            null,
-                            -1,
-                            to_recieve_command.hasLivesLeft()
-                    );
+                    
+                    IO_Bundle return_package = make_dead_packet();
                     sender.setBundleAvatarAndNotify(to_recieve_command, return_package);
                     System.out.println("Map sent back a packet with just an indication of game over.");
                     return;
                 }
             } else if (command == null) {
-                IO_Bundle return_package = new IO_Bundle(null, null, null, null, null, null, to_recieve_command.getInventory(),
+                IO_Bundle return_package = new IO_Bundle(to_recieve_command.getObservationString(),null, null, to_recieve_command.getInventory(),
                         // Don't for get left and right hand items
                         to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
                         to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),
@@ -312,8 +310,8 @@ public class MapInternet extends Thread {
             }
             while (!isInterrupted()) {
                 try {
-                    if(! is_notified) {
-                    wait();
+                    if (!is_notified) {
+                        wait();
                     } else {
                         // keep going
                     }
@@ -323,12 +321,7 @@ public class MapInternet extends Thread {
                 }
                 byte[] to_send = ControllerInternet.bundleToBytes(bundle_to_send_);
                 if (frame_number % 256 == 0) {
-                    //if (is_using_compression) {
-                    //    System.out.print("With compression, ");
-                    //} else {
-                        System.out.print("Without compression, ");
-                    //}
-                    System.out.println("number of bytes sent = " + to_send.length);
+                    System.out.print("Without compression, number of bytes sent = " + to_send.length);
                 }
                 ++frame_number;
                 DatagramPacket packet_to_send = new DatagramPacket(

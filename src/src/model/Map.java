@@ -43,14 +43,6 @@ public class Map extends Thread implements MapMapEditor_Interface, MapUser_Inter
     private MapTile map_grid_[][];
     private MapInternet my_internet_;
 
-    public void disableFramCompressionInMap() {
-        my_internet_.disableFrameCompression();
-    }
-
-    public void enableFramCompressionInMap() {
-        my_internet_.enableFrameCompression();
-    }
-
     //</editor-fold>
     //<editor-fold desc="Constructors" defaultstate="collapsed">
     // This should never get called
@@ -89,12 +81,12 @@ public class Map extends Thread implements MapMapEditor_Interface, MapUser_Inter
             System.exit(-6);
             return;
         }
-        my_internet_.start();
     }
 
     @Override
     public void run() {
         try {
+            my_internet_.start();
             Thread.sleep(Long.MAX_VALUE);
         } catch (InterruptedException e) {
             System.err.println("This error is supposed to appear on closing:");
@@ -132,7 +124,7 @@ public class Map extends Thread implements MapMapEditor_Interface, MapUser_Inter
     public IO_Bundle getMapAt(int x, int y, int width, int height) {
         char[][] view = makeView(x, y, width, height);
         int[][] colors = makeColors(x, y, width, height);
-        return new IO_Bundle(null, null, null, null, view, colors, null, null, null, 0, 0, 0, 0, null, null, null, 0, true);
+        return new IO_Bundle(null, view, colors, null, null, null, 0, 0, 0, 0, null, null, null, 0, true);
         //Mapeditor has no game over condition, you are always alive.
     }
 
@@ -396,6 +388,28 @@ public class Map extends Thread implements MapMapEditor_Interface, MapUser_Inter
         }
     }
 
+    private IO_Bundle make_dead_packet() {
+        IO_Bundle return_package = new IO_Bundle(
+                "",
+                null,
+                null,
+                null,
+                // Don't for get left and right hand items
+                null,
+                null,
+                -1,
+                -1,
+                -1,
+                -1,
+                null,
+                null,
+                null,
+                -1,
+                false
+        );
+        return return_package;
+    }
+
     /**
      * Use this when the command the map is receiving requires a string
      * parameter
@@ -417,6 +431,7 @@ public class Map extends Thread implements MapMapEditor_Interface, MapUser_Inter
         } else {
             to_recieve_command = null;
             System.err.println("The avatar of entity you are trying to reach does not exist.");
+            return make_dead_packet();
         }
         ArrayList<String> strings_for_IO_Bundle = null;
         if (to_recieve_command != null) {
@@ -444,7 +459,7 @@ public class Map extends Thread implements MapMapEditor_Interface, MapUser_Inter
                         makeTakeTurns();//Make all the maptiles take a turn.
                     }
                     IO_Bundle return_package = new IO_Bundle(
-                            null, null, null, null,
+                            to_recieve_command.getObservationString(),
                             view,
                             colors,
                             to_recieve_command.getInventory(),
@@ -462,28 +477,11 @@ public class Map extends Thread implements MapMapEditor_Interface, MapUser_Inter
                 } else {
                     char[][] view = null;
                     int[][] colors = null;
-                    IO_Bundle return_package = new IO_Bundle(
-                            null, null, null, null,
-                            view,
-                            colors,
-                            null,
-                            // Don't for get left and right hand items
-                            null,
-                            null,
-                            -1,
-                            -1,
-                            -1,
-                            -1,
-                            null,
-                            null,
-                            null,
-                            -1,
-                            to_recieve_command.hasLivesLeft()
-                    );
-                    return return_package;
+                    return make_dead_packet();
                 }
             } else if (command == null) {
-                IO_Bundle return_package = new IO_Bundle(null, null, null, null, null, null, to_recieve_command.getInventory(),
+                IO_Bundle return_package = new IO_Bundle(to_recieve_command.getObservationString(),
+                        null, null, to_recieve_command.getInventory(),
                         // Don't for get left and right hand items
                         to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
                         to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),

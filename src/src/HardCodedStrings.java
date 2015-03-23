@@ -42,7 +42,6 @@ public class HardCodedStrings {
                         "^ If entityname doesn't exist, you will be controlling nothing."+System.lineSeparator()+
 			"^ Setting control to a non existent entity ends the game"+System.lineSeparator()+
                         "/set-ip ip-address - switches to a different ip address." +System.lineSeparator()+
-                        "/set-compression on/off - enables or disables frame compression." +System.lineSeparator()+
 			fontsizeHelp;
 	public final static String rebindHelp = 
 			"Format is : /rebind CONTROL_NAME key" + System.lineSeparator() +

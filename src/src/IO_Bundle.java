@@ -22,34 +22,13 @@ import src.model.constructs.items.SecondaryHandHoldable;
  */
 public class IO_Bundle implements Serializable {
 
-    public IO_Bundle(ArrayList<Character> unchanged_characters, ArrayList<Short> character_frequencies,
-            ArrayList<Color> compressed_colors, ArrayList<Short> color_frequencies,
+    public IO_Bundle( String observation_string,
             char[][] v, int[][] c, ArrayList<PickupableItem> i,
             EntityStatsPack s, Occupation o, int n, int bi, int ba, int ob,
             PrimaryHandHoldable pri, SecondaryHandHoldable sec,
             ArrayList<String> sfc, int num_coins, boolean is_alive
     ) {
-        if (unchanged_characters != null) {
-            compressed_characters_ = convertArrayListOfCharToArray(unchanged_characters);
-        } else {
-            compressed_characters_ = null;
-        }
-        if (unchanged_characters != null) {
-            character_frequencies_ = convertArrayListOfShortToArray(character_frequencies);
-        } else {
-            character_frequencies_ = null;
-        }
-        if (unchanged_characters != null) {
-            compressed_colors_ = new Color[compressed_colors.size()];
-            compressed_colors_ = compressed_colors.toArray(compressed_colors_);
-        } else {
-            compressed_colors_ = null;
-        }
-        if (unchanged_characters != null) {
-            color_frequencies_ = convertArrayListOfShortToArray(color_frequencies);
-        } else {
-            color_frequencies_ = null;
-        }
+        observation_string_ = new String(observation_string);
         view_for_display_ = v;
         color_for_display_ = c;
         if (i != null) {
@@ -101,102 +80,8 @@ public class IO_Bundle implements Serializable {
         }
         return arr;
     }
-
-    /**
-     * Uses run length decoding with repeatable characters "char[]
-     * unchanged_characters" and frequencies "int[] unchanged_indexes."
-     *
-     * @param x_center
-     * @param y_center
-     * @param width_from_center
-     * @param height_from_center
-     * @param unchanged_characters - array of repeatable characters
-     * @param frequencies - array of frequencies
-     * @return
-     */
-    public static char[][] runLengthDecodeView(final int width_from_center,
-            final int height_from_center, char[] unchanged_characters, short[] frequencies) {
-
-        if (unchanged_characters != null && frequencies != null && (unchanged_characters.length == frequencies.length)) {
-            char[][] view = new char[1 + 2 * height_from_center][1 + 2 * width_from_center];
-            int unchanged_indexes_index = 0;
-
-            int character_length_counter = 0;
-
-            int y_index = 0;
-            for (int y = -height_from_center; y <= +height_from_center; ++y) {
-                int x_index = 0;
-                for (int x = 0 - width_from_center; x <= 0 + width_from_center; ++x) {
-                    view[y_index][x_index] = unchanged_characters[unchanged_indexes_index];
-                    ++character_length_counter;
-                    if (!(character_length_counter < frequencies[unchanged_indexes_index])) {
-                        ++unchanged_indexes_index;
-                        if (unchanged_indexes_index == frequencies.length) {
-                            return view;
-                        }
-                        character_length_counter = 0;
-                    }
-                    if (character_length_counter < 0) {
-                        System.err.println("Impossible error in runLengthDecodeView");
-                        System.exit(14);
-                    }
-                    ++x_index;
-                }
-                ++y_index;
-            }
-        } else {
-            System.err.println("Precondition violated in runLengthDecodeView");
-            System.exit(-18);
-            return null;
-        }
-        System.err.println("You shouldn't get this far in runLengthDecodeView");
-        System.exit(-4);
-        return null;
-    }
-
-    public static Color[][] runLengthDecodeColor(final int width_from_center,
-            final int height_from_center, Color[] unchanged_characters, short[] frequencies) {
-
-        if (unchanged_characters != null && frequencies != null && unchanged_characters.length == frequencies.length) {
-            Color[][] view = new Color[1 + 2 * height_from_center][1 + 2 * width_from_center];
-            int unchanged_indexes_index = 0;
-            int character_length_counter = frequencies[unchanged_indexes_index];
-            int y_index = 0;
-            for (int y = 0 - height_from_center; y <= 0 + height_from_center; ++y) {
-                int x_index = 0;
-                for (int x = 0 - width_from_center; x <= 0 + width_from_center; ++x) {
-                    view[y_index][x_index] = unchanged_characters[unchanged_indexes_index];
-                    --character_length_counter;
-                    if (character_length_counter == 0) {
-                        ++unchanged_indexes_index;
-                        if (unchanged_indexes_index == frequencies.length) {
-                            return view;
-                        }
-                        character_length_counter = frequencies[unchanged_indexes_index];
-                    } else if (character_length_counter > 0) {
-                        // keep going
-                    } else {
-                        System.err.println("Impossible error in runLengthDecodeView");
-                        System.exit(14);
-                    }
-                    ++x_index;
-                }
-                ++y_index;
-            }
-        } else {
-            System.err.println("Precondition violated in runLengthDecodeView");
-            System.exit(-18);
-            return null;
-        }
-        System.err.println("You shouldn't get this far in runLengthDecodeView");
-        System.exit(-4);
-        return null;
-    }
-
-    public final char[] compressed_characters_;
-    public final short[] character_frequencies_;
-    public Color[] compressed_colors_;
-    public final short[] color_frequencies_;
+    // stores text of observation command
+    public final String observation_string_;
     public char[][] view_for_display_;
     public int[][] color_for_display_;
     public final PrimaryHandHoldable primary_;

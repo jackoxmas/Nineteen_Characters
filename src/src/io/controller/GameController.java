@@ -6,6 +6,7 @@
 package src.io.controller;
 
 import java.net.DatagramPacket;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -15,11 +16,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.SwingUtilities;
 
 import java.util.Queue;
+import javafx.application.Application;
+import javafx.scene.media.AudioClip;
+import javafx.stage.Stage;
 
 import src.HardCodedStrings;
 import src.IO_Bundle;
 import src.Not_part_of_iteration_2_requirements.ControllerInternet;
 import src.Key_Commands;
+import src.Not_part_of_iteration_2_requirements.Music;
 import src.QueueCommandInterface;
 import src.RunGame;
 import src.enumHandler;
@@ -41,6 +46,15 @@ public class GameController extends Controller {
 
     //Queue of the strings from clicking on the command box inthe gui.
     private ConcurrentLinkedQueue<String> stringQueue_ = new ConcurrentLinkedQueue<String>();
+
+    private final Music music = new Music();
+    private final Thread musicThread = new Thread(music);
+
+    @Override()
+    public void run() {
+        musicThread.start();
+        super.run();
+    }
 
     private final class ChatBoxMiniController implements QueueCommandInterface<String> {
 
@@ -143,8 +157,8 @@ public class GameController extends Controller {
             commandsList.add(i.getValue().toString() + "  :  " + i.getKey() + System.lineSeparator());
         }
         Collections.sort(commandsList);
-        for(String i : commandsList){
-        	commands.append(i);
+        for (String i : commandsList) {
+            commands.append(i);
         }
 
         return commands.toString();
@@ -177,6 +191,7 @@ public class GameController extends Controller {
 
     public GameController(Map map, String uName, GameRemapper remap) {
         super(map, new AvatarCreationView(), remap, uName);
+        Application.launch(); // launches the sound effects application
         GameController_Constructor_Helper(super.getMap(), uName);
     }
 
@@ -206,6 +221,60 @@ public class GameController extends Controller {
 
     }
 
+    private void handleSoundEffect(Key_Commands command, IO_Bundle to_return) {
+        if (command == Key_Commands.ATTACK) {
+            music.playAttackSound();
+        } else if (command == Key_Commands.BIND_WOUNDS) {
+            music.playBindSound();
+        } else if (command == Key_Commands.GET_INTERACTION_OPTIONS) {
+            music.playTalkingSound();
+        } else if (command == Key_Commands.USE_SKILL_1) {
+            music.playSpellSound();
+        } else if (command == Key_Commands.USE_SKILL_2) {
+            music.playSpellSound();
+        } else if (command == Key_Commands.USE_SKILL_3) {
+            music.playSpellSound();
+        } else if (command == Key_Commands.USE_SKILL_4) {
+            music.playSpellSound();
+        }
+        // makes a cash register sound if your money goes down.
+
+        if (last_num_coins > 0) {
+            if (to_return.num_coins_ < last_num_coins) {
+                // don't make the cash register sound if you lose a life
+                if (to_return.stats_for_display_ != null && to_return.stats_for_display_.getLives_left_() >= last_lives_left) {
+                    music.playBuyingSound();
+                }
+            }
+        }
+        last_num_coins = to_return.num_coins_;
+
+        if (to_return.inventory_ != null) {
+            if (last_inventory_size >= 0) {
+                if (to_return.inventory_.size() < last_inventory_size) {
+                    music.playDropItemSound();
+                } else if (to_return.inventory_.size() > last_inventory_size) {
+                    music.playPickupItemSound();
+                }
+            }
+            last_inventory_size = to_return.inventory_.size();
+        }
+
+        last_num_coins = to_return.num_coins_;
+        if (to_return.stats_for_display_ != null) {
+            int lives = to_return.stats_for_display_.getLives_left_();
+            if (last_lives_left > 0) {
+                if (lives < last_lives_left) {
+                    music.playDyingSound();
+                }
+            }
+            last_lives_left = lives;
+        }
+    }
+    private int last_inventory_size = -10;
+    private int last_lives_left = -10;
+    private int last_num_coins = -10;
+
     private IO_Bundle sendCommandToMapWithText(Key_Commands command, String input) {
         if (SwingUtilities.isEventDispatchThread()) {
             //System.err.println("GameController is running on the Swing Dispatch Thread input sendCommandToMapWithText [Bad]");
@@ -216,19 +285,27 @@ public class GameController extends Controller {
             return null;
         }
         final IO_Bundle to_return = super.getMessenger().sendCommandToMap(command, input);
-        if(to_return == null) {
+        if (to_return == null) {
             System.out.println("To return is null!");
-            try {
-                Thread.sleep(100);
-            } 
-            catch(Exception e) {
-                e.printStackTrace();
+            return null;
+        }
+        // Sound effects!!!!
+        this.handleSoundEffect(command, to_return);
+
+        if (to_return != null && command == Key_Commands.OBSERVE) {
+            if (to_return.observation_string_ == null) {
+                System.err.println("The observation string is not allowed to be null");
+                System.exit(4);
             }
-            return sendCommandToMapWithText(command, input);
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    Display.getDisplay().setMessage(to_return.observation_string_);
+                }
+            });
         }
 
-        if (to_return != null && to_return.strings_for_communication_ != null && 
-                !to_return.strings_for_communication_.isEmpty() && Key_Commands.GET_INTERACTION_OPTIONS.equals(command)) {
+        if (to_return != null && to_return.strings_for_communication_ != null
+                && !to_return.strings_for_communication_.isEmpty() && Key_Commands.GET_INTERACTION_OPTIONS.equals(command)) {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     Display.getDisplay().requestOutBoxFocus();
@@ -252,20 +329,6 @@ public class GameController extends Controller {
                 }
             });
         }
-        // Auto focus on chatbox - confusing to people who bump into entities on accident
-        /*
-        if ((to_return != null && to_return.strings_for_communication_ != null && !to_return.strings_for_communication_.isEmpty())
-                && (command == Key_Commands.MOVE_DOWN || command == Key_Commands.MOVE_DOWNLEFT
-                || command == Key_Commands.MOVE_DOWNRIGHT || command == Key_Commands.MOVE_LEFT
-                || command == Key_Commands.MOVE_RIGHT || command == Key_Commands.MOVE_UP
-                || command == Key_Commands.MOVE_UPLEFT || command == Key_Commands.MOVE_UPRIGHT
-                || command == Key_Commands.GET_INTERACTION_OPTIONS)) {
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    Display.getDisplay().requestOutBoxFocus();
-                }
-            });
-        }*/
         return to_return;
     }
 

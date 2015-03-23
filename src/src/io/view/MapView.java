@@ -29,8 +29,9 @@ public class MapView extends Viewport {
 		populateEquipped(bundle);
 		populateItems(bundle);
 		if(bundle != null && bundle.getStatsPack()!= null){
-			String quickStatsString = "Life: " + bundle.getStatsPack().current_life_ +
-					", Mana : " + bundle.getStatsPack().current_mana_ +", Coins : " + bundle.num_coins_;
+			String quickStatsString = "                Life: " + bundle.getStatsPack().current_life_ +
+					",   Mana : " + bundle.getStatsPack().current_mana_ +",   Coins : " + bundle.num_coins_
+                                +",   Lives Left : " + bundle.getStatsPack().getLives_left_();
 			writeStringToContents(1, 0,quickStatsString );
 		}
 		

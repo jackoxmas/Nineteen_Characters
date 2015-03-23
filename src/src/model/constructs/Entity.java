@@ -36,6 +36,10 @@ abstract public class Entity extends DrawableThing {
     private EntityStatsPack stats_pack_ = new EntityStatsPack();
     private int num_gold_coins_when_spawned_ = 10;
     private int num_gold_coins_possessed_ = num_gold_coins_when_spawned_;
+    private String observation_string = "";
+    public String getObservationString() {
+        return observation_string;
+    }
 
     private boolean has_lives_left_ = true;
 
@@ -184,6 +188,7 @@ abstract public class Entity extends DrawableThing {
      * @return
      */
     public int observe() {
+        observation_string = "";
         Random rn = new Random();
 
         String s = "";
@@ -193,8 +198,8 @@ abstract public class Entity extends DrawableThing {
         // Checks if observe is succuessful, takes observation level into
         // account. If observation level is 11 or higher, success rate is %100.
         if (chanceForSuccessfulObserve >= (11 - observation_)) {
-            Display.getDisplay().setMessage(
-                    "Looking in direction: " + getFacingDirection());
+            observation_string +=
+                    "Looking in direction: " + getFacingDirection() + "\n";
 
             if (getFacingDirection() == FacingDirection.UP) {
                 for (int i = 0; i < observation_; ++i) {
@@ -206,7 +211,7 @@ abstract public class Entity extends DrawableThing {
                         s += "No tile here.\n";
                     }
                 }
-                Display.getDisplay().setMessage(s);
+                observation_string += s + "\n";
             } else if (getFacingDirection() == FacingDirection.UP_RIGHT) {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
@@ -217,7 +222,7 @@ abstract public class Entity extends DrawableThing {
                         s += "No tile here.\n";
                     }
                 }
-                Display.getDisplay().setMessage(s);
+                observation_string += s + "\n";
             } else if (getFacingDirection() == FacingDirection.RIGHT) {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
@@ -228,7 +233,7 @@ abstract public class Entity extends DrawableThing {
                         s += "No tile here.\n";
                     }
                 }
-                Display.getDisplay().setMessage(s);
+                observation_string += s + "\n";
             } else if (getFacingDirection() == FacingDirection.DOWN_RIGHT) {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
@@ -239,7 +244,7 @@ abstract public class Entity extends DrawableThing {
                         s += "No tile here.\n";
                     }
                 }
-                Display.getDisplay().setMessage(s);
+                observation_string += s + "\n";
             } else if (getFacingDirection() == FacingDirection.DOWN) {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
@@ -250,7 +255,7 @@ abstract public class Entity extends DrawableThing {
                         s += "No tile here.\n";
                     }
                 }
-                Display.getDisplay().setMessage(s);
+                observation_string += s + "\n";
             } else if (getFacingDirection() == FacingDirection.DOWN_LEFT) {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
@@ -261,7 +266,7 @@ abstract public class Entity extends DrawableThing {
                         s += "No tile here.\n";
                     }
                 }
-                Display.getDisplay().setMessage(s);
+                observation_string += s + "\n";
             } else if (getFacingDirection() == FacingDirection.LEFT) {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
@@ -272,7 +277,7 @@ abstract public class Entity extends DrawableThing {
                         s += "No tile here.\n";
                     }
                 }
-                Display.getDisplay().setMessage(s);
+                observation_string += s + "\n";
             } else if (getFacingDirection() == FacingDirection.UP_LEFT) {
                 for (int i = 0; i < observation_; ++i) {
                     s += " Tile " + (i + 1) + ": ";
@@ -283,12 +288,11 @@ abstract public class Entity extends DrawableThing {
                         s += "No tile here.\n";
                     }
                 }
-                Display.getDisplay().setMessage(s);
+                observation_string += s + "\n";
             }
             return 0;
         } else {
-            Display.getDisplay().setMessage(
-                    "Failed to look in direction: " + getFacingDirection());
+            observation_string += "Failed to look in direction: " + getFacingDirection() + "\n";
             return -1;
         }
     }

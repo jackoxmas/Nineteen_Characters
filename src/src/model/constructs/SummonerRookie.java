@@ -102,9 +102,13 @@ public class SummonerRookie extends Summoner {
             Random randomGenerator = new Random();
             double failed = randomGenerator.nextDouble();
             if (failed + getSkill_4_()*.1 > .4) {
-                if (staff_ != null && target != null) {
-                	target.receiveAttack(getSkill_4_() * 2, super.getEntity());
-                    Display.getDisplay().setMessage("You whacked it with your staff.");
+                if (staff_ != null) {
+                	if (target != null) {
+	                	target.receiveAttack(getSkill_4_() * 2, super.getEntity());
+	                    Display.getDisplay().setMessage("You whacked it with your staff.");
+                	}
+                } else {
+                    Display.getDisplay().setMessage("You have no staff.");
                 }
             } else {
                 Display.getDisplay().setMessage(HardCodedStrings.failed + getSkillNameFromNumber(4) + ".");

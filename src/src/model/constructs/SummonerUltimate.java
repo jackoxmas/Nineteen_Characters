@@ -59,7 +59,7 @@ public class SummonerUltimate extends Summoner {
                 // enchantment, puts target to sleep (stops them from chasing until more damage is taken)
                 Random randomGenerator = new Random();
                 double failed = randomGenerator.nextDouble();
-                if (failed + getSkill_1_() * .1 > .6) {
+                if (failed + getSkill_1_() * .1 > .3) {
                     if (target != null) {
                         ((Monster) target).causeFear(super.getEntity(), (3 + getSkill_1_())*2);
                         Display.getDisplay().setMessage("Succesfully casted Fear!");
@@ -91,12 +91,15 @@ public class SummonerUltimate extends Summoner {
                     for (int i = 0; i < 4 + getSkill_2_() * 2; i++) {
                         boon_stats.increaseHardinessLevelByOne();
                     }
-                    boon_stats_ = boon_stats;
+                    if (boon_stats_ == null)
+                    	super.boon_stats_ = boon_stats;
+                    else
+                    	super.boon_stats_.addOn(boon_stats);
                     super.getEntity().getStatsPack().addOn(boon_stats_);
-                    boon_timer_ = 2 + getSkill_2_();
-                    if(!isBoonActivated())
+                    super.boon_timer_ = (3 + getSkill_2_())*2;
+                    /*if(!isBoonActivated())
                     	super.getEntity().getStatsPack().addOn(boon_stats_);
-                    activateBoon();
+                    activateBoon();*/
 
                 } else {
                     Display.getDisplay().setMessage(HardCodedStrings.failed + getSkillNameFromNumber(2) + ".");
@@ -106,7 +109,7 @@ public class SummonerUltimate extends Summoner {
                 System.out.println("About to call Bane");
                 Random randomGenerator = new Random();
                 double failed = randomGenerator.nextDouble();
-                if (failed + getSkill_3_() * .1 > .6) {
+                if (failed + getSkill_3_() * .1 > .3) {
                     SpreadingCircleAreaEffectItem hurter = new SpreadingCircleAreaEffectItem(getSkill_3_() + 2, 6 + 6 * getSkill_3_(), Effect.HURT);
                     super.getEntity().getMapRelation().addItem(hurter, getEntity().getMapRelation().getMyXCoordinate(), getEntity().getMapRelation().getMyYCoordinate());
                     SpreadingLineAreaEffectItem hurter_down_left = new SpreadingLineAreaEffectItem(6, 4 + getSkill_3_(), Effect.HURT, FacingDirection.DOWN_LEFT);
@@ -127,9 +130,13 @@ public class SummonerUltimate extends Summoner {
             Random randomGenerator = new Random();
             double failed = randomGenerator.nextDouble();
             if (failed + getSkill_4_()*.1 > .4) {
-                if (staff_ != null && target != null) {
-                	target.receiveAttack(getSkill_4_() * 2, super.getEntity());
-                    Display.getDisplay().setMessage("You whacked it with your staff.");
+                if (staff_ != null) {
+                	if (target != null) {
+	                	target.receiveAttack(getSkill_4_() * 2, super.getEntity());
+	                    Display.getDisplay().setMessage("You whacked it with your staff.");
+                	}
+                } else {
+                    Display.getDisplay().setMessage("You have no staff.");
                 }
             } else {
                 Display.getDisplay().setMessage(HardCodedStrings.failed + getSkillNameFromNumber(4) + ".");

@@ -52,28 +52,37 @@ public class IO_Bundle implements Serializable {
         }
         view_for_display_ = v;
         color_for_display_ = c;
-        inventory_ = i;
-        stats_for_display_ = s;
-        occupation_ = o;
+        if (i != null) {
+            inventory_ = new ArrayList<PickupableItem>(i);
+        } else {
+            inventory_ = null;
+        }
+        if (s != null) {
+            stats_for_display_ = new src.model.constructs.EntityStatsPack(s);
+        } else {
+            stats_for_display_ = null;
+        }
+        if (o != null) {
+            occupation_ = o.getACopyOfMyself();
+        } else {
+            occupation_ = null;
+        }
         num_skillpoints_ = n;
         bind_wounds_ = bi;
         bargain_ = ba;
         observation_ = ob;
+        // Assume that these guys NEVER get modified in-game [** Danger **]
         primary_ = pri;
         second_ = sec;
 
-        //if (sfc == null) {
-        //    sfc = new ArrayList<String>();
-        //} 
-        strings_for_communication_ = sfc;
+        if (sfc != null) {
+            strings_for_communication_ = new ArrayList<String>(sfc);
+            strings_for_communication_.trimToSize();
+        } else {
+            strings_for_communication_ = null;
+        }
         num_coins_ = num_coins;
         is_alive_ = is_alive;
-
-        //strings_for_communication_.add("^ Click on this text box to select chat options. ^");
-        //strings_for_communication_.add("^ Then click on the game window to re-focus. ^");
-        if(strings_for_communication_ != null) {
-        strings_for_communication_.trimToSize();
-        }
     }
 
     public static char[] convertArrayListOfCharToArray(ArrayList<Character> c) {
@@ -110,16 +119,16 @@ public class IO_Bundle implements Serializable {
         if (unchanged_characters != null && frequencies != null && (unchanged_characters.length == frequencies.length)) {
             char[][] view = new char[1 + 2 * height_from_center][1 + 2 * width_from_center];
             int unchanged_indexes_index = 0;
-            
+
             int character_length_counter = 0;
-            
+
             int y_index = 0;
             for (int y = -height_from_center; y <= +height_from_center; ++y) {
                 int x_index = 0;
                 for (int x = 0 - width_from_center; x <= 0 + width_from_center; ++x) {
                     view[y_index][x_index] = unchanged_characters[unchanged_indexes_index];
                     ++character_length_counter;
-                    if (! (character_length_counter < frequencies[unchanged_indexes_index])) {
+                    if (!(character_length_counter < frequencies[unchanged_indexes_index])) {
                         ++unchanged_indexes_index;
                         if (unchanged_indexes_index == frequencies.length) {
                             return view;

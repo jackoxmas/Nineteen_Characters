@@ -28,10 +28,14 @@ public final class Sneak extends Occupation {
         super(o);
     }
 
+    public Sneak getACopyOfMyself() {
+        return new Sneak(this);
+    }
+
     private Bow bow_ = null;
 
     private int cloak_timer = 0; //Timer for cloak skill.
-    
+
     @Override
     public void changeStats(EntityStatsPack current_stats) {
         // for sneak
@@ -159,7 +163,7 @@ public final class Sneak extends Occupation {
                         trap = getEntity().getMapRelation().checkForTrap(i, j);
 
                         if (trap != null) {
-							// If you get here, there is a trap on tile (i, j).
+                            // If you get here, there is a trap on tile (i, j).
 
                             ++numOfTraps;
                             chance_of_detection = randomGenerator
@@ -182,7 +186,7 @@ public final class Sneak extends Occupation {
                         numOfTraps + " traps near you, " + numOfTrapsDetected + " removed.");
             } else if (number == 3) {
                 // become invisible [or visible]
-            	cloak_timer = 0;
+                cloak_timer = 0;
                 boolean is_visible = getEntity().isVisible();
                 getEntity().setViewable(!is_visible);
             } else if (number == 4) {
@@ -204,26 +208,27 @@ public final class Sneak extends Occupation {
     public String toString() {
         return "Sneak";
     }
-    
+
     @Override
-    public void takeTurn(){
-    	
-    	if(!getEntity().isVisible())
-    		++cloak_timer;
-    	if(cloak_timer > 5){
-    		cloak_timer = 0;
-    		getEntity().setViewable(true);
-    	}
+    public void takeTurn() {
+
+        if (!getEntity().isVisible()) {
+            ++cloak_timer;
+        }
+        if (cloak_timer > 5) {
+            cloak_timer = 0;
+            getEntity().setViewable(true);
+        }
     }
 
-	@Override
-	public Sneak switchToNextSubOccupation() {
-		//A sneak has no sub occupations atm.
-		return this;
-	}
+    @Override
+    public Sneak switchToNextSubOccupation() {
+        //A sneak has no sub occupations atm.
+        return this;
+    }
 
-	@Override
-	public char getOccupationRepresentation() {
-		return '☭';
-	}
+    @Override
+    public char getOccupationRepresentation() {
+        return '☭';
+    }
 }

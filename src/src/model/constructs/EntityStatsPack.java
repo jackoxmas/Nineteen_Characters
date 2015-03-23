@@ -124,13 +124,10 @@ public final class EntityStatsPack extends DrawableThingStatsPack implements Ser
     }
 
     /**
-     * Copy constructor should never be called 
-     * because a statspack is an internal part 
-     * of one and only one entity from creation until deletion
      *
      * @param in : Stats pack to copy
      */
-    private EntityStatsPack(EntityStatsPack in) {
+    public EntityStatsPack(EntityStatsPack in) {
         super(in);
         lives_left_ = in.getLives_left_(); // this can change without leveling up
         strength_level_ = in.getStrength_level_();

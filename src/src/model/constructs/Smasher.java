@@ -23,6 +23,9 @@ public final class Smasher extends Occupation {
     public Smasher(Occupation o) {
         super(o);
     }
+    public Smasher getACopyOfMyself() {
+        return new Smasher(this);
+    }
     private TwoHandedSword two_handed_sword_ = null;
     private OneHandedSword one_handed_sword_ = null;
     private OneHandedWeapon bullshit_weapon_one_ = null;

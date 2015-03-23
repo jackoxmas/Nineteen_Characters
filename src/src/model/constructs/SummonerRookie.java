@@ -15,6 +15,9 @@ public class SummonerRookie extends Summoner {
     public SummonerRookie(Occupation o) {
         super(o);
     }
+    public SummonerRookie getACopyOfMyself() {
+        return new SummonerRookie(this);
+    }
 	
     @Override
     public String getSkillNameFromNumber(int skill_number) {

@@ -29,6 +29,7 @@ public abstract class Occupation implements Serializable {
     protected Entity getEntity() {
         return occupation_holder_;
     }
+    public abstract Occupation getACopyOfMyself();
 
     private Occupation() {
         occupation_holder_ = null;

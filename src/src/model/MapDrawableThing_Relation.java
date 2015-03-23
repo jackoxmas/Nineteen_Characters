@@ -8,6 +8,7 @@ package src.model;
 import java.awt.Color;
 
 import src.Effect;
+import src.FacingDirection;
 import src.model.constructs.Entity;
 import src.model.constructs.items.Item;
 
@@ -46,7 +47,7 @@ public class MapDrawableThing_Relation {
             for (int i = top; i >= bottom; --i) {
                 for (int j = left_edge; j <= right_edge; ++j) {
                 	if (!(i == top && j == left_edge || i == top && j == right_edge ||
-                			i == bottom && j == left_edge || i == 0 && j == right_edge)) {
+                			i == bottom && j == left_edge || i == bottom && j == right_edge)) {
 	                    int reduction = 0;
 	                    if (effect == Effect.HEAL || effect == Effect.HURT) {
 	                        int damage_reduction_x = Math.abs(getMyXCoordinate() - j);
@@ -59,7 +60,125 @@ public class MapDrawableThing_Relation {
                 }
             }
         }
-        private int effectDecalDuration_ = 2;
+        
+        public void effectPerimeter(int radius, int strength, Effect effect) {
+        	if (radius == 0)
+        		repeat(getMyXCoordinate(), getMyYCoordinate(), strength, effect);
+        	if (radius == 1) {
+        		for (int i = 0; i < 3; i++)
+        			for (int j = 0; j < 3; j++)
+        				repeat(getMyXCoordinate(), getMyYCoordinate(), strength, effect);
+        	}
+        	if (radius > 1) {
+                final int left_edge = getMyXCoordinate() - radius;
+                final int right_edge = getMyXCoordinate() + radius;
+                final int top = getMyYCoordinate() + radius;
+                final int bottom = getMyYCoordinate() - radius;
+                repeat(top-1, left_edge+1, strength, effect);
+                repeat(bottom+1, left_edge+1, strength, effect);
+                repeat(top-1, right_edge-1, strength, effect);
+                repeat(bottom+1, right_edge-1, strength, effect);
+        		for (int i = top; i >= bottom; i--) {
+        			for (int j = left_edge; j <= right_edge; j++) {
+        				if (i == top || j == left_edge || i == bottom || j == right_edge) {
+	                    	if (!(i == top && j == left_edge || i == top && j == right_edge ||
+	            				i == bottom && j == left_edge || i == bottom && j == right_edge)) {
+	                    		int reduction = 0;
+	    	                    if (effect == Effect.HEAL || effect == Effect.HURT)
+	    	                        reduction = radius;
+	
+	    	                    repeat(j, i, strength - reduction, effect);
+	                    	}
+        				}
+        			}
+        		}
+        	}
+        }
+        
+        public void effectArc(int distance, int strength, Effect effect, FacingDirection direction) {
+            if (distance < 0 || strength < 0) {
+                System.exit(-1);
+            }
+            final int x_start = getMyXCoordinate();
+            final int y_start = getMyYCoordinate();
+            switch (direction) {
+            	case UP:
+            		for (int i = 1; i < distance*2; i++)
+            			repeat(x_start-distance+i, y_start+distance, strength - distance/2, effect);
+            		break;
+            	case DOWN:
+            		for (int i = 1; i < distance*2; i++)
+            			repeat(x_start-distance+i, y_start-distance, strength - distance/2, effect);
+            		break;
+            	case LEFT:
+            		for (int i = 1; i < distance*2; i++)
+            			repeat(x_start-distance, y_start-distance+i, strength - distance/2, effect);
+            		break;
+            	case RIGHT:
+            		for (int i = 1; i < distance*2; i++)
+            			repeat(x_start+distance, y_start-distance+i, strength - distance/2, effect);
+            		break;
+            	case UP_LEFT:
+            		for (int i = 0; i < distance; i++)
+            			repeat(x_start-distance+i, y_start+1+i, strength - distance/2, effect);
+            		break;
+            	case UP_RIGHT:
+            		for (int i = 0; i < distance; i++)
+            			repeat(x_start+1+i, y_start+distance-i, strength - distance/2, effect);
+            		break;
+            	case DOWN_LEFT:
+            		for (int i = 0; i < distance; i++)
+            			repeat(x_start-distance+i, y_start-1-i, strength - distance/2, effect);
+            		break;
+            	case DOWN_RIGHT:
+            		for (int i = 0; i < distance; i++)
+            			repeat(x_start+1+i, y_start-distance+i, strength - distance/2, effect);
+            		break;
+            }
+        }
+        
+        public void effectLine(int distance, int strength, Effect effect, FacingDirection direction) {
+            if (distance < 0 || strength < 0) {
+                System.exit(-1);
+            }
+            final int x_start = getMyXCoordinate();
+            final int y_start = getMyYCoordinate();
+            switch (direction) {
+            	case UP:
+            		repeat(x_start, y_start+distance, strength - distance*strength/10, effect);
+            		break;
+            	case DOWN:
+            		for (int i = 1; i < distance*2; i++)
+            			repeat(x_start-distance+i, y_start-distance, strength - distance/2, effect);
+            		break;
+            	case LEFT:
+            		for (int i = 1; i < distance*2; i++)
+            			repeat(x_start-distance, y_start-distance+i, strength - distance/2, effect);
+            		break;
+            	case RIGHT:
+            		for (int i = 1; i < distance*2; i++)
+            			repeat(x_start+distance, y_start-distance+i, strength - distance/2, effect);
+            		break;
+            	case UP_LEFT:
+            		for (int i = 0; i < distance; i++)
+            			repeat(x_start-distance+i, y_start+1+i, strength - distance/2, effect);
+            		break;
+            	case UP_RIGHT:
+            		for (int i = 0; i < distance; i++)
+            			repeat(x_start+1+i, y_start+distance-i, strength - distance/2, effect);
+            		break;
+            	case DOWN_LEFT:
+            		for (int i = 0; i < distance; i++)
+            			repeat(x_start-distance+i, y_start-1-i, strength - distance/2, effect);
+            		break;
+            	case DOWN_RIGHT:
+            		for (int i = 0; i < distance; i++)
+            			repeat(x_start+1+i, y_start-distance+i, strength - distance/2, effect);
+            		break;
+            }
+        }
+        
+        private int effectDecalDuration_ = 12;
 
         /**
          * For damage coming from non-entities

@@ -8,6 +8,8 @@ import src.io.view.display.Display;
 
 public class SummonerChampion extends Summoner {
 
+    public int getID() { return 25; }
+
     public SummonerChampion(Entity e) {
         super(e);
     }

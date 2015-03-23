@@ -8,6 +8,8 @@ import src.io.view.display.Display;
 
 public class SummonerUltimate extends Summoner {
 
+    public int getID() { return 26; }
+
     public SummonerUltimate(Entity e) {
         super(e);
     }

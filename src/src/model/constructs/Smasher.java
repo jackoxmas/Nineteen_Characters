@@ -17,6 +17,8 @@ import src.model.constructs.items.TwoHandedWeapon;
  */
 public final class Smasher extends Occupation {
 
+    public int getID() { return 22; }
+
     public Smasher(Entity e) {
         super(e);
     }

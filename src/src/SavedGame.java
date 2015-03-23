@@ -814,7 +814,24 @@ public class SavedGame {
                 tn_data = xml_getNodeByString(tn_tile, "entity");
                 if (tn_data != null) {
                     Entity ent = xml_readEntity(doc, tn_data);
-                    ret_map.addAsEntity(ent, x, y);
+
+                    int oid = Integer.parseInt(tn_data.getAttributes().getNamedItem("id").getTextContent());
+                    switch (oid) {
+                        case 15: // monster
+                            ret_map.addAsEntity(ent, x, y);
+                            break;
+                        case 16: // avatar
+                            ret_map.addAsAvatar((Avatar)ent, x, y);
+                            break;
+                        case 17: // villager
+                            ret_map.addAsEntity(ent, x, y);
+                            break;
+                        case 18: // merchant
+                            ret_map.addAsEntity(ent, x, y);
+                            break;
+                        default:
+                            throw new Exception();
+                    }
                 }
 
                 // parse items
@@ -833,6 +850,10 @@ public class SavedGame {
                 }
             }
 
+            // relink stuff
+            for (int i = 0; i < ns_tiles.getLength(); i++)
+
+            keyLinks_ = new HashMap<>();
             return ret_map;
         } catch (Exception e) {
             RunGame.errOut("xml_readMap: could not parse map");

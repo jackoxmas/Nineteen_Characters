@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fbc16cae-2312-42a3-a657-0f99998ac22f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/constructs/Entity.java" afterPath="$PROJECT_DIR$/../src/src/model/constructs/Entity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/constructs/EntityStatsPack.java" afterPath="$PROJECT_DIR$/../src/src/model/constructs/EntityStatsPack.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/model/constructs/Monster.java" afterPath="$PROJECT_DIR$/../src/src/model/constructs/Monster.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../src/src/SavedGame.java" afterPath="$PROJECT_DIR$/../src/src/SavedGame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="IDEA_Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,16 +30,16 @@
       <file leaf-file-name="SavedGame.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../src/src/SavedGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.32613635" vertical-offset="298" max-vertical-offset="3420">
-              <caret line="70" column="61" selection-start-line="70" selection-start-column="61" selection-end-line="70" selection-end-column="61" />
+            <state vertical-scroll-proportion="0.6197183" vertical-offset="1392" max-vertical-offset="5715">
+              <caret line="826" column="59" selection-start-line="826" selection-start-column="59" selection-end-line="826" selection-end-column="59" />
               <folding>
-                <element signature="docComment;class#SavedGame#0" expanded="false" />
                 <element signature="docComment;field#SAVE_DATA_VERSION#0;class#SavedGame#0" expanded="false" />
+                <element signature="e#2155#2217#0" expanded="true" />
+                <element signature="method#loadGame#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#loadKeymap#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#saveGame#0;class#SavedGame#0" expanded="false" />
                 <element signature="docComment;method#saveKeymap#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#saveKeymap#0;class#SavedGame#0" expanded="false" />
-                <element signature="e#11959#12022#0" expanded="true" />
                 <element signature="docComment;method#autoGen#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#autoGen#0;class#SavedGame#0" expanded="false" />
                 <element signature="e#13083#13192#0" expanded="false" />
@@ -51,7 +47,6 @@
                 <element signature="method#validateDataVersion#0;class#SavedGame#0" expanded="false" />
                 <element signature="docComment;method#validateFile#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#validateFile#0;class#SavedGame#0" expanded="false" />
-                <element signature="e#17513#17575#0" expanded="true" />
                 <element signature="method#xml_getAllNodesByString#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_getNodeByString#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_readAOE_One#0;class#SavedGame#0" expanded="false" />
@@ -60,20 +55,17 @@
                 <element signature="method#xml_readEntity#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_readEntityStatsPack#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_readItem#0;class#SavedGame#0" expanded="false" />
-                <element signature="method#xml_readMap#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_readMonster#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_readTeleport_OneWay#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_readTempObstacle#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_readTerrain#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_writeAOE_One#0;class#SavedGame#0" expanded="false" />
                 <element signature="docComment;method#xml_writeMap#0;class#SavedGame#0" expanded="false" />
-                <element signature="method#xml_writeMap#0;class#SavedGame#0" expanded="false" />
                 <element signature="docComment;method#xml_writeEntity#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_writeEntity#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_writeItem#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_writeEntityStatsPack#0;class#SavedGame#0" expanded="false" />
-                <element signature="method#xml_writeMonster#0;class#SavedGame#0" expanded="false" />
-                <element signature="method#xml_writeOccupation#0;class#SavedGame#0" expanded="false" />
+                <element signature="method#xml_writeStatsDrawable#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_writeTeleporter_OneWay#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_writeTempObstacle#0;class#SavedGame#0" expanded="false" />
                 <element signature="method#xml_writeTerrain#0;class#SavedGame#0" expanded="false" />
@@ -83,191 +75,40 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PickupableItem.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/items/PickupableItem.java">
+      <file leaf-file-name="RunGame.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../src/src/RunGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="330">
-              <caret line="16" column="55" selection-start-line="16" selection-start-column="55" selection-end-line="16" selection-end-column="55" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="795" max-vertical-offset="3405">
+              <caret line="176" column="71" selection-start-line="176" selection-start-column="71" selection-end-line="176" selection-end-column="71" />
               <folding>
-                <element signature="e#423#424#0" expanded="true" />
-                <element signature="e#485#486#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Item.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/items/Item.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="1545">
-              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-              <folding>
-                <element signature="docComment;class#Item#0" expanded="false" />
-                <element signature="docComment;method#goesInInventory#0;class#Item#0" expanded="false" />
-                <element signature="docComment;method#isPassable#0;class#Item#0" expanded="false" />
-                <element signature="docComment;method#isOneShot#0;class#Item#0" expanded="false" />
-                <element signature="docComment;method#getMapRelation#0;class#Item#0" expanded="false" />
-                <element signature="docComment;method#onWalkOver#0;class#Item#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Viewport.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../src/src/io/view/Viewport.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="630" max-vertical-offset="3600">
-              <caret line="75" column="31" selection-start-line="75" selection-start-column="31" selection-end-line="75" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EntityStatsPack.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/EntityStatsPack.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1216" max-vertical-offset="2100">
-              <caret line="284" column="0" selection-start-line="284" selection-start-column="0" selection-end-line="284" selection-end-column="0" />
-              <folding>
-                <element signature="docComment;class#EntityStatsPack#0" expanded="false" />
-                <element signature="method#setLives#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="docComment;method#EntityStatsPack#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="docComment;method#reset#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="docComment;method#EntityStatsPack#1;class#EntityStatsPack#0" expanded="false" />
-                <element signature="method#EntityStatsPack#1;class#EntityStatsPack#0" expanded="false" />
-                <element signature="method#increaseCurrentLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="e#4229#4243#0" expanded="false" />
-                <element signature="method#increaseStrengthLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="method#increaseAgilityLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="method#increaseIntellectLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="method#increaseHardinessLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="docComment;method#increaseQuantityOfExperienceBy#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="method#increaseQuantityOfExperienceBy#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="method#increaseMovementLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="docComment;method#decreaseMovesLeftByOne#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="method#decreaseMovesLeftByOne#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="method#hasMovesLeft#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="docComment;method#deductCurrentLifeBy#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="method#deductCurrentLifeBy#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="docComment;method#increaseCurrentLifeBy#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="method#increaseCurrentLifeBy#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="docComment;method#deductCurrentManaBy#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="method#deductCurrentManaBy#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="docComment;method#increaseCurrentManaBy#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="method#increaseCurrentManaBy#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="method#toString#0;class#EntityStatsPack#0" expanded="false" />
-                <element signature="e#11007#11075#0" expanded="false" />
-                <element signature="method#makeByteArray#0;class#EntityStatsPack#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Entity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/Entity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3272" max-vertical-offset="5070">
-              <caret line="883" column="7" selection-start-line="883" selection-start-column="7" selection-end-line="883" selection-end-column="7" />
-              <folding>
-                <element signature="docComment;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#hasLivesLeft#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#Entity#0;class#Entity#0" expanded="false" />
-                <element signature="method#Entity#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#reinstateNumGoldCoins#0;class#Entity#0" expanded="false" />
-                <element signature="method#decrementNumGoldCoinsBy#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#getConversationContinuationStrings#0;class#Entity#0" expanded="false" />
-                <element signature="method#getExperienceBetweenLevels#0;class#Entity#0" expanded="false" />
-                <element signature="method#sayStuffToMe#0;class#Entity#0" expanded="false" />
-                <element signature="method#bindWounds#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#observe#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#spendSkillpointOn#0;class#Entity#0" expanded="false" />
-                <element signature="method#spendSkillpointOn#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#acceptKeyCommand#0;class#Entity#0" expanded="false" />
-                <element signature="method#acceptKeyCommand#0;class#Entity#0" expanded="false" />
-                <element signature="e#14186#14255#0" expanded="false" />
-                <element signature="docComment;method#addItemStatsToMyStats#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#checkHealthAndCommitSuicideIfDead#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#commitSuicide#0;class#Entity#0" expanded="false" />
-                <element signature="method#gameOver#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#equip#0;class#Entity#0" expanded="false" />
-                <element signature="method#equip#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#equipShield#0;class#Entity#0" expanded="false" />
-                <element signature="method#equipShield#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#equip1hWeapon#0;class#Entity#0" expanded="false" />
-                <element signature="method#equip1hWeapon#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#equip2hWeapon#0;class#Entity#0" expanded="false" />
-                <element signature="method#equip2hWeapon#0;class#Entity#0" expanded="false" />
-                <element signature="method#unEquipEverything#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#gainEnoughExperienceTolevelUp#0;class#Entity#0" expanded="false" />
-                <element signature="method#gainEnoughExperienceTolevelUp#0;class#Entity#0" expanded="false" />
-                <element signature="method#hasEquippedPrimaryHand#0;class#Entity#0" expanded="false" />
-                <element signature="method#hasEquippedSecondaryHand#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#isPassable#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#addItemToInventory#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#getLastItemInInventory#0;class#Entity#0" expanded="false" />
-                <element signature="method#getLastItemInInventory#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#pullLastItemOutOfInventory#0;class#Entity#0" expanded="false" />
-                <element signature="method#pullLastItemOutOfInventory#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#sendAttack#0;class#Entity#0" expanded="false" />
-                <element signature="method#sendAttack#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#useItemInFacingDirectionOnMyself#0;class#Entity#0" expanded="false" />
-                <element signature="method#useItemInFacingDirectionOnMyself#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#gainExperiencePoints#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#getMapRelation#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#setMapRelation#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#getOccupation#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#setOccupation#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#becomeSmasher#0;class#Entity#0" expanded="false" />
-                <element signature="method#becomeSmasher#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#swapSubClass#0;class#Entity#0" expanded="false" />
-                <element signature="method#swapSubClass#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#becomeSummoner#0;class#Entity#0" expanded="false" />
-                <element signature="method#becomeSummoner#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#becomeSneak#0;class#Entity#0" expanded="false" />
-                <element signature="method#becomeSneak#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#receiveAttack#0;class#Entity#0" expanded="false" />
-                <element signature="method#receiveAttack#0;class#Entity#0" expanded="false" />
-                <element signature="docComment;method#getStatsPack#0;class#Entity#0" expanded="false" />
-                <element signature="method#toString#0;class#Entity#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Occupation.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/Occupation.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1013" max-vertical-offset="1905">
-              <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
-              <folding>
-                <element signature="e#851#852#0" expanded="true" />
-                <element signature="e#892#893#0" expanded="true" />
-                <element signature="e#2064#2065#0" expanded="true" />
-                <element signature="e#2101#2102#0" expanded="true" />
-                <element signature="e#2133#2134#0" expanded="true" />
-                <element signature="e#2170#2171#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Sneak.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/Sneak.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="112" max-vertical-offset="990">
-              <caret line="47" column="5" selection-start-line="47" selection-start-column="5" selection-end-line="47" selection-end-column="5" />
-              <folding>
-                <element signature="docComment;class#Sneak#0" expanded="false" />
-                <element signature="method#getID#0;class#Sneak#0" expanded="false" />
-                <element signature="method#getCloakTimer#0;class#Sneak#0" expanded="false" />
-                <element signature="method#unEquipEverything#0;class#Sneak#0" expanded="false" />
-                <element signature="method#equipTwoHandWeapon#0;class#Sneak#0" expanded="false" />
-                <element signature="docComment;method#incrementSkill#0;class#Sneak#0" expanded="false" />
-                <element signature="method#incrementSkill#0;class#Sneak#0" expanded="false" />
-                <element signature="method#getSkillNameFromNumber#0;class#Sneak#0" expanded="false" />
-                <element signature="method#performOccupationSkill#0;class#Sneak#0" expanded="false" />
-                <element signature="method#takeTurn#0;class#Sneak#0" expanded="false" />
-                <element signature="method#switchToNextSubOccupation#0;class#Sneak#0" expanded="false" />
+                <element signature="docComment;class#RunGame#0" expanded="false" />
+                <element signature="method#grusomelyKillTheMap#0;class#RunGame#0" expanded="false" />
+                <element signature="method#grusomelyKillTheController#0;class#RunGame#0" expanded="false" />
+                <element signature="method#closeGame#0;class#RunGame#0" expanded="false" />
+                <element signature="method#main#0;class#RunGame#0" expanded="false" />
+                <element signature="method#startNewGame#0;class#RunGame#0" expanded="false" />
+                <element signature="e#3939#3946#0" expanded="false" />
+                <element signature="method#startMapEditor#0;class#RunGame#0" expanded="false" />
+                <element signature="method#coverMapInGrass#0;class#RunGame#0" expanded="false" />
+                <element signature="method#loadGame#0;class#RunGame#0" expanded="false" />
+                <element signature="method#exitGame#0;class#RunGame#0" expanded="false" />
+                <element signature="method#initialize#0;class#RunGame#0" expanded="false" />
+                <element signature="method#startGame#0;class#RunGame#0" expanded="false" />
+                <element signature="method#saveGameToDisk#0;class#RunGame#0" expanded="false" />
+                <element signature="docComment;class#ProgramOpts#0;class#RunGame#0" expanded="false" />
+                <element signature="class#ProgramOpts#0;class#RunGame#0" expanded="false" />
+                <element signature="docComment;method#dbgOut#0;class#RunGame#0" expanded="false" />
+                <element signature="method#dbgOut#0;class#RunGame#0" expanded="false" />
+                <element signature="docComment;method#dbgOut#1;class#RunGame#0" expanded="false" />
+                <element signature="method#dbgOut#1;class#RunGame#0" expanded="false" />
+                <element signature="docComment;method#errOut#0;class#RunGame#0" expanded="false" />
+                <element signature="docComment;method#errOut#1;class#RunGame#0" expanded="false" />
+                <element signature="method#errOut#1;class#RunGame#0" expanded="false" />
+                <element signature="docComment;method#errOut#2;class#RunGame#0" expanded="false" />
+                <element signature="method#errOut#2;class#RunGame#0" expanded="false" />
+                <element signature="docComment;method#handleArgs#0;class#RunGame#0" expanded="false" />
+                <element signature="docComment;method#parseArgs#0;class#RunGame#0" expanded="false" />
+                <element signature="method#parseArgs#0;class#RunGame#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -363,16 +204,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="IDEA_Project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="Scope">
         <subPane subId="Production">
           <PATH>
@@ -459,6 +290,16 @@
             <PATH_ELEMENT USER_OBJECT="controller">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IDEA_Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -908,7 +749,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30165747" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30209482" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30607736" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
@@ -1348,81 +1189,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/RunGame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="585" max-vertical-offset="1995">
-          <caret line="68" column="21" selection-start-line="68" selection-start-column="21" selection-end-line="68" selection-end-column="21" />
-          <folding>
-            <element signature="docComment;class#RunGame#0" expanded="false" />
-            <element signature="method#grusomelyKillTheMap#0;class#RunGame#0" expanded="false" />
-            <element signature="method#grusomelyKillTheController#0;class#RunGame#0" expanded="false" />
-            <element signature="method#closeGame#0;class#RunGame#0" expanded="false" />
-            <element signature="method#main#0;class#RunGame#0" expanded="false" />
-            <element signature="method#startNewGame#0;class#RunGame#0" expanded="false" />
-            <element signature="e#3939#3946#0" expanded="false" />
-            <element signature="method#startMapEditor#0;class#RunGame#0" expanded="false" />
-            <element signature="method#coverMapInGrass#0;class#RunGame#0" expanded="false" />
-            <element signature="method#loadGame#0;class#RunGame#0" expanded="false" />
-            <element signature="n#!!doc;n#exitGame#0;n#RunGame#0" expanded="true" />
-            <element signature="method#exitGame#0;class#RunGame#0" expanded="false" />
-            <element signature="method#initialize#0;class#RunGame#0" expanded="false" />
-            <element signature="method#populateMap#0;class#RunGame#0" expanded="false" />
-            <element signature="method#startGame#0;class#RunGame#0" expanded="false" />
-            <element signature="method#saveGameToDisk#0;class#RunGame#0" expanded="false" />
-            <element signature="e#13185#13243#0" expanded="true" />
-            <element signature="docComment;class#ProgramOpts#0;class#RunGame#0" expanded="false" />
-            <element signature="class#ProgramOpts#0;class#RunGame#0" expanded="false" />
-            <element signature="docComment;method#dbgOut#0;class#RunGame#0" expanded="false" />
-            <element signature="method#dbgOut#0;class#RunGame#0" expanded="false" />
-            <element signature="docComment;method#dbgOut#1;class#RunGame#0" expanded="false" />
-            <element signature="method#dbgOut#1;class#RunGame#0" expanded="false" />
-            <element signature="docComment;method#errOut#0;class#RunGame#0" expanded="false" />
-            <element signature="docComment;method#errOut#1;class#RunGame#0" expanded="false" />
-            <element signature="method#errOut#1;class#RunGame#0" expanded="false" />
-            <element signature="docComment;method#errOut#2;class#RunGame#0" expanded="false" />
-            <element signature="method#errOut#2;class#RunGame#0" expanded="false" />
-            <element signature="docComment;method#handleArgs#0;class#RunGame#0" expanded="false" />
-            <element signature="docComment;method#parseArgs#0;class#RunGame#0" expanded="false" />
-            <element signature="method#parseArgs#0;class#RunGame#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/Occupation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1013" max-vertical-offset="1905">
-          <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
-          <folding>
-            <element signature="e#851#852#0" expanded="true" />
-            <element signature="e#892#893#0" expanded="true" />
-            <element signature="e#2064#2065#0" expanded="true" />
-            <element signature="e#2101#2102#0" expanded="true" />
-            <element signature="e#2133#2134#0" expanded="true" />
-            <element signature="e#2170#2171#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/Sneak.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="112" max-vertical-offset="990">
-          <caret line="47" column="5" selection-start-line="47" selection-start-column="5" selection-end-line="47" selection-end-column="5" />
-          <folding>
-            <element signature="docComment;class#Sneak#0" expanded="false" />
-            <element signature="method#getID#0;class#Sneak#0" expanded="false" />
-            <element signature="method#getCloakTimer#0;class#Sneak#0" expanded="false" />
-            <element signature="method#unEquipEverything#0;class#Sneak#0" expanded="false" />
-            <element signature="method#equipTwoHandWeapon#0;class#Sneak#0" expanded="false" />
-            <element signature="docComment;method#incrementSkill#0;class#Sneak#0" expanded="false" />
-            <element signature="method#incrementSkill#0;class#Sneak#0" expanded="false" />
-            <element signature="method#getSkillNameFromNumber#0;class#Sneak#0" expanded="false" />
-            <element signature="method#performOccupationSkill#0;class#Sneak#0" expanded="false" />
-            <element signature="method#takeTurn#0;class#Sneak#0" expanded="false" />
-            <element signature="method#switchToNextSubOccupation#0;class#Sneak#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/Monster.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.25277779" vertical-offset="238" max-vertical-offset="1320">
@@ -1454,81 +1220,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/EntityStatsPack.java">
+    <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/Sneak.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1216" max-vertical-offset="2100">
-          <caret line="284" column="0" selection-start-line="284" selection-start-column="0" selection-end-line="284" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.4339934" vertical-offset="112" max-vertical-offset="990">
+          <caret line="47" column="5" selection-start-line="47" selection-start-column="5" selection-end-line="47" selection-end-column="5" />
           <folding>
-            <element signature="docComment;class#EntityStatsPack#0" expanded="false" />
-            <element signature="method#setLives#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="docComment;method#EntityStatsPack#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="docComment;method#reset#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="docComment;method#EntityStatsPack#1;class#EntityStatsPack#0" expanded="false" />
-            <element signature="method#EntityStatsPack#1;class#EntityStatsPack#0" expanded="false" />
-            <element signature="method#increaseCurrentLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="e#4229#4243#0" expanded="false" />
-            <element signature="method#increaseStrengthLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="method#increaseAgilityLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="method#increaseIntellectLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="method#increaseHardinessLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="docComment;method#increaseQuantityOfExperienceBy#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="method#increaseQuantityOfExperienceBy#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="method#increaseMovementLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="docComment;method#decreaseMovesLeftByOne#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="method#decreaseMovesLeftByOne#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="method#hasMovesLeft#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="docComment;method#deductCurrentLifeBy#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="method#deductCurrentLifeBy#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="docComment;method#increaseCurrentLifeBy#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="method#increaseCurrentLifeBy#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="docComment;method#deductCurrentManaBy#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="method#deductCurrentManaBy#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="docComment;method#increaseCurrentManaBy#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="method#increaseCurrentManaBy#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="method#toString#0;class#EntityStatsPack#0" expanded="false" />
-            <element signature="e#11007#11075#0" expanded="false" />
-            <element signature="method#makeByteArray#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="docComment;class#Sneak#0" expanded="false" />
+            <element signature="method#getID#0;class#Sneak#0" expanded="false" />
+            <element signature="method#getCloakTimer#0;class#Sneak#0" expanded="false" />
+            <element signature="method#unEquipEverything#0;class#Sneak#0" expanded="false" />
+            <element signature="method#equipTwoHandWeapon#0;class#Sneak#0" expanded="false" />
+            <element signature="docComment;method#incrementSkill#0;class#Sneak#0" expanded="false" />
+            <element signature="method#incrementSkill#0;class#Sneak#0" expanded="false" />
+            <element signature="method#getSkillNameFromNumber#0;class#Sneak#0" expanded="false" />
+            <element signature="method#performOccupationSkill#0;class#Sneak#0" expanded="false" />
+            <element signature="method#takeTurn#0;class#Sneak#0" expanded="false" />
+            <element signature="method#switchToNextSubOccupation#0;class#Sneak#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/items/PickupableItem.java">
+    <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/Occupation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="330">
-          <caret line="16" column="55" selection-start-line="16" selection-start-column="55" selection-end-line="16" selection-end-column="55" />
-          <folding>
-            <element signature="e#423#424#0" expanded="true" />
-            <element signature="e#485#486#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/items/Item.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1545">
-          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding>
-            <element signature="docComment;class#Item#0" expanded="false" />
-            <element signature="docComment;method#goesInInventory#0;class#Item#0" expanded="false" />
-            <element signature="docComment;method#isPassable#0;class#Item#0" expanded="false" />
-            <element signature="docComment;method#isOneShot#0;class#Item#0" expanded="false" />
-            <element signature="docComment;method#getMapRelation#0;class#Item#0" expanded="false" />
-            <element signature="docComment;method#onWalkOver#0;class#Item#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/src/io/view/Viewport.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="630" max-vertical-offset="3600">
-          <caret line="75" column="31" selection-start-line="75" selection-start-column="31" selection-end-line="75" selection-end-column="31" />
+        <state vertical-scroll-proportion="-0.21122113" vertical-offset="1013" max-vertical-offset="1815">
+          <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/Entity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3302" max-vertical-offset="5100">
+        <state vertical-scroll-proportion="1.3828382" vertical-offset="3272" max-vertical-offset="5070">
           <caret line="883" column="7" selection-start-line="883" selection-start-column="7" selection-end-line="883" selection-end-column="7" />
           <folding>
             <element signature="docComment;class#Entity#0" expanded="false" />
@@ -1595,18 +1317,122 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/EntityStatsPack.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13366337" vertical-offset="2094" max-vertical-offset="2700">
+          <caret line="284" column="0" selection-start-line="284" selection-start-column="0" selection-end-line="284" selection-end-column="0" />
+          <folding>
+            <element signature="docComment;class#EntityStatsPack#0" expanded="false" />
+            <element signature="method#setLives#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="docComment;method#EntityStatsPack#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="docComment;method#reset#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="method#increaseCurrentLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="method#increaseStrengthLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="method#increaseAgilityLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="method#increaseIntellectLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="method#increaseHardinessLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="docComment;method#increaseQuantityOfExperienceBy#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="method#increaseQuantityOfExperienceBy#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="method#increaseMovementLevelByOne#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="docComment;method#decreaseMovesLeftByOne#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="method#decreaseMovesLeftByOne#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="method#hasMovesLeft#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="docComment;method#deductCurrentLifeBy#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="method#deductCurrentLifeBy#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="method#increaseCurrentLifeBy#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="docComment;method#deductCurrentManaBy#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="method#deductCurrentManaBy#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="docComment;method#increaseCurrentManaBy#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="method#increaseCurrentManaBy#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="method#toString#0;class#EntityStatsPack#0" expanded="false" />
+            <element signature="method#makeByteArray#0;class#EntityStatsPack#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/io/view/Viewport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5940594" vertical-offset="630" max-vertical-offset="3600">
+          <caret line="75" column="31" selection-start-line="75" selection-start-column="31" selection-end-line="75" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/items/Item.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1545">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding>
+            <element signature="docComment;class#Item#0" expanded="false" />
+            <element signature="docComment;method#goesInInventory#0;class#Item#0" expanded="false" />
+            <element signature="docComment;method#isPassable#0;class#Item#0" expanded="false" />
+            <element signature="docComment;method#isOneShot#0;class#Item#0" expanded="false" />
+            <element signature="docComment;method#getMapRelation#0;class#Item#0" expanded="false" />
+            <element signature="docComment;method#onWalkOver#0;class#Item#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/model/constructs/items/PickupableItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2970297" vertical-offset="0" max-vertical-offset="606">
+          <caret line="16" column="55" selection-start-line="16" selection-start-column="55" selection-end-line="16" selection-end-column="55" />
+          <folding>
+            <element signature="e#423#424#0" expanded="true" />
+            <element signature="e#485#486#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/src/RunGame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="660" max-vertical-offset="3405">
+          <caret line="176" column="71" selection-start-line="176" selection-start-column="71" selection-end-line="176" selection-end-column="71" />
+          <folding>
+            <element signature="docComment;class#RunGame#0" expanded="false" />
+            <element signature="method#grusomelyKillTheMap#0;class#RunGame#0" expanded="false" />
+            <element signature="method#grusomelyKillTheController#0;class#RunGame#0" expanded="false" />
+            <element signature="method#closeGame#0;class#RunGame#0" expanded="false" />
+            <element signature="method#main#0;class#RunGame#0" expanded="false" />
+            <element signature="method#startNewGame#0;class#RunGame#0" expanded="false" />
+            <element signature="e#3939#3946#0" expanded="false" />
+            <element signature="method#startMapEditor#0;class#RunGame#0" expanded="false" />
+            <element signature="method#coverMapInGrass#0;class#RunGame#0" expanded="false" />
+            <element signature="method#loadGame#0;class#RunGame#0" expanded="false" />
+            <element signature="method#exitGame#0;class#RunGame#0" expanded="false" />
+            <element signature="method#initialize#0;class#RunGame#0" expanded="false" />
+            <element signature="method#startGame#0;class#RunGame#0" expanded="false" />
+            <element signature="method#saveGameToDisk#0;class#RunGame#0" expanded="false" />
+            <element signature="docComment;class#ProgramOpts#0;class#RunGame#0" expanded="false" />
+            <element signature="class#ProgramOpts#0;class#RunGame#0" expanded="false" />
+            <element signature="docComment;method#dbgOut#0;class#RunGame#0" expanded="false" />
+            <element signature="method#dbgOut#0;class#RunGame#0" expanded="false" />
+            <element signature="docComment;method#dbgOut#1;class#RunGame#0" expanded="false" />
+            <element signature="method#dbgOut#1;class#RunGame#0" expanded="false" />
+            <element signature="docComment;method#errOut#0;class#RunGame#0" expanded="false" />
+            <element signature="docComment;method#errOut#1;class#RunGame#0" expanded="false" />
+            <element signature="method#errOut#1;class#RunGame#0" expanded="false" />
+            <element signature="docComment;method#errOut#2;class#RunGame#0" expanded="false" />
+            <element signature="method#errOut#2;class#RunGame#0" expanded="false" />
+            <element signature="docComment;method#handleArgs#0;class#RunGame#0" expanded="false" />
+            <element signature="docComment;method#parseArgs#0;class#RunGame#0" expanded="false" />
+            <element signature="method#parseArgs#0;class#RunGame#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../src/src/SavedGame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32613635" vertical-offset="298" max-vertical-offset="3420">
-          <caret line="70" column="61" selection-start-line="70" selection-start-column="61" selection-end-line="70" selection-end-column="61" />
+        <state vertical-scroll-proportion="0.6197183" vertical-offset="1392" max-vertical-offset="5715">
+          <caret line="826" column="59" selection-start-line="826" selection-start-column="59" selection-end-line="826" selection-end-column="59" />
           <folding>
-            <element signature="docComment;class#SavedGame#0" expanded="false" />
             <element signature="docComment;field#SAVE_DATA_VERSION#0;class#SavedGame#0" expanded="false" />
+            <element signature="e#2155#2217#0" expanded="true" />
+            <element signature="method#loadGame#0;class#SavedGame#0" expanded="false" />
             <element signature="method#loadKeymap#0;class#SavedGame#0" expanded="false" />
             <element signature="method#saveGame#0;class#SavedGame#0" expanded="false" />
             <element signature="docComment;method#saveKeymap#0;class#SavedGame#0" expanded="false" />
             <element signature="method#saveKeymap#0;class#SavedGame#0" expanded="false" />
-            <element signature="e#11959#12022#0" expanded="true" />
             <element signature="docComment;method#autoGen#0;class#SavedGame#0" expanded="false" />
             <element signature="method#autoGen#0;class#SavedGame#0" expanded="false" />
             <element signature="e#13083#13192#0" expanded="false" />
@@ -1614,7 +1440,6 @@
             <element signature="method#validateDataVersion#0;class#SavedGame#0" expanded="false" />
             <element signature="docComment;method#validateFile#0;class#SavedGame#0" expanded="false" />
             <element signature="method#validateFile#0;class#SavedGame#0" expanded="false" />
-            <element signature="e#17513#17575#0" expanded="true" />
             <element signature="method#xml_getAllNodesByString#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_getNodeByString#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_readAOE_One#0;class#SavedGame#0" expanded="false" />
@@ -1623,20 +1448,17 @@
             <element signature="method#xml_readEntity#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_readEntityStatsPack#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_readItem#0;class#SavedGame#0" expanded="false" />
-            <element signature="method#xml_readMap#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_readMonster#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_readTeleport_OneWay#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_readTempObstacle#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_readTerrain#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_writeAOE_One#0;class#SavedGame#0" expanded="false" />
             <element signature="docComment;method#xml_writeMap#0;class#SavedGame#0" expanded="false" />
-            <element signature="method#xml_writeMap#0;class#SavedGame#0" expanded="false" />
             <element signature="docComment;method#xml_writeEntity#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_writeEntity#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_writeItem#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_writeEntityStatsPack#0;class#SavedGame#0" expanded="false" />
-            <element signature="method#xml_writeMonster#0;class#SavedGame#0" expanded="false" />
-            <element signature="method#xml_writeOccupation#0;class#SavedGame#0" expanded="false" />
+            <element signature="method#xml_writeStatsDrawable#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_writeTeleporter_OneWay#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_writeTempObstacle#0;class#SavedGame#0" expanded="false" />
             <element signature="method#xml_writeTerrain#0;class#SavedGame#0" expanded="false" />

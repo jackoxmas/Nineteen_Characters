@@ -89,9 +89,10 @@ public class SummonerUltimate extends Summoner {
                         boon_stats.increaseDefenseLevelByOne();
                     }
                     for (int i = 0; i < 4 + getSkill_2_() * 2; i++) {
-                        boon_stats.increaseStrengthLevelByOne();
+                        boon_stats.increaseHardinessLevelByOne();
                     }
                     boon_stats_ = boon_stats;
+                    super.getEntity().getStatsPack().addOn(boon_stats_);
                     boon_timer_ = 2 + getSkill_2_();
                     if(!isBoonActivated())
                     	super.getEntity().getStatsPack().addOn(boon_stats_);

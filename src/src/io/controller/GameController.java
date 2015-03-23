@@ -66,12 +66,12 @@ public class GameController extends Controller {
             Key_Commands command = Key_Commands.GET_CONVERSATION_OPTIONS;
             if (foo.contains(HardCodedStrings.attack)) {
                 command = Key_Commands.ATTACK;
-                updateDisplay(sendCommandToMapWithText(command, ""));
+                updateDisplay(sendCommandToMapWithText(command, foo));
                 return null;
             }
             if (foo.contains(HardCodedStrings.getChatOptions)) {
                 command = Key_Commands.GET_CONVERSATION_STARTERS;
-                updateDisplay(sendCommandToMapWithText(command, ""));
+                updateDisplay(sendCommandToMapWithText(command, foo));
                 return null;
             }
             updateDisplay(sendCommandToMapWithText(command, foo));

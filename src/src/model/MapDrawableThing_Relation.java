@@ -286,21 +286,29 @@ public class MapDrawableThing_Relation {
     /**
      *
      * @return x coordinate of tile drawable thing (avatar/entity/item/etc.) is
-     * on.
+     * on. OR -1 IF MY TILE IS NULL
      */
     public int getMyXCoordinate() {
         initguardTile();
+        if(my_tile_ != null) {
         return my_tile_.x_;
+        } else {
+            return -1;
+        }
     }
 
     /**
      *
      * @return y coordinate of tile drawable thing (avatar/entity/item/etc.) is
-     * on.
+     * on. OR -1 IF MY TILE IS NULL
      */
     public int getMyYCoordinate() {
         initguardTile();
+        if(my_tile_ != null) {
         return my_tile_.y_;
+        } else {
+            return -1;
+        }
     }
 
     /**

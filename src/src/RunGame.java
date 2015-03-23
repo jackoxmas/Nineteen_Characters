@@ -168,9 +168,9 @@ public class RunGame {
     }
 
     private static void populateMap() {
-        avatar_ = new Avatar("avatar", '☃');
+        avatar_ = new Avatar(avatar_name, '☃');
         // map_.addAsAvatar(avatar_, 0, 0);
-        map_.addAsAvatar(avatar_, 0, 0);
+        map_.addAsAvatar(avatar_, mapWidth_/2 - 1, mapHeight_/2 - 1);
 
         Avatar buddy = new Avatar("buddy", '☺');
         // map_.addAsAvatar(buddy, 3, 0);

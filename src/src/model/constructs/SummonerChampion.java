@@ -27,7 +27,7 @@ public class SummonerChampion extends Summoner {
             case 1:
                 return "Sleep";
             case 2:
-                return "Heal Self";
+                return "Concentrated Heal";
             case 3:
                 return "Flammenwerfer";
             case 4:

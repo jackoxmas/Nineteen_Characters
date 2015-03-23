@@ -226,7 +226,7 @@ public class GameController extends Controller {
             music.playAttackSound();
         } else if (command == Key_Commands.BIND_WOUNDS) {
             music.playBindSound();
-        } else if(command == Key_Commands.GET_INTERACTION_OPTIONS) {
+        } else if (command == Key_Commands.GET_INTERACTION_OPTIONS) {
             music.playTalkingSound();
         } else if (command == Key_Commands.USE_SKILL_1) {
             music.playSpellSound();
@@ -236,11 +236,10 @@ public class GameController extends Controller {
             music.playSpellSound();
         } else if (command == Key_Commands.USE_SKILL_4) {
             music.playSpellSound();
-        } else if(command == Key_Commands.DROP_LAST_ITEM) {
-            music.playDropItemSound();
-        } 
+        }
     }
-    
+    private int last_inventory_size = -10;
+
     private IO_Bundle sendCommandToMapWithText(Key_Commands command, String input) {
         if (SwingUtilities.isEventDispatchThread()) {
             //System.err.println("GameController is running on the Swing Dispatch Thread input sendCommandToMapWithText [Bad]");
@@ -257,9 +256,21 @@ public class GameController extends Controller {
         }
         // Sound effects!!!!
         this.handleSoundEffect(command);
-        
-        if(to_return != null && command == Key_Commands.OBSERVE) {
-            if(to_return.observation_string_ == null) {
+        if (to_return.inventory_ != null) {
+            int size = to_return.inventory_.size();
+            if (size > 0) {
+                // ignore it
+                if (size > last_inventory_size) {
+                    music.playPickupItemSound();
+                } else if (size < last_inventory_size) {
+                    music.playDropItemSound();
+                }
+            }
+            last_inventory_size = size;
+        }
+
+        if (to_return != null && command == Key_Commands.OBSERVE) {
+            if (to_return.observation_string_ == null) {
                 System.err.println("The observation string is not allowed to be null");
                 System.exit(4);
             }

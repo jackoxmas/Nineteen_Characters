@@ -48,7 +48,7 @@ public class SummonerUltimate extends Summoner {
         final int cost = 5;
         System.out.println("Starting skill 2: DEBUG");
         int has_run_out_of_mana = getEntity().getStatsPack().deductCurrentManaBy(cost);
-        Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection();
+        Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection(5+getEntity().getStatsPack().getIntellect_level_());
         if (has_run_out_of_mana == 0) {
             if (number == 1) {
                 // enchantment, puts target to sleep (stops them from chasing until more damage is taken)
@@ -57,13 +57,21 @@ public class SummonerUltimate extends Summoner {
                 if (failed + getSkill_1_() * .1 > .6) {
                     if (target != null) {
                         ((Monster) target).causeFear(super.getEntity(), 3 + getSkill_1_());
+                        Display.getDisplay().setMessage("Succesfully casted Fear!");
                     } else {
                         // get your mana back
                         getEntity().getStatsPack().increaseCurrentManaBy(cost);
+                        Display.getDisplay().setMessage("Spell Succeeded, but not a monster! The entity was "
+                        		+ "kind enough to return your mana to you");
                     }
                 } else {
-                    target.receiveAttack(0, super.getEntity());
-                    Display.getDisplay().setMessage(HardCodedStrings.failed + getSkillNameFromNumber(1) + ".");
+                	if(target ==null){
+                		Display.getDisplay().setMessage("NO VALID TARGET");
+                	}else{
+                		Display.getDisplay().setMessage("SPELL FAILED");
+                		target.receiveAttack(0, super.getEntity());
+                		Display.getDisplay().setMessage(HardCodedStrings.failed + getSkillNameFromNumber(1) + ".");
+                	}
                 }
             } else if (number == 2) {
                 // boon - magic that heals

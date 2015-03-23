@@ -180,6 +180,7 @@ public class MapInternet extends Thread {
                         my_owner_.makeTakeTurns();//Make all the maptiles take a turn.
                     }
                     IO_Bundle return_package = new IO_Bundle(
+                            to_recieve_command.getObservationString(),
                             view,
                             colors,
                             to_recieve_command.getInventory(),
@@ -200,6 +201,7 @@ public class MapInternet extends Thread {
                     char[][] view = null;
                     int[][] colors = null;
                     IO_Bundle return_package = new IO_Bundle(
+                            to_recieve_command.getObservationString(),
                             view,
                             colors,
                             null,
@@ -221,7 +223,7 @@ public class MapInternet extends Thread {
                     return;
                 }
             } else if (command == null) {
-                IO_Bundle return_package = new IO_Bundle(null, null, to_recieve_command.getInventory(),
+                IO_Bundle return_package = new IO_Bundle(to_recieve_command.getObservationString(),null, null, to_recieve_command.getInventory(),
                         // Don't for get left and right hand items
                         to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
                         to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),

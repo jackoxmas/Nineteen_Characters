@@ -22,12 +22,13 @@ import src.model.constructs.items.SecondaryHandHoldable;
  */
 public class IO_Bundle implements Serializable {
 
-    public IO_Bundle(
+    public IO_Bundle( String observation_string,
             char[][] v, int[][] c, ArrayList<PickupableItem> i,
             EntityStatsPack s, Occupation o, int n, int bi, int ba, int ob,
             PrimaryHandHoldable pri, SecondaryHandHoldable sec,
             ArrayList<String> sfc, int num_coins, boolean is_alive
     ) {
+        observation_string_ = new String(observation_string);
         view_for_display_ = v;
         color_for_display_ = c;
         if (i != null) {
@@ -79,7 +80,8 @@ public class IO_Bundle implements Serializable {
         }
         return arr;
     }
-
+    // stores text of observation command
+    public final String observation_string_;
     public char[][] view_for_display_;
     public int[][] color_for_display_;
     public final PrimaryHandHoldable primary_;

@@ -124,7 +124,7 @@ public class Map extends Thread implements MapMapEditor_Interface, MapUser_Inter
     public IO_Bundle getMapAt(int x, int y, int width, int height) {
         char[][] view = makeView(x, y, width, height);
         int[][] colors = makeColors(x, y, width, height);
-        return new IO_Bundle(view, colors, null, null, null, 0, 0, 0, 0, null, null, null, 0, true);
+        return new IO_Bundle(null, view, colors, null, null, null, 0, 0, 0, 0, null, null, null, 0, true);
         //Mapeditor has no game over condition, you are always alive.
     }
 
@@ -436,6 +436,7 @@ public class Map extends Thread implements MapMapEditor_Interface, MapUser_Inter
                         makeTakeTurns();//Make all the maptiles take a turn.
                     }
                     IO_Bundle return_package = new IO_Bundle(
+                            to_recieve_command.getObservationString(),
                             view,
                             colors,
                             to_recieve_command.getInventory(),
@@ -454,6 +455,7 @@ public class Map extends Thread implements MapMapEditor_Interface, MapUser_Inter
                     char[][] view = null;
                     int[][] colors = null;
                     IO_Bundle return_package = new IO_Bundle(
+                            to_recieve_command.getObservationString(),
                             view,
                             colors,
                             null,
@@ -473,7 +475,8 @@ public class Map extends Thread implements MapMapEditor_Interface, MapUser_Inter
                     return return_package;
                 }
             } else if (command == null) {
-                IO_Bundle return_package = new IO_Bundle(null, null, to_recieve_command.getInventory(),
+                IO_Bundle return_package = new IO_Bundle(to_recieve_command.getObservationString(),
+                        null, null, to_recieve_command.getInventory(),
                         // Don't for get left and right hand items
                         to_recieve_command.getStatsPack(), to_recieve_command.getOccupation(),
                         to_recieve_command.getNum_skillpoints_(), to_recieve_command.getBind_wounds_(),

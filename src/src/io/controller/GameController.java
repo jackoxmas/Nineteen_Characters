@@ -253,15 +253,22 @@ public class GameController extends Controller {
         final IO_Bundle to_return = super.getMessenger().sendCommandToMap(command, input);
         if (to_return == null) {
             System.out.println("To return is null!");
-            try {
-                Thread.sleep(100);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return sendCommandToMapWithText(command, input);
+            return null;
         }
         // Sound effects!!!!
         this.handleSoundEffect(command);
+        
+        if(to_return != null && command == Key_Commands.OBSERVE) {
+            if(to_return.observation_string_ == null) {
+                System.err.println("The observation string is not allowed to be null");
+                System.exit(4);
+            }
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    Display.getDisplay().setMessage(to_return.observation_string_);
+                }
+            });
+        }
 
         if (to_return != null && to_return.strings_for_communication_ != null
                 && !to_return.strings_for_communication_.isEmpty() && Key_Commands.GET_INTERACTION_OPTIONS.equals(command)) {

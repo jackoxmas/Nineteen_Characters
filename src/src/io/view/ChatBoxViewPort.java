@@ -36,7 +36,7 @@ public class ChatBoxViewPort {
 		for(int i = 0; i != strings_for_communication.size(); ++i){
                     String temp = "";
                     if(i == 0) {
-                        temp = temp.concat("Click here to select a chat-reply option\n");
+                        temp = temp.concat("Click here, then\n");
                     } 
                     temp = temp.concat("Press " + String.valueOf(i) + ": " );
                     //if (i == strings_for_communication.size() - 1) {

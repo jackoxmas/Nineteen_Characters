@@ -221,7 +221,7 @@ public class GameController extends Controller {
 
     }
 
-    private void handleSoundEffect(Key_Commands command) {
+    private void handleSoundEffect(Key_Commands command, IO_Bundle to_return) {
         if (command == Key_Commands.ATTACK) {
             music.playAttackSound();
         } else if (command == Key_Commands.BIND_WOUNDS) {
@@ -237,8 +237,30 @@ public class GameController extends Controller {
         } else if (command == Key_Commands.USE_SKILL_4) {
             music.playSpellSound();
         }
+                if (to_return.inventory_ != null) {
+            int size = to_return.inventory_.size();
+            if (size > 0) {
+                // ignore it
+                if (size > last_inventory_size) {
+                    music.playPickupItemSound();
+                } else if (size < last_inventory_size) {
+                    music.playDropItemSound();
+                }
+            }
+            last_inventory_size = size;
+        }
+        if(to_return.stats_for_display_ != null ) {
+            int lives = to_return.stats_for_display_.getLives_left_();
+            if(last_lives_left > 0) {
+                if(lives < last_lives_left) {
+                    music.playDyingSound();
+                }
+            }
+            last_lives_left = lives;
+        }
     }
     private int last_inventory_size = -10;
+    private int last_lives_left = -10;
 
     private IO_Bundle sendCommandToMapWithText(Key_Commands command, String input) {
         if (SwingUtilities.isEventDispatchThread()) {
@@ -255,19 +277,7 @@ public class GameController extends Controller {
             return null;
         }
         // Sound effects!!!!
-        this.handleSoundEffect(command);
-        if (to_return.inventory_ != null) {
-            int size = to_return.inventory_.size();
-            if (size > 0) {
-                // ignore it
-                if (size > last_inventory_size) {
-                    music.playPickupItemSound();
-                } else if (size < last_inventory_size) {
-                    music.playDropItemSound();
-                }
-            }
-            last_inventory_size = size;
-        }
+        this.handleSoundEffect(command, to_return);
 
         if (to_return != null && command == Key_Commands.OBSERVE) {
             if (to_return.observation_string_ == null) {
@@ -306,20 +316,6 @@ public class GameController extends Controller {
                 }
             });
         }
-        // Auto focus on chatbox - confusing to people who bump into entities on accident
-        /*
-         if ((to_return != null && to_return.strings_for_communication_ != null && !to_return.strings_for_communication_.isEmpty())
-         && (command == Key_Commands.MOVE_DOWN || command == Key_Commands.MOVE_DOWNLEFT
-         || command == Key_Commands.MOVE_DOWNRIGHT || command == Key_Commands.MOVE_LEFT
-         || command == Key_Commands.MOVE_RIGHT || command == Key_Commands.MOVE_UP
-         || command == Key_Commands.MOVE_UPLEFT || command == Key_Commands.MOVE_UPRIGHT
-         || command == Key_Commands.GET_INTERACTION_OPTIONS)) {
-         java.awt.EventQueue.invokeLater(new Runnable() {
-         public void run() {
-         Display.getDisplay().requestOutBoxFocus();
-         }
-         });
-         }*/
         return to_return;
     }
 

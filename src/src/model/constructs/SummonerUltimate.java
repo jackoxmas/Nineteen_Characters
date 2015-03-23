@@ -79,10 +79,11 @@ public class SummonerUltimate extends Summoner {
                 	}
                 }
             } else if (number == 2) {
-                // boon - magic that heals
+                // tank - magic that increases some stats
                 Random randomGenerator = new Random();
                 double failed = randomGenerator.nextDouble();
                 if (failed + getSkill_2_() * .1 > .4) {
+                	Display.getDisplay().setMessage("You casted Tank!");
                     EntityStatsPack boon_stats = new EntityStatsPack();
                     for (int i = 0; i < 4 + getSkill_2_() * 2; i++) {
                         boon_stats.increaseDefenseLevelByOne();
@@ -92,6 +93,10 @@ public class SummonerUltimate extends Summoner {
                     }
                     boon_stats_ = boon_stats;
                     boon_timer_ = 2 + getSkill_2_();
+                    if(!isBoonActivated())
+                    	super.getEntity().getStatsPack().addOn(boon_stats_);
+                    activateBoon();
+
                 } else {
                     Display.getDisplay().setMessage(HardCodedStrings.failed + getSkillNameFromNumber(2) + ".");
                 }

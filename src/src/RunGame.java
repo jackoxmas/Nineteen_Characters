@@ -52,12 +52,13 @@ public class RunGame {
     private static int mapWidth_ = 35;
     private static boolean map_editor_mode_ = false;
     private static StringBuilder newUserName_ = new StringBuilder();
-    
+
     public static void setNewMap(Map map) {
+        grusomelyKillTheMap();
         map_ = map;
     }
 
-        public static void grusomelyKillTheMap() {
+    public static void grusomelyKillTheMap() {
         if (RunGame.map_ != null) {
             map_.grusomelyKillTheMapThread();
             System.out.println("Killed the map thread");
@@ -65,7 +66,8 @@ public class RunGame {
             System.out.println("The map thread is null");
         }
     }
-            public static void grusomelyKillTheController() {
+
+    public static void grusomelyKillTheController() {
         if (RunGame.uc_ != null) {
             uc_.grusomelyKillTheControllerThread();
             System.out.println("Killed the controller thread");
@@ -73,9 +75,10 @@ public class RunGame {
             System.out.println("The controller thread is null");
         }
     }
+
     public static void closeGame() {
         grusomelyKillTheMap();
-        closeGame();
+        grusomelyKillTheController();
     }
 
     public static String getAvatarName() {
@@ -85,7 +88,9 @@ public class RunGame {
     public static void main(String[] args) {
         parseArgs(args); // Parse command line arguments
         handleArgs(args);
-        if (map_editor_mode_) { startMapEditor(); }
+        if (map_editor_mode_) {
+            startMapEditor();
+        }
 
         if (map_ == null) {
             initialize();
@@ -119,23 +124,23 @@ public class RunGame {
     }
 
     private static void coverMapInGrass(Map map_2) {
-    	MapAddableFactory factory = new MapAddableFactory();
-		for(int x =0; x< map_2.width_;++x){
-			for(int y = 0; y < map_2.height_;++y){
-				MapAddable addable = factory.getAddable(AddableThingEnum.GRASS_TERRAIN);
-				addable.addToMap(map_2, x, y);
-				
-			}
-		}
-	}
+        MapAddableFactory factory = new MapAddableFactory();
+        for (int x = 0; x < map_2.width_; ++x) {
+            for (int y = 0; y < map_2.height_; ++y) {
+                MapAddable addable = factory.getAddable(AddableThingEnum.GRASS_TERRAIN);
+                addable.addToMap(map_2, x, y);
 
-	public static void loadGame(String file_path) {
+            }
+        }
+    }
+
+    public static void loadGame(String file_path) {
         /*
-        Map newMap = SavedGame.loadGame(file_path);
-        if (newMap == null) {
-            RunGame.errOut("Failed to load the map from: " + file_path);
-            return;
-        }*/
+         Map newMap = SavedGame.loadGame(file_path);
+         if (newMap == null) {
+         RunGame.errOut("Failed to load the map from: " + file_path);
+         return;
+         }*/
         //map_ = newMap;
     }
 
@@ -160,10 +165,10 @@ public class RunGame {
         Villager villager1 = new Villager("villager1", '♙');
         villager1.getStatsPack().increaseQuantityOfExperienceBy(200);
         map_.addAsEntity(villager1, 3, 13);
-        
+
         SpreadingLineAreaEffectItem item2 = new SpreadingLineAreaEffectItem(16, Effect.HURT, FacingDirection.DOWN_RIGHT);
         map_.addItem(item2, 10, 10);
-        
+
         Monster strong = new Monster("monster1", '♟');
         strong.getStatsPack().increaseQuantityOfExperienceBy(400);
         strong.getStatsPack().increaseDefenseLevelByOne();
@@ -313,10 +318,10 @@ public class RunGame {
             return;
         }
         /*
-        if (avatar_ == null) {
-            RunGame.errOut("startGame(): invalid (null) avatar");
-            return;
-        }*/
+         if (avatar_ == null) {
+         RunGame.errOut("startGame(): invalid (null) avatar");
+         return;
+         }*/
         uc_ = new GameController(map_, avatar_name);
         (new Thread(uc_)).start();
     }

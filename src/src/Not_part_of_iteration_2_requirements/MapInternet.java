@@ -74,7 +74,7 @@ public class MapInternet extends Thread {
         for (ConcurrentHashMap.Entry<String, Packet_Sender> entry : this.users.entrySet()) {
             if (entry.getValue() != null) {
                 entry.getValue().interrupt();
-                System.out.println("Killed a packet_sender thread");
+                System.out.println("Killed a packet_sender thread1");
             }
         }
     }
@@ -83,9 +83,10 @@ public class MapInternet extends Thread {
         for (ConcurrentHashMap.Entry<String, Packet_Sender> entry : this.users.entrySet()) {
             if (entry.getValue() != null) {
                 entry.getValue().interrupt();
-                System.out.println("Killed a packet_sender thread");
+                System.out.println("Killed a packet_sender thread2");
             }
         }
+        this.stop();
     }
 
     private void getInputForMap() {

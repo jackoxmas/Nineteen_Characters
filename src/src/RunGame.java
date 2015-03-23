@@ -28,6 +28,8 @@ import src.model.constructs.items.OneShotAreaEffectItem;
 import src.model.constructs.items.OneWayTeleportItem;
 import src.model.constructs.items.PermanentObstacleItem;
 import src.model.constructs.items.Shield;
+import src.model.constructs.items.SpreadingCircleAreaEffectItem;
+import src.model.constructs.items.SpreadingConeAreaEffectItem;
 import src.model.constructs.items.Staff;
 import src.model.constructs.items.TemporaryObstacleItem;
 import src.model.constructs.items.Trap;
@@ -155,9 +157,14 @@ public class RunGame {
         Villager villager1 = new Villager("villager1", '♙');
         villager1.getStatsPack().increaseQuantityOfExperienceBy(200);
         map_.addAsEntity(villager1, 3, 13);
-
         
-        Monster strong = new Monster("monster1", '♟');
+        SpreadingConeAreaEffectItem item1 = new SpreadingConeAreaEffectItem(4, Effect.HURT, FacingDirection.UP_LEFT);
+        map_.addItem(item1, 10, 10);
+
+        SpreadingConeAreaEffectItem item2 = new SpreadingConeAreaEffectItem(4, Effect.HURT, FacingDirection.DOWN_RIGHT);
+        map_.addItem(item2, 10, 10);
+        
+       /* Monster strong = new Monster("monster1", '♟');
         strong.getStatsPack().increaseQuantityOfExperienceBy(400);
         strong.getStatsPack().increaseDefenseLevelByOne();
         strong.getStatsPack().increaseHardinessLevelByOne();
@@ -201,7 +208,7 @@ public class RunGame {
         map_.addItem(spiked_gauntlet, 28, 1);
         map_.addItem(radiationEmittingGloves, 28, 2);
         map_.addItem(atomicFists, 28, 3);
-
+*/
         Item shield = new Shield("Shieldy", 'O');
         shield.getStatsPack().addOn(new DrawableThingStatsPack(0, 10));
         OneShotAreaEffectItem heal = new OneShotAreaEffectItem("healer", 'h', Effect.HEAL, 10);

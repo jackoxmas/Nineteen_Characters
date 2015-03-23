@@ -313,7 +313,6 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
     public void makeTakeTurns() {
         for (int y = 0; y < height_; ++y) {
             for (int x = 0; x < width_; ++x) {
-
                 makeMapTileTakeTurn(x, y);
             }
         }
@@ -424,6 +423,7 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
                             to_recieve_command.getMapRelation().getMyYCoordinate(),
                             width_from_center, height_from_center);
                     if (!Key_Commands.DO_ABSOLUTELY_NOTHING.equals(command)) {
+                    	System.out.println(items_list_);
                         makeTakeTurns();//Make all the maptiles take a turn.
                     }
                     IO_Bundle return_package = new IO_Bundle(
@@ -599,6 +599,19 @@ public class Map implements MapMapEditor_Interface, MapUser_Interface {
      */
     public Item removeTopItem(int x, int y) {
         Item item = this.map_grid_[y][x].removeTopItem();
+        items_list_.remove(item);
+        return item;
+    }
+    
+    public Item removeExactItem(Item item) {
+    	int x_position = item.getMapRelation().getMyXCoordinate();
+    	int y_position = item.getMapRelation().getMyYCoordinate();
+    	
+        int error_code = this.map_grid_[y_position][x_position].removeSpecificItem(item);
+        if(error_code != 0) {
+        	System.err.println("Item not found in Map.removeExactItem");
+        	System.exit(-6);
+        }
         items_list_.remove(item);
         return item;
     }

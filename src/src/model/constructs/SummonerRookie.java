@@ -47,7 +47,7 @@ public class SummonerRookie extends Summoner {
         final int cost = 1;
         System.out.println("Starting skill 2: DEBUG");
         int has_run_out_of_mana = getEntity().getStatsPack().deductCurrentManaBy(cost);
-        Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection(10);
+        Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection(5+getEntity().getStatsPack().getIntellect_level_());
         if (has_run_out_of_mana == 0) {
             if (number == 1) {
                 // enchantment, target hurts itself [damage caster on fail]
@@ -63,6 +63,7 @@ public class SummonerRookie extends Summoner {
                     } else {
                         // get your mana back
                         getEntity().getStatsPack().increaseCurrentManaBy(cost);
+                        Display.getDisplay().setMessage("No Valid Target! Got your mana back!");
                     }
                 }
             } else if (number == 2) {

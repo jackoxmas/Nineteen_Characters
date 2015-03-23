@@ -20,6 +20,10 @@ public class MapItem_Relation extends MapDrawableThing_Relation {
         super(m);
         item_ = item;
     }
+    
+    public void removeMyselfFromTheMapCompletely() {
+        super.getMap().removeExactItem(item_);
+    }
 
     public Entity getTheEntityOnTopOfMe() {
         return this.getMapTile().getEntity();

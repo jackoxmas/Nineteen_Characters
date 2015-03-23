@@ -48,7 +48,7 @@ public class SummonerChampion extends Summoner {
         final int cost = 3;
         System.out.println("Starting skill 2: DEBUG");
         int has_run_out_of_mana = getEntity().getStatsPack().deductCurrentManaBy(cost);
-        Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection();
+        Entity target = super.getEntity().getMapRelation().getEntityInFacingDirection(5+getEntity().getStatsPack().getIntellect_level_());
         if (has_run_out_of_mana == 0) {
             if (number == 1) {
                 // enchantment, puts target to sleep (stops them from chasing until more damage is taken)
@@ -58,15 +58,22 @@ public class SummonerChampion extends Summoner {
                     if (target != null) {
                         try {
                             ((Monster) target).stopFollowing();
+                            Display.getDisplay().setMessage("Suceeded in casting!");
                         } catch (Exception e) {
+                        	Display.getDisplay().setMessage("No Target isn't a monster!");
                         }
                     } else {
                         // get your mana back
                         getEntity().getStatsPack().increaseCurrentManaBy(cost);
+                    	Display.getDisplay().setMessage("No valid Target! Got your mana back!");
                     }
                 } else {
-                    target.receiveAttack(0, super.getEntity());
-                    Display.getDisplay().setMessage(HardCodedStrings.failed + getSkillNameFromNumber(1) + ".");
+                	if(target!=null){
+                		target.receiveAttack(0, super.getEntity());
+                		Display.getDisplay().setMessage(HardCodedStrings.failed + getSkillNameFromNumber(1) + ".");
+                	}else{
+                		Display.getDisplay().setMessage("No valid Target!");
+                	}
                 }
             } else if (number == 2) {
                 // boon - magic that heals

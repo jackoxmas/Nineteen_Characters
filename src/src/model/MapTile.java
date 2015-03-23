@@ -52,6 +52,9 @@ public final class MapTile {
         if (entity_ != null && entity_.getMapRelation() != null && entity_.hasLivesLeft()) {
             entity_.takeTurn();
         }
+        for(int i = 0; i < items_.size(); ++i) {
+        	items_.get(i).takeTurn();
+        }
     }
 
     /**

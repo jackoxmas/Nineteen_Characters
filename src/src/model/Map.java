@@ -388,6 +388,28 @@ public class Map extends Thread implements MapMapEditor_Interface, MapUser_Inter
         }
     }
 
+    private IO_Bundle make_dead_packet() {
+        IO_Bundle return_package = new IO_Bundle(
+                "",
+                null,
+                null,
+                null,
+                // Don't for get left and right hand items
+                null,
+                null,
+                -1,
+                -1,
+                -1,
+                -1,
+                null,
+                null,
+                null,
+                -1,
+                false
+        );
+        return return_package;
+    }
+
     /**
      * Use this when the command the map is receiving requires a string
      * parameter
@@ -409,6 +431,7 @@ public class Map extends Thread implements MapMapEditor_Interface, MapUser_Inter
         } else {
             to_recieve_command = null;
             System.err.println("The avatar of entity you are trying to reach does not exist.");
+            return make_dead_packet();
         }
         ArrayList<String> strings_for_IO_Bundle = null;
         if (to_recieve_command != null) {
@@ -454,25 +477,7 @@ public class Map extends Thread implements MapMapEditor_Interface, MapUser_Inter
                 } else {
                     char[][] view = null;
                     int[][] colors = null;
-                    IO_Bundle return_package = new IO_Bundle(
-                            to_recieve_command.getObservationString(),
-                            view,
-                            colors,
-                            null,
-                            // Don't for get left and right hand items
-                            null,
-                            null,
-                            -1,
-                            -1,
-                            -1,
-                            -1,
-                            null,
-                            null,
-                            null,
-                            -1,
-                            to_recieve_command.hasLivesLeft()
-                    );
-                    return return_package;
+                    return make_dead_packet();
                 }
             } else if (command == null) {
                 IO_Bundle return_package = new IO_Bundle(to_recieve_command.getObservationString(),
